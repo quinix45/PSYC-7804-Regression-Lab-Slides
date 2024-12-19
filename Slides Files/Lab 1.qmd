@@ -1,0 +1,102 @@
+---
+title: "Demo"
+author: "Fabio Setti"
+institute: "Fordham University"
+bibliography: Additional files/R packages.bib
+csl: Additional files/apa.csl
+date: today
+title-slide-attributes:
+  data-transition: "zoom"
+format:
+   revealjs:
+      footer: "Demo"
+      width: 1920
+      height: 1080
+      chalkboard: true
+      slide-number: c/t 
+      theme: Fabio_theme/Fabio_theme.scss
+      navigation-mode: linear
+      controls: false
+      auto-stretch: false
+      header-includes:
+        - <script src="Fabio_theme/Fabio_theme.js"></script>
+
+editor: source
+---
+
+## Today's Packages 🤗
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<center>
+
+```{r}
+#| code-fold: true
+#| eval: false
+#| echo: true
+#| code-summary: "Install Packages Code"
+#| classes: code-150
+
+install.packages("rio")
+install.packages("psych")
+install.packages("car")
+install.packages("tidyverse")
+```
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-150
+
+library(rio)
+library(psych)
+library(car)
+library(tidyverse)
+```
+
+</center>
+
+</br>
+</br>
+</br>
+
+::: {.panel-tabset}
+
+### `mirt`
+
+The `mirt` package [@Chalmers_2012] is used to fit IRT models
+
+
+### Tab B
+
+Content for `Tab B`
+
+:::
+
+
+
+:::
+::: {.column width="50%"}
+
+![](Images/Packages_image.png)
+
+
+
+:::
+::::
+
+
+## References
+
+<div id="refs"></div>
+
+
+
+
+
+
+
+

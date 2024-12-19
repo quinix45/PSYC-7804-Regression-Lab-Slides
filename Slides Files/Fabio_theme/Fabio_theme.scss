@@ -1,0 +1,389 @@
+//// MAIN VARIABLES ////
+
+// main font family
+$font-family-sans-serif: "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
+
+// headings font family
+$font-family-heading: "Arial", sans-serif;
+
+// weight of font heading (thickness)
+$presentation-heading-font-weight: 80 !important;
+
+//font size fo text
+$presentation-font-size-root: 2.1em;
+
+// font size for level 2 headings (defined with "##")
+$presentation-h2-font-size: 2.4em !default;
+
+// default theme color
+$theme-color: #1c74d8; 
+
+// some example colors
+
+// c("#458B00", "#DEB887", "#6495ED")
+
+// default background color
+$body-bg: white;
+
+// default text color
+$body-color: black;
+
+// default link color
+$link-color: $theme-color;
+
+//defualt selection color 
+$selection-bg: lighten($theme-color, 15%);
+
+/*-- scss:rules --*/
+
+// author
+
+.quarto-title-author {
+  font-family: $font-family-sans-serif;
+  font-size: 1.5em !important;
+  font-weight: 500 !important;
+}
+
+
+// date
+.date {
+  font-family: $font-family-sans-serif;
+  font-size: 1.3em !important;
+  font-weight: 500 !important;
+}
+
+// footer
+.reveal .footer {
+  font-family: $font-family-sans-serif;
+  font-size: .6em !important;
+  font-weight: 550 !important;
+  width: 50% !important;
+  color: $body-bg;
+  bottom: -0% !important;
+  width: 80%;
+  left: 20%;
+  background-color: lighten($theme-color, 15%);
+  padding-top: 15px;
+  padding-bottom: 10px;
+  z-index: -2 !important;
+  transform: skew(335deg);
+  padding-left: 0px;
+  padding-right: 1400px;
+  border: 2.5px solid $theme-color;
+}
+
+.reveal .footer > * {
+  transform: skew(25deg) !important;
+}
+
+.hide {
+  display: none !important;
+}
+
+// slide number
+
+.reveal .slide-number {
+  font-family: $font-family-sans-serif;
+  font-size: .6em !important;
+  color: $body-bg;
+  font-weight: 550 !important;
+}
+
+
+.aside-footnotes{
+  font-size: calc($presentation-font-size-root/2)
+}
+
+
+
+// headings
+
+.reveal .slides h2 {
+  margin: 0 0 40px 0;
+  color: $theme-color;
+  font-family: "League Gothic", Impact, sans-serif;
+  line-height: 0.9em;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+  text-shadow: none;
+  z-index: 0 !important;
+}
+
+// title
+.reveal .slides h1 {
+  font-size: 2.7em;
+  color: black;
+  font-family: $font-family-sans-serif;
+  line-height: 1em;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+  font-weight: 550;
+  text-shadow: none;
+}
+
+
+// Bold color
+b,
+strong {
+  color: $theme-color;
+}
+
+// bullet points
+
+ul li::marker {
+  color: $theme-color;
+  content: "➣ ";
+}
+
+ol li::marker {
+  color: $theme-color;
+}
+
+// classes to assign to SVGs added through JS
+
+.decoration{
+  fill: $theme-color;
+  stroke: lighten($theme-color, 15%);
+  background-color: lighten($theme-color, 15%);
+}
+
+.title-separator{
+  fill: $theme-color;
+  stroke: $theme-color;
+  width: 100%;
+  stroke-width: 3;
+}
+
+.decoration-container {   
+  box-sizing: border-box;  
+  width: 100vw; 
+  height: 100vh; 
+  position: fixed;
+  overflow: visible;
+  background-color: transparent; 
+  top:0; 
+  left: 0; 
+  bottom: 0;
+  right: 0;
+}
+
+// Zoome menu
+
+/* Basic styles for the context menu */
+.custom-menu {
+  position: absolute;
+  display: none; /* Hidden by default */
+  background-color: $body-bg;
+  border: 1px solid darken($body-bg, 15%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-height: 150px; /* Adjust based on your needs */
+  overflow-y: auto; /* Scrollable when content overflows */
+  z-index: 9999; /* Ensure it appears above other content */
+}
+
+.custom-menu a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #8a0909;
+  border-bottom: 1px solid #eee;
+}
+
+.custom-menu a:hover {
+  background-color: #f0f0f0;
+}
+
+
+.image {
+  cursor: pointer; /* Change this to whatever cursor style you prefer */
+  z-index: 300000 !important;
+}
+
+.dim {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+  //z-index: 1; /* Ensure it's below the zoomed element */
+ // pointer-events: none; /* Allows interaction with the zoomed element */
+}
+
+
+
+// Code options
+
+.reveal div.sourceCode {
+  width: fit-content;
+  padding: 2px;
+}
+
+.code-125{
+  font-size: 125%  
+}
+
+.code-150{
+  font-size: 150%  
+}
+
+.code-175{
+  font-size: 175%  
+}
+
+.code-200{
+  font-size: 200%  
+}
+
+
+
+
+// Zoom Animations
+
+
+.zoom1xJS-active {
+  transition: transform .3s;
+  transform: translate(-50%, -50%) scale(1);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: auto; /* Ensure the width is automatic to preserve original dimensions */
+  height: auto; /* Ensure the height is automatic to preserve original dimensions */
+  border-radius: 10%;
+  background-color: $body-bg; 
+  z-index: 99999;
+  padding: .7%;
+  border: solid 1.5px;
+  border-color: lighten($theme-color, 15%);
+}
+
+
+.zoom1_25xJS-active {
+  transition: transform .3s;
+  transform: translate(-50%, -50%) scale(1.25);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border-radius: 10%;
+  background-color: $body-bg;
+  z-index: 99999;
+  padding: .7%;
+  border: solid 1.5px;
+  border-color: lighten($theme-color, 15%);
+}
+
+.zoom1_5xJS-active {
+  transition: transform .3s;
+  transform: translate(-50%, -50%) scale(1.5);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border-radius: 10%;
+  background-color: $body-bg;
+  z-index: 99999;
+  padding: .7%;
+  border: solid 1.5px;
+  border-color: lighten($theme-color, 15%);
+}
+
+.zoom1_75xJS-active {
+  transition: transform .3s;
+  transform: translate(-50%, -50%) scale(1.75);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border-radius: 10%;
+  background-color: $body-bg;
+  z-index: 99999;
+  padding: .7%;
+  border: solid 1.5px;
+  border-color: lighten($theme-color, 15%);
+}
+
+
+
+.zoom2xJS-active {
+  transition: transform .3s;
+  transform: translate(-50%, -50%) scale(2);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border-radius: 10%;
+  background-color: $body-bg;
+  z-index: 99999 !important;
+  padding: .7%;
+  border: solid 1.5px;
+  border-color: lighten($theme-color, 15%);
+}
+
+.zoom2_5xJS-active {
+  transition: transform .3s;
+  transform: translate(-50%, -50%) scale(2.5);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border-radius: 10%;
+  background-color: $body-bg;
+  z-index: 100000 !important;
+  padding: .7%;
+  border: solid 1.5px;
+  border-color: lighten($theme-color, 15%);
+}
+
+.zoom3xJS-active {
+  transition: transform .3s;
+  transform: translate(-50%, -50%) scale(3);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background-color: $body-bg;
+  border-radius: 10%;
+  z-index: 99999;
+  padding: .7%;
+  border: solid 1.5px;
+  border-color: lighten($theme-color, 15%);
+}
+
+.zoom4xJS-active {
+  transition: transform .3s;
+  transform: translate(-50%, -50%) scale(4);
+  position: fixed;
+  padding: .7%;
+  border: solid 1.5px;
+  border-color: lighten($theme-color, 15%);
+  top: 50%;
+  left: 50%;
+  background-color: $body-bg;
+  border-radius: 10%;
+  z-index: 99999;
+}
+
+.zoom6xJS-active {
+  transition: transform .3s;
+  transform: translate(-50%, -50%) scale(6);
+  position: fixed;
+  padding: .7%;
+  border: solid 1.5px;
+  border-color: lighten($theme-color, 15%);
+  top: 50%;
+  left: 50%;
+  background-color: $body-bg;
+  border-radius: 10%;
+  z-index: 99999;
+}
+
+.zoom8xJS-active {
+  transition: transform .3s;
+  transform: translate(-50%, -50%) scale(8);
+  position: fixed;
+  padding: .7%;
+  border: solid 1.5px;
+  border-color: lighten($theme-color, 15%);
+  top: 50%;
+  left: 50%;
+  background-color: $body-bg;
+  border-radius: 10%;
+  z-index: 99999;
+}
+
