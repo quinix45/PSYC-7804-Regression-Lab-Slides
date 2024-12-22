@@ -1,0 +1,109 @@
+---
+title: "Lab 2: One-predictor Regression"
+author: "Fabio Setti"
+institute: "PSYC 7804 - Regression with Lab"
+bibliography: Additional files/R packages.bib
+csl: Additional files/apa.csl
+title-slide-attributes:
+  data-transition: "zoom"
+  data-visibility: "uncounted"
+format:
+   revealjs:
+      footer: "Lab 2: One-predictor Regression"
+      width: 1920
+      height: 1080
+      chalkboard: true
+      slide-number: c/t 
+      theme: Fabio_theme/Fabio_theme.scss
+      navigation-mode: linear
+      controls: false
+      auto-stretch: false
+      header-includes:
+        - <script src="Fabio_theme/Fabio_theme.js"></script>
+
+editor: source
+---
+
+## Today's Packages 🤗
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| code-fold: true
+#| eval: false
+#| echo: true
+#| code-summary: "Install Packages Code"
+#| classes: code-150
+
+install.packages("rio")
+install.packages("psych")
+install.packages("tidyverse")
+```
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| classes: code-150
+
+library(rio)
+library(psych)
+library(tidyverse)
+```
+
+
+Let's also load the data for today:
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| warning: false
+#| classes: code-150
+
+dat <- import("")
+```
+
+
+
+
+
+</br>
+</br>
+</br>
+
+::: {.panel-tabset}
+
+### `rio`
+
+The `rio` package [@Becker_etal_2024] developers describe this package as the *Swiss-Army Knife for Data I/O*. The `import()` and `export()` functions can import/export just about any data type.
+
+### `tidyverse`
+
+The `tidyverse` package [@Wickham_RStudio_2023] loads a suite of packages that help with data cleaning and visualization. Among others, `tidyverse` loads both `dplyr` and `ggplot2`.
+
+### `psych`
+
+The `psych` package [@Revelle_2024a] includes MANY functions that help with data exploration and running analyses typically done in the social sciences.
+
+:::
+
+
+
+:::
+::: {.column width="50%"}
+
+![](Images/Packages_image.png)
+
+
+
+:::
+::::
+
+## References 
+
+<div id="refs"> </div>
+
+

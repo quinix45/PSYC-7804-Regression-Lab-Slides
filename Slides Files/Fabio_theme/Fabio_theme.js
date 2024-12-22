@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
       svgWrapper1.style.position = 'absolute';
-      svgWrapper1.style.top = '-135%';  // Adjust as needed
+      svgWrapper1.style.top = '-155%';  // Adjust as needed
       svgWrapper1.style.left = '-25%'; // Adjust as needed
       svgWrapper1.style.width = '0%'; // Full width of the parent
       svgWrapper1.style.height = '0'; // Full height of the parent
@@ -65,10 +65,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// first line controls size (left plygon in title)
+// first line controls size (right plygon in title)
 const decorationMarkup2 = `<svg id="mySVG" style="transform: scaleX(-4.5) scaleY(3); transform-origin: 0 0;">
 <polygon points="129.9038105676658, 74.99999999999999 39.184850993605149,150 -129.90381056766577,1005.00000000000006 -129.90381056766583,-74.99999999999996 -2.7554552980815446e-14,-150 129.90381056766583,-74.99999999999994"  class="decoration" style="stroke-width:2;"/>
-</svg>`
+</svg>`;
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
       svgWrapper2.style.position = 'absolute';
-      svgWrapper2.style.top = '-135%';  // Adjust as needed
+      svgWrapper2.style.top = '-155%';  // Adjust as needed
       svgWrapper2.style.left = '125%'; // Adjust as needed
       svgWrapper2.style.width = '0%'; // Full width of the parent
       svgWrapper2.style.height = '0'; // Full height of the parent
@@ -305,3 +305,15 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+
+
+
+
+
+// hide slide Number
+
+
+Reveal.addEventListener('slidechanged', (event) => {
+        const isSnOn = (event.currentSlide.dataset.hideSlideNumber !== 'true');
+            Reveal.configure({ slideNumber: isSnOn });
+          });

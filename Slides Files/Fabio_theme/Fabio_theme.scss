@@ -96,6 +96,23 @@ $selection-bg: lighten($theme-color, 15%);
 
 
 
+// hide title-slide number 
+
+.reveal .slide-number > a[href*='title-slide'] {
+  display: none;
+}
+
+
+.no-slide-number .reveal .slides section {
+  counter-reset: slide;
+}
+
+.no-slide-number .reveal .slides section:after {
+  display: none;
+}
+
+
+
 // headings
 
 .reveal .slides h2 {
@@ -132,9 +149,9 @@ strong {
 
 ul li::marker {
   color: $theme-color;
-  content: "➣ ";
 }
-
+  
+  
 ol li::marker {
   color: $theme-color;
 }
@@ -216,7 +233,7 @@ ol li::marker {
 // Code options
 
 .reveal div.sourceCode {
-  width: fit-content;
+  // width: fit-content;
   padding: 2px;
 }
 
@@ -236,8 +253,17 @@ ol li::marker {
   font-size: 200%  
 }
 
+.height-150{
+  max-height: 150px
+}
 
+.height-200{
+  max-height: 200px
+}
 
+.width-900{
+  max-width: 900px;
+}
 
 // Zoom Animations
 

@@ -1,0 +1,24 @@
+---
+title: "Lab 3: Reporting Results"
+author: "Fabio Setti"
+institute: "PSYC 7804 - Regression with Lab"
+bibliography: Additional files/R packages.bib
+csl: Additional files/apa.csl
+title-slide-attributes:
+  data-transition: "zoom"
+format:
+   revealjs:
+      footer: "Lab 3: Reporting Results"
+      width: 1920
+      height: 1080
+      chalkboard: true
+      slide-number: c/t 
+      theme: Fabio_theme/Fabio_theme.scss
+      navigation-mode: linear
+      controls: false
+      auto-stretch: false
+      header-includes:
+        - <script src="Fabio_theme/Fabio_theme.js"></script>
+
+editor: source
+---
