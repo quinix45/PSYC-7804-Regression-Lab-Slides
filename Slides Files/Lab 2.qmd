@@ -10,8 +10,8 @@ title-slide-attributes:
 format:
    revealjs:
       footer: "Lab 2: One-predictor Regression"
-      width: 1920
-      height: 1080
+      width: 1280
+      height: 720
       chalkboard: true
       slide-number: c/t 
       theme: Fabio_theme/Fabio_theme.scss
@@ -33,48 +33,41 @@ editor: source
 #| code-fold: true
 #| eval: false
 #| echo: true
+#| code-line-numbers: false
 #| code-summary: "Install Packages Code"
 #| classes: code-150
 
 install.packages("rio")
 install.packages("psych")
 install.packages("tidyverse")
+install.packages("car")
 ```
 
 
 ```{r}
 #| eval: true
 #| echo: true
+#| code-line-numbers: false
 #| warning: false
 #| classes: code-150
 
+library(car)
 library(rio)
 library(psych)
 library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
 ```
 
-
-Let's also load the data for today:
-
-
-```{r}
-#| eval: true
-#| echo: true
-#| warning: false
-#| classes: code-150
-
-dat <- import("")
-```
-
-
-
-
-
 </br>
-</br>
-</br>
+
+<div style="font-size: 26px">
 
 ::: {.panel-tabset}
+
+### `car`
+
+The `car` package [@Fox_etal_2024] contains many helper functions to analyze and explore regression results. It was originally created to be used along with a regression book written by the same authors.
 
 ### `rio`
 
@@ -89,21 +82,828 @@ The `tidyverse` package [@Wickham_RStudio_2023] loads a suite of packages that h
 The `psych` package [@Revelle_2024a] includes MANY functions that help with data exploration and running analyses typically done in the social sciences.
 
 :::
-
-
+</div>
 
 :::
 ::: {.column width="50%"}
 
-![](Images/Packages_image.png)
 
+<ul>
+
+<li> Let's also load the data for today: </li>
+</ul>
+
+```{r}
+#| warning: false
+#| classes: code-125
+#| echo: true
+#| code-line-numbers: false
+#| output: false
+
+GPA <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/GPA.sav")
+str(GPA)
+```
+
+
+![](Images/Packages_image.png){}
+
+:::
+::::
+
+
+## Describe and Plot your data
+
+Whenever working with new data it's good practice to run descriptive statistics and visualizations
+
+:::: {.columns}
+::: {.column width="30%"}
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+describe(GPA)
+```
+
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-fold: true
+#| code-summary: "Plot code"
+#| code-line-numbers: false
+#| fig-dpi: 300
+
+GPA %>% 
+# When creating multiple plots at once, long data works best
+pivot_longer(cols = colnames(GPA),
+             names_to = "variable",
+             values_to = "value") %>% 
+          ggplot(aes(x  = value)) +
+          geom_density() +
+# the facet_wrap() fucntion generates plots for each value in "variable"
+          facet_wrap(~variable, scales = "free") +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+
+```
+
+:::
+::::
+
+The two variables seem fairly normally distributed. 
+
+
+## Scatterplot {auto-animate="true"}
+
+A scatterplot is ideal for visualizing bivariate relations 
+
+:::: {.columns}
+::: {.column width="30%"}
+
+We have seen this code before
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+
+ggplot(GPA,
+      aes(x = act, y = year1gpa)) +
+      geom_point()
+```
+
+
+:::
+::: {.column width="70%"}
+
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| fig-dpi: 300
+
+ggplot(GPA,
+      aes(x = act, y = year1gpa)) +
+      geom_point()
+```
+
+:::
+::::
+
+There seems to be a positive trend (as ACT scores increase, first year GPA also increases). Let's draw a **regression line** to confirm that.  
+
+## Scatterplot {auto-animate="true" data-visibility="uncounted"}
+
+A scatterplot is ideal for visualizing bivariate relations 
+
+:::: {.columns}
+::: {.column width="30%"}
+
+We have seen this code before 
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+
+ggplot(GPA,
+      aes(x = act, y = year1gpa)) +
+      geom_point() +
+      geom_smooth(method = "lm", 
+                  se = FALSE)
+```
+
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| fig-dpi: 300
+
+ggplot(GPA,
+      aes(x = act, y = year1gpa)) +
+      geom_point() +
+      geom_smooth(method = "lm", se = FALSE)
+```
+
+:::
+::::
+
+The **regression line** confirms our observation. 
+
+
+## Scatterplot {auto-animate="true" data-visibility="uncounted"}
+
+A scatterplot is ideal for visualizing bivariate relations 
+
+:::: {.columns}
+::: {.column width="30%"}
+
+We have seen this code before 
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+
+ggplot(GPA,
+      aes(x = act, y = year1gpa)) +
+      geom_point() +
+      geom_smooth(method = "lm", 
+                  se = FALSE) +
+      geom_smooth(method = "loess",
+                  color = "red",
+                  se = FALSE)
+```
+
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| fig-dpi: 300
+
+ggplot(GPA,
+      aes(x = act, y = year1gpa)) +
+      geom_point() +
+      geom_smooth(method = "lm", se = FALSE) +
+      geom_smooth(method = "loess", 
+                  color = "red",
+                  se = FALSE)
+```
+
+:::
+::::
+
+<div style="font-size: 22px"> We can add a loess line, which usually helps with checking for **non-linear trends**. However, here it should probably not be trusted much. Why? Because there are too few points (only 20), and the loess line is influenced by just a few observations.  
+  </div>
+
+
+
+## Correlation 
+
+Correlation, usually denoted with $r$, measures the strength of linear association between two variables that ranges between $-1$ and $1$. 
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+<center>
+
+**The Math**
+
+$r_{xy} = \frac{ \sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y}) }{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2}\sqrt{\sum_{i=1}^{n}(y_i-\bar{y})^2}}$
+
+</center>
+
+
+Although this formula looks a bit scary, we can break it down in familiar elements:
+
+
+<ul style="font-size: 26px" >
+
+<li> $\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})$ is the covariance (equivalent to correlation) between $x$ and $y$ </li> 
+
+<li> $\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2}$ is equivalent to the variance of $x$ </li> 
+
+<li> $\sqrt{\sum_{i=1}^{n}(y_i-\bar{y})^2}$ is equivalent to the variance of $y$ </li> 
+
+<div style="font-size: 22px"> all the denominator does is guarantee that $r$ is always between $-1$ and $1$. It *standardizes* the covariance. </div>
+
+</ul>
+
+:::
+::: {.column width="50%"}
+
+<center>
+
+**The code**
+
+</center>
+
+<div style="font-size: 26px">
+Calculating correlations by hand is very simple in R
+</div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+cov_xy <- sum((GPA$year1gpa - mean(GPA$year1gpa)) * (GPA$act - mean(GPA$act)))
+var_x <- sqrt(sum((GPA$year1gpa - mean(GPA$year1gpa))^2))
+var_y <- sqrt(sum((GPA$act - mean(GPA$act))^2))
+
+cov_xy/(var_x * var_y)
+```
+
+<div style="font-size: 26px">
+In practice you would just use the `cor()` function to calculate the correlation between two variables.
+</div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-150
+
+cor(GPA$year1gpa, GPA$act)
+```
+
+:::
+::::
+
+
+## Significance Test for Correlations
+
+The `cor()` function does not run any significance test for our correlations. To get significance tests for correlations, you can use the `corr_test()` function from the `psych` package
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+# Note that the line below is equivalent to corr.test(GPA$year1gpa, GPA$act)
+corr.test(GPA)
+```
+
+The output of `corr_test()` can be ever so slightly confusing 🤨 
+
+:::
+::: {.column width="50%"}
+
+<div style="font-size: 26px">
+To get more isight into what `R` functions actually do, sometimes you want to save results as objects and explore the object content.
+</div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+
+correlation <- corr.test(GPA)
+
+# this prints the name of all the elements of the `correlation` object
+names(correlation)
+```
+
+<br>
+
+<div style="font-size: 26px">
+Turns out the `corr_test()` function stores much more information than it lets on. This is the case for most `R` functions, which will save a lot of information inside a `list` object.
+</div>
 
 
 :::
 ::::
+
+
+## `corr_test()` output
+
+:::: {.columns}
+::: {.column width="40%"}
+
+
+Keep an eye out for the matching output between the table below and the code on the right.
+
+<br>
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+corr.test(GPA)
+```
+
+
+:::
+::: {.column width="60%"}
+
+<ul style="font-size: 26px">
+
+
+<li> The `r` element is the correlation matrix between our 2 variables </li>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+correlation$r
+```
+
+<li> The `p` element is the *p*-value for every element of the correlation matrix </li>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+correlation$p
+```
+
+<li> The `ci` element is the confidence interval (which is not printed by default) </li>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+correlation$ci
+```
+
+</ul>
+:::
+::::
+
+## Running a Regreassion in R
+
+
+To run regressions in R we use the `lm()` function (which stands for linear model). In the case of our data, we want to see whether ACT scores (`act`) predict GPA in the first year of college (`year1gpa`)
+
+
+:::: {.columns}
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+reg <- lm(year1gpa ~ act, data = GPA)
+summary(reg)
+
+```
+:::
+::: {.column width="40%"}
+
+`lm(Y ~ X, data = your data)` 
+
+<ul style="font-size: 26px">
+
+
+<li> `Y`: the name of your dependent variable (DV) </li>
+
+<li> `X`: the name of your independent variable (IV) </li>
+
+<li>  `data = your data`: The data that contains your variables </li>
+
+</ul>
+
+<div style="font-size: 22px">  
+**NOTE**: if we were to just run `lm(year1gpa ~ act)`, we would get an error. Neither  `year1gpa` and `act` are objects in our `R` environment. We need to tell `R` where to find `year1gpa` and `act` by adding `data = GPA`. 
+</div>
+
+
+:::
+::::
+
+
+## Interpreting Regression Output
+
+:::: {.columns}
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+reg <- lm(year1gpa ~ act, data = GPA)
+summary(reg)
+
+```
+:::
+::: {.column width="40%"}
+
+$$Y = b_0 + b_1X + e$$
+
+<ul style="font-size: 26px">
+
+<li> $Y$ = The DV (`year1gpa`) </li>
+
+<li> $b_0 = 0.46$, the predicted value of $Y$ when $X = 0$, AKA the **intercept** </li>
+
+<li>  $b_1 = 0.09$, the predicted change in $Y$ per each 1-unit increase in $X$, AKA the **slope** </li>
+
+<li>  $X$ =  the IV (`act`) </li>
+
+<li>  $e = 0.61$, the expected spread around the regression line, AKA the **residual variance**\* </li>
+
+</ul>
+
+<div style="font-size: 22px"> 
+\***NOTE**: if you just do applied research, you will probably never have to think about $e$. However, there is great insight gained into understanding why it's there (refer to appendix)
+
+</div>
+
+:::
+::::
+
+
+## Standardized Regression Output
+
+<div style="font-size: 26px">  To run standardized regression in R we first standardize our data. The `scale()` function standardizes (or centers) data. The `scale()` function can be a bit particular ([see here](https://www.r-bloggers.com/2021/12/how-to-use-the-scale-function-in-r/){target="_blank"} if you have troubles with it) </div>
+
+
+:::: {.columns}
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+GPA_std <- data.frame(scale(GPA))
+
+reg_std <- lm(year1gpa ~ act, data = GPA_std)
+summary(reg_std)
+```
+:::
+
+::: {.column width="40%"}
+
+The meaning of the results does not change, just the coefficients. So...
+
+$$Y = 0 + .36X + .96,$$
+
+Where $.36$ is the correlation coefficient between `act` and `year1gpa`.
+
+<div style="font-size: 22px"> 
+🧐 Standardizing our variables simply changes measurement units. You can think of it as switching between degrees Farenheit and Celcius. the state of the world (temperature) remains the same, only the numbers that we use to describe it change. 
+</div>
+
+:::
+::::
+
+
+## Predictions and residuals
+
+The `lm()` objects also saves predictions for all data points ($\hat{Y}_i$) and the residuals for all data points ($e_i$).
+
+:::: {.columns}
+::: {.column width="50%"}
+**Predictions**
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+predictions <- predict(reg)
+str(predictions, give.attr = FALSE)
+```
+These are the predicted values of $Y$ given the observed $X$ values. 
+
+:::
+::: {.column width="50%"}
+
+**Residuals**
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+residuals <- resid(reg)
+str(residuals, give.attr = FALSE)
+```
+
+<div style="font-size: 26px">  These are the differences between the *predicted* values of $Y$ and the *observed* values of $Y$, so $e_i = Y_i - \hat{Y}_i$. The residuals always sum to 0: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| classes: code-125
+#| code-line-numbers: false
+
+
+sum(residuals)
+```
+:::
+::::
+
+::: {.callout-note}
+## Dimensions of Objects
+You should notice that both `predictions` and  `residuals` are vectors of length 20. This may seem obvious (if it is not, give it some thought), but checking the **dimensions** of objects is always a good way of making sure that you are getting what you expected from an R function. 
+:::
+
+## Visualizing Predictions and Residuals {auto-animate="true"}
+
+:::: {.columns}
+::: {.column width="30%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+ggplot(GPA,
+ aes(x = act, y = year1gpa)) +
+ geom_point(shape = 1) 
+```
+
+<ul style="font-size: 26px">
+
+<li> The Black circles are the observed data points.</li>
+
+</ul>
+
+
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+
+
+ggplot(GPA,
+       aes(x = act, y = year1gpa)) +
+    geom_point(shape = 1) 
+
+```
+
+:::
+::::
+
+
+## Visualizing Predictions and Residuals {auto-animate="true" data-visibility="uncounted"}
+
+:::: {.columns}
+::: {.column width="30%"}
+
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+ggplot(GPA,
+ aes(x = act, y = year1gpa)) +
+ geom_point(shape = 1) +
+ geom_point(aes(y = predictions), 
+                colour = "red")
+```
+
+<ul style="font-size: 26px">
+
+<li> The Black circles are the observed data points.</li>
+
+<li> The red dots are the predicted values for our data points. </li>
+
+</ul>
+
+
+:::
+
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| fig-dpi: 300
+
+ggplot(GPA,
+       aes(x = act, y = year1gpa)) +
+    geom_point(shape = 1) +
+   geom_point(aes(y = predictions), 
+              colour = "red")
+
+```
+
+:::
+::::
+
+## Visualizing Predictions and Residuals {auto-animate="true" data-visibility="uncounted"}
+
+:::: {.columns}
+::: {.column width="30%"}
+
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-115
+
+ggplot(GPA,
+ aes(x = act, y = year1gpa)) +
+ geom_point(shape = 1) +
+ geom_point(aes(y = predictions), 
+                color = "red") +
+ geom_segment(y = predictions,
+              x = GPA$act,
+              xend = GPA$act,
+              yend = GPA$year1gpa,
+              linetype = 2,
+              alpha = .5)
+   
+```
+
+<ul style="font-size: 24px">
+
+<li> The Black circles are the observed data points.</li>
+
+<li> The red dots are the predicted values for our data points. </li>
+
+<li> The length of the dashed lines are the residuals, which represent the difference between observed values (black circles) and predicted values (red dots) </li>
+
+</ul>
+
+:::
+
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| fig-dpi: 300
+
+ggplot(GPA,
+       aes(x = act, y = year1gpa)) +
+   geom_point(shape = 1) +
+   geom_point(aes(y = predictions), 
+              colour = "red") +
+   geom_segment(y = predictions,
+                x = GPA$act,
+                xend = GPA$act,
+                yend = GPA$year1gpa,
+                linetype = 2,
+                alpha = .5)
+   
+
+```
+
+:::
+::::
+
+## Normality of Residuals
+
+The fact that residuals must be normally distributed (and have a mean of 0) is an assumption built into regression (why? The appendix explains it). QQplots can help us infer how much residuals deviate from normality.
+
+:::: {.columns}
+::: {.column width="30%"}
+
+The `qqPlot()` function from the `car` package is helpful here:
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+qqPlot(reg, id = FALSE)
+```
+
+As long as the residuals (dots) are within the band, there should be no cause for concern.
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| classes: code-125
+
+qqPlot(reg, id = FALSE)
+```
+
+:::
+::::
+
+## Plotting Residuals Against Predictors
+
+Another way of checking that residuals are evenly distributed around 0, and do not show any type of relationship with the predictor. 
+
+:::: {.columns}
+::: {.column width="30%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+ggplot(GPA, 
+  aes(x = act, y = residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_smooth(method = "loess",
+              se = FALSE)
+```
+
+Once again, the loess line does not do too well because there are few points. The points look reasonably distributed around the 0 line to me.
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+
+ggplot(GPA, 
+  aes(x = act, y = residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_smooth(method = "loess",
+              se = FALSE) 
+```
+
+:::
+::::
+
+
+
+
+
+
 
 ## References 
 
 <div id="refs"> </div>
 
 
+## Appendix {data-visibility="uncounted"}
+
+
+
+  

@@ -9,8 +9,8 @@ title-slide-attributes:
 format:
    revealjs:
       footer: "Lab 9: Interactions between continuous variables"
-      width: 1920
-      height: 1080
+      width: 1280
+      height: 720
       chalkboard: true
       slide-number: c/t 
       theme: Fabio_theme/Fabio_theme.scss

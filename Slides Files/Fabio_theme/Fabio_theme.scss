@@ -7,10 +7,10 @@ $font-family-sans-serif: "Palatino Linotype", "Book Antiqua", Palatino, FreeSeri
 $font-family-heading: "Arial", sans-serif;
 
 // weight of font heading (thickness)
-$presentation-heading-font-weight: 80 !important;
+$presentation-heading-font-weight: 60 !important;
 
 //font size fo text
-$presentation-font-size-root: 2.1em;
+$presentation-font-size-root: 1.7em;
 
 // font size for level 2 headings (defined with "##")
 $presentation-h2-font-size: 2.4em !default;
@@ -228,13 +228,37 @@ ol li::marker {
  // pointer-events: none; /* Allows interaction with the zoomed element */
 }
 
+// callouts?
+
 
 
 // Code options
 
 .reveal div.sourceCode {
   // width: fit-content;
-  padding: 2px;
+  padding: 5px;
+}
+
+
+
+.code-80{
+  font-size: 80%  
+}
+
+.code-90{
+  font-size: 90%  
+}
+
+.code-105{
+  font-size: 105%  
+}
+
+.code-110{
+  font-size: 110%  
+}
+
+.code-115{
+  font-size: 115%  
 }
 
 .code-125{
@@ -253,12 +277,16 @@ ol li::marker {
   font-size: 200%  
 }
 
+.code{
+  max-height: 150px;
+}
+
 .height-150{
   max-height: 150px
 }
 
 .height-200{
-  max-height: 200px
+  height: 1200px
 }
 
 .width-900{

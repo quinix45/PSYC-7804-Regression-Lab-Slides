@@ -9,8 +9,8 @@ title-slide-attributes:
 format:
    revealjs:
       footer: "Lab 3: Reporting Results"
-      width: 1920
-      height: 1080
+      width: 1280
+      height: 720
       chalkboard: true
       slide-number: c/t 
       theme: Fabio_theme/Fabio_theme.scss
@@ -22,3 +22,127 @@ format:
 
 editor: source
 ---
+
+
+## Today's Packages 🤗
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| code-fold: true
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| code-summary: "Install Packages Code"
+#| classes: code-150
+
+install.packages("flextable")
+install.packages("rio")
+install.packages("tidyverse")
+
+```
+
+```{r}
+#| eval: true
+#| echo: true
+#| code-line-numbers: false
+#| warning: false
+#| classes: code-150
+
+library(flextable)
+library(rio)
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+```
+
+</br>
+
+<div style="font-size: 26px">
+
+::: {.panel-tabset}
+
+
+### `flextable`
+
+The `flextable` package [@Gohel_etal_2024] helps create pretty tables from R. Can also be used to create publication ready APA style tables.
+
+### `rio`
+
+The `rio` package [@Becker_etal_2024] developers describe this package as the *Swiss-Army Knife for Data I/O*. The `import()` and `export()` functions can import/export just about any data type.
+
+### `tidyverse`
+
+The `tidyverse` package [@Wickham_RStudio_2023] loads a suite of packages that help with data cleaning and visualization. Among others, `tidyverse` loads both `dplyr` and `ggplot2`.
+
+
+:::
+</div>
+
+:::
+::: {.column width="50%"}
+
+
+<ul>
+
+<li> Let's also load the data for today: </li>
+</ul>
+
+```{r}
+#| warning: false
+#| classes: code-125
+#| echo: true
+#| code-line-numbers: false
+#| output: false
+
+GPA <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/GPA.sav")
+str(GPA)
+```
+
+
+![](Images/Packages_image.png)
+
+:::
+::::
+
+
+```{r}
+# check why R^2 column does not appear in the image
+```
+
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+
+table <- regression_flextable(mod, intercept = TRUE)
+
+
+source()
+
+save_as_image(ft, path = "example_tab.svg")
+save_as_docx(ft, path = "example_tab.docx")
+```
+
+
+```{r}
+mod <- lm(Sepal.Length ~ Sepal.Width + Petal.Width, data = iris)
+
+table <- regression_flextable(mod, intercept = TRUE)
+
+save_as_image(ft, path = "example_tab.svg")
+save_as_docx(ft, path = "example_tab.docx")
+```
+## Creating APA Style regression tables
+
+## References 
+
+<div id="refs"> </div>
+
+
+
+

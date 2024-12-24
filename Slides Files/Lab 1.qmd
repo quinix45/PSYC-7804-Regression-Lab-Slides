@@ -1,5 +1,5 @@
 ---
-title: "Lab 1: Introduction to Regression"
+title: "Lab 1: Descriptive Staistics and Plots"
 author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
@@ -9,9 +9,9 @@ title-slide-attributes:
   data-visibility: "uncounted"
 format:
    revealjs:
-      footer: "Lab 1: Introduction to Regression"
-      width: 1920
-      height: 1080
+      footer: "Lab 1: Descriptive Staistics and Plots"
+      width: 1280
+      height: 720
       chalkboard: true
       slide-number: c/t 
       theme: Fabio_theme/Fabio_theme.scss
@@ -35,10 +35,12 @@ editor: source
 #| echo: true
 #| code-summary: "Install Packages Code"
 #| classes: code-150
+#| code-line-numbers: false
+
 
 install.packages("rio")
-install.packages("psych")
 install.packages("tidyverse")
+install.packages("psych")
 ```
 
 
@@ -47,16 +49,17 @@ install.packages("tidyverse")
 #| echo: true
 #| warning: false
 #| classes: code-150
+#| code-line-numbers: false
 
 library(rio)
-library(psych)
 library(tidyverse)
+library(psych)
 ```
 
 
-</br>
-</br>
-</br>
+<br>
+
+<div style="font-size: 26px">
 
 ::: {.panel-tabset}
 
@@ -74,7 +77,7 @@ The `psych` package [@Revelle_2024a] includes MANY functions that help with data
 
 :::
 
-
+</div>
 
 :::
 ::: {.column width="50%"}
@@ -89,9 +92,7 @@ The `psych` package [@Revelle_2024a] includes MANY functions that help with data
 
 ## A Note on Loading Data in R
 
-As is the case with any programming language, there are millions of ways of doing the same thing. Loading data into R is the same. Here are your two alternatives for loading data into R:
-
-<br>
+There are millions of ways of doing the same thing. Loading data into R is the same. Here are your two alternatives for loading data into R:
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -100,14 +101,13 @@ As is the case with any programming language, there are millions of ways of doin
 
 **Option 1:** keep track of all the different functions to load different types of data files
 
-<br>
-
 ```{r}
 #| cache-comments: true
 #| eval: false
 #| echo: true 
 #| classes: code-150
 #| class-source: height-150
+#| code-line-numbers: false
 
 
 read.csv()
@@ -125,8 +125,6 @@ haven::read_sas()
 haven::read_stata()
 # there's more, but you get the point
 ```
-
-<br>
 
 ![](Images/confused.png){width="40%"}
 
@@ -146,6 +144,7 @@ haven::read_stata()
 #| echo: true 
 #| classes: code-150
 #| class-source: height-150
+#| code-line-numbers: false
 
 rio::import()
 ```
@@ -164,18 +163,15 @@ rio::import()
 
 How many of you have tried to load a data file, only to find out that it wasn't in your working directory?
 
-<br>
-
 :::: {.columns}
 ::: {.column width="50%"}
 
 **Typical Fordham stats lab experience:**
 
-<br>
-
 ```{r}
 #| echo: true
 #| warning: true
+#| code-line-numbers: false
  
 NY_temp <- try(import("NY_Temp.txt"))
 ```
@@ -192,8 +188,6 @@ NY_temp <- try(import("NY_Temp.txt"))
 
 **New and improved experience:**
 
-<br>
-
 I have uploaded all the datasets that we will use for this lab to a [github repository](https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/tree/main/Slides%20Files/Data){target="_blank"}.
 
 
@@ -205,6 +199,7 @@ I have uploaded all the datasets that we will use for this lab to a [github repo
 
 ```{r}
 #| echo: true
+#| code-line-numbers: false
 
 # run the line below and you should see the data appear in your environment
 NY_temp <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/NY_Temp.txt")
@@ -212,20 +207,16 @@ NY_temp <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/r
 
 <center>
 
-![](Images/happy_cat.gif)
+![](Images/happy_cat.gif){width="20%"}
 
 </center>
 
 :::
 ::::
 
-
 ## Some Descriptive Statistics
 
 Now that we have loaded our data, we should compute some descriptives statistics. Once again, many ways of doing this.
-
-<br>
-
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -235,19 +226,15 @@ options(width = "250")
 ```
 
 
-The `glimpse()` function can give you good sense of the type of variables you are dealing with
+The `str()` function can give you good sense of the type of variables you are dealing with
 
-<br>
 
 ```{r}
 #| eval: true
-#| echo: true 
+#| echo: true
+#| code-line-numbers: false
 
-# glimpse(dat) also works
-
-NY_temp %>% 
-  glimpse()
- 
+str(NY_temp)
 ```
 
 :::
@@ -255,11 +242,11 @@ NY_temp %>%
 
 When dealing with continuous variables, the `describe()` function from the `psych` package is quite handy
 
-<br>
 
 ```{r}
 #| eval: true
 #| echo: true 
+#| code-line-numbers: false
 
 
 # the `trim = .05` argument calculates means without the bottom/top 2.5% of the data
@@ -267,34 +254,39 @@ When dealing with continuous variables, the `describe()` function from the `psyc
 describe(NY_temp[,-1], trim = .05)
 ```
 
-<br>
-<br>
 
-::: {.callout-note}
-## Question
 
-what does the `[,-1]` do in the code above? Why did I include it?
+<style>
+.narrow {
+    max-height: 30% !important;
+}
+</style>
+
+:::{.callout-note appearance="minimal"}
+ what does the `[,-1]` do in the code above? Why did I include it?
 :::
 
 
 :::
 ::::
 
+
 ## Mean, Standard Deviation, Skewness 
 
-The good old normal distributions (the skew-normal distribution actually). Here is an interactive plot to play around with:
 
-<br>
+:::: {.columns}
+::: {.column width="80%"}
+<iframe width="90%" height="600px" src="https://fabiosetti.shinyapps.io/Skew_Normal_distribution/"> </iframe>
+:::
+::: {.column width="20%"}
 
-<center>
-<iframe width="80%" height="700px" frameborder="0" padding-bottom="0" src="https://fabiosetti.shinyapps.io/Skew_Normal_distribution/"> </iframe>
-</center>
-
-<div style="font-size: 24px">
+<div style="font-size: 14px">
 **NOTE**🤔: once `skewness` is no longer 0, the mean shown on the plot will no longer correspond to the `Mean` shown in the box?! This is a bit in the weeds, but the mean on the plot is the [expectation](https://en.wikipedia.org/wiki/Expected_value){target="_blank"} of the skew-normal distribution, while the number in the `Mean` box is the [location parameter](https://en.wikipedia.org/wiki/Location_parameter){target="_blank"} of the skew-normal distribution. 
 
 </div>
- 
+
+:::
+::::
 
 ## Plotting With *GGplot*
 
@@ -303,23 +295,16 @@ I use `ggplot2` a lot, but I can't say that I would be able to create many plots
 :::: {.columns}
 ::: {.column width="50%"}
 
-<ul style="font-size: 32px">
+<ul style="font-size: 24px">
   <li> Try to understand *the logic* behind `ggplot`'s syntax. </li>
-  
-  <br>
   
   <li> Start with a simple plot and progressively build upon it. </li>
   
-  <br>
-  
   <li> Read functions documentation (i.e., function help menu) when something does not work as expected. </li>
-  
-  <br>
-  
+
   <li> Look things up. Usually I start with some plot code that I find online that produces a similar plot to what I want, and then I modify/build on top of it. </li>
   
 </ul>
-
 
 ::: {.callout-note}
 ## GGplot fact that you did not ask for
@@ -329,33 +314,30 @@ I use `ggplot2` a lot, but I can't say that I would be able to create many plots
 :::
 ::: {.column width="50%"}
 
-![](Images/idea.png)
+![](Images/idea.png){width="80%"}
 
 :::
 ::::
 
-## Getting Started {auto-animate="true"}
+## GGplot Step by step {auto-animate="true"}
 
 As mentioned in the box on the last slide, `ggplot2` breaks visualizations into small parts and pastes them on top of each other through the `+` operator. Let's plot the temperature observed (`Temp`, $y$) at every measured time point (`Case`, $x$). This is a **Profile plot**.
 
-
-<br>
-
-
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 ```{r `code-line-numbers`="1"}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
 ggplot() 
 ```
 
 :::
 
-::: {.column width="50%"}
-
+::: {.column width="70%"}
 
 ```{r}
 ggplot() 
@@ -368,107 +350,93 @@ Just running `ggplot()` actually gives output! This is our "canvas"
 ::::
 
 
-## Getting Started {auto-animate="true" data-visibility="uncounted"}
+## GGplot Step by step {auto-animate="true" data-visibility="uncounted"}
 
-As mentioned in the box on the last slide, `ggplot2` breaks visualizations into small parts and pastes them on top of each other through the `+` operator. Let's plot the temperature observed (`Temp`, $y$) at every measured time point (`Case`, $x$). This is a **Profile plot**.
-
-
-<br>
+We use the `aes()` function to defined coordinates. Note that the name of the data object (`NY_temp` in our case) is almost always the first argument of the `ggplot()` function. 
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
 
 ggplot(NY_temp,  
-       aes(x = Case, y = Temp)) 
+ aes(x = Case, y = Temp)) 
 ```
 
 :::
-::: {.column width="50%"}
+::: {.column width="70%"}
 
 ```{r}
 ggplot(NY_temp,  
-       aes(x = Case, y = Temp))  
+ aes(x = Case, y = Temp))  
 ```
-
-We use the `aes()` function to defined coordinates. Note that the name of the data object (`NY_temp` in our case) is almost always the first argument of the `ggplot()` function.  
 
 :::
 ::::
 
+## GGplot Step by step {auto-animate="true" data-visibility="uncounted"}
 
-
-## Getting Started {auto-animate="true" data-visibility="uncounted"}
-
-As mentioned in the box on the last slide, `ggplot2` breaks visualizations into small parts and pastes them on top of each other through the `+` operator. Let's plot the temperature observed (`Temp`, $y$) at every measured time point (`Case`, $x$). This is a **Profile plot**.
- 
-
-<br>
+We use one of the `geom_...()` function do add shapes to our plot.
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
 ggplot(NY_temp,  
-       aes(x = Case, y = Temp)) +
-       geom_point()
+ aes(x = Case, y = Temp)) +
+ geom_point()
 ```
-
-
-<br>
-<br>
 
 ::: {.callout-note}
 ## `geom_...()`
 
-The `geom_...()` are what is to add geometrical elements to a blank plot ([see here](https://ggplot2.tidyverse.org/reference/){target="_blank"} for a list of all the `geom_...()` functions). Note that most `geom_...()` will *inherit* the X and Y coordinates from the ones given to the `aes()` function in the `ggplot()` function. 
+The `geom_...()` functions add geometrical elements to a blank plot ([see here](https://ggplot2.tidyverse.org/reference/){target="_blank"} for a list of all the `geom_...()` functions). Note that most `geom_...()` will *inherit* the X and Y coordinates from the ones given to the `aes()` function in the `ggplot()` function. 
 :::
 
+
 :::
-::: {.column width="50%"}
+::: {.column width="70%"}
 
 ```{r}
 ggplot(NY_temp,  
-       aes(x = Case, y = Temp)) +
-       geom_point()
+ aes(x = Case, y = Temp)) +
+ geom_point()
 ```
-
-
-We use the `aes()` function to defined coordinates 
 
 :::
 ::::
 
 
-## Getting Started {auto-animate="true" data-visibility="uncounted"}
 
-As mentioned in the box on the last slide, `ggplot2` breaks visualizations into small parts and pastes them on top of each other through the `+` operator. Let's plot the temperature observed (`Temp`, $y$) at every measured time point (`Case`, $x$). This is a **Profile plot**.
+## GGplot Step by step {auto-animate="true" data-visibility="uncounted"}
+
+Before we do anything else, let's save our eyes from `ggplot2`'s default theme. There are many [themes](https://r-charts.com/ggplot2/themes/){target="_blank"}
+ you can choose form, I like `theme_classic()`.
  
-
-<br>
-
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
 ggplot(NY_temp,  
-       aes(x = Case, y = Temp)) +
-       geom_point() +
-       theme_classic()
+ aes(x = Case, y = Temp)) +
+ geom_point() +
+ theme_classic()
 ```
-
-
-<br>
-<br>
 
 ::: {.callout-note}
 ## Set plots theme globally
@@ -477,7 +445,7 @@ You can also use the `theme_set()` that will set a default theme for all the plo
 :::
 :::
 
-::: {.column width="50%"}
+::: {.column width="70%"}
 
 ```{r}
 ggplot(NY_temp,  
@@ -486,39 +454,34 @@ ggplot(NY_temp,
        theme_classic()
 ```
 
-
-Before we do anything else, let's save our eyes from `ggplot2`'s default theme. There are many [themes](https://r-charts.com/ggplot2/themes/){target="_blank"}
- you can choose form, I like `theme_classic()`.
-
 :::
 ::::
 
 
+## GGplot Step by step {auto-animate="true" data-visibility="uncounted"}
 
+We just drew a **linear regression line** through the data. What do you think of the trend of temperature in NYC over time? 
 
-## Getting Started {auto-animate="true" data-visibility="uncounted"}
-
-As mentioned in the box on the last slide, `ggplot2` breaks visualizations into small parts and pastes them on top of each other through the `+` operator. Let's plot the temperature observed (`Temp`, $y$) at every measured time point (`Case`, $x$). This is a **Profile plot**.
- 
-
-<br>
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
 ggplot(NY_temp,  
-       aes(x = Case, y = Temp)) +
-       geom_point() +
-       theme_classic() +
-       geom_smooth(method = "lm", se = FALSE)
+ aes(x = Case, y = Temp)) +
+ geom_point() +
+ theme_classic() +
+ geom_smooth(method = "lm", 
+             se = FALSE)
 ```
 
 :::
-::: {.column width="50%"}
+::: {.column width="70%"}
 
 ```{r}
 ggplot(NY_temp,  
@@ -527,73 +490,69 @@ ggplot(NY_temp,
        theme_classic() +
        geom_smooth(method = "lm", se = FALSE)
 ```
-
-We just drew a **linear regression line** through the data. what do you think of the trend of temperature in NYC over time? 
-
 :::
 ::::
 
-
-## Getting Started {auto-animate="true" data-visibility="uncounted"}
-
-As mentioned in the box on the last slide, `ggplot2` breaks visualizations into small parts and pastes them on top of each other through the `+` operator. Let's plot the temperature observed (`Temp`, $y$) at every measured time point (`Case`, $x$). This is a **Profile plot**.
-
-<br>
-
-:::: {.columns}
-::: {.column width="50%"}
-
-```{r}
-#| eval: false
-#| echo: true 
-
-ggplot(NY_temp,  
-       aes(x = Case, y = Temp)) +
-       geom_point() +
-       theme_classic() +
-       geom_smooth(method = "lm", se = FALSE) +
-       geom_smooth(method = "lm", formula = y ~ poly(x, 2), color = "red", se = FALSE)
-```
-
-:::
-::: {.column width="50%"}
-
-```{r}
-ggplot(NY_temp,  
-       aes(x = Case, y = Temp)) +
-       geom_point() +
-       theme_classic() +
-       geom_smooth(method = "lm", se = FALSE) +
-       geom_smooth(method = "lm", formula = y ~ poly(x, 2), color = "red", se = FALSE)
-```
+## GGplot Step by step {auto-animate="true" data-visibility="uncounted"}
 
 Now we added a **quadratic regression line**. Does this look better?
 
+:::: {.columns}
+::: {.column width="30%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+
+ggplot(NY_temp,  
+ aes(x = Case, y = Temp)) +
+ geom_point() +
+ theme_classic() +
+ geom_smooth(method = "lm", 
+             se = FALSE) +
+ geom_smooth(method = "lm", 
+             formula = y ~ poly(x, 2), 
+             color = "red", 
+             se = FALSE)
+```
+
+:::
+::: {.column width="70%"}
+
+```{r}
+ggplot(NY_temp,  
+       aes(x = Case, y = Temp)) +
+       geom_point() +
+       theme_classic() +
+       geom_smooth(method = "lm", se = FALSE) +
+       geom_smooth(method = "lm", formula = y ~ poly(x, 2), color = "red", se = FALSE)
+```
+
 :::
 ::::
 
 
 
-## Getting Started {auto-animate="true" data-visibility="uncounted"}
+## GGplot Step by step {auto-animate="true" data-visibility="uncounted"}
 
-As mentioned in the box on the last slide, `ggplot2` breaks visualizations into small parts and pastes them on top of each other through the `+` operator. Let's plot the temperature observed (`Temp`, $y$) at every measured time point (`Case`, $x$). This is a **Profile plot**.
-
-
-<br>
+Here I made a bunch of changes to the plot. Spot the differences! What changes in the code resulted in what changes in the plot?
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
 
 ggplot(NY_temp,  
        aes(x = Case, y = Temp)) +
        geom_point(shape = 1) +
        theme_classic() +
        geom_smooth(method = "lm") +
-       geom_smooth(method = "lm", formula = y ~ poly(x, 2), color = "red") + 
+       geom_smooth(method = "lm", formula = y ~ poly(x, 2), 
+                   color = "red") + 
        labs(title = "Temperature in New York City Measured ove a Year",
             y= "Temperature", 
             x = "Measurement") +
@@ -602,18 +561,15 @@ ggplot(NY_temp,
              axis.title.y = element_text(face= "bold", size = 12))
 ```
 
-
 <br>
 
+<div style="font-size: 20px">
+**NOTE**: The `theme()` function takes in many arguments ([see here](https://ggplot2.tidyverse.org/reference/theme.html){target="_blank"}) that allow you to modify font size, position of plot elements, and much more! </div>
 
-::: {.callout-note}
-## `theme()`
 
-The `theme()` function takes in many arguments ([see here](https://ggplot2.tidyverse.org/reference/theme.html){target="_blank"}) that allow you to modify font size, position of plot elements, and much more!
-:::
 
 :::
-::: {.column width="50%"}
+::: {.column width="70%"}
 
 ```{r}
 ggplot(NY_temp,  
@@ -630,63 +586,64 @@ ggplot(NY_temp,
              axis.title.y = element_text(face="bold", size = 12))
 ```
 
-Here I made a bunch of changes to the plot. Spot the differences! What changes in the code resulted in what changes in the plot? 
-
+ 
 :::
 ::::
 
-<!-- hide slide for now -->
+
 
 ## 1D Scatterplot 🤔 
 
 This is the one-dimensional representation of the `Temp` variable. 
 
-
-<br>
-
 :::: {.columns}
-::: {.column width="50%"}
+
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
-#| echo: true 
+#| echo: true
+#| code-line-numbers: false
+#| classes: code-125
 
 ggplot(NY_temp,  
-       aes(x = Case, y = 0)) +
+       aes(x = Temp, y = 0)) +
        geom_point(shape = 1) +
        theme_classic()
 ```
-
 
 :::
-::: {.column width="50%"}
+
+
+
+::: {.column width="70%"}
 
 ```{r}
+#| eval: true
+#| echo: false
+
 ggplot(NY_temp,  
-       aes(x = Case, y = 0)) +
+       aes(x = Temp, y = 0)) +
        geom_point(shape = 1) +
        theme_classic()
 ```
-
-This may help to get a sense of the range of a variable, but there's probably better plots...
 
 :::
 ::::
 
+This plot may help to get a sense of the range of a variable, but there's probably better plots...
 
-## Histograms
+## Histograms {auto-animate="true"}
 
 Histograms are fairly useful for visualizing distributions of single variables. But you have to choose the number of `bins` appropriately.
 
-<br>
-
 :::: {.columns}
-::: {.column width="50%"}
-
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
 
 # set theme globally
 theme_set(theme_classic())
@@ -698,17 +655,13 @@ ggplot(NY_temp,
 ```
 
 
-<br>
-<br>
-
 ::: {.callout-note}
 ## bins? 
 the number of **bins** is the number of bars on the plot. the `geom_histogram()` function defaults to 30 bins unless you specify otherwise (we indeed have 30 bars on the plot if you count them). 
 :::
-
 :::
-::: {.column width="50%"}
 
+::: {.column width="70%"}
 
 ```{r}
 # set theme globally
@@ -719,27 +672,22 @@ ggplot(NY_temp,
        geom_histogram() 
 ```
 
-<br>
+:::
+::::
 
 There are a bit too many **bins**, so it is hard to get a good sense of the distribution. 
-:::
-::::
-
-
 
 ## Histograms {auto-animate="true" data-visibility="uncounted"}
 
-Histograms are fairly useful for visualizing distributions of single variables. But you have to choose the number of `bins` appropriately.
-
-<br>
+Now that we have reduced the number of bins, the distribution looks more reasonable. 
 
 :::: {.columns}
-::: {.column width="50%"}
-
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
 
 ggplot(NY_temp,  
        aes(x = Temp)) +
@@ -749,8 +697,7 @@ ggplot(NY_temp,
 :::
 
 
-::: {.column width="50%"}
-
+::: {.column width="70%"}
 
 ```{r}
 ggplot(NY_temp,  
@@ -758,28 +705,21 @@ ggplot(NY_temp,
        geom_histogram(bins = 15) 
 ```
 
-<br>
-
-A bit better I would say. 
-
 :::
 ::::
 
-
-
 ## Histograms {auto-animate="true" data-visibility="uncounted"}
 
-Histograms are fairly useful for visualizing distributions of single variables. But you have to choose the number of `bins` appropriately.
-
-<br>
+Here I just touched up the plot a bit. Notice the `scale_y_continuous(expand = c(0,0))` function. Try running the plot without it and see if you notice the difference!
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
 
 ggplot(NY_temp,  
        aes(x = Temp)) +
@@ -791,17 +731,15 @@ ggplot(NY_temp,
 ```
 
 
-<br>
-<br>
 
 ::: {.callout-note}
 ## HEX color codes 
 
-The "#3492eb" is actually a color. R supports HEX color codes, which are numeric codes that can describe just about all possible colors. There are many online color pickers ([see here](https://htmlcolorcodes.com/color-picker/){target="_blank"} for example) that will let you select a color and provide the corresponding HEX color code.  
+The "#3492eb" is actually a color. R supports HEX color codes, which are numeric codes that represent just about all possible colors. There are many online color pickers ([see here](https://htmlcolorcodes.com/color-picker/){target="_blank"} for example) that will let you select a color and provide the corresponding HEX color code.  
 :::
 
 :::
-::: {.column width="50%"}
+::: {.column width="70%"}
 
 
 ```{r}
@@ -814,26 +752,22 @@ ggplot(NY_temp,
       scale_y_continuous(expand = c(0,0))
 ```
 
-<br>
-
-Here I just touched up the plot a bit. Notice the `scale_y_continuous(expand = c(0,0))` function. Try running the plot without it and see if you notice the difference!
- 
 :::
 ::::
 
 
 ## Box-Plots
 
-Box-plots useful to get a sense of the variable's variance, range, presence of outliers.
-
-<br>
+Box-plots useful to get a sense of the variable's variance, range, presence of outliers. 
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
 ggplot(NY_temp,
        aes(y = Temp)) +
@@ -841,7 +775,6 @@ ggplot(NY_temp,
 ```
 
 
-<br>
 
 ::: {.callout-note}
 # Reading a Box-plot
@@ -850,7 +783,7 @@ The square represents the interquartile range, meaning that the bottom edge is t
 :::
 
 :::
-::: {.column width="50%"}
+::: {.column width="70%"}
 
 ```{r}
 ggplot(NY_temp,
@@ -858,22 +791,21 @@ ggplot(NY_temp,
        geom_boxplot()
 ```
 
-In practice, you would create box-plots for multiple groups ($x$-axis). Here we have no groups, so we only get a single box. 
 :::
 ::::
 
-## Kernel Density plots
+## Kernel Density plots {auto-animate="true"}
 
 Kernel density plots do a similar job to histograms, but I tend to prefer them over histograms. 
 
-<br>
-
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
 ggplot(NY_temp,
        aes(x = Temp)) +
@@ -883,7 +815,7 @@ ggplot(NY_temp,
 
 
 :::
-::: {.column width="50%"}
+::: {.column width="70%"}
 
 ```{r}
 ggplot(NY_temp,
@@ -894,28 +826,25 @@ ggplot(NY_temp,
 
 :::
 ::::
-
 
 ## Kernel Density plots {auto-animate="true" data-visibility="uncounted"}
 
-Kernel density plots do a similar job to histograms, but I tend to prefer them over histograms. 
-
-<br>
+Here we just modify the type of kernel to "epanechnikov". the default is "gaussian", which I believe is very similar to Epanechnikov's. See [here at the bottom of the page](https://r-charts.com/distribution/density-plot-ggplot2/#:~:text=The%20kernel%20used%20can%20also,instead%20of%20a%20gaussian%20kernel.){target="_blank"} for other kernel options.
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
 ggplot(NY_temp,
        aes(x = Temp)) +
        geom_density(kernel = "epanechnikov") +
        xlim(45, 110)
 ```
-
-<br>
 
 
 ::: {.callout-note}
@@ -925,7 +854,7 @@ The word *kernel* takes on widely different meanings depending on the context. I
 :::
 
 :::
-::: {.column width="50%"}
+::: {.column width="70%"}
 
 ```{r}
 ggplot(NY_temp,
@@ -934,24 +863,22 @@ ggplot(NY_temp,
        xlim(45, 110)
 ```
 
-
-Here we just modify the type of kernel to "epanechnikov". the default is "gaussian", which I believe is very similar to Epanechnikov's. See [here at the bottom of the page](https://r-charts.com/distribution/density-plot-ggplot2/#:~:text=The%20kernel%20used%20can%20also,instead%20of%20a%20gaussian%20kernel.){target="_blank"} for other kernel options.
-
 :::
 ::::
 
 ## Kernel Density plots {auto-animate="true" data-visibility="uncounted"}
 
-Kernel density plots do a similar job to histograms, but I tend to prefer them over histograms. 
-
-<br>
+You can also use the `adjust =` argument to determine how fine-grained you want your density plot to be. The default is `adjust = 1`. Here, `adjust = .2` is a bit too fine-grained. 
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
 
 ggplot(NY_temp,
        aes(x = Temp)) +
@@ -960,10 +887,8 @@ ggplot(NY_temp,
        xlim(45, 110)
 ```
 
-<br>
-
 :::
-::: {.column width="50%"}
+::: {.column width="70%"}
 
 ```{r}
 ggplot(NY_temp,
@@ -972,8 +897,6 @@ ggplot(NY_temp,
                     adjust = .2) +
        xlim(45, 110)
 ```
-
-You can also use the `adjust =` argument to determine how fine-grained you want your density plot to be. The default is `adjust = 1`. Here, `adjust = .2` is a bit too fine-grained. 
 
 :::
 ::::
@@ -983,15 +906,16 @@ You can also use the `adjust =` argument to determine how fine-grained you want 
 
 QQplots give a graphical representation of how much a variable deviates from normality. Personally, I find QQplots a bit unintuitive 😕. Unlike other plots, the meaning of their axes is not very clear. For now, let's look at how to create a QQplot. The **next slides** will have an explanation of what a QQplot actually does.
 
-<br>
-
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
 
 ```{r}
 #| eval: false
 #| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
 
 ggplot(NY_temp, 
        aes(sample = Temp)) + 
@@ -1000,41 +924,37 @@ ggplot(NY_temp,
 ```
 
 
-<br>
-
-::: {.callout-caution}
+::: {.callout-caution appearance="simple"}
 This is the code that you want to use to use to create QQplots. All the code on the next slides is for demonstration purposes only. 
 :::
 
 
 :::
-::: {.column width="50%"}
+::: {.column width="70%"}
 ```{r}
 ggplot(NY_temp, 
        aes(sample = Temp)) + 
        stat_qq() + 
        stat_qq_line()
 ```
-It's hard to make conclusions based on QQplots. Most of it is very subjective. As we will see later, these data does not deviate much from normality. In general, the closer all the dots from the line, the more normally distributed the variable. 
 
 :::
 ::::
 
-
-
-
 ## Trying to make sense of QQplots
 
-QQplots use the idea of quantiles (both Qs stand for "quantile"). You are probably more familiar with percentiles, which are the exact same as quantiles, save for their units (e.g., the $.5$ quantile is the same as the $50^{th}$ percentile). If it makes it easier, whenever you see quantile, just think of it as percentile. 
+<div style="font-size: 22px"> QQplots use the idea of quantiles (both Qs stand for "quantile"). You are probably more familiar with percentiles, which are the exact same as quantiles, save for their units (e.g., the $.5$ quantile is the same as the $50^{th}$ percentile). If it makes it easier, whenever you see quantile, just think of it as percentile. </div>
+
+<br>
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="70%"}
 
-What do the **x-axis** and the **y-axis** represent in a QQplot?
+<div style="font-size: 26px"> What do the **x-axis** and the **y-axis** represent in a QQplot? </div>
 
-<ul style="font-size: 26px">
+<ul style="font-size: 23px">
 
-  <li> **x-axis:** values quantiles of a perfectly normal distribution. </li>
+<li> **x-axis:** Values corresponding to quantiles of a perfectly normal distribution. </li>
   
 ```{r}
 #| eval: true
@@ -1042,22 +962,15 @@ What do the **x-axis** and the **y-axis** represent in a QQplot?
 #| classes: code-125
 
 # quantile values of .1, .5., .8 for normal distribution with mean = 0 and sd = 1
-# this will results in Z-scores that correspond to the 10th, 50th, and 80th percentile
+# this will results in Z-scores that correspond to the 
+# 10th, 50th, and 80th percentile
 
 qnorm(c(.1, .5, .8), mean = 0, sd = 1)
 ```
  
 
-:::{.callout-note}
-## d, p, q, r? 
-
-Any probability distribution in R has a `d`, `p`, `q`, and `r` variant. above we use the `q` variant of the normal distribution, `qnorm()` ([see here](https://www.stat.umn.edu/geyer/old/5101/rlook.html#:~:text=R%20Functions%20for%20Probability%20Distributions,-Every%20distribution%20that&text=For%20the%20normal%20distribution%2C%20these,qbinom%20%2C%20dbinom%20%2C%20and%20rbinom%20.) for all base R distribution functions). `d` calculates the density (i.e., height) of a probability distribution for a given $x$ value, `p` gives the quantile corresponding to a value (e.g., `pnorm(0)` gives `0.5`), `q` gives the value corresponding to a quantile (e.g., `qnorm(0.5)` gives `0`), and `r` generates random values from a distribution. 
-:::
-
+<li> **y-axis:** Values corresponding to the corresponding observed quantiles of our variable </li>
  
-<li> **y-axis:** the corresponding observed quantiles of our variable </li>
- 
-  
 ```{r}
 #| eval: true
 #| echo: true 
@@ -1069,26 +982,35 @@ Any probability distribution in R has a `d`, `p`, `q`, and `r` variant. above we
 quantile(NY_temp$Temp, c(.1, .5, .8))
 ```
  
+
 </ul>
 
 
 :::
-::: {.column width="50%"}
+::: {.column width="30%"}
 
-<ul style="font-size: 26px">
+:::{.callout-note appearance="default"}
+## d, p, q, r? 
+
+Any probability distribution in R has a `d`, `p`, `q`, and `r` variant. We just used the `q` variant of the normal distribution, `qnorm()` ([see here](https://www.stat.umn.edu/geyer/old/5101/rlook.html#:~:text=R%20Functions%20for%20Probability%20Distributions,-Every%20distribution%20that&text=For%20the%20normal%20distribution%2C%20these,qbinom%20%2C%20dbinom%20%2C%20and%20rbinom%20.) for all base R distribution functions). `d` calculates the density (i.e., height) of a probability distribution for a given $x$ value, `p` gives the quantile corresponding to a value (e.g., `pnorm(0)` gives `0.5`), `q` gives the value corresponding to a quantile (e.g., `qnorm(0.5)` gives `0`), and `r` generates random values from a distribution. 
+:::
+
+
+:::
+::::
+
+## Creating QQplot Data
 
 So, what now? Well, on the left, we only calculated the coordinates for 3 of the dots on the QQplot. Normally, QQplots do it for all 99 quantiles ($1^{st}$ percentile to $99^{th}$ percentile). Let's walk through the process:
-
-<br>
 
 ```{r}
 #| eval: true
 #| echo: true 
-#| classes: code-125
+#| classes: code-90 
 
 # first, it is useful to define all the quantiles that we want as a vector
 quantiles <- seq(from = .01, to = .99, by = .01)  
-glimpse(quantiles)
+str(quantiles)
 
 # calculate quantiles for normal distribution and real data
 Xaxis <- qnorm(quantiles)
@@ -1105,23 +1027,15 @@ QQdata <- data.frame("Xaxis" = Xaxis,
 head(QQdata)
 ```
 
-</ul>
-
-
-:::
-::::
-
 
 ## QQplot The Data
 
-If the explanation before made no sense, here are the recreated QQplot to convinve you
+If the explanation before made no sense, here's a recreated QQplots to convince you
 
 :::: {.columns}
 ::: {.column width="50%"}
 
 The pattern of points is the exact same as the one generated by the `stat_qq()` function.
-
-<br>
 
 ```{r}
 #| eval: true
@@ -1132,13 +1046,10 @@ ggplot(QQdata,
       geom_point()
 ```
 
-
-
-
 :::
 ::: {.column width="50%"}
 
-And as previously anticipated, the quantiles generated from any different normal distribution will not change the pattern of the dots (magic? Do give this some thought it if does not make sense to you)
+<div style="font-size: 22px"> As mentioned, the quantiles generated from any different normal distribution will not change the pattern of the dots (magic? Do give this some thought if it does not make sense to you) </div>
 
 ```{r}
 #| eval: true
@@ -1156,18 +1067,13 @@ ggplot(QQdata,
 The values on the X-axis are the only difference. 
 </center>
 
+
 ## A more intutive "QQplot"?
 
-Really, what a QQplot does is tell you how much your observed data (Y-axis) match/mismatch a perfectly normal distribution (X-axis). The same exact information can be conveyed in a possibly more intuitive way...
+<div style="font-size: 24px"> Really, what a QQplot does is tell you how much your observed data (Y-axis) match/mismatch a perfectly normal distribution (X-axis). The same exact information can be conveyed in a possibly more intuitive way... </div>
 
 :::: {.columns}
 ::: {.column width="50%"}
-
-<div style="font-size: 26px">
-Your normal QQ plot
-</div>
-
-<br>
 
 ```{r}
 #| eval: true
@@ -1183,36 +1089,26 @@ ggplot(QQdata,
 :::
 ::: {.column width="50%"}
 
-
-<div style="font-size: 26px"> Alternatively, you can overlay a normal distribution with mean and standard deviation equal to that of you variable to the density plot of your variable.</div>
-
 ```{r}
 #| eval: true
 #| echo: true 
+#| classes: code-90
  
-ggplot(NY_temp,
-       aes(x = Temp)) +
+ggplot(NY_temp, aes(x = Temp)) +
        geom_density() +
-      # the line below adds the normal distribution (in blue)
-       geom_function(fun = dnorm, args = list(mean = mean(NY_temp$Temp),
-                                            sd = sd(NY_temp$Temp)),
+      # the funciton below adds the normal distribution (in blue)
+       geom_function(fun = dnorm, 
+                     args = list(mean = mean(NY_temp$Temp),
+                                 sd = sd(NY_temp$Temp)),
                      color = "blue") +
        xlim(45, 110)
 ```
 :::
 ::::
 
-You should be able to see that deviations from the normal distribution in the plot on the right are mirrored exactly by the dots deviating form the line in the plot on the left 🧐 
+<div style="font-size: 24px"> You should be able to see that the normal distribution deviating from the observed data in the plot on the right is mirrored exactly by the dots deviating form the line in the plot on the left 🧐 </div>
 
 
 ## References 
 
 <div id="refs"> </div>
-
-
-
-
-
-
-
-

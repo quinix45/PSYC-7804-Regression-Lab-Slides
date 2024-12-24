@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // first line controls size (left plygon in title)
-const decorationMarkup1 = `<svg id="mySVG" style="transform: scaleX(4.5) scaleY(3); transform-origin: 0 0;">
+const decorationMarkup1 = `<svg id="mySVG" style="transform: scaleX(3.5) scaleY(3.5); transform-origin: 0 0;">
 <polygon points="129.9038105676658, 74.99999999999999 39.184850993605149,150 -129.90381056766577,1005.00000000000006 -129.90381056766583,-74.99999999999996 -2.7554552980815446e-14,-150 129.90381056766583,-74.99999999999994"  class="decoration" style="stroke-width:2;"/>
 </svg>`;
 
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // first line controls size (right plygon in title)
-const decorationMarkup2 = `<svg id="mySVG" style="transform: scaleX(-4.5) scaleY(3); transform-origin: 0 0;">
+const decorationMarkup2 = `<svg id="mySVG" style="transform: scaleX(-3.5) scaleY(3.5); transform-origin: 0 0;">
 <polygon points="129.9038105676658, 74.99999999999999 39.184850993605149,150 -129.90381056766577,1005.00000000000006 -129.90381056766583,-74.99999999999996 -2.7554552980815446e-14,-150 129.90381056766583,-74.99999999999994"  class="decoration" style="stroke-width:2;"/>
 </svg>`;
 
