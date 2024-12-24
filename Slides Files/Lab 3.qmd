@@ -1,5 +1,5 @@
 ---
-title: "Lab 3: Reporting Results"
+title: "Lab 3: Significance Tests and Reporting Results"
 author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
@@ -8,7 +8,7 @@ title-slide-attributes:
   data-transition: "zoom"
 format:
    revealjs:
-      footer: "Lab 3: Reporting Results"
+      footer: "Lab 3: Significance Tests and Reporting Results"
       width: 1280
       height: 720
       chalkboard: true
@@ -107,37 +107,39 @@ str(GPA)
 ::::
 
 
-```{r}
-# check why R^2 column does not appear in the image
-```
+## 
 
 
+## Creating APA Style regression tables
+
+:::: {.columns}
+::: {.column width="60%"}
 ```{r}
 #| eval: false
 #| echo: true 
 #| code-line-numbers: false
 #| classes: code-125
 
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/Regression_flextable.R")
+
+# lm model here
 
 table <- regression_flextable(mod, intercept = TRUE)
 
-
-source()
-
-save_as_image(ft, path = "example_tab.svg")
-save_as_docx(ft, path = "example_tab.docx")
+save_as_docx(ft, path = "reg_table.docx")
+save_as_image(ft, path = "reg_table.png")
 ```
+:::
 
 
-```{r}
-mod <- lm(Sepal.Length ~ Sepal.Width + Petal.Width, data = iris)
+::: {.column width="40%"}
 
-table <- regression_flextable(mod, intercept = TRUE)
+I created a function that generated APA style regression tables. The code is [here](https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/blob/main/Slides%20Files/R_scripts/Regression_flextable.R){target="_blank"}
 
-save_as_image(ft, path = "example_tab.svg")
-save_as_docx(ft, path = "example_tab.docx")
-```
-## Creating APA Style regression tables
+
+:::
+::::
+
 
 ## References 
 

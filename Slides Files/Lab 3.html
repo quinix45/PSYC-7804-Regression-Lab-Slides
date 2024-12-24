@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Fabio Setti">
-  <title>Lab 3: Reporting Results</title>
+  <title>Lab 3: Significance Tests and Reporting Results</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -414,7 +414,7 @@
     <div class="slides">
 
 <section id="title-slide" data-transition="zoom" class="quarto-title-block center">
-  <h1 class="title">Lab 3: Reporting Results</h1>
+  <h1 class="title">Lab 3: Significance Tests and Reporting Results</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -453,7 +453,7 @@ Fabio Setti
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>flextable</code></a></li><li><a href="#tabset-1-2"><code>rio</code></a></li><li><a href="#tabset-1-3"><code>tidyverse</code></a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
-<p>The <code>flextable</code> package <span class="citation" data-cites="Gohel_etal_2024">(<a href="#/references" role="doc-biblioref" onclick="">Gohel et al., 2024</a>)</span> helps create pretty tables from R. Can also be used to create publication reaady APA style tables.</p>
+<p>The <code>flextable</code> package <span class="citation" data-cites="Gohel_etal_2024">(<a href="#/references" role="doc-biblioref" onclick="">Gohel et al., 2024</a>)</span> helps create pretty tables from R. Can also be used to create publication ready APA style tables.</p>
 </div>
 <div id="tabset-1-2">
 <p>The <code>rio</code> package <span class="citation" data-cites="Becker_etal_2024">(<a href="#/references" role="doc-biblioref" onclick="">Becker et al., 2024</a>)</span> developers describe this package as the <em>Swiss-Army Knife for Data I/O</em>. The <code>import()</code> and <code>export()</code> functions can import/export just about any data type.</p>
@@ -477,6 +477,27 @@ Let’s also load the data for today:
 <p><img data-src="Images/Packages_image.png"></p>
 </div></div>
 </section>
+<section id="section" class="slide level2">
+<h2></h2>
+</section>
+<section id="creating-apa-style-regression-tables" class="slide level2">
+<h2>Creating APA Style regression tables</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/Regression_flextable.R"</span>)</span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># lm model here</span></span>
+<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="" aria-hidden="true" tabindex="-1"></a>table <span class="ot">&lt;-</span> <span class="fu">regression_flextable</span>(mod, <span class="at">intercept =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">save_as_docx</span>(ft, <span class="at">path =</span> <span class="st">"reg_table.docx"</span>)</span>
+<span id="cb4-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">save_as_image</span>(ft, <span class="at">path =</span> <span class="st">"reg_table.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:40%;">
+<p>I created a function that generated APA style regression tables. The code is <a href="https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/blob/main/Slides%20Files/R_scripts/Regression_flextable.R" target="_blank">here</a></p>
+</div></div>
+</section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
@@ -492,7 +513,7 @@ Wickham, H., &amp; RStudio. (2023). <em>Tidyverse: <span>Easily Install</span> a
 </div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
-<p>Lab 3: Reporting Results</p>
+<p>Lab 3: Significance Tests and Reporting Results</p>
 </div>
 </div>
 </section>
