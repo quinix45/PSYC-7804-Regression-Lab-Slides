@@ -1,5 +1,5 @@
 ---
-title: "Lab 1: Descriptive Staistics and Plots"
+title: "Lab 1: Descriptive Statistics and Plots"
 author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
@@ -9,7 +9,7 @@ title-slide-attributes:
   data-visibility: "uncounted"
 format:
    revealjs:
-      footer: "Lab 1: Descriptive Staistics and Plots"
+      footer: "Lab 1: Descriptive Statistics and Plots"
       width: 1280
       height: 720
       chalkboard: true

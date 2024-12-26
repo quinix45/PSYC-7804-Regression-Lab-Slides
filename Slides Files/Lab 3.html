@@ -467,35 +467,391 @@ Fabio Setti
 </div><div class="column" style="width:50%;">
 <ul>
 <li>
-Let’s also load the data for today:
+Let’s also load the <a href="https://www.kaggle.com/datasets/mirichoi0218/insurance?resource=download" target="_blank">data</a> for today:
 </li>
 </ul>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>GPA <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/GPA.sav"</span>)</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(GPA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>insurance <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/insurance.csv"</span>)</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># let's peak at our variables</span></span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(insurance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   1338 obs. of  7 variables:
+ $ age     : int  19 18 28 33 32 31 46 37 37 60 ...
+ $ sex     : chr  "female" "male" "male" "male" ...
+ $ bmi     : num  27.9 33.8 33 22.7 28.9 ...
+ $ children: int  0 1 3 0 0 0 1 3 2 0 ...
+ $ smoker  : chr  "yes" "no" "no" "no" ...
+ $ region  : chr  "southwest" "southeast" "southeast" "northwest" ...
+ $ charges : num  16885 1726 4449 21984 3867 ...</code></pre>
 </div>
-<p><img data-src="Images/Packages_image.png"></p>
+</div>
 </div></div>
 </section>
-<section id="section" class="slide level2">
-<h2></h2>
-</section>
-<section id="creating-apa-style-regression-tables" class="slide level2">
-<h2>Creating APA Style regression tables</h2>
+<section id="predicting-insurance-charges" class="slide level2">
+<h2>Predicting Insurance Charges</h2>
+<p>Let’s find out whether body mass index (<code>bmi</code>) predicts health insurance charges (<code>charges</code>)</p>
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/Regression_flextable.R"</span>)</span>
-<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># lm model here</span></span>
-<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="" aria-hidden="true" tabindex="-1"></a>table <span class="ot">&lt;-</span> <span class="fu">regression_flextable</span>(mod, <span class="at">intercept =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">save_as_docx</span>(ft, <span class="at">path =</span> <span class="st">"reg_table.docx"</span>)</span>
-<span id="cb4-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">save_as_image</span>(ft, <span class="at">path =</span> <span class="st">"reg_table.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(charges <span class="sc">~</span> bmi, insurance)</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = charges ~ bmi, data = insurance)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-20956  -8118  -3757   4722  49442 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  1192.94    1664.80   0.717    0.474    
+bmi           393.87      53.25   7.397 2.46e-13 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 11870 on 1336 degrees of freedom
+Multiple R-squared:  0.03934,   Adjusted R-squared:  0.03862 
+F-statistic: 54.71 on 1 and 1336 DF,  p-value: 2.459e-13</code></pre>
+</div>
 </div>
 </div><div class="column" style="width:40%;">
-<p>I created a function that generated APA style regression tables. The code is <a href="https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/blob/main/Slides%20Files/R_scripts/Regression_flextable.R" target="_blank">here</a></p>
+<p>The resulting predicted charge is:</p>
+<div style="font-size: 22px">
+<p><span class="math inline">\(\widehat{\mathrm{Charges}}_i = \$1192.94 + \$393.87 \times \mathrm{BMI}_i\)</span></p>
+</div>
+<p>Is the intercept meaningful in this case?</p>
+<p><br></p>
+<p>In practice, before we interpret anything, we need to check the <em>p</em>-values associated with our output.</p>
+</div></div>
+</section>
+<section id="p-values" class="slide level2">
+<h2><em>p</em>-values</h2>
+<p>Some guy named <a href="https://en.wikipedia.org/wiki/Ronald_Fisher">RA Fisher</a> came up with the idea of <em>p</em>-values. The set up goes something like this:</p>
+<div class="columns">
+<div class="column" style="width:80%;">
+<ol style="font-size: 24px">
+<li>
+I collected this sample and found that BMI predicts how much insurance will charge. But what do these results tell me anything about the <a href="https://en.wikipedia.org/wiki/Statistical_population" target="_blank">population</a>? I can’t really measure the entire population 🫤
+</li>
+<li>
+💡 Let resample from the population and repeat my experiment in <em>exactly the same way</em> an infinite number of times and see how often I get my result, a slope of 393.87, <em>or more</em>. Let me also assume that in reality there truly is no relation between BMI and insurance charge, and the slope is exactly 0 in reality (<span class="math inline">\(H_0\)</span>, the null hypothesis)
+</li>
+<li>
+Under the assumptions that the true population slope is exactly 0, the <strong><em>p</em>-value</strong> is the proportion of times that I find a slope of 393.87 or more if I were to repeat exactly the same experiment an infinite number of times.
+</li>
+</ol>
+<p>Fisher, being really good at math and knowing the <a href="https://gallery.shinyapps.io/CLT_mean/" target="_blank">central limit theorem</a> , realized that we don’t have to repeat experiments an infinite number of times (ok, thank you Fisher 😌).</p>
+</div><div class="column" style="width:20%;">
+<p><br></p>
+<figure>
+<img src="Images/Fisher2.jpg">
+<figcaption style="font-size: 16px">
+R. A. Fisher (1890-1962), really good at math and stats, but also a pretty bad person
+</figcaption>
+</figure>
+</div></div>
+</section>
+<section id="sampling-distributions" class="slide level2">
+<h2>Sampling Distributions</h2>
+<div style="font-size: 26px">
+Given <em>most</em> statistics, we can figure out what a distribution of the results of an infinite number of experiments will look like. This is known as the <strong>sampling distribution</strong>, and is the target of significance testing.
+</div>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div style="font-size: 22px; padding-top: 12px;">
+<p>If we assume the our slope really should be 0 (i.e., we assume <span class="math inline">\(H_0\)</span> is true), the sampling distribution should look something like the plot on the right:</p>
+</div>
+<ul style="font-size: 22px">
+<li>
+Our value for the slope was <span class="math inline">\(393.87\)</span>, which is way far off to the right. That means <span class="math inline">\(393.87\)</span> is extremely unlikely to come from a sampling distribution where <span class="math inline">\(H_0\)</span> is true.
+</li>
+<li>
+The <strong><em>p</em>-value</strong>, which is <span class="math inline">\(2.46*10^{-13}\)</span>, represents the probability of getting our slope (or a value more extreme), from the plot on the right (i.e., if <span class="math inline">\(H_0\)</span> is true). <strong><em>p</em>-values</strong> say nothing about how likely/unlikely <span class="math inline">\(H_1\)</span> is.
+</li>
+</ul>
+</div><div class="column" style="width:70%;">
+<div class="cell">
+<details class="code-fold">
+<summary>Plot code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># you need to install this package </span></span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extraDistr)</span>
+<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb7-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> dlst, <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mu =</span> <span class="dv">0</span>, <span class="at">sigma =</span> <span class="fl">53.25</span>, <span class="at">df =</span> <span class="dv">1336</span>), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"All the slopes if H0 is true"</span>) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span>(<span class="fl">53.25</span><span class="sc">*</span><span class="dv">3</span>), (<span class="fl">53.25</span><span class="sc">*</span><span class="dv">3</span>)) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb7-10"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb7-11"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb7-12"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.line.y =</span>  <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-3_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="wheres-the-t" class="slide level2">
+<h2>Where’s the T 🍵?</h2>
+<div style="font-size: 26px">
+How did I get a <em>p</em>-value without any <em>t</em>-value? Although the plot on the previous slide looked like a normal distribution, it was actually a <em>t</em>-distribution with <span class="math inline">\(\mu = 0\)</span>, <span class="math inline">\(\sigma = 53.25\)</span> and <span class="math inline">\(df = 1336\)</span>. Just like any normal distribution, the units can be standardized such that <span class="math inline">\(\sigma = 1\)</span>, resulting in the graph below to the right.
+</div>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div style="font-size: 24px; padding-top: 12px;">
+This implies also rescaling our slope to get a value that can be place it on the new x-axis, thus we compute the <strong>t-statistic</strong>:
+</div>
+<p><span class="math display">\[t = \frac{b_1}{SE_{b_1}} = \frac{393.87}{53.25} = 7.397 \]</span></p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(<span class="fl">7.397</span>, <span class="at">df =</span> <span class="dv">1336</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)<span class="sc">*</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.451523e-13</code></pre>
+</div>
+</div>
+<p>The <em>p</em>-value is the same as the regression output.</p>
+</div><div class="column" style="width:70%;">
+<div class="cell">
+<details class="code-fold">
+<summary>Plot code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> dt, <span class="at">args =</span> <span class="fu">list</span>(<span class="at">df =</span> <span class="dv">1336</span>), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"All the slopes if H0 is true, but standardized"</span>) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb10-7"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb10-8"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb10-9"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.line.y =</span>  <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-3_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="and-the-intercept" class="slide level2">
+<h2>…And the intercept</h2>
+<div style="font-size: 26px">
+Usually, we don’t really care about the intercept, but here it illustrate where <em>t</em>-values fall when the corresponding <em>p</em>-value is high.
+</div>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div style="font-size: 24px; padding-top: 18px; padding-bottom: 18px;">
+Form the outptut, <span class="math inline">\(t = \frac{b_0}{SE_{b_0}} = \frac{1192.94}{1664.80} = 0.717\)</span>. This time, the <em>t</em>-value is pretty close to the center of the plot
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(.<span class="dv">717</span>, <span class="at">df =</span> <span class="dv">1336</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)<span class="sc">*</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4734994</code></pre>
+</div>
+</div>
+<ul style="font-size: 22px">
+<li>
+So, even by random chance, there is about a <span class="math inline">\(47\%\)</span> chance of getting a value of <span class="math inline">\(1192.94\)</span> <em>or more extreme</em>.
+</li>
+<strong>NOTE</strong>: the total area under the curve is <span class="math inline">\(1\)</span>, and the shaded area is <span class="math inline">\(0.473\)</span>, the <em>p</em>-value.
+
+</ul>
+</div><div class="column" style="width:70%;">
+<div class="cell">
+<details class="code-fold">
+<summary>Plot code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="do">##| dpi: 300</span></span>
+<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb13-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> dt, <span class="at">args =</span> <span class="fu">list</span>(<span class="at">df =</span> <span class="dv">1336</span>), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb13-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"All the intercepts if H0 is true"</span>) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">0.717</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> .<span class="dv">25</span>, <span class="at">y =</span> .<span class="dv">1</span>, <span class="at">label =</span> <span class="st">"t-value of </span><span class="sc">\n</span><span class="st"> the intercept"</span>) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">y =</span> .<span class="dv">3</span>, <span class="at">label =</span> <span class="st">"we also look at the </span><span class="sc">\n</span><span class="st"> opposite side, two-tailed test"</span>) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="fl">0.717</span>, <span class="dv">4</span>, <span class="at">length.out =</span> <span class="dv">100</span>)), </span>
+<span id="cb13-12"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> <span class="fu">dt</span>(x, <span class="at">df =</span> <span class="dv">1336</span>)), </span>
+<span id="cb13-13"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"lightblue"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb13-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">0.717</span>, <span class="sc">-</span><span class="dv">4</span>, <span class="at">length.out =</span> <span class="dv">100</span>)), </span>
+<span id="cb13-15"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> <span class="fu">dt</span>(x, <span class="at">df =</span> <span class="dv">1336</span>)), </span>
+<span id="cb13-16"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">"lightblue"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb13-17"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb13-18"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="fl">0.717</span>, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb13-19"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb13-20"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb13-21"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb13-22"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.line.y =</span>  <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-3_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="type-i-error-rate-and-significance" class="slide level2">
+<h2>Type I Error Rate and Significance</h2>
+<p><em>p</em>-values have meaning even without any significance test. <em>Significance tests</em> happen only once we choose to make binary decisions based on <em>p</em>-values. At some point some folks decided that <span class="math inline">\(p &lt; .05 =\)</span> <em>significant</em>. But,</p>
+<blockquote>
+<p>surely, God loves the .06 nearly as much as the .05 <span class="citation" data-cites="Rosnow_Rosenthal_1989">(<a href="#/references" role="doc-biblioref" onclick="">Rosnow &amp; Rosenthal, 1989, p. 1277</a>)</span></p>
+</blockquote>
+<p>Type I error rate (<span class="math inline">\(\alpha\)</span>) is thus not a bug of significance testing; it’s a feature. Turning <em>p</em>-values into binary decisions (accept/reject <span class="math inline">\(H_0\)</span>) implies that there is always a non-zero chance (the <em>p</em>-value being that chance) that our results come from <span class="math inline">\(H_0\)</span> (i.e., we are wrong).</p>
+<p>So, significance testing is like gambling 🎰, where we think a 1 in 20 or less chances of being wrong is good odds. Sometimes we end up on the wrong side of chance, and we make the wrong conclusion.</p>
+<p>And slightly unsettling is the fact that you cannot know which of you decisions based on <em>p</em>-values is the “wrong” one 😧.</p>
+</section>
+<section id="confidence-intervals" class="slide level2">
+<h2>Confidence Intervals</h2>
+<p>We can also easily extract <span class="math inline">\(95\%\)</span> confidence intervals (CIs) for our intercept and slope:</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell code-150">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 2.5 %    97.5 %
+(Intercept) -2072.9743 4458.8487
+bmi           289.4089  498.3372</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<p>Confidence intervals carry the same information as <em>p</em>-values. The respective <em>p</em>-value will be significant if the confidence interval does not include 0.</p>
+</div></div>
+<p>Now, as mention in the main lecture:</p>
+<ul style="font-size: 28px">
+<li>
+<strong>Incorrect interpretation</strong>: “There is a 95% chance that the true value is within the confidence interval.”
+</li>
+<strong>Correct interpretation</strong>: “If I were to repeat the experiment an infinite number of times, 95% of my observed values would be within the confidence interval.”
+
+</ul>
+<p>I will not elaborate further, but see <a href="https://stats.stackexchange.com/questions/2272/whats-the-difference-between-a-confidence-interval-and-a-credible-interval" target="_blank">here</a> for more.</p>
+</section>
+<section id="apa-style-report" class="slide level2">
+<h2>APA Style Report</h2>
+<p>…ok, I am done rambling, here’s how you report the results in APA style:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = charges ~ bmi, data = insurance)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-20956  -8118  -3757   4722  49442 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  1192.94    1664.80   0.717    0.474    
+bmi           393.87      53.25   7.397 2.46e-13 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 11870 on 1336 degrees of freedom
+Multiple R-squared:  0.03934,   Adjusted R-squared:  0.03862 
+F-statistic: 54.71 on 1 and 1336 DF,  p-value: 2.459e-13</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="font-size: 36px">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>APA style report</strong></p>
+</div>
+<div class="callout-content">
+<p>Simple linear regression analysis indicated that BMI significantly positively predicted insurance charges, <em>b</em> = 393.87, <em>t</em>(1336) = 7.4, <em>p</em> &lt; .001, 95%CI [289.41; 498.34]. The predictor explained a significant proportion of variance in insurance charges, <em>R</em><sup>2</sup> = .04, <em>F</em>(1, 1336) = 54.71, <em>p</em> &lt; .001.</p>
+</div>
+</div>
+</div>
+</div>
+<p>Although not discussed in this lab, we will return to <span class="math inline">\(R^2\)</span> soon.</p>
+</div></div>
+</section>
+<section id="anova-output" class="slide level2">
+<h2>ANOVA Output</h2>
+<p>If for some reason you prefer the ANOVA-type outputs, you can also get that for any type of <code>lm()</code> regression</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><br></p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: charges
+            Df     Sum Sq    Mean Sq F value    Pr(&gt;F)    
+bmi          1 7.7134e+09 7713391237  54.709 2.459e-13 ***
+Residuals 1336 1.8836e+11  140988645                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:60%;">
+<p><br></p>
+<p>Later in the course, we will learn all about how ANOVA is a regression is disguise 🥸.</p>
+<p><br></p>
+<p>For now, notice that this ANOVA output provides the same <em>F</em>-statistic and <em>p</em>-value that were in the output for the <span class="math inline">\(R^2\)</span> on the previous slide.</p>
+</div></div>
+</section>
+<section id="creating-apa-style-regression-tables" class="slide level2">
+<h2>Creating APA Style regression tables</h2>
+<p>While I was working on a paper, I created a function that generates APA style regression tables. The code is <a href="https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/blob/main/Slides%20Files/R_scripts/Regression_flextable.R" target="_blank">here</a></p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># load the function (`source()` runs R code from other files)</span></span>
+<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/Regression_flextable.R"</span>)</span>
+<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># any regression model</span></span>
+<span id="cb20-5"><a href="" aria-hidden="true" tabindex="-1"></a>reg_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(charges <span class="sc">~</span> bmi <span class="sc">+</span> sex, insurance)</span>
+<span id="cb20-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># create the table</span></span>
+<span id="cb20-8"><a href="" aria-hidden="true" tabindex="-1"></a>table <span class="ot">&lt;-</span> <span class="fu">regression_flextable</span>(reg_model)</span>
+<span id="cb20-9"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># save the table to either a word doc or as an image</span></span>
+<span id="cb20-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># You should see the files in the `path` argument appear</span></span>
+<span id="cb20-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># in your working directory</span></span>
+<span id="cb20-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">save_as_docx</span>(table, <span class="at">path =</span> <span class="st">"reg_table.docx"</span>)</span>
+<span id="cb20-14"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">save_as_image</span>(table, <span class="at">path =</span> <span class="st">"reg_table.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>
+The <code>save_as_...</code> functions that save the table to a file come from the <code>flextable</code> package. My function also uses functions from <code>flextable</code> to format the regression table.
+</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><strong><code>regression_flextable()</code> Arguments</strong></p>
+<ol style="font-size: 24px">
+<li>
+<code>lm_object</code>: An <code>lm()</code> regression model , title = ““, var_names = NULL, intercept = TRUE
+</li>
+<li>
+<code>title = ""</code>: The table title (must be a character).
+</li>
+<li>
+<code>var_names = NULL</code>: Name the first rows of the table. Must be a character vector of the same length of the table rows.
+</li>
+<li>
+<code>intercept = TRUE</code>: Set to <code>FALSE</code> if the intercept is not wanted (e.g., for standardized regression).
+</li>
+</ol>
 </div></div>
 </section>
 <section id="references" class="slide level2 smaller scrollable">
@@ -506,6 +862,9 @@ Becker, J., Chan, C., Schoch, D., Chan, G. C., Leeper, T. J., Gandrud, C., MacDo
 </div>
 <div id="ref-Gohel_etal_2024" class="csl-entry" role="listitem">
 Gohel, D., ArData, Jager, C., Daniels, E., Skintzos, P., Fazilleau, Q., Nazarov, M., Robert, T., Barrowman, M., Yasumoto, A., Julian, P., Browning, S., Thériault, R., Jobert, S., &amp; Newman, K. (2024). <em>Flextable: <span>Functions</span> for <span>Tabular Reporting</span></em> (Version 0.9.7) [Computer software]. <a href="https://cran.r-project.org/web/packages/flextable/index.html">https://cran.r-project.org/web/packages/flextable/index.html</a>
+</div>
+<div id="ref-Rosnow_Rosenthal_1989" class="csl-entry" role="listitem">
+Rosnow, R. L., &amp; Rosenthal, R. (1989). Statistical procedures and the justification of knowledge in psychological science. <em>American Psychologist</em>, <em>44</em>(10), 1276–1284. <a href="https://doi.org/10.1037/0003-066X.44.10.1276">https://doi.org/10.1037/0003-066X.44.10.1276</a>
 </div>
 <div id="ref-Wickham_RStudio_2023" class="csl-entry" role="listitem">
 Wickham, H., &amp; RStudio. (2023). <em>Tidyverse: <span>Easily Install</span> and <span>Load</span> the ’<span>Tidyverse</span>’</em> (Version 2.0.0) [Computer software]. <a href="https://cran.r-project.org/web/packages/tidyverse/index.html">https://cran.r-project.org/web/packages/tidyverse/index.html</a>
