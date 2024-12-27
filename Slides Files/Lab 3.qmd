@@ -489,18 +489,15 @@ reg_model <- lm(charges ~ bmi + sex, insurance)
 # create the table
 table <- regression_flextable(reg_model)
 
-# save the table to either a word doc or as an image
-# You should see the files in the `path` argument appear
-# in your working directory
+# save the table to as a word doc. You should see the files in the `path` argument appear in your working directory
 save_as_docx(table, path = "reg_table.docx")
-save_as_image(table, path = "reg_table.png")
+
 ```
 
 
 <ul>
 <li> The `save_as_...` functions that save the table to a file come from the `flextable` package. My function also uses functions from `flextable` to format the regression table. </li>
 </ul>
-
 
 :::
 
@@ -517,7 +514,7 @@ save_as_image(table, path = "reg_table.png")
 
 <li> `title = ""`: The table title (must be a character). </li>
 
-<li> `var_names = NULL`: Name the first rows of the table. Must be a character vector of the same length of the table rows. </li>
+<li> `var_names = NULL`: Names for first column of the table (the variables). Must be a character vector of the same length of the table rows. </li>
 
 
 <li> `intercept = TRUE`: Set to `FALSE` if the intercept is not wanted (e.g., for standardized regression). </li>
@@ -528,6 +525,20 @@ save_as_image(table, path = "reg_table.png")
 :::
 ::::
 
+
+## Table Output
+
+```{r}
+# load the function (`source()` runs R code from other files)
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/Regression_flextable.R")
+
+# any regression model
+reg_model <- lm(charges ~ bmi + sex, insurance)
+
+# print
+regression_flextable(reg_model)
+
+```
 
 
 ## References 
