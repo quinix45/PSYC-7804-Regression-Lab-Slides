@@ -157,7 +157,7 @@ Some guy named [RA Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) came up 
 
 <li> I collected this sample and found that BMI predicts how much insurance will charge. But what do these results tell me anything about the [population](https://en.wikipedia.org/wiki/Statistical_population){target="_blank"}? I can't really measure the entire population 🫤 </li>
 
-<li> 💡 Let resample from the population and repeat my experiment in *exactly the same way* an infinite number of times and see how often I get my result, a slope of 393.87, *or more*. Let me also assume that in reality there truly is no relation between BMI and insurance charge, and the slope is exactly 0 in reality ($H_0$, the null hypothesis) </li>
+<li> 💡 Let's resample from the population and repeat my experiment in *exactly the same way* an infinite number of times and see how often I get my result, a slope of 393.87, *or more*. Let me also assume that in reality there truly is no relation between BMI and insurance charge, and the slope is exactly 0 in reality ($H_0$, the null hypothesis) </li>
 
 <li> Under the assumptions that the true population slope is exactly 0, the ***p*-value** is the proportion of times that I find a slope of 393.87 or more if I were to repeat exactly the same experiment an infinite number of times. </li>
 </ol>
@@ -219,6 +219,8 @@ ggplot() +
   labs(x = "All the slopes if H0 is true") +
   xlim(-(53.25*3), (53.25*3)) +
   scale_y_continuous(expand = c(0,0)) +
+    annotate("text", x = -2, y = .002, 
+             label = "The spread of this distribution \n is determined by the stanrdard error of the slope, \n which is 53.25") +
   theme(axis.title.y=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
@@ -267,6 +269,8 @@ The *p*-value is the same as the regression output.
 ggplot() +
   geom_function(fun = dt, args = list(df = 1336), color = "blue") +
   labs(x = "All the slopes if H0 is true, but standardized") +
+    annotate("text", x = 0, y = .1, 
+             label = "Hey, I am still the same distribution \n from the previous slide. People \n like me better when my X-axis \n looks like this!") +
   xlim(-3, 3) +
   scale_y_continuous(expand = c(0,0)) +
   theme(axis.title.y=element_blank(),
@@ -387,7 +391,7 @@ Now, as mention in the main lecture:
 
 <li> **Incorrect interpretation**: "There is a 95% chance that the true value is within the confidence interval." </li>
 
-**Correct interpretation**: "If I were to repeat the experiment an infinite number of times, 95% of my observed values would be within the confidence interval." </li>
+<li> **Correct interpretation**: "If I were to repeat the experiment an infinite number of times, 95% of my observed values would be within the confidence interval." </li>
 
 </ul>
 
@@ -467,7 +471,7 @@ For now, notice that this ANOVA output provides the same *F*-statistic and *p*-v
 
 ## Creating APA Style regression tables
 
-While I was working on a paper, I created a function that generates APA style regression tables. The code is [here](https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/blob/main/Slides%20Files/R_scripts/Regression_flextable.R){target="_blank"}
+To not have to manually recreate result tables over and over, I created a function that generates APA style regression tables ✨. The  function code is [here](https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/blob/main/Slides%20Files/R_scripts/Regression_flextable.R){target="_blank"} if you are curious. 
 
 
 :::: {.columns}
@@ -496,7 +500,7 @@ save_as_docx(table, path = "reg_table.docx")
 
 
 <ul>
-<li> The `save_as_...` functions that save the table to a file come from the `flextable` package. My function also uses functions from `flextable` to format the regression table. </li>
+<li> The `save_as_...` functions that save the table to a file come from the `flextable` package (really good package 😍). My function also uses functions from `flextable` to format the regression table. </li>
 </ul>
 
 :::
@@ -528,7 +532,39 @@ save_as_docx(table, path = "reg_table.docx")
 
 ## Table Output
 
+If you open the `reg_table.docx` document that was just saved to your working directory, you should hopefully see a table like the one below
+
+:::: {.columns}
+::: {.column width="35%"}
+
+<div style="font-size: 24px"> Usually, you don't want the R variable names as row names. You can change them with the `var_names = ` argument: </div>
+
+<br>
+<br>
+<br>
+
 ```{r}
+#| eval: false
+#| echo: true 
+#| classes: code-110
+
+table <- regression_flextable(reg_model,
+         var_names = c("Intercept", 
+                       "BMI", 
+                       "Sex"))
+
+save_as_docx(table, 
+       path = "reg_table_names.docx")
+
+```
+
+
+:::
+::: {.column width="65%"}
+
+```{r}
+
+
 # load the function (`source()` runs R code from other files)
 source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/Regression_flextable.R")
 
@@ -537,8 +573,23 @@ reg_model <- lm(charges ~ bmi + sex, insurance)
 
 # print
 regression_flextable(reg_model)
-
 ```
+
+<ul style="font-size: 24px">
+<li> Updated row names: </li>
+</ul>
+
+```{r}
+regression_flextable(reg_model, 
+                     var_names = c("Intercept", "BMI", "Sex"))
+```
+
+
+:::
+::::
+
+
+
 
 
 ## References 
