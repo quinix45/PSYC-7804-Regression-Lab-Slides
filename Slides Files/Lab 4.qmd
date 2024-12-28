@@ -22,3 +22,455 @@ format:
 
 editor: source
 ---
+
+## Today's Packages and Data 🤗
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| code-fold: true
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| code-summary: "Install Packages Code"
+#| classes: code-150
+
+
+install.packages("GGally")
+install.packages("plotly")
+install.packages("rio")
+install.packages("tidyverse")
+
+```
+
+```{r}
+#| eval: true
+#| echo: true
+#| code-line-numbers: false
+#| warning: false
+#| classes: code-150
+
+library(GGally)
+library(plotly)
+library(rio)
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+```
+
+</br>
+
+<div style="font-size: 26px">
+
+::: {.panel-tabset}
+
+### `GGally`
+
+The ``GGally` package [@Schloerke_etal_2024] builds upon `ggplot2` and includes many fucntions for creating complex plots. 
+
+### `plotly`
+
+The `plotly` package [@Sievert_etal_2024a] is a Python and R package used to create interactive visualizations with JavaScript elements. 
+
+### `rio`
+
+The `rio` package [@Becker_etal_2024] developers describe this package as the *Swiss-Army Knife for Data I/O*. The `import()` and `export()` functions can import/export just about any data type.
+
+### `tidyverse`
+
+The `tidyverse` package [@Wickham_RStudio_2023] loads a suite of packages that help with data cleaning and visualization. Among others, `tidyverse` loads both `dplyr` and `ggplot2`.
+
+
+:::
+</div>
+
+:::
+::: {.column width="50%"}
+
+<ul>
+
+<li> Let's also load the [data](https://worldhappiness.report/ed/2024/){target="_blank"}
+ for today: </li>
+</ul>
+
+```{r}
+#| warning: false
+#| classes: code-125
+#| echo: true
+#| code-line-numbers: false
+#| output: true
+
+WH_2024 <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/World_happiness_2024.csv")
+
+# let's peak at our variables
+str(WH_2024, vec.len = 2)
+```
+
+:::
+::::
+
+
+## Variables of Interest
+
+We eventually want to look at how `Log_GDP` and `Freedom` impact `Happiness_score` across the countries in our data. Let's first explore the variables.
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<ul style="font-size: 24px">  
+
+<li>  The corraltion matrix for the variables: </li>
+
+</ul>
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# selecting just the variables of interest makes code cleaner later
+reg_vars <- WH_2024[, c("Happiness_score",
+                        "Log_GDP",
+                        "Freedom")]
+
+# Just the correlation table
+cor(reg_vars)
+```
+
+:::
+::: {.column width="50%"}
+
+<ul style="font-size: 24px">  
+
+<li>  Some descriptive statistics: </li>
+
+</ul>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+psych::describe(reg_vars)
+```
+
+:::
+::::
+
+## Helpful Visualization
+
+The `ggpairs()` function from the `GGally` package creates a visualizations that provides a lot of information in one go!
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| out-width: "70%"
+
+
+ggpairs(reg_vars)
+```
+
+## Individual Regressions
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<ul style="font-size: 24px">  
+
+<li>  `Log_GDP` only regression </li>
+
+</ul>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_GDP <- lm(Happiness_score ~ Log_GDP, 
+              reg_vars)
+summary(reg_GDP)
+```
+:::
+::: {.column width="50%"}
+
+<ul style="font-size: 24px">  
+
+<li>  `Freedom` only regression </li>
+
+</ul>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_free <- lm(Happiness_score ~ Freedom, 
+              reg_vars)
+summary(reg_free)
+```
+:::
+::::
+
+## Regression With Both Predictors
+
+
+:::: {.columns}
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_full <- lm(Happiness_score ~ Log_GDP + Freedom, 
+          reg_vars)
+
+summary(reg_full)
+```
+
+:::
+::: {.column width="40%"}
+
+As you can see, the regression coefficients of the two predictors change when you both variables are included 🧐
+
+<br>
+
+Let's visualize what is happening.
+
+:::
+::::
+
+
+
+## Individual Regression plots 
+
+These are the equivalent plots to the individual regressions:
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+  ggplot(reg_vars,  
+ aes(x = Log_GDP, y = Happiness_score)) +
+ geom_point() + 
+    geom_smooth(method = "lm", 
+                formula = "y~x", 
+                se = FALSE)
+```
+
+
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+  ggplot(reg_vars,  
+ aes(x = Freedom, y = Happiness_score)) +
+ geom_point() + 
+    geom_smooth(method = "lm", 
+                formula = "y~x", 
+                se = FALSE)
+```
+
+:::
+::::
+
+
+## Adding the line from multiple regression? 
+
+Let's add the regression lines estimated from the regression with both predictors...
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+
+  ggplot(reg_vars,  
+ aes(x = Log_GDP, y = Happiness_score)) +
+ geom_point() + 
+    geom_smooth(method = "lm", 
+                formula = "y~x", 
+                se = FALSE) +
+    geom_abline(intercept = coef(reg_full)[1], 
+                slope = coef(reg_full)[2])
+```
+
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+
+  ggplot(reg_vars,  
+ aes(x = Freedom, y = Happiness_score)) +
+ geom_point() + 
+    geom_smooth(method = "lm", 
+                formula = "y~x", 
+                se = FALSE) +
+    geom_abline(intercept = coef(reg_full)[1], 
+                slope = coef(reg_full)[3])
+```
+:::
+::::
+
+Hold up, the lines from the multiple regression results seem way off !?
+
+💡 Maybe we need a change of perspective!
+
+
+## Looking Inside the Box
+
+Now that we are dealing with 3 variables (`Log_GDP`, `Freedom`, `Happiness_score`), our data points are in a 3D box, not a 2D plot. 
+
+:::: {.columns}
+::: {.column width="40%"}
+
+The 2D plots from the previous slide are just the *sides of the box* 🤓
+
+I made a function for interactive 3D plot. It has a bunch of useful features that I will show later
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
+
+nice_3D_plot(y = reg_vars$Happiness_score,
+             x1 = reg_vars$Log_GDP,
+             x2 = reg_vars$Freedom,
+             dot_labels = WH_2024$Country_name,
+             axis_names = c("Happiness", 
+                            "GDP", 
+                            "Freedom"))
+```
+
+:::
+::: {.column width="60%"}
+
+```{r out.width = "100%"}
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
+
+
+nice_3D_plot(y = reg_vars$Happiness_score,
+                            x1 = reg_vars$Log_GDP,
+                            x2 = reg_vars$Freedom,
+                            dot_labels = WH_2024$Country_name,
+                              axis_names = c("Happiness", 
+                                             "GDP", 
+                                             "Freedom"),
+                              plane_res = 20,
+                              reg_plane = FALSE)%>%  
+                    bslib::card(full_screen = TRUE)
+```
+
+
+:::
+::::
+
+## The Regression Plane 
+
+<div style="font-size: 24px">  
+
+Remember that in linear regression with 1 predictor we are looking for the line that on average is closest to all point. When we have 2 predictors we are looking for the **plane** that is closest to all the points!
+
+</div>
+
+
+
+:::: {.columns}
+::: {.column width="40%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = reg_vars$Happiness_score,
+             x1 = reg_vars$Log_GDP,
+             x2 = reg_vars$Freedom,
+             dot_labels = WH_2024$Country_name,
+             axis_names = c("Happiness", 
+                            "GDP", 
+                            "Freedom"),
+             plane_res = 20,
+             reg_plane = TRUE) 
+
+```
+
+
+:::
+::: {.column width="60%"}
+
+```{r out.width = "100%"}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = reg_vars$Happiness_score,
+             x1 = reg_vars$Log_GDP,
+             x2 = reg_vars$Freedom,
+             dot_labels = WH_2024$Country_name,
+             axis_names = c("Happiness", 
+                            "GDP", 
+                            "Freedom"),
+             plane_res = 20,
+             reg_plane = TRUE) %>%  
+  bslib::card(full_screen = TRUE)
+
+```
+
+:::
+::::
+
+## Back to our friend *R* <sup>2</sup>
+
+
+
+## References 
+
+<div id="refs"> </div>
+
+

@@ -231,6 +231,12 @@ ol li::marker {
 // callouts?
 
 
+// code summary
+
+details summary {
+  color: $theme-color;
+  font-weight: 700;
+}
 
 // Code options
 
@@ -302,8 +308,8 @@ ol li::marker {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: auto; /* Ensure the width is automatic to preserve original dimensions */
-  height: auto; /* Ensure the height is automatic to preserve original dimensions */
+  // width: auto; /* Ensure the width is automatic to preserve original dimensions */
+  // height: auto; /* Ensure the height is automatic to preserve original dimensions */
   border-radius: 10%;
   background-color: $body-bg; 
   z-index: 99999;
@@ -312,7 +318,7 @@ ol li::marker {
   border-color: lighten($theme-color, 15%);
 }
 
-
+//zoom1_25xJS-active
 .zoom1_25xJS-active {
   transition: transform .3s;
   transform: translate(-50%, -50%) scale(1.25);

@@ -1,5 +1,5 @@
 
-nice_3D_plot <- function(y, x1, x2, axis_names = NULL, dot_labels = NULL, groups = NULL,  reg_plane = FALSE, plane_res = 200, ..){
+nice_3D_plot <- function(y, x1, x2, axis_names = NULL, dot_labels = NULL, groups = NULL,  reg_plane = FALSE, plane_res = 50, ...){
   
 
   
@@ -20,6 +20,13 @@ require(tidyverse, quietly = TRUE)
     axx <- list(title = "X1")
     axy <- list(title = "X2")
   }
+  
+  
+  if(is.null(dot_labels)){
+    
+    dot_labels <- paste("Row", 1:nrow(plot_dat))
+  }
+  
   
   p <- plot_ly(plot_dat,
                z = ~ plot_dat[,1],
@@ -71,16 +78,14 @@ require(tidyverse, quietly = TRUE)
                        z = round(lm_surface, 3),
                        x = round(X1_grid, 3),
                        y = round(X2_grid, 3),
-                       hovertemplate = paste0(paste0(axz[[1]], " = ", 
-                                                     as.numeric(round(coef(lm_mod)[2], 3)),"*", axx[[1]], " + ",
-                                                     as.numeric(round(coef(lm_mod)[3], 3)),"*", axy[[1]]), "<br>",
-                                              axx[[1]], ": %{x:0.} <br>",
+                       hovertemplate = paste0(axx[[1]], ": %{x:0.} <br>",
                                               axy[[1]], ": %{y:0.} <br>",
                                               axz[[1]], ": %{z:0.}"),
                        type = "surface",
                        colorscale = "Viridis",
+                       inherit = FALSE,
                        showlegend = FALSE,
-                       name = paste(axz[[1]]),
+                       name = paste("Predicted", axz[[1]]),
                        colorbar = list(title = paste(axz[[1]], "value"),
                                        len = 0.5)) 
     
@@ -96,7 +101,7 @@ require(tidyverse, quietly = TRUE)
 ### Example
 
 
-## Without Reg plane
+## Without regression Plane
 
 # plot_iris <- nice_3D_plot(y = iris$Sepal.Length,
 #                           x1 = iris$Petal.Length,
@@ -114,12 +119,10 @@ require(tidyverse, quietly = TRUE)
 
 
 # plot_iris_reg <- nice_3D_plot(y = iris$Sepal.Length,
-#                           x1 = iris$Petal.Length,
-#                           x2 = iris$Petal.Width,
-#                           dot_labels = paste("row", 1:150),
-#                           groups = iris$Species,
-#                           axis_names = c("SL", "PL", "PW"),
-#                           reg_plane = TRUE)
+#                               x1 = iris$Petal.Length,
+#                               x2 = iris$Petal.Width,
+#                               groups = iris$Species,
+#                               axis_names = c("SL", "PL", "PW"),
+#                               reg_plane = TRUE)
 # 
 # plot_iris_reg
-
