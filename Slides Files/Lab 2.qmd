@@ -136,7 +136,6 @@ describe(GPA)
 #| code-fold: true
 #| code-summary: "Plot code"
 #| code-line-numbers: false
-#| fig-dpi: 300
 
 GPA %>% 
 # When creating multiple plots at once, long data works best
@@ -188,7 +187,6 @@ ggplot(GPA,
 #| eval: true
 #| echo: false 
 #| code-line-numbers: false
-#| fig-dpi: 300
 
 ggplot(GPA,
       aes(x = act, y = year1gpa)) +
@@ -229,7 +227,6 @@ ggplot(GPA,
 #| eval: true
 #| echo: false 
 #| code-line-numbers: false
-#| fig-dpi: 300
 
 ggplot(GPA,
       aes(x = act, y = year1gpa)) +
@@ -275,7 +272,6 @@ ggplot(GPA,
 #| eval: true
 #| echo: false 
 #| code-line-numbers: false
-#| fig-dpi: 300
 
 ggplot(GPA,
       aes(x = act, y = year1gpa)) +
@@ -543,7 +539,7 @@ summary(reg)
 :::
 ::: {.column width="40%"}
 
-$$Y = b_0 + b_1X + e$$
+$$Y = b_0 + b_1X + \espilon$$
 
 <ul style="font-size: 26px">
 
@@ -555,12 +551,12 @@ $$Y = b_0 + b_1X + e$$
 
 <li>  $X$ =  the IV (`act`) </li>
 
-<li>  $e = 0.61$, the expected spread around the regression line, AKA the **residual variance**\* </li>
+<li>  $\epsilon = 0.61$, the expected spread around the regression line, AKA the **residual variance**\* </li>
 
 </ul>
 
 <div style="font-size: 22px"> 
-\***NOTE**: if you just do applied research, you will probably never have to think about $e$. However, there is great insight gained into understanding why it's there (refer to appendix)
+\***NOTE**: if you just do applied research, you will probably never have to think about $\epsilon$. However, there is great insight gained into understanding why it's there (refer to appendix)
 
 </div>
 
@@ -676,7 +672,7 @@ ggplot(GPA,
 
 <ul style="font-size: 26px">
 
-<li> The Black circles are the observed data points.</li>
+<li> The *black circles* are the observed data points.</li>
 
 </ul>
 
@@ -722,9 +718,9 @@ ggplot(GPA,
 
 <ul style="font-size: 26px">
 
-<li> The Black circles are the observed data points.</li>
+<li> The *black circles* are the observed data points.</li>
 
-<li> The red dots are the predicted values for our data points. </li>
+<li> The *red dots* are the predicted values for our data points. </li>
 
 </ul>
 
@@ -737,7 +733,7 @@ ggplot(GPA,
 #| eval: true
 #| echo: false
 #| code-line-numbers: false
-#| fig-dpi: 300
+
 
 ggplot(GPA,
        aes(x = act, y = year1gpa)) +
@@ -778,11 +774,11 @@ ggplot(GPA,
 
 <ul style="font-size: 24px">
 
-<li> The Black circles are the observed data points.</li>
+<li> The *black circles* are the observed data points.</li>
 
-<li> The red dots are the predicted values for our data points. </li>
+<li> The *red dots* are the predicted values for our data points. </li>
 
-<li> The length of the dashed lines are the residuals, which represent the difference between observed values (black circles) and predicted values (red dots) </li>
+<li> The *length of the dashed lines* are the residuals, which represent the difference between observed values (black circles) and predicted values (red dots) </li>
 
 </ul>
 
@@ -794,7 +790,6 @@ ggplot(GPA,
 #| eval: true
 #| echo: false
 #| code-line-numbers: false
-#| fig-dpi: 300
 
 ggplot(GPA,
        aes(x = act, y = year1gpa)) +
@@ -892,17 +887,136 @@ ggplot(GPA,
 ::::
 
 
-
-
-
-
-
 ## References 
 
 <div id="refs"> </div>
 
 
-## Appendix {data-visibility="uncounted"}
+# Appendix: The true Regression Model and its assumptions {data-visibility="uncounted"}
+
+
+## The "true" Regression Model
+
+You may have seen regression model formulated in different ways. Turns out, the notation can have subtle differences that changes the meaning of what you are looking at:
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+<ul style="font-size: 24px">  
+
+$Y_i = b_0 + b_1X_i + e_i$ 
+
+
+$\hat{Y_i} = b_0 + b_1X_i$ 
+
+
+$\hat{Y} = b_0 + b_1X$ 
+
+Where
+
+<li> $Y_i$: the *observed* $Y$ value of participant $i$ </li>
+
+
+<li> $\hat{Y_i}$: the *predicted* $Y$ value of participant $i$ </li>
+
+
+<li> $\hat{Y}$: the *predicted* $Y$ value (e.g., predictions on data not yet observed) </li>
+
+
+</ul>
+
+
+
+:::
+::: {.column width="50%"}
+
+Now, the "real" regression model is actually
+
+$Y \sim N(\mu = b_0 + b_1X, \sigma = \epsilon)$
+
+Equivalently, you may see this written as
+
+$Y = b_0 + b_1X + e$ where, $e \sim N(\mu = 0, \sigma = \epsilon)$
+
+
+The second formulation is more explicit about the main assumption of regression, that the residuals, $e$, are normally distributed. Let's explore a bit more...
+
+<div style="font-size: 22px"> **NOTE**: regression makes no assumption about the distribution of the predictors (i.e., $X$ need not to be normally distributed, regression does not care) </div>
+
+:::
+::::
+
+
+## The Data Generating Process
+
+On the previous slide you saw we had $Y_i$, $\hat{Y_i}$, $\hat{Y}$, and crucially, just $Y$ (). One important thing to keep in mind is that, whenever we run statistics, the question that we are asking is really...
+
+<div style="font-size: 34px"> <center> **What is the probabilistic process by which the data that I observed came into existence? (i.e., the data generating process)** </center> </div>
+
+:::: {.columns}
+::: {.column width="50%"}
+
+Likewise, regression tries to answer how your observed sample of the $Y$ random variable comes into existence. 
+
+<br>
+
+The $Y \sim N(b_0 + b_1X, \epsilon)$ (for simplicity, I dropped the $\mu$ and $\sigma$) is how linear regression thinks $Y$ crosses over the dotted line and ends up in our data. 
+:::
+::: {.column width="50%"}
+
+![](Images/data_process.png){width="76%"}
+
+:::
+::::
+
+## The Meaning of A regression model
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+The regression output was:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+summary(reg)
+```
+
+
+:::
+::: {.column width="50%"}
+
+if $Y \sim N(b_0 + b_1X, \epsilon)$ is our model...
+
+
+...what we are saying with the results on the left is that *Y* is normally distributed with 
+
+- **mean**  of $0.46 +  0.08X_{ACT}$, the $b_0 + b_1X$ part, and 
+
+- **standard deviation** of $0.61$, the $\epsilon$ (residual variance) part.
+
+but, why is this the same as saying that the residuals are normally distributed around the regression line with distribution $e \sim N(0, \epsilon)$ 🤔
+:::
+::::
+
+
+## A graphical Illustration
+
+
+
+
+
+
+
+
+
+
 
 
 

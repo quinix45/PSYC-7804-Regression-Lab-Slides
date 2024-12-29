@@ -631,7 +631,7 @@ ggplot(NY_temp,
 :::
 ::::
 
-This plot may help to get a sense of the range of a variable, but there's probably better plots...
+This plot gives a good graphical representation of the variance of a variable (I will use it again later to show something!). However, for visualizing data, we have better options...
 
 ## Histograms {auto-animate="true"}
 

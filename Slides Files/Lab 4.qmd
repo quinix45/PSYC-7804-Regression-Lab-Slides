@@ -467,6 +467,11 @@ nice_3D_plot(y = reg_vars$Happiness_score,
 
 ## Back to our friend *R* <sup>2</sup>
 
+$R^2$ is often referred to as the *variance explained* in the dependent variable. The term "variance explained" made no sense to me the first time I heard it 🤷
+
+
+
+
 
 
 ## References 

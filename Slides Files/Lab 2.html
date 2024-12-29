@@ -519,7 +519,7 @@ act      0.58</code></pre>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-5-1.png" width="3000"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -543,7 +543,7 @@ act      0.58</code></pre>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-7-1.png" width="3000"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -569,7 +569,7 @@ act      0.58</code></pre>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-9-1.png" width="3000"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -598,7 +598,7 @@ act      0.58</code></pre>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-11-1.png" width="3000"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -839,7 +839,7 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 </div>
 </div>
 </div><div class="column" style="width:40%;">
-<p><span class="math display">\[Y = b_0 + b_1X + e\]</span></p>
+<p><span class="math display">\[Y = b_0 + b_1X + \espilon\]</span></p>
 <ul style="font-size: 26px">
 <li>
 <span class="math inline">\(Y\)</span> = The DV (<code>year1gpa</code>)
@@ -854,11 +854,11 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <span class="math inline">\(X\)</span> = the IV (<code>act</code>)
 </li>
 <li>
-<span class="math inline">\(e = 0.61\)</span>, the expected spread around the regression line, AKA the <strong>residual variance</strong>*
+<span class="math inline">\(\epsilon = 0.61\)</span>, the expected spread around the regression line, AKA the <strong>residual variance</strong>*
 </li>
 </ul>
 <div style="font-size: 22px">
-<p>*<strong>NOTE</strong>: if you just do applied research, you will probably never have to think about <span class="math inline">\(e\)</span>. However, there is great insight gained into understanding why it’s there (refer to appendix)</p>
+<p>*<strong>NOTE</strong>: if you just do applied research, you will probably never have to think about <span class="math inline">\(\epsilon\)</span>. However, there is great insight gained into understanding why it’s there (refer to appendix)</p>
 </div>
 </div></div>
 </section>
@@ -960,7 +960,7 @@ These are the differences between the <em>predicted</em> values of <span class="
 </div>
 <ul style="font-size: 26px">
 <li>
-The Black circles are the observed data points.
+The <em>black circles</em> are the observed data points.
 </li>
 </ul>
 </div><div class="column" style="width:70%;">
@@ -988,10 +988,10 @@ The Black circles are the observed data points.
 </div>
 <ul style="font-size: 26px">
 <li>
-The Black circles are the observed data points.
+The <em>black circles</em> are the observed data points.
 </li>
 <li>
-The red dots are the predicted values for our data points.
+The <em>red dots</em> are the predicted values for our data points.
 </li>
 </ul>
 </div><div class="column" style="width:70%;">
@@ -999,7 +999,7 @@ The red dots are the predicted values for our data points.
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-29-1.png" width="3000"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-29-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1025,13 +1025,13 @@ The red dots are the predicted values for our data points.
 </div>
 <ul style="font-size: 24px">
 <li>
-The Black circles are the observed data points.
+The <em>black circles</em> are the observed data points.
 </li>
 <li>
-The red dots are the predicted values for our data points.
+The <em>red dots</em> are the predicted values for our data points.
 </li>
 <li>
-The length of the dashed lines are the residuals, which represent the difference between observed values (black circles) and predicted values (red dots)
+The <em>length of the dashed lines</em> are the residuals, which represent the difference between observed values (black circles) and predicted values (red dots)
 </li>
 </ul>
 </div><div class="column" style="width:70%;">
@@ -1039,7 +1039,7 @@ The length of the dashed lines are the residuals, which represent the difference
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-31-1.png" width="3000"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-31-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1111,14 +1111,103 @@ Wickham, H., &amp; RStudio. (2023). <em>Tidyverse: <span>Easily Install</span> a
 </div>
 </div>
 </section>
-<section id="appendix" class="slide level2" data-visibility="uncounted">
-<h2>Appendix</h2>
+<section>
+<section id="appendix-the-true-regression-model-and-its-assumptions" class="title-slide slide level1 center" data-visibility="uncounted">
+<h1>Appendix: The true Regression Model and its assumptions</h1>
+
+</section>
+<section id="the-true-regression-model" class="slide level2">
+<h2>The “true” Regression Model</h2>
+<p>You may have seen regression model formulated in different ways. Turns out, the notation can have subtle differences that changes the meaning of what you are looking at:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul style="font-size: 24px">
+<p><span class="math inline">\(Y_i = b_0 + b_1X_i + e_i\)</span></p>
+<p><span class="math inline">\(\hat{Y_i} = b_0 + b_1X_i\)</span></p>
+<p><span class="math inline">\(\hat{Y} = b_0 + b_1X\)</span></p>
+<p>Where</p>
+<li>
+<span class="math inline">\(Y_i\)</span>: the <em>observed</em> <span class="math inline">\(Y\)</span> value of participant <span class="math inline">\(i\)</span>
+</li>
+<li>
+<span class="math inline">\(\hat{Y_i}\)</span>: the <em>predicted</em> <span class="math inline">\(Y\)</span> value of participant <span class="math inline">\(i\)</span>
+</li>
+<li>
+<span class="math inline">\(\hat{Y}\)</span>: the <em>predicted</em> <span class="math inline">\(Y\)</span> value (e.g., predictions on data not yet observed)
+</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p>Now, the “real” regression model is actually</p>
+<p><span class="math inline">\(Y \sim N(\mu = b_0 + b_1X, \sigma = \epsilon)\)</span></p>
+<p>Equivalently, you may see this written as</p>
+<p><span class="math inline">\(Y = b_0 + b_1X + e\)</span> where, <span class="math inline">\(e \sim N(\mu = 0, \sigma = \epsilon)\)</span></p>
+<p>The second formulation is more explicit about the main assumption of regression, that the residuals, <span class="math inline">\(e\)</span>, are normally distributed. Let’s explore a bit more…</p>
+<div style="font-size: 22px">
+<strong>NOTE</strong>: regression makes no assumption about the distribution of the predictors (i.e., <span class="math inline">\(X\)</span> need not to be normally distributed, regression does not care)
+</div>
+</div></div>
+</section>
+<section id="the-data-generating-process" class="slide level2">
+<h2>The Data Generating Process</h2>
+<p>On the previous slide you saw we had <span class="math inline">\(Y_i\)</span>, <span class="math inline">\(\hat{Y_i}\)</span>, <span class="math inline">\(\hat{Y}\)</span>, and crucially, just <span class="math inline">\(Y\)</span> (). One important thing to keep in mind is that, whenever we run statistics, the question that we are asking is really…</p>
+<div style="font-size: 34px">
+<center>
+<strong>What is the probabilistic process by which the data that I observed came into existence? (i.e., the data generating process)</strong>
+</center>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Likewise, regression tries to answer how your observed sample of the <span class="math inline">\(Y\)</span> random variable comes into existence.</p>
+<p><br></p>
+<p>The <span class="math inline">\(Y \sim N(b_0 + b_1X, \epsilon)\)</span> (for simplicity, I dropped the <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>) is how linear regression thinks <span class="math inline">\(Y\)</span> crosses over the dotted line and ends up in our data.</p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="Images/data_process.png" style="width:76.0%"></p>
+</div></div>
+</section>
+<section id="the-meaning-of-a-regression-model" class="slide level2">
+<h2>The Meaning of A regression model</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>The regression output was:</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = year1gpa ~ act, data = GPA)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.49728 -0.32916  0.02715  0.31914  0.99612 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)  0.46452    1.32082   0.352    0.729
+act          0.08886    0.05417   1.640    0.118
+
+Residual standard error: 0.6123 on 18 degrees of freedom
+Multiple R-squared:  0.1301,    Adjusted R-squared:  0.08172 
+F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>if <span class="math inline">\(Y \sim N(b_0 + b_1X, \epsilon)\)</span> is our model…</p>
+<p>…what we are saying with the results on the left is that <em>Y</em> is normally distributed with</p>
+<ul>
+<li><p><strong>mean</strong> of <span class="math inline">\(0.46 +  0.08X_{ACT}\)</span>, the <span class="math inline">\(b_0 + b_1X\)</span> part, and</p></li>
+<li><p><strong>standard deviation</strong> of <span class="math inline">\(0.61\)</span>, the <span class="math inline">\(\epsilon\)</span> (residual variance) part.</p></li>
+</ul>
+<p>but, why is this the same as saying that the residuals are normally distributed around the regression line with distribution <span class="math inline">\(e \sim N(0, \epsilon)\)</span> 🤔</p>
+</div></div>
+</section>
+<section id="a-graphical-illustration" class="slide level2">
+<h2>A graphical Illustration</h2>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p>Lab 2: One-predictor Regression</p>
 </div>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 
