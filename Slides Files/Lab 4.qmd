@@ -6,6 +6,7 @@ bibliography: Additional files/R packages.bib
 csl: Additional files/apa.csl
 title-slide-attributes:
   data-transition: "zoom"
+  data-visibility: "uncounted"
 format:
    revealjs:
       footer: "Lab 4: Two-Predictor Regression Part 1"
@@ -445,7 +446,6 @@ nice_3D_plot(y = reg_vars$Happiness_score,
 ::: {.callout-note title="Question?"}
 If this is the representation of regression with 2 predictors, what happens once we have 3 or more predictors? Can we visualize that? 
 :::
-
 
 :::
 ::: {.column width="60%"}

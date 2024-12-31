@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.5.57">
 
   <meta name="author" content="Fabio Setti">
-  <title>Lab 5: Two-Predictor Regression Part 2</title>
+  <title>Lab 5: Added Variable Plots and Bootstrapping</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -29,7 +29,92 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-  </style>
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="Lab 5_files/libs/revealjs/dist/theme/quarto.css">
   <link href="Lab 5_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="Lab 5_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -328,8 +413,8 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-transition="zoom" class="quarto-title-block center">
-  <h1 class="title">Lab 5: Two-Predictor Regression Part 2</h1>
+<section id="title-slide" data-transition="zoom" data-visibility="uncounted" class="quarto-title-block center">
+  <h1 class="title">Lab 5: Added Variable Plots and Bootstrapping</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -343,11 +428,288 @@ Fabio Setti
 </div>
 
 </section>
-<section class="slide level2">
+<section id="data-for-today" class="slide level2">
+<h2>Data for Today</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Let’s continue with the example from <a href="https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%204.html" target="_blank">Lab 4</a></p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>WH_2024 <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/World_happiness_2024.csv"</span>)</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># let's peak at our variables</span></span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(WH_2024, <span class="at">vec.len =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   140 obs. of  9 variables:
+ $ Country_name           : chr  "Finland" "Denmark" ...
+ $ Region                 : chr  "Western Europe" "Western Europe" ...
+ $ Happiness_score        : num  7.74 7.58 ...
+ $ Log_GDP                : num  1.84 1.91 ...
+ $ Social_support         : num  1.57 1.52 ...
+ $ Healthy_life_expectancy: num  0.695 0.699 0.718 0.724 0.74 ...
+ $ Freedom                : num  0.859 0.823 0.819 0.838 0.641 ...
+ $ Generosity             : num  0.142 0.204 0.258 0.221 0.153 ...
+ $ Corruption             : num  0.454 0.452 0.818 0.476 0.807 ...</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># not needed, but makes things cleaner</span></span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>reg_vars <span class="ot">&lt;-</span> WH_2024[, <span class="fu">c</span>(<span class="st">"Happiness_score"</span>,</span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"Log_GDP"</span>,</span>
+<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"Freedom"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">14</span>, </span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">base_family =</span> <span class="st">'serif'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></div>
+</section>
+<section id="partial-regression-coefficients" class="slide level2">
+<h2>Partial regression coefficients</h2>
+<p>In lab 4, we used <code>Log_GDP</code> and <code>Freedom</code> to predict <code>Happiness_score</code>. We observed that the results were very different when we use both variables together compared to when we look at them separately</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>The intercept and slopes with both predictors in the model</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_full <span class="ot">&lt;-</span> <span class="fu">lm</span>(Happiness_score <span class="sc">~</span> Log_GDP <span class="sc">+</span> Freedom, </span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>          reg_vars)</span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(reg_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     Log_GDP     Freedom 
+   1.437184    1.682053    2.859202 </code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>The intercept and slopes with separate models with one predictor are quite different</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_free <span class="ot">&lt;-</span> <span class="fu">lm</span>(Happiness_score <span class="sc">~</span> Freedom, </span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>              reg_vars)</span>
+<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(reg_free)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     Freedom 
+   2.623351    4.684888 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_GDP <span class="ot">&lt;-</span> <span class="fu">lm</span>(Happiness_score <span class="sc">~</span> Log_GDP, </span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>              reg_vars)</span>
+<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(reg_GDP)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     Log_GDP 
+   2.586466    2.135488 </code></pre>
+</div>
+</div>
+</div></div>
+<p><br></p>
+<p>The catch is that the model that includes both predictors calculates <strong>partial regression coefficients</strong>.</p>
+</section>
+<section id="manually-calculate-partial-regression-coefficients" class="slide level2">
+<h2>“Manually” Calculate partial regression coefficients</h2>
+<p>Personally, the concept of <strong>partial regression coefficients</strong> starts making sense once I “computed” them myself and see what is going on behind the scenes.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Partial regression coefficient for <code>Log_GDP</code></p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>resid_happy_Free <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(Happiness_score <span class="sc">~</span> Freedom, </span>
+<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a>               reg_vars))</span>
+<span id="cb11-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="" aria-hidden="true" tabindex="-1"></a>resid_GDP <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(Log_GDP <span class="sc">~</span> Freedom, </span>
+<span id="cb11-5"><a href="" aria-hidden="true" tabindex="-1"></a>              reg_vars))</span>
+<span id="cb11-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the 0 + takes out the intercept, which is exactly 0 anyway in this case </span></span>
+<span id="cb11-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(resid_happy_Free <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> resid_GDP))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>resid_GDP 
+ 1.682053 </code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Partial regression coefficient for <code>Freedom</code></p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a>resid_happy_GDP <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(Happiness_score <span class="sc">~</span> Log_GDP, </span>
+<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a>               reg_vars))</span>
+<span id="cb13-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="" aria-hidden="true" tabindex="-1"></a>resid_Free <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(Freedom <span class="sc">~</span> Log_GDP, </span>
+<span id="cb13-5"><a href="" aria-hidden="true" tabindex="-1"></a>              reg_vars))</span>
+<span id="cb13-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the 0 + takes out the intercept, which is exactly 0 anyway in this case </span></span>
+<span id="cb13-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(resid_happy_GDP <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> resid_Free))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>resid_Free 
+  2.859202 </code></pre>
+</div>
+</div>
+</div></div>
+<p>So, when you run multiple regression, all your slopes are calculated based on the residuals <em>after accounting for all the other variables in the model</em>.</p>
+</section>
+<section id="added-variable-plots" class="slide level2">
+<h2>Added variable plots</h2>
+<p>Then, added variables plots are simply plots between the residuals of one the predictor and <span class="math inline">\(Y\)</span> that result by taking out the variance explained by all the other variables.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> resid_happy_Free, </span>
+<span id="cb15-3"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> resid_GDP))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-5_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> resid_happy_GDP, </span>
+<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> resid_Free))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-5_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<p>The slopes that you get when you include both predictors are the slopes for the lines of best fit these 2 plots.</p>
+</section>
+<section id="the-quick-way-avplots-function-from-car" class="slide level2">
+<h2>The Quick way: <code>avPlots()</code> function from <code>car</code></h2>
+<div class="columns">
+<div class="column" style="width:75%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">avPlots</span>(reg_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-5_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:25%;">
+<p>To get added variable plots in practice you would use the <code>avPlot()</code> function.</p>
+<p>When you have more than 2 predictors, it is not possible to build a visualization of all variables at once like a 3D plot. Added variable plots can help you visualize regression results no matter the number of predictors!</p>
+</div></div>
+</section>
+<section id="bootstrapping" class="slide level2">
+<h2>Bootstrapping</h2>
+<p>Bootstrapping <span class="citation" data-cites="efronBootstrapMethodsAnother1977">(<a href="#/references" role="doc-biblioref" onclick="">Efron, 1977</a>)</span> is a really smart idea to avoid doing math! You probably have seen some complicated equations that need to be derived to calculate confidence intervals for statistics (e.g., see <a href="https://agleontyev.netlify.app/post/2019-09-05-calculating-r-squared-confidence-intervals/" target="_blank">here</a> fro the 95% CI of <span class="math inline">\(R^2\)</span>).</p>
+<p>Turns out that even more complex math goes behind figuring out the complicated equations 😱 Usually, that involves figuring out what is the theoretical sampling distribution of a certain statistic for an infinite number of experiments.</p>
+<p>Instead bootstrapping says:</p>
+<p><img data-src="Images/bootstrap_diagram.png"></p>
+</section>
+<section id="by-hand-example-of-bootstrapping" class="slide level2">
+<h2>“By Hand” Example of Bootstrapping</h2>
+<p>As always, we can do things ourselves to get a better understanding of the process.</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell code-125">
+<details class="code-fold">
+<summary>Bootstrap <span class="math inline">\(R^2\)</span> code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a>r_squared <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">34677</span>)</span>
+<span id="cb18-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2000</span>){</span>
+<span id="cb18-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># sample from data </span></span>
+<span id="cb18-8"><a href="" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(reg_vars), </span>
+<span id="cb18-9"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">replace =</span> <span class="cn">TRUE</span>)  </span>
+<span id="cb18-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="" aria-hidden="true" tabindex="-1"></a>dat_boot <span class="ot">&lt;-</span> reg_vars[sample,]</span>
+<span id="cb18-12"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Run regression</span></span>
+<span id="cb18-14"><a href="" aria-hidden="true" tabindex="-1"></a>reg_boot <span class="ot">&lt;-</span> <span class="fu">lm</span>(Happiness_score <span class="sc">~</span> Log_GDP <span class="sc">+</span> Freedom, </span>
+<span id="cb18-15"><a href="" aria-hidden="true" tabindex="-1"></a>               dat_boot)  </span>
+<span id="cb18-16"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Save R^2</span></span>
+<span id="cb18-18"><a href="" aria-hidden="true" tabindex="-1"></a>r_squared[i] <span class="ot">&lt;-</span> <span class="fu">summary</span>(reg_boot)<span class="sc">$</span>r.squared</span>
+<span id="cb18-19"><a href="" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div style="font-size: 24px">
+<p>There is a lot of value in understanding how the code above works, but the main point is that we are running the same regression 2000 times with a different sample from our data, and then saving the <span class="math inline">\(R^2\)</span> that we get every time.</p>
+</div>
+<p>The <span class="math inline">\(R^2\)</span> from our regression with both variables was</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_full)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7186638</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:60%;">
+<p>If we look out the distribution of the all the 2000 <span class="math inline">\(R^2\)</span> we get</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># need to run bootstrap code on the left first</span></span>
+<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(r_squared)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-5_files/figure-revealjs/unnamed-chunk-13-1.png" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(r_squared, <span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">5</span>, .<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     2.5%       50%     97.5% 
+0.6131015 0.7291690 0.8139789 </code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="the-quick-way-boot-function-from-car" class="slide level2">
+<h2>The Quick way: <code>Boot()</code> function from <code>car</code></h2>
+<p>Once again, the <code>car</code> package comes to the rescue</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">875</span>)</span>
+<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a>boot_model <span class="ot">&lt;-</span> car<span class="sc">::</span><span class="fu">Boot</span>(reg_full, <span class="at">R =</span> <span class="dv">2000</span>)</span>
+<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(boot_model, <span class="at">type =</span> <span class="st">"perc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bootstrap percent confidence intervals
 
+                2.5 %   97.5 %
+(Intercept) 0.8712328 1.993144
+Log_GDP     1.2646729 2.094521
+Freedom     1.8735919 3.724216</code></pre>
+</div>
+</div>
+<p>The confidence interval for <span class="math inline">\(R^2\)</span> is a bit annoying to get from <code>car</code>, so here we just have the CIs for intercept and slopes</p>
+</div><div class="column" style="width:50%;">
+<p>These are our normal confidence intervals from the regression:</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(reg_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                2.5 %   97.5 %
+(Intercept) 0.9769482 1.897419
+Log_GDP     1.4083851 1.955721
+Freedom     2.1432532 3.575151</code></pre>
+</div>
+</div>
+</div></div>
+<p>Bootstrapping becomes more and more accurate as sample size increases. Here it may not be as accurate because we only have 140 observations, although it seems to do alright.</p>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-efronBootstrapMethodsAnother1977" class="csl-entry" role="listitem">
+Efron, B. (1977). Bootstrap <span>Methods</span>: <span>Another Look</span> at the <span>Jackknife</span>. In S. Kotz &amp; N. L. Johnson (Eds.), <em>Breakthroughs in <span>Statistics</span>: <span>Methodology</span> and <span>Distribution</span></em> (pp. 569–593). Springer. <a href="https://doi.org/10.1007/978-1-4612-4380-9_41">https://doi.org/10.1007/978-1-4612-4380-9_41</a>
+</div>
+<div id="ref-Fox_etal_2024" class="csl-entry" role="listitem">
+Fox, J., Weisberg, S., Price, B., Adler, D., Bates, D., Baud-Bovy, G., Bolker, B., Ellison, S., Firth, D., Friendly, M., Gorjanc, G., Graves, S., Heiberger, R., Krivitsky, P., Laboissiere, R., Maechler, M., Monette, G., Murdoch, D., Nilsson, H., … R-Core. (2024). <em>Car: <span>Companion</span> to <span>Applied Regression</span></em> (Version 3.1-3) [Computer software]. <a href="https://cran.r-project.org/web/packages/car/index.html">https://cran.r-project.org/web/packages/car/index.html</a>
+</div>
+</div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
-<p>Lab 5: Two-Predictor Regression Part 2</p>
+<p>Lab 5: Added Variable Plots and Bootstrapping</p>
 </div>
 </div>
 </section>
@@ -563,6 +925,82 @@ Fabio Setti
         ]
       });
     </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

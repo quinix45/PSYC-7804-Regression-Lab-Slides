@@ -6,6 +6,7 @@ bibliography: Additional files/R packages.bib
 csl: Additional files/apa.csl
 title-slide-attributes:
   data-transition: "zoom"
+  data-visibility: "uncounted"
 format:
    revealjs:
       footer: "Lab 7: Multicollinearity, Suppression, Dominance Analysis"
