@@ -994,27 +994,116 @@ summary(reg)
 
 if $Y \sim N(b_0 + b_1X, \epsilon)$ is our model...
 
-
-...what we are saying with the results on the left is that *Y* is normally distributed with 
+...what we are saying with the results on the left is that $Y$ is normally distributed with 
 
 - **mean**  of $0.46 +  0.08X_{ACT}$, the $b_0 + b_1X$ part, and 
 
 - **standard deviation** of $0.61$, the $\epsilon$ (residual variance) part.
 
-but, why is this the same as saying that the residuals are normally distributed around the regression line with distribution $e \sim N(0, \epsilon)$ 🤔
+
+Let's see a graphical representation!
+:::
+::::
+
+## A graphical representation
+
+Since our regression model is just our assumption about how $Y$ is distributed, we can simulate $Y$ according how our model:
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+Simulate $Y$ data based on our regression
+
+```{r}
+
+intercept <-  0.46452446 
+slope <- 0.08886497
+residual_var <- 0.6123024
+
+set.seed(1457)
+act_sim <- rnorm(1000, mean = mean(GPA$act),
+                 sd = sd(GPA$act))
+
+act_sim <- runif(1000, 10, 30)
+
+
+Y_simulated <- rnorm(1000, 
+                     mean = intercept + slope*act_sim,
+                     sd = residual_var)
+
+summary(lm(Y_simulated ~ act_sim))
+
+plot(Y_simulated, act_sim)
+```
+
+
+
+
+
+:::
+::: {.column width="50%"}
+
 :::
 ::::
 
 
-## A graphical Illustration
+```{r}
+
+```
 
 
+## Predictable and Unpredictable Parts
+
+You think of the normal distribution as a predictable and unpredictable part. The predictable part is the mean, whereas the unpredictable part is the standard deviation. 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+For example, if I generate data from a normal distribution with 0 standard deviation
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# generate 5 observations from N~(2, 0)
+rnorm(5, mean = 2, sd = 0)
+```
+
+The outcome is fully predictable, and we always get 2. 
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
 
+set.seed(2356)
+
+# add randomness to observations on the left
+
+rnorm(5, mean = 2, sd = 0) + 
+rnorm(5, mean = 0, sd = 4) 
+
+# the two lines above are equivalent to just
+# set.seed(2356)
+# rnorm(5, mean = 2, sd = 4) 
 
 
+```
 
+In contrast, here we know that our values will be centered around 2, the mean. However, there is unpredictable randomness introduced by the standard deviation of 4. 
 
+:::
+::::
+
+In regression, we swap the mean of the normal distribution for the **regression line** (predictable part), and the randomness for $\epsilon$, the residual variance (unpredictable part). 
 
 
 

@@ -366,7 +366,7 @@ Now that we are dealing with 3 variables (`Log_GDP`, `Freedom`, `Happiness_score
 
 The 2D plots from the previous slide are just the *sides of the box* 🤓
 
-I made a function for interactive 3D plot. It has a bunch of useful features that I will show later
+I made a function for making interactive 3D plots easily 
 
 ```{r}
 #| eval: false
@@ -374,6 +374,8 @@ I made a function for interactive 3D plot. It has a bunch of useful features tha
 #| code-line-numbers: false
 #| classes: code-125
 
+
+# load the function
 source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
 
 nice_3D_plot(y = reg_vars$Happiness_score,
@@ -417,7 +419,6 @@ Remember that in linear regression with 1 predictor we are looking for the line 
 </div>
 
 
-
 :::: {.columns}
 ::: {.column width="40%"}
 
@@ -435,9 +436,15 @@ nice_3D_plot(y = reg_vars$Happiness_score,
                             "GDP", 
                             "Freedom"),
              plane_res = 20,
+             # add regression plane
              reg_plane = TRUE) 
 
 ```
+
+
+::: {.callout-note title="Question?"}
+If this is the representation of regression with 2 predictors, what happens once we have 3 or more predictors? Can we visualize that? 
+:::
 
 
 :::
@@ -465,17 +472,478 @@ nice_3D_plot(y = reg_vars$Happiness_score,
 :::
 ::::
 
+
+## Interpretation of Results
+
+Now that we know what we are actually looking at, let's interpret the output
+
+:::: {.columns}
+::: {.column width="40%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| 
+summary(reg_full)
+```
+:::
+::: {.column width="60%"}
+
+<ul style="font-size: 24px">  
+
+$\widehat{\mathrm{Happiness}} = 1.44 + 1.68\times \mathrm{Log\_GDP} + 2.86\times \mathrm{Freedom}$
+
+<br>
+
+
+<li> $b_0 = 1.44$: the expected `happpiness_score` when `GDP` and `Freedom` are at 0.  </li>
+
+<li> $b_1 = 1.68$: the expected increase in `happpiness_score` per each 1-unit increase in `Log_GDP` when accounting for `Freedom`.  </li>
+
+<li> $b_2 = 2.86$: the expected increase in `happpiness_score` per each 1-unit increase in `Freedom` when accounting for `GDP`.  </li>
+
+</ul>
+
+
+
+:::
+::::
+
+
 ## Back to our friend *R* <sup>2</sup>
 
-$R^2$ is often referred to as the *variance explained* in the dependent variable. The term "variance explained" made no sense to me the first time I heard it 🤷
+You can think of variance as how unpredictable something is. Higher variance means more unpredictability. At the same time, no variance means perfect predictability!
 
 
+:::: {.columns}
+::: {.column width="50%"}
+
+For example, if you generate data for a variable that has 0 variance, you always get the mean
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+rnorm(n = 5, 
+      mean = 2, 
+      sd = 0)
+```
+Here, if we predict 2 we are always right, because the variable has no variance and is perfectly predictable. 
+
+:::
+::: {.column width="50%"}
+
+Let's return to our 1D scatterplot, and let's visualize the variance of the `Happiness_score` 
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+
+ggplot(reg_vars,  
+       aes(x = Happiness_score, y = 0)) +
+       geom_point(shape = 1, 
+                  size=6.5) +
+      annotate("text", x = 4.7, y = .02, 
+             label = "Variance of Happiness_score") +
+xlim(1.5, 8.2) +
+    ylim(-.1, .03) +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+
+:::
+::::
 
 
+## Variance of Residuals after regression {auto-animate="true"}
+
+Although this may not sound very intuitive, you should think of residuals as a new version of your $Y$ variable, but with some unpredictability taken out thanks to our regression line. Less unpredictability means *lower variance*
+
+
+:::: {.columns}
+::: {.column width="30%"}
+
+On the left, we have the residuals of `Happiness_score` after using `freedom` as predictor
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+
+ggplot(reg_vars,  
+       aes(x = Happiness_score, y = 0)) +
+       geom_point(shape = 1, 
+                  size=4.5) +
+      annotate("text", x = 4.7, y = .02, 
+             label = "Variance of Happiness_score") +
+  geom_point(aes(x = residuals(reg_free) + 
+                       # add mean to have residuals on same scale as 
+                       # previous graph (variance remains the same)
+                         mean(reg_vars$Happiness_score), 
+                     y = -.05),
+             shape = 1,
+             size = 4.5, color = "blue") +
+        annotate("text", x = 4.7, y = -0.03, 
+             label = "Residual Variance of Happiness_score after using freedom as predictor", color = "blue") +
+xlim(1.5, 8.2) +
+    ylim(-.1, .03) +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+
+
+Much less spread out, right?
+:::
+
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+ggplot(reg_vars,  
+       aes(x = Happiness_score, y = 0)) +
+       geom_point(shape = 1, 
+                  size=4.5) +
+      annotate("text", x = 4.7, y = .02, 
+             label = "Variance of Happiness_score") +
+  geom_point(aes(x = residuals(reg_free) + 
+                       # add mean to have residuals on same scale as 
+                       # previous graph (variance remains the same)
+                         mean(reg_vars$Happiness_score), 
+                     y = -.05),
+             shape = 1,
+             size = 4.5, color = "blue") +
+        annotate("text", x = 4.7, y = -0.03, 
+             label = "Residual Variance of Happiness_score after using freedom as predictor", color = "blue") +
+xlim(1.5, 8.2) +
+    ylim(-.1, .03) +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+:::
+::::
+
+
+## Variance of Residuals after Regression {auto-animate="true" data-visibility="uncounted"}
+
+Although this may not sound very intuitive, you should think of residuals as a new version of your $Y$ variable, but with some unpredictability taken out thanks to our regression line. Less unpredictability means *lower variance*
+
+:::: {.columns}
+::: {.column width="30%"}
+
+Now, after we add both `freedom` and `GDP` as predictors, we se that the dots are even less spread out
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+
+ggplot(reg_vars,  
+       aes(x = Happiness_score, y = 0)) +
+       geom_point(shape = 1, 
+                  size=4.5)+
+      annotate("text", x = 4.7, y = .02, 
+             label = "Variance of Happiness_score") +
+  geom_point(aes(x = residuals(reg_free) + 
+                       # add mean to have residuals on same scale as 
+                       # original variable (variance remains the same)
+                         mean(reg_vars$Happiness_score), 
+                     y = -.05),
+             shape = 1,
+             size = 4.5, color = "blue")  +
+        annotate("text", x = 4.7, y = -0.03, 
+             label = "Residual Variance of Happiness_score after using freedom as predictor", color = "blue") +
+  geom_point(aes(x = residuals(reg_full) + 
+                       # add mean to have residuals on same scale as 
+                       # original variable (variance remains the same)
+                         mean(reg_vars$Happiness_score), 
+                     y = -.1),
+             shape = 1,
+             size = 4.5, color = "red") +
+  annotate("text", x = 4.7, y = -0.08, 
+             label = "Residual Variance of Happiness_score after using freedom  and GPD as predictors", color = "red") +
+xlim(1.5, 8.2) +
+    ylim(-.1, .03) +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+
+The red dots are even less spread out than the blue ones!
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+
+ggplot(reg_vars,  
+       aes(x = Happiness_score, y = 0)) +
+       geom_point(shape = 1, 
+                  size=4.5)+
+      annotate("text", x = 4.7, y = .02, 
+             label = "Variance of Happiness_score") +
+  geom_point(aes(x = residuals(reg_free) + 
+                       # add mean to have residuals on same scale as 
+                       # original variable (variance remains the same)
+                         mean(reg_vars$Happiness_score), 
+                     y = -.05),
+             shape = 1,
+             size = 4.5, color = "blue")  +
+        annotate("text", x = 4.7, y = -0.03, 
+             label = "Residual Variance of Happiness_score after using freedom as predictor", color = "blue") +
+  geom_point(aes(x = residuals(reg_full) + 
+                       # add mean to have residuals on same scale as 
+                       # original variable (variance remains the same)
+                         mean(reg_vars$Happiness_score), 
+                     y = -.1),
+             shape = 1,
+             size = 4.5, color = "red") +
+  annotate("text", x = 4.7, y = -0.08, 
+             label = "Residual Variance of Happiness_score after using freedom  and GPD as predictors", color = "red") +
+xlim(1.5, 8.2) +
+    ylim(-.1, .03) +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+
+:::
+::::
+
+## Variance Explained
+
+As we saw previously, the more variables we added, the less spread out our residuals were. A part of the variance of the original variable was *explained by our predictors*. 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+The variances of the three lines were respectively:
+
+<ol style="font-size: 22px">  
+
+<li> Variance of `happiness_score`</li>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+var(reg_vars$Happiness_score)
+```
+<li> Variance of `happiness_score` after using `freedom` as a predictor was </li>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+var(residuals(reg_free))
+```
+
+<li> Variance of `happiness_score` after using both `freedom` and `GDP` as a predictors was </li>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+var(residuals(reg_full))
+```
+
+</ol>
+:::
+
+
+::: {.column width="50%"}
+
+
+<center>
+
+We can easily calculate $R^2$ by hand 
+
+<ul style="font-size: 22px">  
+
+<li> $R^2$ after using `freedom` as a predictor </li>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-150
+
+1 - (0.8158336/1.395344)
+```
+
+<li> $R^2$ after using `freedom` and `GDP` as predictors  </li>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+1 - (0.3925608/1.395344)
+```
+
+and we can check that our hand calculation match the regression output
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+summary(reg_free)$r.squared
+summary(reg_full)$r.squared
+```
+
+</ul>
+</center>
+:::
+::::
 
 
 ## References 
 
 <div id="refs"> </div>
+
+
+# Appendix: Adding Groups to 3D plots
+
+
+## Example with World Happiness Data
+
+You can also add groups to the dots of the 3D plot. Here I am using `Region`.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = reg_vars$Happiness_score,
+             x1 = reg_vars$Log_GDP,
+             x2 = reg_vars$Freedom,
+             dot_labels = WH_2024$Country_name,
+             # add groups
+             groups = WH_2024$Region,
+             axis_names = c("Happiness", 
+                            "GDP", 
+                            "Freedom"),
+             plane_res = 20,
+             reg_plane = FALSE)
+
+```
+
+
+There are a bit too many regions, so this is not very practical in this case, but this just an example.
+
+:::
+
+
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = reg_vars$Happiness_score,
+                            x1 = reg_vars$Log_GDP,
+                            x2 = reg_vars$Freedom,
+                            dot_labels = WH_2024$Country_name,
+                            groups = WH_2024$Region,
+                              axis_names = c("Happiness", 
+                                             "GDP", 
+                                             "Freedom"),
+                              plane_res = 20,
+                              reg_plane = FALSE) %>%  
+                    bslib::card(full_screen = TRUE)
+
+```
+
+:::
+::::
+
+## Example with iris Data
+
+A more practical example with the [iris](https://en.wikipedia.org/wiki/Iris_flower_data_set){target="_blank"} dataset, which is always loaded into R. 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             groups = iris$Species,
+             axis_names = c("SL", "PL", "PW"),
+             reg_plane = FALSE)
+```
+
+You can also still add a regression plane with `reg_plane = TRUE`. 
+
+:::
+::: {.column width="50%"}
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             groups = iris$Species,
+             axis_names = c("SL", "PL", "PW"),
+             reg_plane = FALSE) %>%  
+             bslib::card(full_screen = TRUE)
+```
+
+:::
+::::
+
+
+
+
 
 

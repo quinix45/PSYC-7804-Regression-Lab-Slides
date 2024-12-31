@@ -381,7 +381,7 @@ ggplot(NY_temp,
 
 ## GGplot Step by step {auto-animate="true" data-visibility="uncounted"}
 
-We use one of the `geom_...()` function do add shapes to our plot.
+We use one of the `geom_...()` functions to add shapes to our plot.
 
 :::: {.columns}
 ::: {.column width="30%"}
@@ -415,7 +415,6 @@ ggplot(NY_temp,
 
 :::
 ::::
-
 
 
 ## GGplot Step by step {auto-animate="true" data-visibility="uncounted"}
