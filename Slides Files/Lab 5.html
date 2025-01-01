@@ -697,6 +697,40 @@ Freedom     2.1432532 3.575151</code></pre>
 </div></div>
 <p>Bootstrapping becomes more and more accurate as sample size increases. Here it may not be as accurate because we only have 140 observations, although it seems to do alright.</p>
 </section>
+<section id="visualizing-bootstrap-results" class="slide level2">
+<h2>Visualizing Bootstrap Results</h2>
+<p>You can also visualize the distribution of the bootstrapped samples for the regression slopes.</p>
+<div style="font-size: 22px; padding-bottom: 6px;">
+<strong>NOTE</strong>: You need to provide the names of the regression slopes as shown in the <code>summary()</code> out through the <code>parm=</code> argument
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(boot_model, </span>
+<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a>     <span class="at">parm =</span> <span class="st">"Log_GDP"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-5_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(boot_model, </span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a>     <span class="at">parm =</span> <span class="st">"Freedom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-5_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<p>Notice that the bootstrap samples are very normally distributed. This is almost always the case for regression slopes. In contrast, statistics like <span class="math inline">\(R^2\)</span> will not be normally distributed as we saw 2 slides ago.</p>
+</section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">

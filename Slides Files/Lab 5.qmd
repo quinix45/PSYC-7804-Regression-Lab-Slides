@@ -335,8 +335,6 @@ hist(r_squared)
 quantile(r_squared, c(.025, .5, .975))
 
 ```
-
-
 :::
 ::::
 
@@ -380,9 +378,76 @@ confint(reg_full)
 Bootstrapping becomes more and more accurate as sample size increases. Here it may not be as accurate because we only have 140 observations, although it seems to do alright.
 
 
+## Visualizing Bootstrap Results
+
+You can also visualize the distribution of the bootstrapped samples for the regression slopes.
+
+<div style="font-size: 22px; padding-bottom: 6px;"> **NOTE**: You need to provide the names of the regression slopes as shown in the `summary()` out through the `parm=` argument 
+ </div>
+
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+hist(boot_model, 
+     parm = "Log_GDP")
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+hist(boot_model, 
+     parm = "Freedom")
+```
+
+:::
+::::
+
+Notice that the bootstrap samples are very normally distributed. This is almost always the case for regression slopes. In contrast, statistics like $R^2$ will not be normally distributed as we saw 2 slides ago. 
+
+
+
+
 ## References 
 
 <div id="refs"> </div>
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: cod
+
+
+
+```
+
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+:::
+::: {.column width="50%"}
+
+:::
+::::
+
 
 
 

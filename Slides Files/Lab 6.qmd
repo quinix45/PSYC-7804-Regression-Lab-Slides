@@ -1,5 +1,5 @@
 ---
-title: "Lab 6: Variance Explained, Semi-partial and Partial-correlations"
+title: "Lab 6: Semi-partial, Partial-correlations, and Model Comparison"
 author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
@@ -23,3 +23,102 @@ format:
 
 editor: source
 ---
+
+## Today's Packages and Data 🤗
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| code-fold: true
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| code-summary: "Install Packages Code"
+#| classes: code-150
+
+install.packages("GGally")
+install.packages("plotly")
+install.packages("rio")
+install.packages("tidyverse")
+
+```
+
+```{r}
+#| eval: true
+#| echo: true
+#| code-line-numbers: false
+#| warning: false
+#| classes: code-150
+
+library(GGally)
+library(plotly)
+library(rio)
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+```
+
+</br>
+
+<div style="font-size: 26px">
+
+::: {.panel-tabset}
+
+### `GGally`
+
+The ``GGally` package [@Schloerke_etal_2024] builds upon `ggplot2` and includes many fucntions for creating complex plots. 
+
+### `plotly`
+
+The `plotly` package [@Sievert_etal_2024a] is a Python and R package used to create interactive visualizations with JavaScript elements. 
+
+### `rio`
+
+The `rio` package [@Becker_etal_2024] developers describe this package as the *Swiss-Army Knife for Data I/O*. The `import()` and `export()` functions can import/export just about any data type.
+
+### `tidyverse`
+
+The `tidyverse` package [@Wickham_RStudio_2023] loads a suite of packages that help with data cleaning and visualization. Among others, `tidyverse` loads both `dplyr` and `ggplot2`.
+
+
+:::
+</div>
+
+:::
+::: {.column width="50%"}
+
+<ul>
+
+<li> Let's also load the [data](https://worldhappiness.report/ed/2024/){target="_blank"}
+ for today: </li>
+</ul>
+
+```{r}
+#| warning: false
+#| classes: code-125
+#| echo: true
+#| code-line-numbers: false
+#| output: true
+
+# Data from https://library.virginia.edu/data/articles/hierarchical-linear-regression
+
+# myData <- rio::import('http://static.lib.virginia.edu/statlab/materials/data/hierarchicalRegressionData.csv')
+
+
+# let's peak at our variables
+str(WH_2024, vec.len = 2)
+```
+
+:::
+::::
+
+
+
+
+
+
+## References 
+
+<div id="refs"> </div>
+
