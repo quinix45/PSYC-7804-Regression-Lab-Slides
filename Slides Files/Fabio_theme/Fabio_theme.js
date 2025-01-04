@@ -48,13 +48,15 @@ document.addEventListener('DOMContentLoaded', function() {
       svgWrapper1.innerHTML = decorationMarkup1;
 
 
-      svgWrapper1.style.position = 'absolute';
-      svgWrapper1.style.top = '-155%';  // Adjust as needed
-      svgWrapper1.style.left = '-25%'; // Adjust as needed
-      svgWrapper1.style.width = '0%'; // Full width of the parent
-      svgWrapper1.style.height = '0'; // Full height of the parent
+      svgWrapper1.style.position = 'fixed';
+      svgWrapper1.style.top = '-37%';  // Adjust as needed
+      svgWrapper1.style.left = '-27%'; // Adjust as needed
+      svgWrapper1.style.width = '0px'; // Full width of the parent
+      svgWrapper1.style.height = '0px'; // Full height of the parent
       svgWrapper1.style.pointerEvents = 'none'; // So it doesn't block interactions
       svgWrapper1.style.zIndex = '10'; // Ensure it's above other content
+      svgWrapper1.style.backgroundColor = "red";
+      svgWrapper1.id = "SVGwrapper1";
   
       // Append the SVG to the title element
       element.append(svgWrapper1);
@@ -85,8 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
       svgWrapper2.style.position = 'absolute';
-      svgWrapper2.style.top = '-155%';  // Adjust as needed
-      svgWrapper2.style.left = '125%'; // Adjust as needed
+      svgWrapper2.style.top = '-37%';  // Adjust as needed
+      svgWrapper2.style.left = '127%'; // Adjust as needed
       svgWrapper2.style.width = '0%'; // Full width of the parent
       svgWrapper2.style.height = '0'; // Full height of the parent
       svgWrapper2.style.pointerEvents = 'none'; // So it doesn't block interactions

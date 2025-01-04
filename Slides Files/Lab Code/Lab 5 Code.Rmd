@@ -1,0 +1,183 @@
+---
+title: "Lab 5 Code"
+author: "Fabio Setti"
+date: "Spring-2025"
+output: html_document
+---
+
+## Data for Today
+
+```{r}
+WH_2024 <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/World_happiness_2024.csv")
+
+# let's peak at our variables
+str(WH_2024, vec.len = 2)
+```
+
+```{r}
+# not needed, but makes things cleaner
+
+reg_vars <- WH_2024[, c("Happiness_score",
+                        "Log_GDP",
+                        "Freedom")]
+```
+
+
+```{r}
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+```
+
+
+## Partial regression coefficients
+
+
+```{r}
+reg_full <- lm(Happiness_score ~ Log_GDP + Freedom, 
+          reg_vars)
+
+coef(reg_full)
+```
+
+```{r}
+reg_free <- lm(Happiness_score ~ Freedom, 
+              reg_vars)
+coef(reg_free)
+
+
+reg_GDP <- lm(Happiness_score ~ Log_GDP, 
+              reg_vars)
+coef(reg_GDP)
+```
+## Calculate partial regression coefficients "By Hand"
+
+```{r}
+resid_happy_Free <- residuals(lm(Happiness_score ~ Freedom, 
+               reg_vars))
+
+resid_GDP <- residuals(lm(Log_GDP ~ Freedom, 
+              reg_vars))
+
+# the 0 + takes out the intercept, which is exactly 0 anyway in this case 
+coef(lm(resid_happy_Free ~ 0 + resid_GDP))
+```
+
+```{r}
+resid_happy_GDP <- residuals(lm(Happiness_score ~ Log_GDP, 
+               reg_vars))
+
+resid_Free <- residuals(lm(Freedom ~ Log_GDP, 
+              reg_vars))
+
+# the 0 + takes out the intercept, which is exactly 0 anyway in this case 
+coef(lm(resid_happy_GDP ~ 0 + resid_Free))
+```
+
+## Added variable plots 
+
+```{r}
+ggplot() +
+  geom_point(aes(y = resid_happy_Free, 
+                 x = resid_GDP))
+```
+
+
+```{r}
+
+ggplot() +
+  geom_point(aes(y = resid_happy_GDP, 
+                 x = resid_Free))
+```
+
+
+
+## The Quick way: `avPlots()` function from `car`  
+
+```{r}
+car::avPlots(reg_full)
+```
+
+
+## "By Hand" Example of Bootstrapping
+
+
+```{r}
+r_squared <- c()
+
+set.seed(34677)
+
+for(i in 1:2000){
+
+# sample from data 
+sample <- sample(1:nrow(reg_vars), 
+                 replace = TRUE)  
+
+dat_boot <- reg_vars[sample,]
+
+# Run regression
+reg_boot <- lm(Happiness_score ~ Log_GDP + Freedom, 
+               dat_boot)  
+
+# Save R^2
+r_squared[i] <- summary(reg_boot)$r.squared
+}
+```
+
+
+```{r}
+hist(r_squared)
+quantile(r_squared, c(.025, .5, .975))
+```
+
+```{r}
+summary(reg_full)$r.squared
+```
+
+## The Quick way: `Boot()` function from `car`  
+
+
+```{r}
+set.seed(875)
+boot_model <- car::Boot(reg_full, R = 2000)
+
+confint(boot_model, type = "perc")
+```
+
+```{r}
+confint(reg_full)
+```
+## Visualizing Bootstrap Results
+
+```{r}
+hist(boot_model, 
+     parm = "Log_GDP")
+```
+
+```{r}
+hist(boot_model, 
+     parm = "Freedom")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

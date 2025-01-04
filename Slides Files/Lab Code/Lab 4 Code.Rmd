@@ -1,0 +1,314 @@
+---
+title: "Lab 4 Code"
+author: "Fabio Setti"
+date: "Spring-2025"
+output: html_document
+---
+
+## Today's Packages and Data 🤗
+
+```{r}
+install.packages("GGally")
+install.packages("plotly")
+install.packages("rio")
+install.packages("tidyverse")
+```
+
+```{r}
+library(GGally)
+library(plotly)
+library(rio)
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+```
+
+```{r}
+
+WH_2024 <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/World_happiness_2024.csv")
+
+# let's peak at our variables
+str(WH_2024, vec.len = 2)
+```
+
+## Variables of Interest
+
+
+```{r}
+
+# selecting just the variables of interest makes code cleaner later
+reg_vars <- WH_2024[, c("Happiness_score",
+                        "Log_GDP",
+                        "Freedom")]
+
+# Just the correlation table
+cor(reg_vars)
+```
+
+
+```{r}
+psych::describe(reg_vars)
+```
+
+
+
+## Helpful Visualization
+
+
+```{r}
+ggpairs(reg_vars)
+```
+## Individual Regressions
+
+```{r}
+reg_GDP <- lm(Happiness_score ~ Log_GDP, 
+              reg_vars)
+summary(reg_GDP)
+```
+
+
+```{r}
+reg_free <- lm(Happiness_score ~ Freedom, 
+              reg_vars)
+summary(reg_free)
+```
+
+
+## Regression With Both Predictors
+
+```{r}
+reg_full <- lm(Happiness_score ~ Log_GDP + Freedom, 
+          reg_vars)
+
+summary(reg_full)
+```
+
+## Individual Regression plots 
+
+
+```{r}
+ggplot(reg_vars,  
+ aes(x = Log_GDP, y = Happiness_score)) +
+ geom_point() + 
+    geom_smooth(method = "lm", 
+                formula = "y~x", 
+                se = FALSE)
+```
+
+```{r}
+  ggplot(reg_vars,  
+ aes(x = Freedom, y = Happiness_score)) +
+ geom_point() + 
+    geom_smooth(method = "lm", 
+                formula = "y~x", 
+                se = FALSE)
+```
+## Adding the lines from multiple regression? 
+
+
+```{r}
+  ggplot(reg_vars,  
+ aes(x = Log_GDP, y = Happiness_score)) +
+ geom_point() + 
+    geom_smooth(method = "lm", 
+                formula = "y~x", 
+                se = FALSE) +
+    geom_abline(intercept = coef(reg_full)[1], 
+                slope = coef(reg_full)[2])
+```
+
+```{r}
+  ggplot(reg_vars,  
+ aes(x = Freedom, y = Happiness_score)) +
+ geom_point() + 
+    geom_smooth(method = "lm", 
+                formula = "y~x", 
+                se = FALSE) +
+    geom_abline(intercept = coef(reg_full)[1], 
+                slope = coef(reg_full)[3])
+```
+
+## Looking Inside the Box
+
+```{r}
+# load the function
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
+
+nice_3D_plot(y = reg_vars$Happiness_score,
+             x1 = reg_vars$Log_GDP,
+             x2 = reg_vars$Freedom,
+             dot_labels = WH_2024$Country_name,
+             axis_names = c("Happiness", 
+                            "GDP", 
+                            "Freedom"))
+```
+
+
+## The Regression Plane 
+
+
+```{r}
+nice_3D_plot(y = reg_vars$Happiness_score,
+             x1 = reg_vars$Log_GDP,
+             x2 = reg_vars$Freedom,
+             dot_labels = WH_2024$Country_name,
+             axis_names = c("Happiness", 
+                            "GDP", 
+                            "Freedom"),
+             plane_res = 20,
+             # add regression plane
+             reg_plane = TRUE) 
+```
+
+
+
+## Interpretation of Results
+
+
+```{r}
+summary(reg_full)
+```
+
+
+## Back to our friend *R* <sup>2</sup> (optional)
+
+```{r}
+rnorm(n = 5, 
+      mean = 2, 
+      sd = 0)
+```
+
+```{r}
+ggplot(reg_vars,  
+       aes(x = Happiness_score, y = 0)) +
+       geom_point(shape = 1, 
+                  size=6.5) +
+      annotate("text", x = 4.7, y = .02, 
+             label = "Variance of Happiness_score") +
+xlim(1.5, 8.2) +
+    ylim(-.1, .03) +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+
+
+## Variance of Residuals after regression (optional)
+
+
+```{r}
+ggplot(reg_vars,  
+       aes(x = Happiness_score, y = 0)) +
+       geom_point(shape = 1, 
+                  size=4.5) +
+      annotate("text", x = 4.7, y = .02, 
+             label = "Variance of Happiness_score") +
+  geom_point(aes(x = residuals(reg_free) + 
+                       # add mean to have residuals on same scale as 
+                       # previous graph (variance remains the same)
+                         mean(reg_vars$Happiness_score), 
+                     y = -.05),
+             shape = 1,
+             size = 4.5, color = "blue") +
+        annotate("text", x = 4.7, y = -0.03, 
+             label = "Residual Variance of Happiness_score after using freedom as predictor", color = "blue") +
+xlim(1.5, 8.2) +
+    ylim(-.1, .03) +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+
+
+```{r}
+ggplot(reg_vars,  
+       aes(x = Happiness_score, y = 0)) +
+       geom_point(shape = 1, 
+                  size=4.5)+
+      annotate("text", x = 4.7, y = .02, 
+             label = "Variance of Happiness_score") +
+  geom_point(aes(x = residuals(reg_free) + 
+                       # add mean to have residuals on same scale as 
+                       # original variable (variance remains the same)
+                         mean(reg_vars$Happiness_score), 
+                     y = -.05),
+             shape = 1,
+             size = 4.5, color = "blue")  +
+        annotate("text", x = 4.7, y = -0.03, 
+             label = "Residual Variance of Happiness_score after using freedom as predictor", color = "blue") +
+  geom_point(aes(x = residuals(reg_full) + 
+                       # add mean to have residuals on same scale as 
+                       # original variable (variance remains the same)
+                         mean(reg_vars$Happiness_score), 
+                     y = -.1),
+             shape = 1,
+             size = 4.5, color = "red") +
+  annotate("text", x = 4.7, y = -0.08, 
+             label = "Residual Variance of Happiness_score after using freedom  and GPD as predictors", color = "red") +
+xlim(1.5, 8.2) +
+    ylim(-.1, .03) +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+
+
+## Variance Explained
+
+
+```{r}
+var(reg_vars$Happiness_score)
+var(residuals(reg_free))
+var(residuals(reg_full))
+```
+
+
+```{r}
+1 - (0.8158336/1.395344)
+1 - (0.3925608/1.395344)
+
+summary(reg_free)$r.squared
+summary(reg_full)$r.squared
+```
+
+# Appendix: Adding Groups to 3D plots
+
+
+## Example with World Happiness Data
+
+
+```{r}
+nice_3D_plot(y = reg_vars$Happiness_score,
+             x1 = reg_vars$Log_GDP,
+             x2 = reg_vars$Freedom,
+             dot_labels = WH_2024$Country_name,
+             # add groups
+             groups = WH_2024$Region,
+             axis_names = c("Happiness", 
+                            "GDP", 
+                            "Freedom"),
+             plane_res = 20,
+             reg_plane = FALSE)
+```
+
+## Example with iris Data
+
+```{r}
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             groups = iris$Species,
+             axis_names = c("SL", "PL", "PW"),
+             reg_plane = FALSE)
+```
+
+
+
+
+
+
+
+

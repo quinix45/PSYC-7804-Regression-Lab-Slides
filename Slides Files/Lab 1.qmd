@@ -255,13 +255,6 @@ describe(NY_temp[,-1], trim = .05)
 ```
 
 
-
-<style>
-.narrow {
-    max-height: 30% !important;
-}
-</style>
-
 :::{.callout-note appearance="minimal"}
  what does the `[,-1]` do in the code above? Why did I include it?
 :::
@@ -280,7 +273,11 @@ describe(NY_temp[,-1], trim = .05)
 :::
 ::: {.column width="20%"}
 
-<div style="font-size: 14px">
+Full screen version [here](https://fabiosetti.shinyapps.io/Skew_Normal_distribution/){target="_blank"}
+
+<br>
+
+<div style="font-size: 20px">
 **NOTE**🤔: once `skewness` is no longer 0, the mean shown on the plot will no longer correspond to the `Mean` shown in the box?! This is a bit in the weeds, but the mean on the plot is the [expectation](https://en.wikipedia.org/wiki/Expected_value){target="_blank"} of the skew-normal distribution, while the number in the `Mean` box is the [location parameter](https://en.wikipedia.org/wiki/Location_parameter){target="_blank"} of the skew-normal distribution. 
 
 </div>
@@ -335,6 +332,8 @@ As mentioned in the box on the last slide, `ggplot2` breaks visualizations into 
 ggplot() 
 ```
 
+Just running `ggplot()` actually gives output! This is our "canvas"
+
 :::
 
 ::: {.column width="70%"}
@@ -342,8 +341,6 @@ ggplot()
 ```{r}
 ggplot() 
 ```
-
-Just running `ggplot()` actually gives output! This is our "canvas"
 
 :::
 
@@ -630,7 +627,8 @@ ggplot(NY_temp,
 :::
 ::::
 
-This plot gives a good graphical representation of the variance of a variable (I will use it again later to show something!). However, for visualizing data, we have better options...
+This plot gives a good graphical representation of the variance of a variable (I will use it again in [a later lab](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%204.html#/back-to-our-friend-r-2){target="_blank"}
+ to show something!). However, for visualizing data, we have better options...
 
 ## Histograms {auto-animate="true"}
 
@@ -940,7 +938,7 @@ ggplot(NY_temp,
 :::
 ::::
 
-## Trying to make sense of QQplots
+## Understanding QQplots
 
 <div style="font-size: 22px"> QQplots use the idea of quantiles (both Qs stand for "quantile"). You are probably more familiar with percentiles, which are the exact same as quantiles, save for their units (e.g., the $.5$ quantile is the same as the $50^{th}$ percentile). If it makes it easier, whenever you see quantile, just think of it as percentile. </div>
 

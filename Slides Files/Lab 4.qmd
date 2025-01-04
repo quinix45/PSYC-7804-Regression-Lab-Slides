@@ -122,7 +122,7 @@ We eventually want to look at how `Log_GDP` and `Freedom` impact `Happiness_scor
 
 <ul style="font-size: 24px">  
 
-<li>  The corraltion matrix for the variables: </li>
+<li>  The correlation matrix for the variables: </li>
 
 </ul>
 
@@ -243,7 +243,7 @@ summary(reg_full)
 :::
 ::: {.column width="40%"}
 
-As you can see, the regression coefficients of the two predictors change when you both variables are included 🧐
+As you can see, the regression coefficients of the two predictors change when both variables are included 🧐
 
 <br>
 
@@ -302,7 +302,7 @@ These are the equivalent plots to the individual regressions:
 ::::
 
 
-## Adding the line from multiple regression? 
+## Adding the lines from multiple regression? 
 
 Let's add the regression lines estimated from the regression with both predictors...
 
@@ -571,7 +571,7 @@ Although this may not sound very intuitive, you should think of residuals as a n
 :::: {.columns}
 ::: {.column width="30%"}
 
-On the left, we have the residuals of `Happiness_score` after using `freedom` as predictor
+On the right, we have the residuals of `Happiness_score` after using `freedom` as predictor
 
 ```{r}
 #| eval: false
@@ -743,7 +743,7 @@ As we saw previously, the more variables we added, the less spread out our resid
 :::: {.columns}
 ::: {.column width="50%"}
 
-The variances of the three lines were respectively:
+The variances of the three lines of dots were respectively:
 
 <ol style="font-size: 22px">  
 
@@ -757,6 +757,7 @@ The variances of the three lines were respectively:
 
 var(reg_vars$Happiness_score)
 ```
+
 <li> Variance of `happiness_score` after using `freedom` as a predictor was </li>
 
 ```{r}

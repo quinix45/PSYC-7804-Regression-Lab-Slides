@@ -111,7 +111,13 @@ $selection-bg: lighten($theme-color, 15%);
   display: none;
 }
 
-
+.quarto-title-block {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+}
 
 // headings
 
@@ -155,6 +161,7 @@ ul li::marker {
 ol li::marker {
   color: $theme-color;
 }
+
 
 // classes to assign to SVGs added through JS
 

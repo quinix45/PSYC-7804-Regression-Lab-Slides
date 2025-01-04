@@ -9,7 +9,7 @@ title-slide-attributes:
   data-visibility: "uncounted"
 format:
    revealjs:
-      footer: "Lab 6: Variance Explained, Semi-partial and Partial-correlations"
+      footer: "Lab 6: Semi-Partial, Partial-Correlations, and Model Comparison"
       width: 1280
       height: 720
       chalkboard: true
@@ -37,9 +37,7 @@ editor: source
 #| code-summary: "Install Packages Code"
 #| classes: code-150
 
-install.packages("GGally")
-install.packages("plotly")
-install.packages("rio")
+install.packages("ppcor")
 install.packages("tidyverse")
 
 ```
@@ -51,9 +49,7 @@ install.packages("tidyverse")
 #| warning: false
 #| classes: code-150
 
-library(GGally)
-library(plotly)
-library(rio)
+library(ppcor)
 library(tidyverse)
 theme_set(theme_classic(base_size = 14, 
                         base_family = 'serif'))
@@ -65,24 +61,11 @@ theme_set(theme_classic(base_size = 14,
 
 ::: {.panel-tabset}
 
-### `GGally`
+### `ppcor`
 
-The ``GGally` package [@Schloerke_etal_2024] builds upon `ggplot2` and includes many fucntions for creating complex plots. 
-
-### `plotly`
-
-The `plotly` package [@Sievert_etal_2024a] is a Python and R package used to create interactive visualizations with JavaScript elements. 
-
-### `rio`
-
-The `rio` package [@Becker_etal_2024] developers describe this package as the *Swiss-Army Knife for Data I/O*. The `import()` and `export()` functions can import/export just about any data type.
-
-### `tidyverse`
-
-The `tidyverse` package [@Wickham_RStudio_2023] loads a suite of packages that help with data cleaning and visualization. Among others, `tidyverse` loads both `dplyr` and `ggplot2`.
-
-
+The `ppcor` package [@kimPpcorPackageFast2015] contains functions to calculate partial and semi-partial correlations.
 :::
+
 </div>
 
 :::
@@ -103,20 +86,484 @@ The `tidyverse` package [@Wickham_RStudio_2023] loads a suite of packages that h
 
 # Data from https://library.virginia.edu/data/articles/hierarchical-linear-regression
 
-# myData <- rio::import('http://static.lib.virginia.edu/statlab/materials/data/hierarchicalRegressionData.csv')
+dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Hierarc_data.csv")
 
 
 # let's peak at our variables
-str(WH_2024, vec.len = 2)
+str(dat, vec.len = 2)
 ```
 
 :::
 ::::
 
 
+## Our Predictors
+
+We  want to see how happiness (`happiness`) relates to age (`age`), and number of friends (`friends`).
+
+:::: {.columns}
+::: {.column width="60%"}
+
+We can calculate the correlation among our predictors
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+cor(dat[,1:3])
+```
+
+:::
+::: {.column width="40%"}
+
+Although, useful correlation by itself may not be the measure we are interested in. Rather, we may want to know the relationship between two variables *after* accounting for another set of variables.
+
+:::
+::::
+
+<br>
+
+**Partial correlation** and **semi-partial correlation** are what we are looking for in this case. 
+
+
+## Some Formulas for Reference
+
+If $r_{xy}$ represent the correlation between $x$ and $y$, then 
+
+* **Partial correlation**: 
+
+  * $r_{xy.z} = \frac{r_{xy} - r_{xz} \times r_{yz}}{\sqrt{1 - r_{xz}^2}\times\sqrt{1 - r_{yz}^2}}$, where $z$ is controlled for both $x$ and $y$
+
+
+* **Semi-partial correlation**: In semi-partial correlation, the $z$ variable is held constant only for 1 of the other 2 variables. That means that in our case, there are 2 semi-partial correlations that can be calculated
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+  * $r_{x(y.z)} = \frac{r_{xy} - r_{xz} \times r_{yz}}{\sqrt{1 - r_{yz}^2}}$, 
+  
+  where $z$ is controlled only for $y$
 
 
 
+:::
+::: {.column width="50%"}
+
+  * $r_{y(x.z)} = \frac{r_{xy} - r_{xz} \times r_{yz}}{\sqrt{1 - r_{xz}^2}}$, 
+  
+  where $z$ is controlled only for $x$
+  
+
+:::
+::::
+
+::: {.callout-note}
+
+## spot differences and similarities in related formulas
+
+Notice that the numerator (top part) of these formulas is always the same, and the denominator (bottom part) changes slightly. This means that if you want to understand the differences, you should not look at the numerator at all (pretend it does not exist!), but only at the denominator. 
+
+:::
+
+
+## Partial Correlation "by hand"
+
+As always, I like calculating things by hand first to make sure I know what is going on 🤷 Let's say that $y =$ `happiness`, $x =$ `age`, and $z =$ `friends`. 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+Let's first get our vanilla correlations
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+r_xy <- cor(dat$age, dat$happiness)
+r_xz <- cor(dat$age, dat$friends)
+r_yz <- cor(dat$happiness, dat$friends)
+```
+
+
+Then, the partial correlation between $x$ and $y$, accounting for $z$ is
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+(r_xy - r_xz*r_yz)/(sqrt(1 - r_xz^2) * sqrt(1 - r_yz^2))
+
+```
+
+:::
+::: {.column width="50%"}
+
+Note that this is also equivalent to calculating the correlation between the residuals of $y$ and $x$ after a regression with $z$ as a predictor
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+resid_y_z <- residuals(lm(happiness ~ friends, dat))
+resid_x_z <- residuals(lm(age ~ friends, dat))
+
+cor(resid_x_z, resid_y_z)
+```
+:::
+::::
+
+So, $r_{xy.z}-.16$ is the correlation between `happiness` and `age` after taking out the proportion of variance explained by `friends` in both variables. 
+
+## Semi-Partial Correlation "by hand"
+
+The semi-partial correlations between $x$ and $y$ accounting for $z$ can either be:
+
+:::: {.columns}
+::: {.column width="50%"}
+
+With the formulas from the previous slides:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+(r_xy - r_xz*r_yz)/(sqrt(1 - r_xz^2))
+```
+or 
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+(r_xy - r_xz*r_yz)/(sqrt(1 - r_yz^2))
+```
+:::
+::: {.column width="50%"}
+
+Similarly, we can get this by using regression residuals:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+cor(dat$happiness, resid_x_z)
+```
+and
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+cor(dat$age, resid_y_z)
+```
+
+:::
+::::
+
+- $r_{y(x.z)} = -.15$ represents the relationship between $y$ and $x$ after the taking out of $x$ the variance explained by $z$.  
+
+- $r_{x(y.z)} = -.16$ represents the relationship between $x$ and $y$ after the taking out of $y$ the variance explained by $z$.  
+
+<center> Which type of correlation to use? **it depends on your research question** </center>
+
+## Using `ppcor` Functions
+
+In practice, we use the `ppcor` package 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+partial_cor <- pcor(dat[,1:3])
+partial_cor$estimate
+```
+
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+semipartial_cor <- spcor(dat[,1:3])
+semipartial_cor$estimate
+```
+<div style="font-size: 20px">  Careful! in the semi-partial correlation output, the variable in the row is the variable that has no variance taken out.</div>
+:::
+::::
+
+The functions from `ppcor` work in the same way as the ones used in [Lab 2](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%202.html#/corr_test-output){target="_blank"}, where significance and other information is saved to a separate element.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+partial_cor$p.value
+```
+
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+semipartial_cor$p.value
+```
+:::
+::::
+
+
+## Model Comparison: Gain in Prediction
+
+We are often (actually always) interested in comparing different models. Usually we ask: is it *worth it* to add more variables as predictors? 
+
+In the case of regression, the most popular way of comparing models is by comparing $R^2$ from nested model. Let's go back to how happiness (`happiness`) relates to age (`age`); then, we want to know whether adding number of friends (`friends`) improves our prediction.
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_age <- lm(happiness ~ age, dat)
+
+summary(reg_age)$r.squared
+```
+So `age` roughly explains $3\%$ of the variance in `happiness`
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_age_fr <- lm(happiness ~ age + friends, dat)
+
+summary(reg_age_fr)$r.squared
+```
+`age` and `friends` together roughly explains $13\%$ of the variance in `happiness`
+
+:::
+::::
+
+The answer seems fairly straightforward: the model with both `age` and `friends` does better. But there is a catch with $R^2$ 🤨 
+
+
+## The catch With $R^2$
+
+The "problem" with most popular measures of model fit such as $R^2$ is that they always increase as variables are added, even though the added variables are unrelated to $Y$. 
+
+:::: {.columns}
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# generate random variable
+set.seed(8879)
+dat$random_var <- rnorm(nrow(dat))
+
+reg_age_fr_rand <- lm(happiness ~ age + friends + random_var, dat)
+
+# before
+summary(reg_age_fr)$r.squared
+
+# after 
+summary(reg_age_fr_rand)$r.squared 
+```
+
+:::
+::: {.column width="30%"}
+
+$R^2$ increases When we add a random variable 😦
+
+However, this is certainly a case where adding a randomly generated variable is *not worth it*. 
+
+:::
+::::
+
+We want to apply the principle of  [Occam's razor](https://www.britannica.com/topic/Occams-razor){target="_blank"}, and choose the simpler model if the increase in $R^2$ is not worth it. 
+
+
+## Testing gain in prediction: $\Delta R^2$
+
+In hierarchical regression we check whether adding variables to a model yields a significant $R^2$ improvement ($\Delta R^2$). We can use the `anova()` function to compare [nested regression models](https://www.statology.org/nested-model/){target="_blank"}. The *F*-test tells us whether the $R^2$ improvement is significant.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-115
+
+anova(reg_age, reg_age_fr)
+```
+<div style="font-size: 23px"> Here, adding `friends` provides a significant improvement in variance explained, $\Delta R^2 = .1, F(1, 97) = 11.47, p = .001$  </div>
+
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+anova(reg_age_fr, reg_age_fr_rand)
+```
+
+<div style="font-size: 23px"> Unsurprisingly, adding adding a random variable does not 
+provide a significant improvement in variance explained, $\Delta R^2 = .003, F(1, 96) = 0.81, p = .37$. </div>
+
+:::
+::::
+
+<br>
+
+<div style="font-size: 20px"> **Note**: For reporting, you need to calculate the difference between the  $R^2$ of the two regression models, the $\Delta R^2$, by hand. </div>
+
+## Information Criteria for Model Selection
+
+There also exist a family of statistics used for comparing model based on [information theory](https://en.wikipedia.org/wiki/Information_theory){target="_blank"}. What you will often see are the Akaike information criterion [AIC\; @akaikeNewLookStatistical1974] and Bayesian information criterion [BIC\;  @schwarzEstimatingDimensionModel1978]. 
+
+Both AIC and BIC calculate model fit, and then penalize it based on model complexity (number of variables in regression). The logic is that if you are going to add an extra variable to a regression, it should improve fit enough to offset the penalty term. For regression:
+
+:::: {.columns}
+::: {.column width="50%"}
+$$AIC = N \times ln(\frac{SS_{\mathrm{resisuals}}}{N}) + 2p$$ 
+
+$N =$ sample size
+
+$p =$ number of model parameters (i.e., intercept, slopes, residual variance)
+
+$SS =$ sum of squares of the residuals 
+
+$ln() =$ stands for the natural log
+
+:::
+::: {.column width="50%"}
+$$BIC =  N \times ln(\frac{SS_{\mathrm{resisuals}}}{N}) + p\times ln(N)$$
+
+The $N \times ln(\frac{SS_{\mathrm{resisuals}}}{N})$ part, which is shared by both formulas, measures model fit. In contrast $2p$ is the AIC penalty, while $p\times ln(N)$ is the BIC penalty. The BIC penalty is stricter.
+:::
+::::
+
+## The `AIC()` and `BIC()` Functions
+
+We can calculate both AIC and BIC for all our models at once with the `AIC()` and `BIC()` functions. In both cases, the smallest value is the model that fits best according to the criteria. 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+AIC(reg_age, reg_age_fr, reg_age_fr_rand)
+```
+
+The second model fits best.
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+BIC(reg_age,reg_age_fr, reg_age_fr_rand)
+```
+
+The second model fits best. 
+
+:::
+::::
+
+In both cases the second model fits best because the addition of the random variable is not enough to offset the penalty for adding an additional variable (ok, that is to be expected, we added a random variable).
+
+Although, AIC and BIC can disagree (often in my experience!). Usually, AIC likes more complex models, while BIC prefers simpler models. If I have to choose, I tend to trust BIC more.
+
+Finally, information criteria like the AIC and BIC can be used to compare non-nested models, unlike $\Delta R^2$, which can only be used to compare nested models. 
+
+## Caveats With AIC and BIC
+
+There are a couple of caveats to be aware of when using AIC and BIC.
+
+<ol style="font-size: 26px">  
+
+<li>  Different functions/software will calculate AIC and BIC differently (I was confused for a bit myself before finding [this](https://robjhyndman.com/hyndsight/lm_aic.html){target="_blank"} and [this](https://stackoverflow.com/questions/64531074/why-do-statsmodels-and-r-disagree-on-aic-computation){target="_blank"}). You should not compare AIC and BIC if they come from different functions/software (or, if you need to, be *very* careful).
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+AIC(reg_age)
+extractAIC(reg_age)[2]
+```
+
+The `AIC()` function adds a $N \times \mathrm{ln}(2\pi) + N$ to the AIC (for math reasons), but other functions may not. So always use the same function/software to calculate AIC and BIC. 
+
+</li>
+
+<li> AIC and BIC do not tell you *how much better* a model fits over another. So, you may reject a model that practically is quite similar to the model you chose, but you will not know that by looking at AIC and BIC alone. Your theory should also guide the model selection choices that you make. </li>
+
+</ul>
 
 ## References 
 

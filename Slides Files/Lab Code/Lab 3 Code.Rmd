@@ -1,0 +1,169 @@
+---
+title: "Lab 3 Code"
+author: "Fabio Setti"
+date: "Spring-2025"
+output: html_document
+---
+
+## Today's Packages 🤗
+
+```{r}
+
+install.packages("flextable")
+install.packages("rio")
+install.packages("tidyverse")
+
+```
+
+
+```{r}
+
+library(flextable)
+library(rio)
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+```
+
+
+```{r}
+
+insurance <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/insurance.csv")
+
+# let's peak at our variables
+str(insurance)
+```
+
+## Predicting Insurance Charges
+
+
+```{r}
+reg <- lm(charges ~ bmi, insurance)
+summary(reg)
+```
+
+## Sampling Distributions (optional)
+
+
+
+```{r}
+# you need to install this package 
+library(extraDistr)
+
+ggplot() +
+  geom_function(fun = dlst, args = list(mu = 0, sigma = 53.25, df = 1336), color = "blue") +
+  labs(x = "All the slopes if H0 is true") +
+  xlim(-(53.25*3), (53.25*3)) +
+  scale_y_continuous(expand = c(0,0)) +
+    annotate("text", x = -2, y = .002, 
+             label = "The spread of this distribution \n is determined by the stanrdard error of the slope, \n which is 53.25") +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+
+
+## Where's the T 🍵? (optional)
+
+
+```{r}
+pt(7.397, df = 1336, lower.tail = FALSE)*2
+```
+
+
+```{r}
+ggplot() +
+  geom_function(fun = dt, args = list(df = 1336), color = "blue") +
+  labs(x = "All the slopes if H0 is true, but standardized") +
+    annotate("text", x = 0, y = .1, 
+             label = "Hey, I am still the same distribution \n from the previous slide. People \n like me better when my X-axis \n looks like this!") +
+  xlim(-3, 3) +
+  scale_y_continuous(expand = c(0,0)) +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+
+## ...And the intercept
+
+```{r}
+pt(.717, df = 1336, lower.tail = FALSE)*2
+```
+
+```{r}
+ggplot() +
+  geom_function(fun = dt, args = list(df = 1336), color = "blue") +
+  labs(x = "All the intercepts if H0 is true") +
+  geom_vline(xintercept = 0.717, linetype = 2) +
+  xlim(-3, 3) +
+  annotate("text", x = .25, y = .1, label = "t-value of \n the intercept") +
+  annotate("text", x = -2, y = .3, label = "we also look at the \n opposite side, two-tailed test") +
+    geom_ribbon(data = data.frame(x = seq(0.717, 4, length.out = 100)), 
+              aes(x = x, ymin = 0, ymax = dt(x, df = 1336)), 
+              fill = "lightblue", alpha = 0.5) +
+  geom_ribbon(data = data.frame(x = seq(-0.717, -4, length.out = 100)), 
+              aes(x = x, ymin = 0, ymax = dt(x, df = 1336)), 
+              fill = "lightblue", alpha = 0.5) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_x_continuous(limits = c(-3, 3), breaks = c(-2, 0, 0.717, 2)) +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+
+
+
+
+## Confidence Intervals
+
+```{r}
+confint(reg)
+```
+
+## APA Style Report
+
+```{r}
+summary(reg)
+```
+
+
+
+## ANOVA Output
+
+```{r}
+anova(reg)
+```
+
+
+## Creating APA Style regression tables
+
+
+```{r}
+# load the function (`source()` runs R code from other files)
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/Regression_flextable.R")
+
+# any regression model
+reg_model <- lm(charges ~ bmi + sex, insurance)
+
+# create the table
+table <- regression_flextable(reg_model)
+
+# save the table to as a word doc. You should see the files in the `path` argument appear in your working directory
+save_as_docx(table, path = "reg_table.docx")
+```
+
+## Table Output
+
+```{r}
+table <- regression_flextable(reg_model,
+         var_names = c("Intercept", 
+                       "BMI", 
+                       "Sex"))
+
+save_as_docx(table, 
+       path = "reg_table_names.docx")
+```
+

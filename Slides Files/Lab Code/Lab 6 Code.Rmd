@@ -1,0 +1,166 @@
+---
+title: "Lab 6 Code"
+author: "Fabio Setti"
+date: "Spring-2025"
+output: html_document
+---
+
+
+
+```{r}
+install.packages("ppcor")
+install.packages("tidyverse")
+```
+
+
+```{r}
+library(ppcor)
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+```
+
+
+```{r}
+# Data from https://library.virginia.edu/data/articles/hierarchical-linear-regression
+
+dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Hierarc_data.csv")
+
+
+# let's peak at our variables
+str(dat, vec.len = 2)
+```
+
+
+## Our Predictors
+
+
+```{r}
+cor(dat[,1:3])
+```
+
+
+## Partial Correlation "by hand"
+
+```{r}
+r_xy <- cor(dat$age, dat$happiness)
+r_xz <- cor(dat$age, dat$friends)
+r_yz <- cor(dat$happiness, dat$friends)
+```
+
+
+```{r}
+(r_xy - r_xz*r_yz)/(sqrt(1 - r_xz^2) * sqrt(1 - r_yz^2))
+```
+
+```{r}
+
+resid_y_z <- residuals(lm(happiness ~ friends, dat))
+resid_x_z <- residuals(lm(age ~ friends, dat))
+
+cor(resid_x_z, resid_y_z)
+```
+
+## Semi-Partial Correlation "by hand"
+
+
+```{r}
+(r_xy - r_xz*r_yz)/(sqrt(1 - r_xz^2))
+```
+```{r}
+(r_xy - r_xz*r_yz)/(sqrt(1 - r_yz^2))
+```
+```{r}
+cor(dat$happiness, resid_x_z)
+```
+
+
+```{r}
+cor(dat$age, resid_y_z)
+```
+
+
+
+## Using `ppcor` Functions
+
+
+```{r}
+partial_cor <- pcor(dat[,1:3])
+partial_cor$estimate
+partial_cor$p.value
+```
+
+
+
+```{r}
+semipartial_cor <- spcor(dat[,1:3])
+semipartial_cor$estimate
+semipartial_cor$p.value
+```
+
+## Model Comparison: Gain in Prediction
+
+
+```{r}
+reg_age <- lm(happiness ~ age, dat)
+
+summary(reg_age)$r.squared
+```
+```{r}
+reg_age_fr <- lm(happiness ~ age + friends, dat)
+
+summary(reg_age_fr)$r.squared
+```
+## The catch With $R^2$
+
+```{r}
+# generate random variable
+set.seed(8879)
+dat$random_var <- rnorm(nrow(dat))
+
+reg_age_fr_rand <- lm(happiness ~ age + friends + random_var, dat)
+
+# before
+summary(reg_age_fr)$r.squared
+
+# after 
+summary(reg_age_fr_rand)$r.squared 
+```
+
+
+## Testing gain in prediction: $\Delta R^2$
+
+
+
+```{r}
+anova(reg_age, reg_age_fr)
+```
+
+```{r}
+anova(reg_age_fr, reg_age_fr_rand)
+```
+
+## The `AIC()` and `BIC()` Functions
+
+
+```{r}
+AIC(reg_age, reg_age_fr, reg_age_fr_rand)
+```
+
+```{r}
+BIC(reg_age,reg_age_fr, reg_age_fr_rand)
+```
+
+
+
+## Caveats With AIC and BIC
+
+
+```{r}
+AIC(reg_age)
+extractAIC(reg_age)[2]
+```
+
+
+
+

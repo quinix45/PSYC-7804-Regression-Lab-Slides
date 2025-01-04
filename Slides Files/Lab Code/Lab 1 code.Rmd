@@ -1,0 +1,296 @@
+---
+title: "Lab 1 Code"
+author: "Fabio Setti"
+date: "Spring-2025"
+output: html_document
+---
+
+## Today's Packages 🤗
+
+```{r}
+# Run if packages not installed
+
+install.packages("rio")
+install.packages("tidyverse")
+install.packages("psych")
+```
+
+
+```{r}
+library(rio)
+library(tidyverse)
+library(psych)
+```
+
+
+
+## How I Will Fix Everyone's Working Directory Issues
+
+```{r}
+# run the line below and you should see the data appear in your environment
+NY_temp <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/NY_Temp.txt")
+```
+
+
+
+## Some Descriptive Statistics
+
+```{r}
+str(NY_temp)
+```
+```{r}
+# the `trim = .05` argument calculates means without the bottom/top 2.5% of the data
+# add IQR = TRUE to get the interquartile range
+describe(NY_temp[,-1], trim = .05)
+```
+
+
+## Mean, Standard Deviation, Skewness 
+
+Link to shiny app: https://fabiosetti.shinyapps.io/Skew_Normal_distribution/
+
+
+## GGplot Step by step 
+
+
+```{r}
+ggplot() 
+```
+
+
+```{r}
+ggplot(NY_temp,  
+ aes(x = Case, y = Temp)) 
+```
+
+
+```{r}
+ggplot(NY_temp,  
+ aes(x = Case, y = Temp)) +
+ geom_point()
+```
+
+
+
+```{r}
+ggplot(NY_temp,  
+ aes(x = Case, y = Temp)) +
+ geom_point() +
+ theme_classic()
+```
+
+
+
+
+```{r}
+ggplot(NY_temp,  
+ aes(x = Case, y = Temp)) +
+ geom_point() +
+ theme_classic() +
+ geom_smooth(method = "lm", 
+             se = FALSE)
+```
+
+
+```{r}
+ggplot(NY_temp,  
+ aes(x = Case, y = Temp)) +
+ geom_point() +
+ theme_classic() +
+ geom_smooth(method = "lm", 
+             se = FALSE) +
+ geom_smooth(method = "lm", 
+             formula = y ~ poly(x, 2), 
+             color = "red", 
+             se = FALSE)
+```
+
+
+```{r}
+ggplot(NY_temp,  
+       aes(x = Case, y = Temp)) +
+       geom_point(shape = 1) +
+       theme_classic() +
+       geom_smooth(method = "lm") +
+       geom_smooth(method = "lm", formula = y ~ poly(x, 2), 
+                   color = "red") + 
+       labs(title = "Temperature in New York City Measured ove a Year",
+            y= "Temperature", 
+            x = "Measurement") +
+       theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+             axis.title.x  = element_text(face= "bold", size = 12),
+             axis.title.y = element_text(face= "bold", size = 12))
+```
+
+
+## 1D Scatterplot 🤔 
+
+
+```{r}
+ggplot(NY_temp,  
+       aes(x = Temp, y = 0)) +
+       geom_point(shape = 1) +
+       theme_classic()
+```
+
+
+## Histograms
+
+```{r}
+# set theme globally
+theme_set(theme_classic())
+
+ggplot(NY_temp,  
+       # note that we only need to give X, why?
+       aes(x = Temp)) +
+       geom_histogram()
+```
+
+
+
+```{r}
+ggplot(NY_temp,  
+       aes(x = Temp)) +
+       geom_histogram(bins = 15) 
+```
+
+
+
+```{r}
+ggplot(NY_temp,  
+       aes(x = Temp)) +
+       geom_histogram(bins = 15,
+                      color = "black",
+                      linewidth = .8,
+                      fill = "#3492eb") +
+      scale_y_continuous(expand = c(0,0))
+```
+
+## Box-Plots
+
+```{r}
+ggplot(NY_temp,
+       aes(y = Temp)) +
+       geom_boxplot()
+```
+
+
+## Kernel Density plots 
+
+
+```{r}
+ggplot(NY_temp,
+       aes(x = Temp)) +
+       geom_density() +
+       xlim(45, 110)
+```
+
+
+```{r}
+ggplot(NY_temp,
+       aes(x = Temp)) +
+       geom_density(kernel = "epanechnikov") +
+       xlim(45, 110)
+```
+
+
+```{r}
+ggplot(NY_temp,
+       aes(x = Temp)) +
+       geom_density(kernel = "epanechnikov",
+                    adjust = .2) +
+       xlim(45, 110)
+```
+
+## QQplots
+
+```{r}
+ggplot(NY_temp, 
+       aes(sample = Temp)) + 
+       stat_qq() + 
+       stat_qq_line()
+```
+
+
+## Understanding QQplots
+
+
+```{r}
+
+
+# quantile values of .1, .5., .8 for normal distribution with mean = 0 and sd = 1
+# this will results in Z-scores that correspond to the 
+# 10th, 50th, and 80th percentile
+
+qnorm(c(.1, .5, .8), mean = 0, sd = 1)
+
+```
+
+```{r}
+# The quantile function calculates the observed percentiles fo a given variable.
+# by supplying c(.1, .5, .8) we want the 10th, 50th, and 80th percentile of Temp
+
+quantile(NY_temp$Temp, c(.1, .5, .8))
+```
+
+
+## Creating QQplot Data
+
+```{r}
+# first, it is useful to define all the quantiles that we want as a vector
+quantiles <- seq(from = .01, to = .99, by = .01)  
+str(quantiles)
+
+# calculate quantiles for normal distribution and real data
+Xaxis <- qnorm(quantiles)
+Yaxis <- quantile(NY_temp$Temp, quantiles)
+
+# Note that you can use ANY mean and SD value for the qnorm() function.
+# Here, I use the mean and SD of the Temp variable
+Xaxis_2 <- qnorm(quantiles, mean = mean(NY_temp$Temp), sd = sd(NY_temp$Temp))
+
+# create a data.frame (ggplot like data.frame objects)
+QQdata <- data.frame("Xaxis" = Xaxis,
+                     "Xaxis_2" = Xaxis_2,
+                     "Yaxis" = Yaxis)
+head(QQdata)
+```
+
+## QQplot The Data
+
+```{r}
+ggplot(QQdata, 
+       aes(x = Xaxis, y = Yaxis)) +
+      geom_point()
+```
+
+```{r}
+ggplot(QQdata, 
+       aes(x = Xaxis_2, y = Yaxis)) +
+      geom_point()
+```
+
+## A more intutive "QQplot"?
+
+
+
+```{r}
+ggplot(QQdata, 
+       aes(x = Xaxis_2, y = Yaxis)) +
+       geom_point() +
+       # equivalent to stat_qq_line()
+       geom_abline(intercept = 0, slope = 1)
+```
+
+
+```{r}
+ggplot(NY_temp, aes(x = Temp)) +
+       geom_density() +
+      # the funciton below adds the normal distribution (in blue)
+       geom_function(fun = dnorm, 
+                     args = list(mean = mean(NY_temp$Temp),
+                                 sd = sd(NY_temp$Temp)),
+                     color = "blue") +
+       xlim(45, 110)
+```
+

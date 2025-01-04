@@ -1,0 +1,6 @@
+---
+title: "Lab 7 Code"
+author: "Fabio Setti"
+date: "Spring-2025"
+output: html_document
+---

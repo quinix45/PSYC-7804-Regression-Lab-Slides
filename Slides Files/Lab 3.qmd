@@ -319,7 +319,6 @@ pt(.717, df = 1336, lower.tail = FALSE)*2
 #| code-fold: true
 #| code-summary: "Plot code"
 #| code-line-numbers: false
-##| dpi: 300
 
 
 ggplot() +
@@ -564,8 +563,6 @@ save_as_docx(table,
 ::: {.column width="65%"}
 
 ```{r}
-
-
 # load the function (`source()` runs R code from other files)
 source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/Regression_flextable.R")
 

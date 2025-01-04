@@ -129,7 +129,7 @@ coef(reg_GDP)
 
 The catch is that the model that includes both predictors calculates **partial regression coefficients**.
 
-## "Manually" Calculate partial regression coefficients
+## Calculate partial regression coefficients "By Hand"
 
 Personally, the concept of **partial regression coefficients** starts making sense once I "computed" them myself and see what is going on behind the scenes. 
 
@@ -425,31 +425,6 @@ Notice that the bootstrap samples are very normally distributed. This is almost 
 ## References 
 
 <div id="refs"> </div>
-
-
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: cod
-
-
-
-```
-
-
-
-:::: {.columns}
-::: {.column width="50%"}
-
-:::
-::: {.column width="50%"}
-
-:::
-::::
-
-
-
 
 
 

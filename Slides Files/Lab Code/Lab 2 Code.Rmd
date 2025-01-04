@@ -1,0 +1,239 @@
+---
+title: "Lab 2 Code"
+author: "Fabio Setti"
+date: "Spring-2025"
+output: html_document
+---
+
+## Today's Packages 🤗
+
+```{r}
+# Run Individual lines to install packages
+
+install.packages("rio")
+install.packages("psych")
+install.packages("tidyverse")
+install.packages("car")
+```
+
+```{r}
+library(car)
+library(rio)
+library(psych)
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+```
+
+
+```{r}
+GPA <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/GPA.sav")
+str(GPA)
+```
+
+
+## Describe and Plot your data
+
+```{r}
+describe(GPA)
+```
+
+```{r}
+GPA %>% 
+# When creating multiple plots at once, long data works best
+pivot_longer(cols = colnames(GPA),
+             names_to = "variable",
+             values_to = "value") %>% 
+          ggplot(aes(x  = value)) +
+          geom_density() +
+# the facet_wrap() fucntion generates plots for each value in "variable"
+          facet_wrap(~variable, scales = "free") +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.line.y =  element_blank())
+```
+
+## Scatterplot
+
+```{r}
+ggplot(GPA,
+      aes(x = act, y = year1gpa)) +
+      geom_point()
+
+```
+
+
+
+```{r}
+
+
+ggplot(GPA,
+      aes(x = act, y = year1gpa)) +
+      geom_point() +
+      geom_smooth(method = "lm", 
+                  se = FALSE)
+```
+
+
+```{r}
+ggplot(GPA,
+      aes(x = act, y = year1gpa)) +
+      geom_point() +
+      geom_smooth(method = "lm", se = FALSE) +
+      geom_smooth(method = "loess", 
+                  color = "red",
+                  se = FALSE)
+```
+
+
+## Correlation 
+
+
+
+$r_{xy} = \frac{ \sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y}) }{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2}\sqrt{\sum_{i=1}^{n}(y_i-\bar{y})^2}}$
+
+```{r}
+cov_xy <- sum((GPA$year1gpa - mean(GPA$year1gpa)) * (GPA$act - mean(GPA$act)))
+var_x <- sqrt(sum((GPA$year1gpa - mean(GPA$year1gpa))^2))
+var_y <- sqrt(sum((GPA$act - mean(GPA$act))^2))
+
+cov_xy/(var_x * var_y)
+```
+
+
+```{r}
+cor(GPA$year1gpa, GPA$act)
+```
+
+
+## Significance Test for Correlations
+
+
+```{r}
+corr.test(GPA)
+```
+
+```{r}
+correlation <- corr.test(GPA)
+
+names(correlation)
+```
+
+
+## `corr_test()` output
+
+
+```{r}
+# correlation matrix
+
+correlation$r
+```
+
+```{r}
+# p-values
+
+correlation$p
+```
+
+
+```{r}
+# confidence intervals
+
+correlation$ci
+```
+
+
+## Running a Regreassion in R
+
+
+```{r}
+reg <- lm(year1gpa ~ act, data = GPA)
+summary(reg)
+```
+## Standardized Regression Output
+
+```{r}
+GPA_std <- data.frame(scale(GPA))
+
+reg_std <- lm(year1gpa ~ act, data = GPA_std)
+summary(reg_std)
+```
+## Predictions and residuals
+
+```{r}
+predictions <- predict(reg)
+str(predictions, give.attr = FALSE)
+```
+
+
+```{r}
+residuals <- resid(reg)
+str(residuals, give.attr = FALSE)
+
+
+# residuals sum to 0
+sum(residuals)
+```
+
+## Visualizing Predictions and Residuals
+
+```{r}
+# observed data
+
+ggplot(GPA,
+ aes(x = act, y = year1gpa)) +
+ geom_point(shape = 1) 
+```
+
+
+
+```{r}
+# predictions
+
+ggplot(GPA,
+ aes(x = act, y = year1gpa)) +
+ geom_point(shape = 1) +
+ geom_point(aes(y = predictions), 
+                colour = "red")
+```
+
+
+
+
+```{r}
+# dashed lines (residuals) as distances from predictions and observed values
+
+
+ggplot(GPA,
+ aes(x = act, y = year1gpa)) +
+ geom_point(shape = 1) +
+ geom_point(aes(y = predictions), 
+                color = "red") +
+ geom_segment(y = predictions,
+              x = GPA$act,
+              xend = GPA$act,
+              yend = GPA$year1gpa,
+              linetype = 2,
+              alpha = .5)
+```
+
+## Normality of Residuals
+
+
+```{r}
+car::qqPlot(reg, id = FALSE)
+```
+
+## Plotting Residuals Against Predictors
+
+
+```{r}
+ggplot(GPA, 
+  aes(x = act, y = residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_smooth(method = "loess",
+              se = FALSE)
+```
+

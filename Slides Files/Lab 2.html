@@ -898,7 +898,7 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <p><span class="math display">\[Y = 0 + .36X + .96,\]</span></p>
 <p>Where <span class="math inline">\(.36\)</span> is the correlation coefficient between <code>act</code> and <code>year1gpa</code>.</p>
 <div style="font-size: 22px">
-<p>🧐 Standardizing our variables simply changes measurement units. You can think of it as switching between degrees Farenheit and Celcius. the state of the world (temperature) remains the same, only the numbers that we use to describe it change.</p>
+<p>🧐 Standardizing our variables simply changes measurement units. You can think of it as switching between degrees Fahrenheit and Celsius. the state of the world (temperature) remains the same, only the numbers that we use to describe it change.</p>
 </div>
 </div></div>
 </section>
@@ -1192,7 +1192,7 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 </div>
 </div><div class="column" style="width:50%;">
 <p>if <span class="math inline">\(Y \sim N(b_0 + b_1X, \epsilon)\)</span> is our model…</p>
-<p>…what we are saying with the results on the left is that <em>Y</em> is normally distributed with</p>
+<p>…what we are saying with the results on the left is that <span class="math inline">\(Y\)</span> is normally distributed with</p>
 <ul>
 <li><p><strong>mean</strong> of <span class="math inline">\(0.46 +  0.08X_{ACT}\)</span>, the <span class="math inline">\(b_0 + b_1X\)</span> part, and</p></li>
 <li><p><strong>standard deviation</strong> of <span class="math inline">\(0.61\)</span>, the <span class="math inline">\(\epsilon\)</span> (residual variance) part.</p></li>
@@ -1202,7 +1202,42 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 </section>
 <section id="a-graphical-representation" class="slide level2">
 <h2>A graphical representation</h2>
-<p>The egression model</p>
+<p>Since our regression model is just our assumption about how <span class="math inline">\(Y\)</span> is distributed, we can simulate <span class="math inline">\(Y\)</span> according how our model:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Simulate <span class="math inline">\(Y\)</span> data based on our regression</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Y_simulated ~ act_sim)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.19406 -0.39062 -0.01549  0.39955  2.27408 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 0.576950   0.069308   8.324 2.77e-16 ***
+act_sim     0.083201   0.003385  24.576  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.6202 on 998 degrees of freedom
+Multiple R-squared:  0.377, Adjusted R-squared:  0.3764 
+F-statistic:   604 on 1 and 998 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-37-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+
+</div></div>
 </section>
 <section id="predictable-and-unpredictable-parts" class="slide level2">
 <h2>Predictable and Unpredictable Parts</h2>
@@ -1211,8 +1246,8 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <div class="column" style="width:50%;">
 <p>For example, if I generate data from a normal distribution with 0 standard deviation</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 5 observations from N~(2, 0)</span></span>
-<span id="cb45-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 5 observations from N~(2, 0)</span></span>
+<span id="cb46-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2 2 2 2 2</code></pre>
 </div>
@@ -1220,18 +1255,18 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <p>The outcome is fully predictable, and we always get 2.</p>
 </div><div class="column" style="width:50%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2356</span>)</span>
-<span id="cb47-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># add randomness to observations on the left</span></span>
-<span id="cb47-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">0</span>) <span class="sc">+</span> </span>
-<span id="cb47-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">4</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2356</span>)</span>
+<span id="cb48-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># add randomness to observations on the left</span></span>
+<span id="cb48-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">0</span>) <span class="sc">+</span> </span>
+<span id="cb48-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">4</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  1.416078  1.911307 -1.559635 -5.324674  2.095688</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the two lines above are equivalent to just</span></span>
-<span id="cb49-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed(2356)</span></span>
-<span id="cb49-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># rnorm(5, mean = 2, sd = 4) </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the two lines above are equivalent to just</span></span>
+<span id="cb50-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed(2356)</span></span>
+<span id="cb50-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># rnorm(5, mean = 2, sd = 4) </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In contrast, here we know that our values will be centered around 2, the mean. However, there is unpredictable randomness introduced by the standard deviation of 4.</p>
 </div></div>

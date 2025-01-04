@@ -594,7 +594,7 @@ $$Y = 0 + .36X + .96,$$
 Where $.36$ is the correlation coefficient between `act` and `year1gpa`.
 
 <div style="font-size: 22px"> 
-🧐 Standardizing our variables simply changes measurement units. You can think of it as switching between degrees Farenheit and Celcius. the state of the world (temperature) remains the same, only the numbers that we use to describe it change. 
+🧐 Standardizing our variables simply changes measurement units. You can think of it as switching between degrees Fahrenheit and Celsius. the state of the world (temperature) remains the same, only the numbers that we use to describe it change. 
 </div>
 
 :::

@@ -570,11 +570,6 @@ Temp        3 111  77.79  9.53   79.0   77.89 10.38 57.0  97.0  40.0 -0.22    -0
 Wind        4 111   9.94  3.56    9.7    9.84  3.41  2.3  20.7  18.4  0.45     0.22 0.34</code></pre>
 </div>
 </div>
-<style>
-.narrow {
-    max-height: 30% !important;
-}
-</style>
 <div class="callout callout-note no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
@@ -591,7 +586,9 @@ Wind        4 111   9.94  3.56    9.7    9.84  3.41  2.3  20.7  18.4  0.45     0
 <iframe width="90%" height="600px" src="https://fabiosetti.shinyapps.io/Skew_Normal_distribution/">
 </iframe>
 </div><div class="column" style="width:20%;">
-<div style="font-size: 14px">
+<p>Full screen version <a href="https://fabiosetti.shinyapps.io/Skew_Normal_distribution/" target="_blank">here</a></p>
+<p><br></p>
+<div style="font-size: 20px">
 <p><strong>NOTE</strong>🤔: once <code>skewness</code> is no longer 0, the mean shown on the plot will no longer correspond to the <code>Mean</code> shown in the box?! This is a bit in the weeds, but the mean on the plot is the <a href="https://en.wikipedia.org/wiki/Expected_value" target="_blank">expectation</a> of the skew-normal distribution, while the number in the <code>Mean</code> box is the <a href="https://en.wikipedia.org/wiki/Location_parameter" target="_blank">location parameter</a> of the skew-normal distribution.</p>
 </div>
 </div></div>
@@ -634,7 +631,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 </section>
 <section id="ggplot-step-by-step" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">GGplot Step by step</h2>
-<p>As mentioned in the box on the last slide, <code>ggplot2</code> breaks visualizations into small parts and pastes them on top of each other through the <code>+</code> operator. Let’s plot the temperature observed (<code>Temp</code>, <span class="math inline">\(y\)</span>) at every measured time point (<code>Case</code>, <span class="math inline">\(x\)</span>). This is a <strong>Profile plot</strong>.</p>
+<p>As mentioned in the box on the last slide, <code>ggplot2</code> breaks visualizations into small parts and pastes them on top of each other through the <code>+</code> operator.</p>
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="cell code-125">
@@ -676,7 +673,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 </section>
 <section id="ggplot-step-by-step-2" class="slide level2" data-auto-animate="true" data-visibility="uncounted">
 <h2 data-id="quarto-animate-title">GGplot Step by step</h2>
-<p>We use one of the <code>geom_...()</code> function do add shapes to our plot.</p>
+<p>We use one of the <code>geom_...()</code> functions to add shapes to our plot.</p>
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="cell code-125">
