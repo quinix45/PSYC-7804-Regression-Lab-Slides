@@ -99,6 +99,8 @@ There are millions of ways of doing the same thing. Loading data into R is the s
 
 <center>
 
+::: {.fragment fragment-index=1}
+
 **Option 1:** keep track of all the different functions to load different types of data files
 
 ```{r}
@@ -127,7 +129,7 @@ haven::read_stata()
 ```
 
 ![](Images/confused.png){width="40%"}
-
+:::
 </center>
 
 :::
@@ -135,6 +137,8 @@ haven::read_stata()
 
 
 <center>
+
+::: {.fragment fragment-index=2}
 
 **Option 2:** achieve complete peace of mind 😌 by using the `import()` function from the `rio` package
 
@@ -153,6 +157,7 @@ rio::import()
 ![](Images/Peace_of_mind.png){width="50%"}
 <figcaption style="font-size: 15px;">Me after realizing that `import()` works on just about any type of data</figcaption>
 
+:::
 
 </center>
 :::
@@ -166,6 +171,8 @@ How many of you have tried to load a data file, only to find out that it wasn't 
 :::: {.columns}
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=1}
+
 **Typical Fordham stats lab experience:**
 
 ```{r}
@@ -178,18 +185,23 @@ NY_temp <- try(import("NY_Temp.txt"))
 
 <center>
 
-![](Images/confused_cat.png){width="40%"}
+![](Images/confused_cat.png){width="35%"}
 <figcaption style="font-size: 18px"> Me spending 10 minutes to load the data at the beginning of lab and then be completely lost because we are already on slide 9 </figcaption>
 </center>
 
 :::
+
+:::
 ::: {.column width="50%"}
 
-
-**New and improved experience:**
+::: {.fragment fragment-index=2}
+**New and improved experience?**
 
 I have uploaded all the datasets that we will use for this lab to a [github repository](https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/tree/main/Slides%20Files/Data){target="_blank"}.
 
+:::
+
+::: {.fragment fragment-index=3}
 
 <ul style="font-size: 26px">
   <li> So, all we need to do is give R the download link. No need to download any files or set working directories!</li>
@@ -205,22 +217,32 @@ I have uploaded all the datasets that we will use for this lab to a [github repo
 NY_temp <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/NY_Temp.txt")
 ```
 
+:::
+
 <center>
+
+::: {.fragment fragment-index=4}
 
 ![](Images/happy_cat.gif){width="20%"}
 
+:::
 </center>
 
+
+:::
 :::
 ::::
 
 ## Some Descriptive Statistics
 
-Now that we have loaded our data, we should compute some descriptives statistics. Once again, many ways of doing this.
+Now that we have loaded our data ![](Images/happy_cat.gif){width="2%"}, we should compute some descriptive statistics.
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="40%"}
 
+
+
+::: {.fragment fragment-index=1}
 ```{r}
 options(width = "250")
 ```
@@ -236,9 +258,12 @@ The `str()` function can give you good sense of the type of variables you are de
 
 str(NY_temp)
 ```
+:::
 
 :::
-::: {.column width="50%"}
+::: {.column width="60%"}
+
+::: {.fragment fragment-index=2}
 
 When dealing with continuous variables, the `describe()` function from the `psych` package is quite handy
 
@@ -251,7 +276,7 @@ When dealing with continuous variables, the `describe()` function from the `psyc
 
 # the `trim = .05` argument calculates means without the bottom/top 2.5% of the data
 # add IQR = TRUE to get the interquartile range
-describe(NY_temp[,-1], trim = .05)
+psych::describe(NY_temp[,-1], trim = .05)
 ```
 
 
@@ -259,10 +284,19 @@ describe(NY_temp[,-1], trim = .05)
  what does the `[,-1]` do in the code above? Why did I include it?
 :::
 
-
+:::
 :::
 ::::
 
+
+::: {.fragment fragment-index=3}
+
+:::{.callout-note}
+## The `::` operator 
+Notice the `psych::describe()`. This reads "*use the `describe()` function from the `psych` package*". This is equivalent to running `library(psych)` and then `describe()`, but using `psych::describe()` is better for learning purposes. Why? 🤔
+:::
+
+:::
 
 ## Mean, Standard Deviation, Skewness 
 
@@ -287,38 +321,52 @@ Full screen version [here](https://fabiosetti.shinyapps.io/Skew_Normal_distribut
 
 ## Plotting With *GGplot*
 
-I use `ggplot2` a lot, but I can't say that I would be able to create many plots "off the top of my head". There are millions of  `ggplot2` functions, so learning what all of them do is impossible. When using `ggplot2`, I recommend that you:  
+I use `ggplot2` a lot, but I can't say that I would be able to create all plots "off the top of my head". There are millions of  `ggplot2` functions, so learning what all of them do is impossible. When using `ggplot2`, I recommend that you:  
 
 :::: {.columns}
 ::: {.column width="50%"}
 
 <ul style="font-size: 24px">
-  <li> Try to understand *the logic* behind `ggplot`'s syntax. </li>
-  
-  <li> Start with a simple plot and progressively build upon it. </li>
-  
-  <li> Read functions documentation (i.e., function help menu) when something does not work as expected. </li>
 
+::: {.fragment fragment-index=1}
+  <li> Try to understand *the logic* behind `ggplot`'s syntax. </li>
+:::
+
+::: {.fragment fragment-index=2}
+  <li> Start with a simple plot and progressively build upon it. </li>
+:::  
+
+::: {.fragment fragment-index=3}
+  <li> Read functions documentation (i.e., function help menu) when something does not work as expected. </li>
+:::
+
+::: {.fragment fragment-index=4}
   <li> Look things up. Usually I start with some plot code that I find online that produces a similar plot to what I want, and then I modify/build on top of it. </li>
-  
+:::  
 </ul>
 
+::: {.fragment fragment-index=5}
 ::: {.callout-note}
 ## GGplot fact that you did not ask for
 `ggplot2` [@Wickham_etal_2024] is an implementation of [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson){target="_blank"}'s Grammar of Graphics, a scheme that breaks down data visualization into its components (e.g, lines, axes, layers...)
+:::
 :::
 
 :::
 ::: {.column width="50%"}
 
-![](Images/idea.png){width="80%"}
+<center>
+
+![](Images/idea.png){width="75%"}
+
+</center>
 
 :::
 ::::
 
 ## GGplot Step by step {auto-animate="true"}
 
-As mentioned in the box on the last slide, `ggplot2` breaks visualizations into small parts and pastes them on top of each other through the `+` operator. Let's plot the temperature observed (`Temp`, $y$) at every measured time point (`Case`, $x$). This is a **Profile plot**.
+As mentioned in the box on the last slide, `ggplot2` breaks visualizations into small parts and pastes them on top of each other through the `+` operator.
 
 :::: {.columns}
 ::: {.column width="30%"}
@@ -349,7 +397,7 @@ ggplot()
 
 ## GGplot Step by step {auto-animate="true" data-visibility="uncounted"}
 
-We use the `aes()` function to defined coordinates. Note that the name of the data object (`NY_temp` in our case) is almost always the first argument of the `ggplot()` function. 
+We use the `aes()` function to defined coordinates. Note that the name of the data object (`NY_temp` in our case) is almost always the first argument of the `ggplot()` function.  Let's plot the temperature observed (`Temp`, $y$) at every measured time point (`Case`, $x$). 
 
 :::: {.columns}
 ::: {.column width="30%"}
@@ -378,7 +426,7 @@ ggplot(NY_temp,
 
 ## GGplot Step by step {auto-animate="true" data-visibility="uncounted"}
 
-We use one of the `geom_...()` functions to add shapes to our plot.
+We use one of the `geom_...()` functions to add shapes to our plot. This is a **Profile plot**.
 
 :::: {.columns}
 ::: {.column width="30%"}
@@ -732,7 +780,7 @@ ggplot(NY_temp,
 ::: {.callout-note}
 ## HEX color codes 
 
-The "#3492eb" is actually a color. R supports HEX color codes, which are numeric codes that represent just about all possible colors. There are many online color pickers ([see here](https://htmlcolorcodes.com/color-picker/){target="_blank"} for example) that will let you select a color and provide the corresponding HEX color code.  
+The "#3492eb" is actually a color. R supports HEX color codes, which are codes that can represent just about all possible colors. There are many online color pickers ([see here](https://htmlcolorcodes.com/color-picker/){target="_blank"} for example) that will let you select a color and provide the corresponding HEX color code.  
 :::
 
 :::
@@ -776,7 +824,7 @@ ggplot(NY_temp,
 ::: {.callout-note}
 # Reading a Box-plot
 
-The square represents the interquartile range, meaning that the bottom edge is the $25^{th}$ percentile of the variable and the top edge is the $75^{th}$ percentile of the variable. The line is the mean of the variable, which is not quite in the middle of the box (the median). This suggests some degree of skew. 
+The square represents the interquartile range, meaning that the bottom edge is the $25^{th}$ percentile of the variable and the top edge is the $75^{th}$ percentile of the variable. The line is the median of the variable, which is not quite in the middle of the box (the median). This suggests some degree of skew. 
 :::
 
 :::
@@ -903,6 +951,8 @@ ggplot(NY_temp,
 
 QQplots give a graphical representation of how much a variable deviates from normality. Personally, I find QQplots a bit unintuitive 😕. Unlike other plots, the meaning of their axes is not very clear. For now, let's look at how to create a QQplot. The **next slides** will have an explanation of what a QQplot actually does.
 
+::: {.fragment fragment-index=1}
+
 :::: {.columns}
 ::: {.column width="30%"}
 
@@ -922,7 +972,7 @@ ggplot(NY_temp,
 
 
 ::: {.callout-caution appearance="simple"}
-This is the code that you want to use to use to create QQplots. All the code on the next slides is for demonstration purposes only. 
+This is the code that you want to use to use to create QQplots. All the code on the next slides is for learning purposes only. 
 :::
 
 
@@ -938,11 +988,11 @@ ggplot(NY_temp,
 :::
 ::::
 
+:::
+
 ## Understanding QQplots
 
-<div style="font-size: 22px"> QQplots use the idea of quantiles (both Qs stand for "quantile"). You are probably more familiar with percentiles, which are the exact same as quantiles, save for their units (e.g., the $.5$ quantile is the same as the $50^{th}$ percentile). If it makes it easier, whenever you see quantile, just think of it as percentile. </div>
-
-<br>
+<div style="font-size: 22px; padding-bottom: 10px;"> QQplots use the idea of quantiles (both Qs stand for "quantile"). You are probably more familiar with percentiles, which are the exact same as quantiles, save for their units (e.g., the $.5$ quantile is the same as the $50^{th}$ percentile). If it makes it easier, whenever you see quantile, just think of it as percentile. </div>
 
 :::: {.columns}
 ::: {.column width="70%"}
@@ -951,11 +1001,15 @@ ggplot(NY_temp,
 
 <ul style="font-size: 23px">
 
+
+::: {.fragment fragment-index=1}
+
 <li> **x-axis:** Values corresponding to quantiles of a perfectly normal distribution. </li>
   
 ```{r}
 #| eval: true
 #| echo: true 
+#| code-line-numbers: false
 #| classes: code-125
 
 # quantile values of .1, .5., .8 for normal distribution with mean = 0 and sd = 1
@@ -965,12 +1019,16 @@ ggplot(NY_temp,
 qnorm(c(.1, .5, .8), mean = 0, sd = 1)
 ```
  
+::: 
+
+::: {.fragment fragment-index=2}
 
 <li> **y-axis:** Values corresponding to the corresponding observed quantiles of our variable </li>
  
 ```{r}
 #| eval: true
 #| echo: true 
+#| code-line-numbers: false
 #| classes: code-125
 
 # The quantile function calculates the observed percentiles fo a given variable.
@@ -979,19 +1037,20 @@ qnorm(c(.1, .5, .8), mean = 0, sd = 1)
 quantile(NY_temp$Temp, c(.1, .5, .8))
 ```
  
-
+:::
 </ul>
 
 
 :::
 ::: {.column width="30%"}
 
+::: {.fragment fragment-index=3}
 :::{.callout-note appearance="default"}
 ## d, p, q, r? 
 
 Any probability distribution in R has a `d`, `p`, `q`, and `r` variant. We just used the `q` variant of the normal distribution, `qnorm()` ([see here](https://www.stat.umn.edu/geyer/old/5101/rlook.html#:~:text=R%20Functions%20for%20Probability%20Distributions,-Every%20distribution%20that&text=For%20the%20normal%20distribution%2C%20these,qbinom%20%2C%20dbinom%20%2C%20and%20rbinom%20.) for all base R distribution functions). `d` calculates the density (i.e., height) of a probability distribution for a given $x$ value, `p` gives the quantile corresponding to a value (e.g., `pnorm(0)` gives `0.5`), `q` gives the value corresponding to a quantile (e.g., `qnorm(0.5)` gives `0`), and `r` generates random values from a distribution. 
 :::
-
+:::
 
 :::
 ::::
@@ -1003,6 +1062,7 @@ So, what now? Well, on the left, we only calculated the coordinates for 3 of the
 ```{r}
 #| eval: true
 #| echo: true 
+#| code-line-numbers: false
 #| classes: code-90 
 
 # first, it is useful to define all the quantiles that we want as a vector
@@ -1027,16 +1087,19 @@ head(QQdata)
 
 ## QQplot The Data
 
-If the explanation before made no sense, here's a recreated QQplots to convince you
+If the explanation before made no sense, here's a recreated QQplots to convince you (hopefully?)
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
 
 The pattern of points is the exact same as the one generated by the `stat_qq()` function.
 
 ```{r}
 #| eval: true
 #| echo: true 
+#| code-line-numbers: false
 
 ggplot(QQdata, 
        aes(x = Xaxis, y = Yaxis)) +
@@ -1044,13 +1107,18 @@ ggplot(QQdata,
 ```
 
 :::
+
+:::
 ::: {.column width="50%"}
 
-<div style="font-size: 22px"> As mentioned, the quantiles generated from any different normal distribution will not change the pattern of the dots (magic? Do give this some thought if it does not make sense to you) </div>
+::: {.fragment fragment-index=2}
+
+<div style="font-size: 20px"> As mentioned, the quantiles generated from any different normal distribution will not change the pattern of the dots (magic? Do give this some thought if it does not make sense to you) </div>
 
 ```{r}
 #| eval: true
 #| echo: true 
+#| code-line-numbers: false
 
 ggplot(QQdata, 
        aes(x = Xaxis_2, y = Yaxis)) +
@@ -1058,12 +1126,15 @@ ggplot(QQdata,
 ```
 
 :::
+
+:::
 ::::
 
+::: {.fragment fragment-index=3}
 <center>
 The values on the X-axis are the only difference. 
 </center>
-
+:::
 
 ## A more intutive "QQplot"?
 
@@ -1072,9 +1143,12 @@ The values on the X-axis are the only difference.
 :::: {.columns}
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=1}
+
 ```{r}
 #| eval: true
 #| echo: true 
+#| code-line-numbers: false
 
 ggplot(QQdata, 
        aes(x = Xaxis_2, y = Yaxis)) +
@@ -1082,13 +1156,18 @@ ggplot(QQdata,
        # equivalent to stat_qq_line()
        geom_abline(intercept = 0, slope = 1)
 ```
+:::
+
 
 :::
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=2}
+
 ```{r}
 #| eval: true
 #| echo: true 
+#| code-line-numbers: false
 #| classes: code-90
  
 ggplot(NY_temp, aes(x = Temp)) +
@@ -1097,14 +1176,17 @@ ggplot(NY_temp, aes(x = Temp)) +
        geom_function(fun = dnorm, 
                      args = list(mean = mean(NY_temp$Temp),
                                  sd = sd(NY_temp$Temp)),
-                     color = "blue") +
-       xlim(45, 110)
+                     color = "blue") + xlim(45, 110)
 ```
+:::
+
 :::
 ::::
 
-<div style="font-size: 24px"> You should be able to see that the normal distribution deviating from the observed data in the plot on the right is mirrored exactly by the dots deviating form the line in the plot on the left 🧐 </div>
 
+::: {.fragment fragment-index=3}
+<div style="font-size: 24px"> You should be able to see that the normal distribution deviating from the observed data in the plot on the right is mirrored exactly by the dots deviating form the line in the plot on the left 🧐 </div>
+:::
 
 ## References 
 

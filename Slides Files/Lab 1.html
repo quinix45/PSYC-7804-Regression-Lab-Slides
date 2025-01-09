@@ -472,6 +472,7 @@ Fabio Setti
 <div class="columns">
 <div class="column" style="width:50%;">
 <center>
+<div class="fragment" data-fragment-index="1">
 <p><strong>Option 1:</strong> keep track of all the different functions to load different types of data files</p>
 <div class="cell code-150">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r height-150 code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">read.csv</span>()</span>
@@ -490,9 +491,11 @@ Fabio Setti
 <span id="cb3-14"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># there's more, but you get the point</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><img data-src="Images/confused.png" style="width:40.0%"></p>
+</div>
 </center>
 </div><div class="column" style="width:50%;">
 <center>
+<div class="fragment" data-fragment-index="2">
 <p><strong>Option 2:</strong> achieve complete peace of mind 😌 by using the <code>import()</code> function from the <code>rio</code> package</p>
 <div class="cell code-150">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r height-150 code-overflow-scroll code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>rio<span class="sc">::</span><span class="fu">import</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -501,6 +504,7 @@ Fabio Setti
 <figcaption style="font-size: 15px;">
 Me after realizing that <code>import()</code> works on just about any type of data
 </figcaption>
+</div>
 </center>
 </div></div>
 </section>
@@ -509,6 +513,7 @@ Me after realizing that <code>import()</code> works on just about any type of da
 <p>How many of you have tried to load a data file, only to find out that it wasn’t in your working directory?</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <p><strong>Typical Fordham stats lab experience:</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>NY_temp <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="fu">import</span>(<span class="st">"NY_Temp.txt"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -517,14 +522,18 @@ Me after realizing that <code>import()</code> works on just about any type of da
 </div>
 </div>
 <center>
-<img data-src="Images/confused_cat.png" style="width:40.0%">
+<img data-src="Images/confused_cat.png" style="width:35.0%">
 <figcaption style="font-size: 18px">
 Me spending 10 minutes to load the data at the beginning of lab and then be completely lost because we are already on slide 9
 </figcaption>
 </center>
+</div>
 </div><div class="column" style="width:50%;">
-<p><strong>New and improved experience:</strong></p>
+<div class="fragment" data-fragment-index="2">
+<p><strong>New and improved experience?</strong></p>
 <p>I have uploaded all the datasets that we will use for this lab to a <a href="https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/tree/main/Slides%20Files/Data" target="_blank">github repository</a>.</p>
+</div>
+<div class="fragment" data-fragment-index="3">
 <ul style="font-size: 26px">
 <li>
 So, all we need to do is give R the download link. No need to download any files or set working directories!
@@ -534,16 +543,21 @@ So, all we need to do is give R the download link. No need to download any files
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># run the line below and you should see the data appear in your environment</span></span>
 <span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>NY_temp <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/NY_Temp.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</div>
 <center>
+<div class="fragment" data-fragment-index="4">
 <p><img data-src="Images/happy_cat.gif" style="width:20.0%"></p>
+</div>
 </center>
 </div></div>
+<p>::::</p>
 </section>
 <section id="some-descriptive-statistics" class="slide level2">
 <h2>Some Descriptive Statistics</h2>
-<p>Now that we have loaded our data, we should compute some descriptives statistics. Once again, many ways of doing this.</p>
+<p>Now that we have loaded our data <img data-src="Images/happy_cat.gif" style="width:2.0%">, we should compute some descriptive statistics.</p>
 <div class="columns">
-<div class="column" style="width:50%;">
+<div class="column" style="width:40%;">
+<div class="fragment" data-fragment-index="1">
 <p>The <code>str()</code> function can give you good sense of the type of variables you are dealing with</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(NY_temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -556,12 +570,14 @@ So, all we need to do is give R the download link. No need to download any files
  $ Wind    : num  7.4 8 12.6 11.5 8.6 13.8 20.1 9.7 9.2 10.9 ...</code></pre>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
+</div>
+</div><div class="column" style="width:60%;">
+<div class="fragment" data-fragment-index="2">
 <p>When dealing with continuous variables, the <code>describe()</code> function from the <code>psych</code> package is quite handy</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the `trim = .05` argument calculates means without the bottom/top 2.5% of the data</span></span>
 <span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># add IQR = TRUE to get the interquartile range</span></span>
-<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(NY_temp[,<span class="sc">-</span><span class="dv">1</span>], <span class="at">trim =</span> .<span class="dv">05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">describe</span>(NY_temp[,<span class="sc">-</span><span class="dv">1</span>], <span class="at">trim =</span> .<span class="dv">05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         vars   n   mean    sd median trimmed   mad  min   max range  skew kurtosis   se
 NY_Ozone    1 111  42.10 33.28   31.0   39.50 25.20  1.0 168.0 167.0  1.23     1.13 3.16
@@ -577,7 +593,23 @@ Wind        4 111   9.94  3.56    9.7    9.84  3.41  2.3  20.7  18.4  0.45     0
 </div>
 </div>
 </div>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="3">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>The <code>::</code> operator</strong></p>
+</div>
+<div class="callout-content">
+<p>Notice the <code>psych::describe()</code>. This reads “<em>use the <code>describe()</code> function from the <code>psych</code> package</em>”. This is equivalent to running <code>library(psych)</code> and then <code>describe()</code>, but using <code>psych::describe()</code> is better for learning purposes. Why? 🤔</p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="mean-standard-deviation-skewness" class="slide level2">
 <h2>Mean, Standard Deviation, Skewness</h2>
@@ -595,23 +627,32 @@ Wind        4 111   9.94  3.56    9.7    9.84  3.41  2.3  20.7  18.4  0.45     0
 </section>
 <section id="plotting-with-ggplot" class="slide level2">
 <h2>Plotting With <em>GGplot</em></h2>
-<p>I use <code>ggplot2</code> a lot, but I can’t say that I would be able to create many plots “off the top of my head”. There are millions of <code>ggplot2</code> functions, so learning what all of them do is impossible. When using <code>ggplot2</code>, I recommend that you:</p>
+<p>I use <code>ggplot2</code> a lot, but I can’t say that I would be able to create all plots “off the top of my head”. There are millions of <code>ggplot2</code> functions, so learning what all of them do is impossible. When using <code>ggplot2</code>, I recommend that you:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul style="font-size: 24px">
+<div class="fragment" data-fragment-index="1">
 <li>
 Try to understand <em>the logic</em> behind <code>ggplot</code>’s syntax.
 </li>
+</div>
+<div class="fragment" data-fragment-index="2">
 <li>
 Start with a simple plot and progressively build upon it.
 </li>
+</div>
+<div class="fragment" data-fragment-index="3">
 <li>
 Read functions documentation (i.e., function help menu) when something does not work as expected.
 </li>
+</div>
+<div class="fragment" data-fragment-index="4">
 <li>
 Look things up. Usually I start with some plot code that I find online that produces a similar plot to what I want, and then I modify/build on top of it.
 </li>
+</div>
 </ul>
+<div class="fragment" data-fragment-index="5">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -625,8 +666,11 @@ Look things up. Usually I start with some plot code that I find online that prod
 </div>
 </div>
 </div>
+</div>
 </div><div class="column" style="width:50%;">
-<p><img data-src="Images/idea.png" style="width:80.0%"></p>
+<center>
+<p><img data-src="Images/idea.png" style="width:75.0%"></p>
+</center>
 </div></div>
 </section>
 <section id="ggplot-step-by-step" class="slide level2" data-auto-animate="true">
@@ -637,6 +681,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb12-1" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Just running <code>ggplot()</code> actually gives output! This is our “canvas”</p>
 </div><div class="column" style="width:70%;">
 <div class="cell">
 <div class="cell-output-display">
@@ -647,12 +692,11 @@ Look things up. Usually I start with some plot code that I find online that prod
 </div>
 </div>
 </div>
-<p>Just running <code>ggplot()</code> actually gives output! This is our “canvas”</p>
 </div></div>
 </section>
 <section id="ggplot-step-by-step-1" class="slide level2" data-auto-animate="true" data-visibility="uncounted">
 <h2 data-id="quarto-animate-title">GGplot Step by step</h2>
-<p>We use the <code>aes()</code> function to defined coordinates. Note that the name of the data object (<code>NY_temp</code> in our case) is almost always the first argument of the <code>ggplot()</code> function.</p>
+<p>We use the <code>aes()</code> function to defined coordinates. Note that the name of the data object (<code>NY_temp</code> in our case) is almost always the first argument of the <code>ggplot()</code> function. Let’s plot the temperature observed (<code>Temp</code>, <span class="math inline">\(y\)</span>) at every measured time point (<code>Case</code>, <span class="math inline">\(x\)</span>).</p>
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="cell code-125">
@@ -673,7 +717,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 </section>
 <section id="ggplot-step-by-step-2" class="slide level2" data-auto-animate="true" data-visibility="uncounted">
 <h2 data-id="quarto-animate-title">GGplot Step by step</h2>
-<p>We use one of the <code>geom_...()</code> functions to add shapes to our plot.</p>
+<p>We use one of the <code>geom_...()</code> functions to add shapes to our plot. This is a <strong>Profile plot</strong>.</p>
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="cell code-125">
@@ -854,7 +898,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 </div>
 </div>
 </div></div>
-<p>This plot gives a good graphical representation of the variance of a variable (I will use it again later to show something!). However, for visualizing data, we have better options…</p>
+<p>This plot gives a good graphical representation of the variance of a variable (I will use it again in <a href="https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%204.html#/back-to-our-friend-r-2" target="_blank">a later lab</a> to show something!). However, for visualizing data, we have better options…</p>
 </section>
 <section id="histograms" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Histograms</h2>
@@ -941,7 +985,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 <p><strong>HEX color codes</strong></p>
 </div>
 <div class="callout-content">
-<p>The “#3492eb” is actually a color. R supports HEX color codes, which are numeric codes that represent just about all possible colors. There are many online color pickers (<a href="https://htmlcolorcodes.com/color-picker/" target="_blank">see here</a> for example) that will let you select a color and provide the corresponding HEX color code.</p>
+<p>The “#3492eb” is actually a color. R supports HEX color codes, which are codes that can represent just about all possible colors. There are many online color pickers (<a href="https://htmlcolorcodes.com/color-picker/" target="_blank">see here</a> for example) that will let you select a color and provide the corresponding HEX color code.</p>
 </div>
 </div>
 </div>
@@ -976,7 +1020,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 <p><strong>Reading a Box-plot</strong></p>
 </div>
 <div class="callout-content">
-<p>The square represents the interquartile range, meaning that the bottom edge is the <span class="math inline">\(25^{th}\)</span> percentile of the variable and the top edge is the <span class="math inline">\(75^{th}\)</span> percentile of the variable. The line is the mean of the variable, which is not quite in the middle of the box (the median). This suggests some degree of skew.</p>
+<p>The square represents the interquartile range, meaning that the bottom edge is the <span class="math inline">\(25^{th}\)</span> percentile of the variable and the top edge is the <span class="math inline">\(75^{th}\)</span> percentile of the variable. The line is the median of the variable, which is not quite in the middle of the box (the median). This suggests some degree of skew.</p>
 </div>
 </div>
 </div>
@@ -1078,6 +1122,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 <section id="qqplots" class="slide level2">
 <h2>QQplots</h2>
 <p>QQplots give a graphical representation of how much a variable deviates from normality. Personally, I find QQplots a bit unintuitive 😕. Unlike other plots, the meaning of their axes is not very clear. For now, let’s look at how to create a QQplot. The <strong>next slides</strong> will have an explanation of what a QQplot actually does.</p>
+<div class="fragment" data-fragment-index="1">
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="cell code-125">
@@ -1092,7 +1137,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 <i class="callout-icon"></i>
 </div>
 <div class="callout-content">
-<p>This is the code that you want to use to use to create QQplots. All the code on the next slides is for demonstration purposes only.</p>
+<p>This is the code that you want to use to use to create QQplots. All the code on the next slides is for learning purposes only.</p>
 </div>
 </div>
 </div>
@@ -1107,47 +1152,52 @@ Look things up. Usually I start with some plot code that I find online that prod
 </div>
 </div>
 </div></div>
+</div>
 </section>
-<section id="trying-to-make-sense-of-qqplots" class="slide level2">
-<h2>Trying to make sense of QQplots</h2>
-<div style="font-size: 22px">
+<section id="understanding-qqplots" class="slide level2">
+<h2>Understanding QQplots</h2>
+<div style="font-size: 22px; padding-bottom: 10px;">
 QQplots use the idea of quantiles (both Qs stand for “quantile”). You are probably more familiar with percentiles, which are the exact same as quantiles, save for their units (e.g., the <span class="math inline">\(.5\)</span> quantile is the same as the <span class="math inline">\(50^{th}\)</span> percentile). If it makes it easier, whenever you see quantile, just think of it as percentile.
 </div>
-<p><br></p>
 <div class="columns">
 <div class="column" style="width:70%;">
 <div style="font-size: 26px">
 What do the <strong>x-axis</strong> and the <strong>y-axis</strong> represent in a QQplot?
 </div>
 <ul style="font-size: 23px">
+<div class="fragment" data-fragment-index="1">
 <li>
 <strong>x-axis:</strong> Values corresponding to quantiles of a perfectly normal distribution.
 </li>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="co"># quantile values of .1, .5., .8 for normal distribution with mean = 0 and sd = 1</span></span>
-<span id="cb28-2"><a href=""></a><span class="co"># this will results in Z-scores that correspond to the </span></span>
-<span id="cb28-3"><a href=""></a><span class="co"># 10th, 50th, and 80th percentile</span></span>
-<span id="cb28-4"><a href=""></a></span>
-<span id="cb28-5"><a href=""></a><span class="fu">qnorm</span>(<span class="fu">c</span>(.<span class="dv">1</span>, .<span class="dv">5</span>, .<span class="dv">8</span>), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># quantile values of .1, .5., .8 for normal distribution with mean = 0 and sd = 1</span></span>
+<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># this will results in Z-scores that correspond to the </span></span>
+<span id="cb28-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 10th, 50th, and 80th percentile</span></span>
+<span id="cb28-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fu">c</span>(.<span class="dv">1</span>, .<span class="dv">5</span>, .<span class="dv">8</span>), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -1.2815516  0.0000000  0.8416212</code></pre>
 </div>
 </div>
+</div>
+<div class="fragment" data-fragment-index="2">
 <li>
 <strong>y-axis:</strong> Values corresponding to the corresponding observed quantiles of our variable
 </li>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="co"># The quantile function calculates the observed percentiles fo a given variable.</span></span>
-<span id="cb30-2"><a href=""></a><span class="co"># by supplying c(.1, .5, .8) we want the 10th, 50th, and 80th percentile of Temp</span></span>
-<span id="cb30-3"><a href=""></a></span>
-<span id="cb30-4"><a href=""></a><span class="fu">quantile</span>(NY_temp<span class="sc">$</span>Temp, <span class="fu">c</span>(.<span class="dv">1</span>, .<span class="dv">5</span>, .<span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># The quantile function calculates the observed percentiles fo a given variable.</span></span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># by supplying c(.1, .5, .8) we want the 10th, 50th, and 80th percentile of Temp</span></span>
+<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(NY_temp<span class="sc">$</span>Temp, <span class="fu">c</span>(.<span class="dv">1</span>, .<span class="dv">5</span>, .<span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>10% 50% 80% 
  64  79  86 </code></pre>
 </div>
 </div>
+</div>
 </ul>
 </div><div class="column" style="width:30%;">
+<div class="fragment" data-fragment-index="3">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -1161,31 +1211,32 @@ What do the <strong>x-axis</strong> and the <strong>y-axis</strong> represent in
 </div>
 </div>
 </div>
+</div>
 </div></div>
 </section>
 <section id="creating-qqplot-data" class="slide level2">
 <h2>Creating QQplot Data</h2>
 <p>So, what now? Well, on the left, we only calculated the coordinates for 3 of the dots on the QQplot. Normally, QQplots do it for all 99 quantiles (<span class="math inline">\(1^{st}\)</span> percentile to <span class="math inline">\(99^{th}\)</span> percentile). Let’s walk through the process:</p>
 <div class="cell code-90">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="co"># first, it is useful to define all the quantiles that we want as a vector</span></span>
-<span id="cb32-2"><a href=""></a>quantiles <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> .<span class="dv">01</span>, <span class="at">to =</span> .<span class="dv">99</span>, <span class="at">by =</span> .<span class="dv">01</span>)  </span>
-<span id="cb32-3"><a href=""></a><span class="fu">str</span>(quantiles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># first, it is useful to define all the quantiles that we want as a vector</span></span>
+<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a>quantiles <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> .<span class="dv">01</span>, <span class="at">to =</span> .<span class="dv">99</span>, <span class="at">by =</span> .<span class="dv">01</span>)  </span>
+<span id="cb32-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(quantiles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> num [1:99] 0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 0.1 ...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="co"># calculate quantiles for normal distribution and real data</span></span>
-<span id="cb34-2"><a href=""></a>Xaxis <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(quantiles)</span>
-<span id="cb34-3"><a href=""></a>Yaxis <span class="ot">&lt;-</span> <span class="fu">quantile</span>(NY_temp<span class="sc">$</span>Temp, quantiles)</span>
-<span id="cb34-4"><a href=""></a></span>
-<span id="cb34-5"><a href=""></a><span class="co"># Note that you can use ANY mean and SD value for the qnorm() function.</span></span>
-<span id="cb34-6"><a href=""></a><span class="co"># Here, I use the mean and SD of the Temp variable</span></span>
-<span id="cb34-7"><a href=""></a>Xaxis_2 <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(quantiles, <span class="at">mean =</span> <span class="fu">mean</span>(NY_temp<span class="sc">$</span>Temp), <span class="at">sd =</span> <span class="fu">sd</span>(NY_temp<span class="sc">$</span>Temp))</span>
-<span id="cb34-8"><a href=""></a></span>
-<span id="cb34-9"><a href=""></a><span class="co"># create a data.frame (ggplot like data.frame objects)</span></span>
-<span id="cb34-10"><a href=""></a>QQdata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Xaxis"</span> <span class="ot">=</span> Xaxis,</span>
-<span id="cb34-11"><a href=""></a>                     <span class="st">"Xaxis_2"</span> <span class="ot">=</span> Xaxis_2,</span>
-<span id="cb34-12"><a href=""></a>                     <span class="st">"Yaxis"</span> <span class="ot">=</span> Yaxis)</span>
-<span id="cb34-13"><a href=""></a><span class="fu">head</span>(QQdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate quantiles for normal distribution and real data</span></span>
+<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a>Xaxis <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(quantiles)</span>
+<span id="cb34-3"><a href="" aria-hidden="true" tabindex="-1"></a>Yaxis <span class="ot">&lt;-</span> <span class="fu">quantile</span>(NY_temp<span class="sc">$</span>Temp, quantiles)</span>
+<span id="cb34-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that you can use ANY mean and SD value for the qnorm() function.</span></span>
+<span id="cb34-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Here, I use the mean and SD of the Temp variable</span></span>
+<span id="cb34-7"><a href="" aria-hidden="true" tabindex="-1"></a>Xaxis_2 <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(quantiles, <span class="at">mean =</span> <span class="fu">mean</span>(NY_temp<span class="sc">$</span>Temp), <span class="at">sd =</span> <span class="fu">sd</span>(NY_temp<span class="sc">$</span>Temp))</span>
+<span id="cb34-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data.frame (ggplot like data.frame objects)</span></span>
+<span id="cb34-10"><a href="" aria-hidden="true" tabindex="-1"></a>QQdata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Xaxis"</span> <span class="ot">=</span> Xaxis,</span>
+<span id="cb34-11"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Xaxis_2"</span> <span class="ot">=</span> Xaxis_2,</span>
+<span id="cb34-12"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"Yaxis"</span> <span class="ot">=</span> Yaxis)</span>
+<span id="cb34-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(QQdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       Xaxis  Xaxis_2 Yaxis
 1% -2.326348 55.62277  58.1
@@ -1199,14 +1250,15 @@ What do the <strong>x-axis</strong> and the <strong>y-axis</strong> represent in
 </section>
 <section id="qqplot-the-data" class="slide level2">
 <h2>QQplot The Data</h2>
-<p>If the explanation before made no sense, here’s a recreated QQplots to convince you</p>
+<p>If the explanation before made no sense, here’s a recreated QQplots to convince you (hopefully?)</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <p>The pattern of points is the exact same as the one generated by the <code>stat_qq()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">ggplot</span>(QQdata, </span>
-<span id="cb36-2"><a href=""></a>       <span class="fu">aes</span>(<span class="at">x =</span> Xaxis, <span class="at">y =</span> Yaxis)) <span class="sc">+</span></span>
-<span id="cb36-3"><a href=""></a>      <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(QQdata, </span>
+<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Xaxis, <span class="at">y =</span> Yaxis)) <span class="sc">+</span></span>
+<span id="cb36-3"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -1215,14 +1267,16 @@ What do the <strong>x-axis</strong> and the <strong>y-axis</strong> represent in
 </div>
 </div>
 </div>
+</div>
 </div><div class="column" style="width:50%;">
-<div style="font-size: 22px">
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 20px">
 As mentioned, the quantiles generated from any different normal distribution will not change the pattern of the dots (magic? Do give this some thought if it does not make sense to you)
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="fu">ggplot</span>(QQdata, </span>
-<span id="cb37-2"><a href=""></a>       <span class="fu">aes</span>(<span class="at">x =</span> Xaxis_2, <span class="at">y =</span> Yaxis)) <span class="sc">+</span></span>
-<span id="cb37-3"><a href=""></a>      <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(QQdata, </span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Xaxis_2, <span class="at">y =</span> Yaxis)) <span class="sc">+</span></span>
+<span id="cb37-3"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -1231,10 +1285,13 @@ As mentioned, the quantiles generated from any different normal distribution wil
 </div>
 </div>
 </div>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="3">
 <center>
 The values on the X-axis are the only difference.
 </center>
+</div>
 </section>
 <section id="a-more-intutive-qqplot" class="slide level2">
 <h2>A more intutive “QQplot”?</h2>
@@ -1243,12 +1300,13 @@ Really, what a QQplot does is tell you how much your observed data (Y-axis) matc
 </div>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="fu">ggplot</span>(QQdata, </span>
-<span id="cb38-2"><a href=""></a>       <span class="fu">aes</span>(<span class="at">x =</span> Xaxis_2, <span class="at">y =</span> Yaxis)) <span class="sc">+</span></span>
-<span id="cb38-3"><a href=""></a>       <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb38-4"><a href=""></a>       <span class="co"># equivalent to stat_qq_line()</span></span>
-<span id="cb38-5"><a href=""></a>       <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(QQdata, </span>
+<span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Xaxis_2, <span class="at">y =</span> Yaxis)) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb38-4"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="co"># equivalent to stat_qq_line()</span></span>
+<span id="cb38-5"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -1257,16 +1315,17 @@ Really, what a QQplot does is tell you how much your observed data (Y-axis) matc
 </div>
 </div>
 </div>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <div class="cell code-90">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a><span class="fu">ggplot</span>(NY_temp, <span class="fu">aes</span>(<span class="at">x =</span> Temp)) <span class="sc">+</span></span>
-<span id="cb39-2"><a href=""></a>       <span class="fu">geom_density</span>() <span class="sc">+</span></span>
-<span id="cb39-3"><a href=""></a>      <span class="co"># the funciton below adds the normal distribution (in blue)</span></span>
-<span id="cb39-4"><a href=""></a>       <span class="fu">geom_function</span>(<span class="at">fun =</span> dnorm, </span>
-<span id="cb39-5"><a href=""></a>                     <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(NY_temp<span class="sc">$</span>Temp),</span>
-<span id="cb39-6"><a href=""></a>                                 <span class="at">sd =</span> <span class="fu">sd</span>(NY_temp<span class="sc">$</span>Temp)),</span>
-<span id="cb39-7"><a href=""></a>                     <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb39-8"><a href=""></a>       <span class="fu">xlim</span>(<span class="dv">45</span>, <span class="dv">110</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NY_temp, <span class="fu">aes</span>(<span class="at">x =</span> Temp)) <span class="sc">+</span></span>
+<span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_density</span>() <span class="sc">+</span></span>
+<span id="cb39-3"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="co"># the funciton below adds the normal distribution (in blue)</span></span>
+<span id="cb39-4"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_function</span>(<span class="at">fun =</span> dnorm, </span>
+<span id="cb39-5"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(NY_temp<span class="sc">$</span>Temp),</span>
+<span id="cb39-6"><a href="" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">sd =</span> <span class="fu">sd</span>(NY_temp<span class="sc">$</span>Temp)),</span>
+<span id="cb39-7"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> <span class="fu">xlim</span>(<span class="dv">45</span>, <span class="dv">110</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -1275,9 +1334,12 @@ Really, what a QQplot does is tell you how much your observed data (Y-axis) matc
 </div>
 </div>
 </div>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="3">
 <div style="font-size: 24px">
 You should be able to see that the normal distribution deviating from the observed data in the plot on the right is mirrored exactly by the dots deviating form the line in the plot on the left 🧐
+</div>
 </div>
 </section>
 <section id="references" class="slide level2 smaller scrollable">

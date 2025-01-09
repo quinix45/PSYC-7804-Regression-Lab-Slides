@@ -4,6 +4,8 @@ author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
 csl: Additional files/apa.csl
+notice: |
+  @Fox_etal_2024
 title-slide-attributes:
   data-transition: "zoom"
   data-visibility: "uncounted"
@@ -23,3 +25,39 @@ format:
 
 editor: source
 ---
+
+
+## Regresssion coefficients Weirdness
+
+It is common practice to add covariates to regression models without giving it much thought (*adding a covariate* simply means adding additional predictors). However, some strange things 👽 may happen if you add variables too casually to regression models.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+
+:::
+::: {.column width="50%"}
+
+:::
+::::
+
+
+
+## Visulazing 
+
+```{r}
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
+
+# dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/training.sav")
+# 
+# 
+# cor(dat)
+```
+
+
+## References 
+
+<div id="refs"> </div>
+
+

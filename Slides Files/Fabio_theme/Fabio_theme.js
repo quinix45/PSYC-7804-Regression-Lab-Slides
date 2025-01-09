@@ -310,12 +310,89 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+// fragment on page load
+document.addEventListener('DOMContentLoaded', function() {
+  // Get "fragments", elements with fragment class
+  const fragments = document.querySelectorAll('.fragment');
+  
+  // Add identifiers to "fragments"
+  fragments.forEach(fragment => {
+    fragment.classList.add('fragment-thingy');
+  });
+  
+  disableAllFragments(fragments);
+})
+
+// fragment animation toggle
+document.addEventListener('DOMContentLoaded', function () {
+    // Add a key listener (e.g., press 'F' to toggle fragments)
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 't') {
+            // Get "fragment-thingy"s
+            const fragments = document.querySelectorAll('.fragment-thingy');
+            
+            const fragmentsEnabled = areFragmentsEnabled(fragments);
+            
+            if (fragmentsEnabled)
+              disableAllFragments(fragments);
+            else
+              enableAllFragments(fragments);
+
+            console.log(fragmentsEnabled ? 'Fragments disabled.' : 'Fragments enabled.');
+        }
+    });
+});
+
+function areFragmentsEnabled(fragments) {
+  return fragments.length > 0 && fragments[0].classList.contains('fragment');
+}
+
+function enableAllFragments(fragments)
+{
+  fragments.forEach(fragment => {
+    // Enable fragments by adding the class back
+    fragment.classList.add('fragment');
+    fragment.style.visibility = "none";
+    //fragment.style.opacity = '0';
+  });
+}
+function disableAllFragments(fragments)
+{
+  fragments.forEach(fragment => {
+      // Disable fragments by removing the class
+      fragment.classList.remove('fragment');
+      fragment.style.visibility = 'visible';
+      //fragment.style.opacity = '1';
+  });
+}
 
 
-// hide slide Number
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// hide slide Number (JS code seems to need to go before this)
 
 
 Reveal.addEventListener('slidechanged', (event) => {
         const isSnOn = (event.currentSlide.dataset.hideSlideNumber !== 'true');
             Reveal.configure({ slideNumber: isSnOn });
           });
+          
+          
