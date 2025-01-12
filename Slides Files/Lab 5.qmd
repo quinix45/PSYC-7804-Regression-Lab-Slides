@@ -50,12 +50,16 @@ str(WH_2024, vec.len = 2)
 :::
 ::: {.column width="40%"}
 
+<br>
+
 ```{r}
 #| eval: true
 #| echo: true 
 #| code-line-numbers: false
 #| classes: code-125
 
+
+# get the variable we are using in a single object
 # not needed, but makes things cleaner
 
 reg_vars <- WH_2024[, c("Happiness_score",
@@ -63,6 +67,7 @@ reg_vars <- WH_2024[, c("Happiness_score",
                         "Freedom")]
 ```
 
+And let's load good old `tidyverse`
 
 ```{r}
 #| eval: true

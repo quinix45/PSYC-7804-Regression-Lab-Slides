@@ -39,8 +39,9 @@ editor: source
 #| classes: code-150
 
 install.packages("flextable")
-install.packages("rio")
-install.packages("tidyverse")
+
+# Tidyverse should be already installed
+# install.packages("tidyverse")
 
 ```
 
@@ -52,7 +53,6 @@ install.packages("tidyverse")
 #| classes: code-150
 
 library(flextable)
-library(rio)
 library(tidyverse)
 theme_set(theme_classic(base_size = 14, 
                         base_family = 'serif'))
@@ -63,22 +63,11 @@ theme_set(theme_classic(base_size = 14,
 <div style="font-size: 26px">
 
 ::: {.panel-tabset}
-
-
 ### `flextable`
 
 The `flextable` package [@Gohel_etal_2024] helps create pretty tables from R. Can also be used to create publication ready APA style tables.
-
-### `rio`
-
-The `rio` package [@Becker_etal_2024] developers describe this package as the *Swiss-Army Knife for Data I/O*. The `import()` and `export()` functions can import/export just about any data type.
-
-### `tidyverse`
-
-The `tidyverse` package [@Wickham_RStudio_2023] loads a suite of packages that help with data cleaning and visualization. Among others, `tidyverse` loads both `dplyr` and `ggplot2`.
-
-
 :::
+
 </div>
 
 :::
@@ -98,7 +87,7 @@ The `tidyverse` package [@Wickham_RStudio_2023] loads a suite of packages that h
 #| code-line-numbers: false
 #| output: true
 
-insurance <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/insurance.csv")
+insurance <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/insurance.csv")
 
 # let's peak at our variables
 str(insurance)
@@ -130,6 +119,8 @@ summary(reg)
 
 ::: {.column width="40%"}
 
+::: {.fragment fragment-index=1}
+
 The resulting predicted charge is:
 
 <div style="font-size: 22px">
@@ -138,33 +129,54 @@ $\widehat{\mathrm{Charges}}_i = \$1192.94 + \$393.87 \times \mathrm{BMI}_i$
 
 </div>
 
+:::
+
+::: {.fragment fragment-index=2}
+
 Is the intercept meaningful in this case?
+
+:::
 
 </br>
 
+::: {.fragment fragment-index=3}
+
 In practice, before we interpret anything, we need to check the *p*-values associated with our output.  
+
+:::
 
 :::
 ::::
 
 ## *p*-values
 
-Some guy named [RA Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) came up with the idea of *p*-values. The set up goes something like this:
+Some guy named [R.A. Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) came up with the idea of *p*-values. The set up goes something like this:
 
 :::: {.columns}
 ::: {.column width="80%"}
 
 <ol style="font-size: 24px">
 
-<li> I collected this sample and found that BMI predicts how much insurance will charge. But what do these results tell me anything about the [population](https://en.wikipedia.org/wiki/Statistical_population){target="_blank"}? I can't really measure the entire population 🫤 </li>
+::: {.fragment fragment-index=1}
+<li> I collected this sample and found that BMI predicts how much insurance will charge. But do these results tell me anything about the [population](https://en.wikipedia.org/wiki/Statistical_population){target="_blank"}? I can't really measure the entire population 🫤 </li>
+:::
 
+::: {.fragment fragment-index=2}
 <li> 💡 Let's resample from the population and repeat my experiment in *exactly the same way* an infinite number of times and see how often I get my result, a slope of 393.87, *or more*. Let me also assume that in reality there truly is no relation between BMI and insurance charge, and the slope is exactly 0 in reality ($H_0$, the null hypothesis) </li>
+:::
 
+::: {.fragment fragment-index=3}
 <li> Under the assumptions that the true population slope is exactly 0, the ***p*-value** is the proportion of times that I find a slope of 393.87 or more if I were to repeat exactly the same experiment an infinite number of times. </li>
+:::
+
 </ol>
 
+
+
+::: {.fragment fragment-index=4}
 Fisher, being really good at math and knowing the [central limit theorem](https://gallery.shinyapps.io/CLT_mean/){target="_blank"}
 , realized that we don't have to repeat experiments an infinite number of times (ok, thank you Fisher 😌).
+:::
 
 :::
 ::: {.column width="20%"}
@@ -173,7 +185,7 @@ Fisher, being really good at math and knowing the [central limit theorem](https:
 
 <figure>
   <img src="Images/Fisher2.jpg">
-  <figcaption style="font-size: 16px">R. A. Fisher (1890-1962), really good at math and stats, but also a pretty bad person</figcaption>
+  <figcaption style="font-size: 16px">R. A. Fisher (1890-1962), really good with the maths and stats, but also a pretty bad person</figcaption>
 </figure>
 
 
@@ -188,22 +200,29 @@ Fisher, being really good at math and knowing the [central limit theorem](https:
 :::: {.columns}
 ::: {.column width="30%"}
 
-
+::: {.fragment fragment-index=1}
 <div style="font-size: 22px; padding-top: 12px;"> 
 If we assume the our slope really should be 0 (i.e., we assume $H_0$ is true), the sampling distribution should look something like the plot on the right:
-</div> 
+</div>
+:::
 
 <ul style="font-size: 22px">
 
+::: {.fragment fragment-index=2}
 <li> Our value for the slope was $393.87$, which is way far off to the right. That means $393.87$ is extremely unlikely to come from a sampling distribution where $H_0$ is true. </li>
+:::
 
+::: {.fragment fragment-index=3}
 <li> The ***p*-value**, which is $2.46*10^{-13}$, represents the probability of getting our slope (or a value more extreme), from the plot on the right (i.e., if $H_0$ is true). ***p*-values** say nothing about how likely/unlikely $H_1$ is. </li>
+:::
 
 </ul>
 
 
 :::
 ::: {.column width="70%"}
+
+::: {.fragment fragment-index=1}
 
 ```{r}
 #| eval: true
@@ -227,7 +246,7 @@ ggplot() +
         axis.ticks.y=element_blank(),
         axis.line.y =  element_blank())
 ```
-
+:::
 :::
 ::::
 
@@ -240,7 +259,10 @@ ggplot() +
 :::: {.columns}
 ::: {.column width="30%"}
 
+
+::: {.fragment fragment-index=2}
 <div style="font-size: 24px; padding-top: 12px;">  This implies also rescaling our slope to get a value that can be place it on the new x-axis, thus we compute the **t-statistic**: </div>
+
 
 $$t = \frac{b_1}{SE_{b_1}} = \frac{393.87}{53.25} = 7.397 $$
 
@@ -255,10 +277,12 @@ pt(7.397, df = 1336, lower.tail = FALSE)*2
 ```
 
 The *p*-value is the same as the regression output. 
+:::
 
 :::
 ::: {.column width="70%"}
 
+::: {.fragment fragment-index=1}
 
 ```{r}
 #| eval: true
@@ -279,6 +303,7 @@ ggplot() +
         axis.ticks.y=element_blank(),
         axis.line.y =  element_blank())
 ```
+:::
 
 :::
 ::::
@@ -290,7 +315,10 @@ ggplot() +
 :::: {.columns}
 ::: {.column width="30%"}
 
+
+::: {.fragment fragment-index=1}
 <div style="font-size: 24px; padding-top: 18px; padding-bottom: 18px;"> Form the outptut, $t = \frac{b_0}{SE_{b_0}} = \frac{1192.94}{1664.80} = 0.717$. This time, the *t*-value is pretty close to the center of the plot </div>
+
 
 
 ```{r}
@@ -300,18 +328,24 @@ ggplot() +
 #| classes: code-125
 
 pt(.717, df = 1336, lower.tail = FALSE)*2
+
 ```
+:::
+
 
 <ul style="font-size: 22px">
 
+::: {.fragment fragment-index=3}
 <li> So, even by random chance, there is about a $47\%$ chance of getting a value of $1192.94$ *or more extreme*. </li>
 
 **NOTE**: the total area under the curve is $1$, and the shaded area is $0.473$, the *p*-value. </li>
-
+:::
 </ul>
 
 :::
 ::: {.column width="70%"}
+
+::: {.fragment fragment-index=2}
 
 ```{r}
 #| eval: true
@@ -341,7 +375,7 @@ ggplot() +
         axis.ticks.y=element_blank(),
         axis.line.y =  element_blank())
 ```
-
+:::
 
 :::
 ::::
@@ -350,14 +384,27 @@ ggplot() +
 
 *p*-values have meaning even without any significance test. *Significance tests* happen only once we choose to make binary decisions based on *p*-values. At some point some folks decided that $p < .05 =$ *significant*. But,
 
+::: {.fragment fragment-index=1}
+
 > surely, God loves the .06 nearly as much as the .05 [@Rosnow_Rosenthal_1989, p. 1277]
+
+:::
+
+::: {.fragment fragment-index=2}
 
 Type I error rate ($\alpha$) is thus not a bug of significance testing; it's a feature. Turning *p*-values into binary decisions (accept/reject $H_0$) implies that there is always a non-zero chance (the *p*-value being that chance) that our results come from $H_0$ (i.e., we are wrong). 
 
+:::
+
+
+::: {.fragment fragment-index=3}
+
 So, significance testing is like gambling 🎰, where we think a 1 in 20 or less chances of being wrong is good odds. Sometimes we end up on the wrong side of chance, and we make the wrong conclusion. 
+:::
 
-And slightly unsettling is the fact that you cannot know which of you decisions based on *p*-values is the "wrong" one 😧.  
-
+::: {.fragment fragment-index=4}
+And slightly unsettling is the fact that you cannot know which of your decisions based on *p*-values is the "wrong" one 😧.  
+:::
 
 ## Confidence Intervals
 
@@ -378,7 +425,9 @@ confint(reg)
 :::
 ::: {.column width="40%"}
 
+::: {.fragment fragment-index=1}
 Confidence intervals carry the same information as *p*-values. The respective *p*-value will be significant if the confidence interval does not include 0. 
+:::
 
 :::
 ::::
@@ -389,13 +438,19 @@ Now, as mention in the main lecture:
 
 <ul style="font-size: 28px">
 
+::: {.fragment fragment-index=2}
 <li> **Incorrect interpretation**: "There is a 95% chance that the true value is within the confidence interval." </li>
+:::
 
+::: {.fragment fragment-index=3}
 <li> **Correct interpretation**: "If I were to repeat the experiment an infinite number of times, 95% of my observed values would be within the confidence interval." </li>
+:::
 
 </ul>
 
+::: {.fragment fragment-index=4}
 I will not elaborate further, but see [here](https://stats.stackexchange.com/questions/2272/whats-the-difference-between-a-confidence-interval-and-a-credible-interval){target="_blank"} for more.
+:::
 
 ## APA Style Report
 
@@ -411,8 +466,6 @@ I will not elaborate further, but see [here](https://stats.stackexchange.com/que
 #| classes: code-125
 
 summary(reg)
-
-
 ```
 
 
@@ -429,7 +482,10 @@ Simple linear regression analysis indicated that BMI significantly positively pr
 ::: 
 </div>
 
+::: {.fragment fragment-index=1}
 Although not discussed in this lab, we will return to $R^2$ soon. 
+:::
+
 :::
 ::::
 
@@ -453,20 +509,27 @@ anova(reg)
 ```
 
 :::
+
 ::: {.column width="60%"}
 
 <br>
 
+::: {.fragment fragment-index=1}
+
 Later in the course, we will learn all about how ANOVA is a regression is disguise 🥸. 
 
+:::
+
 <br>
+
+::: {.fragment fragment-index=2}
 
 For now, notice that this ANOVA output provides the same *F*-statistic and *p*-value that were in the output for the $R^2$ on the previous slide. 
 
 :::
+
+:::
 ::::
-
-
 
 
 ## Creating APA Style regression tables
@@ -498,18 +561,18 @@ save_as_docx(table, path = "reg_table.docx")
 
 ```
 
-
+::: {.fragment fragment-index=1}
 <ul>
 <li> The `save_as_...` functions that save the table to a file come from the `flextable` package (really good package 😍). My function also uses functions from `flextable` to format the regression table. </li>
 </ul>
+:::
 
 :::
 
 
-
-
-
 ::: {.column width="40%"}
+
+::: {.fragment fragment-index=2}
 
 **`regression_flextable()` Arguments**
 
@@ -524,7 +587,8 @@ save_as_docx(table, path = "reg_table.docx")
 <li> `intercept = TRUE`: Set to `FALSE` if the intercept is not wanted (e.g., for standardized regression). </li>
 
 </ol>
-
+:::
+:::
 
 :::
 ::::
@@ -546,7 +610,8 @@ If you open the `reg_table.docx` document that was just saved to your working di
 ```{r}
 #| eval: false
 #| echo: true 
-#| classes: code-110
+#| classes: code-125
+#| code-line-numbers: false
 
 table <- regression_flextable(reg_model,
          var_names = c("Intercept", 

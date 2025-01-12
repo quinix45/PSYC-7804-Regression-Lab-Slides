@@ -40,8 +40,9 @@ editor: source
 
 install.packages("GGally")
 install.packages("plotly")
-install.packages("rio")
-install.packages("tidyverse")
+# Should be isntaleld already
+# install.packages("rio")
+# install.packages("tidyverse")
 
 ```
 
@@ -54,7 +55,6 @@ install.packages("tidyverse")
 
 library(GGally)
 library(plotly)
-library(rio)
 library(tidyverse)
 theme_set(theme_classic(base_size = 14, 
                         base_family = 'serif'))
@@ -73,15 +73,6 @@ The ``GGally` package [@Schloerke_etal_2024] builds upon `ggplot2` and includes 
 ### `plotly`
 
 The `plotly` package [@Sievert_etal_2024a] is a Python and R package used to create interactive visualizations with JavaScript elements. 
-
-### `rio`
-
-The `rio` package [@Becker_etal_2024] developers describe this package as the *Swiss-Army Knife for Data I/O*. The `import()` and `export()` functions can import/export just about any data type.
-
-### `tidyverse`
-
-The `tidyverse` package [@Wickham_RStudio_2023] loads a suite of packages that help with data cleaning and visualization. Among others, `tidyverse` loads both `dplyr` and `ggplot2`.
-
 
 :::
 </div>
@@ -102,7 +93,7 @@ The `tidyverse` package [@Wickham_RStudio_2023] loads a suite of packages that h
 #| code-line-numbers: false
 #| output: true
 
-WH_2024 <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/World_happiness_2024.csv")
+WH_2024 <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/World_happiness_2024.csv")
 
 # let's peak at our variables
 str(WH_2024, vec.len = 2)
@@ -119,6 +110,8 @@ We eventually want to look at how `Log_GDP` and `Freedom` impact `Happiness_scor
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
 
 <ul style="font-size: 24px">  
 
@@ -141,9 +134,12 @@ reg_vars <- WH_2024[, c("Happiness_score",
 # Just the correlation table
 cor(reg_vars)
 ```
+:::
 
 :::
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=2}
 
 <ul style="font-size: 24px">  
 
@@ -161,22 +157,47 @@ psych::describe(reg_vars)
 ```
 
 :::
+
+:::
 ::::
 
 ## Helpful Visualization
 
 The `ggpairs()` function from the `GGally` package creates a visualizations that provides a lot of information in one go!
 
+:::: {.columns}
+::: {.column width="70%"}
+
 ```{r}
 #| eval: true
 #| echo: true 
 #| code-line-numbers: false
 #| classes: code-125
-#| out-width: "70%"
-
 
 ggpairs(reg_vars)
 ```
+
+
+:::
+::: {.column width="30%"}
+
+<br>
+
+<ul style="font-size: 26px">  
+
+<li> **Upper triangle**: correlations among variables </li>
+
+<li> **Long diagonal**: distribution of variables </li>
+
+<li> **Lower diagonal**: scatterplots among variables </li>
+
+</ul>
+
+
+
+
+:::
+::::
 
 ## Individual Regressions
 
@@ -189,6 +210,7 @@ ggpairs(reg_vars)
 <li>  `Log_GDP` only regression </li>
 
 </ul>
+::: {.fragment fragment-index=1}
 
 ```{r}
 #| eval: true
@@ -201,6 +223,7 @@ reg_GDP <- lm(Happiness_score ~ Log_GDP,
 summary(reg_GDP)
 ```
 :::
+:::
 ::: {.column width="50%"}
 
 <ul style="font-size: 24px">  
@@ -208,6 +231,8 @@ summary(reg_GDP)
 <li>  `Freedom` only regression </li>
 
 </ul>
+
+::: {.fragment fragment-index=2}
 
 ```{r}
 #| eval: true
@@ -219,6 +244,8 @@ reg_free <- lm(Happiness_score ~ Freedom,
               reg_vars)
 summary(reg_free)
 ```
+:::
+
 :::
 ::::
 
@@ -247,11 +274,10 @@ As you can see, the regression coefficients of the two predictors change when bo
 
 <br>
 
-Let's visualize what is happening.
+Let's visualize what is happening!
 
 :::
 ::::
-
 
 
 ## Individual Regression plots 
@@ -302,9 +328,11 @@ These are the equivalent plots to the individual regressions:
 ::::
 
 
-## Adding the lines from multiple regression? 
+## Adding Slopes from multiple regression? 
 
 Let's add the regression lines estimated from the regression with both predictors...
+
+::: {.fragment fragment-index=1}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -353,9 +381,19 @@ Let's add the regression lines estimated from the regression with both predictor
 :::
 ::::
 
+:::
+
+::: {.fragment fragment-index=2}
+
 Hold up, the lines from the multiple regression results seem way off !?
 
+:::
+
+::: {.fragment fragment-index=3}
+
 💡 Maybe we need a change of perspective!
+
+:::
 
 
 ## Looking Inside the Box
@@ -365,7 +403,7 @@ Now that we are dealing with 3 variables (`Log_GDP`, `Freedom`, `Happiness_score
 :::: {.columns}
 ::: {.column width="40%"}
 
-The 2D plots from the previous slide are just the *sides of the box* 🤓
+::: {.fragment fragment-index=1}
 
 I made a function for making interactive 3D plots easily 
 
@@ -389,7 +427,18 @@ nice_3D_plot(y = reg_vars$Happiness_score,
 ```
 
 :::
+
+
+::: {.fragment fragment-index=3}
+The 2D plots from the previous slide are just the *sides of the box* 🤓
+:::
+
+
+:::
 ::: {.column width="60%"}
+
+::: {.fragment fragment-index=2}
+
 
 ```{r out.width = "100%"}
 source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
@@ -407,7 +456,7 @@ nice_3D_plot(y = reg_vars$Happiness_score,
                     bslib::card(full_screen = TRUE)
 ```
 
-
+:::
 :::
 ::::
 
@@ -422,6 +471,8 @@ Remember that in linear regression with 1 predictor we are looking for the line 
 
 :::: {.columns}
 ::: {.column width="40%"}
+
+::: {.fragment fragment-index=1}
 
 ```{r}
 #| eval: false
@@ -442,13 +493,20 @@ nice_3D_plot(y = reg_vars$Happiness_score,
 
 ```
 
+:::
+
+::: {.fragment fragment-index=2}
 
 ::: {.callout-note title="Question?"}
 If this is the representation of regression with 2 predictors, what happens once we have 3 or more predictors? Can we visualize that? 
 :::
 
 :::
+
+:::
 ::: {.column width="60%"}
+
+::: {.fragment fragment-index=1}
 
 ```{r out.width = "100%"}
 #| eval: true
@@ -470,12 +528,14 @@ nice_3D_plot(y = reg_vars$Happiness_score,
 ```
 
 :::
+
+:::
 ::::
 
 
 ## Interpretation of Results
 
-Now that we know what we are actually looking at, let's interpret the output
+Now that we have a sense  of what we are looking at, let's interpret the output:
 
 :::: {.columns}
 ::: {.column width="40%"}
@@ -496,16 +556,24 @@ $\widehat{\mathrm{Happiness}} = 1.44 + 1.68\times \mathrm{Log\_GDP} + 2.86\times
 
 <br>
 
-
+::: {.fragment fragment-index=1}
 <li> $b_0 = 1.44$: the expected `happpiness_score` when `GDP` and `Freedom` are at 0.  </li>
+:::
 
+::: {.fragment fragment-index=2}
 <li> $b_1 = 1.68$: the expected increase in `happpiness_score` per each 1-unit increase in `Log_GDP` when accounting for `Freedom`.  </li>
+:::
 
+::: {.fragment fragment-index=3}
 <li> $b_2 = 2.86$: the expected increase in `happpiness_score` per each 1-unit increase in `Freedom` when accounting for `GDP`.  </li>
+:::
 
 </ul>
 
 
+::: {.fragment fragment-index=4}
+$b_1$ and $b_2$ are *partial regression coefficients*. We will come back to this in [Lab 5](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%205.html#/partial-regression-coefficients){target="_blank"}, so stay tuned.
+:::
 
 :::
 ::::
@@ -519,6 +587,8 @@ You can think of variance as how unpredictable something is. Higher variance mea
 :::: {.columns}
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=1}
+
 For example, if you generate data for a variable that has 0 variance, you always get the mean
 
 ```{r}
@@ -531,10 +601,16 @@ rnorm(n = 5,
       mean = 2, 
       sd = 0)
 ```
+:::
+
+::: {.fragment fragment-index=2}
 Here, if we predict 2 we are always right, because the variable has no variance and is perfectly predictable. 
+:::
 
 :::
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=3}
 
 Let's return to our 1D scatterplot, and let's visualize the variance of the `Happiness_score` 
 
@@ -558,7 +634,7 @@ xlim(1.5, 8.2) +
         axis.ticks.y=element_blank(),
         axis.line.y =  element_blank())
 ```
-
+:::
 :::
 ::::
 
@@ -570,6 +646,8 @@ Although this may not sound very intuitive, you should think of residuals as a n
 
 :::: {.columns}
 ::: {.column width="30%"}
+
+::: {.fragment fragment-index=1}
 
 On the right, we have the residuals of `Happiness_score` after using `freedom` as predictor
 
@@ -605,9 +683,13 @@ xlim(1.5, 8.2) +
 
 
 Much less spread out, right?
+
+:::
 :::
 
 ::: {.column width="70%"}
+
+::: {.fragment fragment-index=1}
 
 ```{r}
 #| eval: true
@@ -637,6 +719,8 @@ xlim(1.5, 8.2) +
         axis.ticks.y=element_blank(),
         axis.line.y =  element_blank())
 ```
+
+:::
 :::
 ::::
 
@@ -747,6 +831,8 @@ The variances of the three lines of dots were respectively:
 
 <ol style="font-size: 22px">  
 
+::: {.fragment fragment-index=1}
+
 <li> Variance of `happiness_score`</li>
 
 ```{r}
@@ -758,6 +844,10 @@ The variances of the three lines of dots were respectively:
 var(reg_vars$Happiness_score)
 ```
 
+:::
+
+::: {.fragment fragment-index=2}
+
 <li> Variance of `happiness_score` after using `freedom` as a predictor was </li>
 
 ```{r}
@@ -767,6 +857,10 @@ var(reg_vars$Happiness_score)
 #| classes: code-125
 var(residuals(reg_free))
 ```
+
+:::
+
+::: {.fragment fragment-index=3}
 
 <li> Variance of `happiness_score` after using both `freedom` and `GDP` as a predictors was </li>
 
@@ -779,6 +873,8 @@ var(residuals(reg_free))
 var(residuals(reg_full))
 ```
 
+:::
+
 </ol>
 :::
 
@@ -788,9 +884,16 @@ var(residuals(reg_full))
 
 <center>
 
-We can easily calculate $R^2$ by hand 
+::: {.fragment fragment-index=4}
+
+We can easily calculate $R^2$ by hand
+
+:::
 
 <ul style="font-size: 22px">  
+
+
+::: {.fragment fragment-index=4}
 
 <li> $R^2$ after using `freedom` as a predictor </li>
 
@@ -803,6 +906,10 @@ We can easily calculate $R^2$ by hand
 1 - (0.8158336/1.395344)
 ```
 
+:::
+
+::: {.fragment fragment-index=5}
+
 <li> $R^2$ after using `freedom` and `GDP` as predictors  </li>
 
 ```{r}
@@ -813,6 +920,10 @@ We can easily calculate $R^2$ by hand
 
 1 - (0.3925608/1.395344)
 ```
+
+:::
+
+::: {.fragment fragment-index=6}
 
 and we can check that our hand calculation match the regression output
 
@@ -825,6 +936,8 @@ and we can check that our hand calculation match the regression output
 summary(reg_free)$r.squared
 summary(reg_full)$r.squared
 ```
+
+:::
 
 </ul>
 </center>
