@@ -436,7 +436,7 @@ Fabio Setti
 <details class="code-fold">
 <summary>Install Packages Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ppcor"</span>)</span>
-<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("tidyverse")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell code-150">
@@ -459,7 +459,7 @@ Fabio Setti
 </div><div class="column" style="width:50%;">
 <ul>
 <li>
-Let’s also load the <a href="https://worldhappiness.report/ed/2024/" target="_blank">data</a> for today:
+Let’s also load the <a href="https://library.virginia.edu/data/articles/hierarchical-linear-regression" target="_blank">data</a> for today:
 </li>
 </ul>
 <div class="cell code-125">
@@ -497,33 +497,48 @@ friends    0.3242434 -0.02097324  1.00000000</code></pre>
 </div>
 </div>
 </div><div class="column" style="width:40%;">
-<p>Although, useful correlation by itself may not be the measure we are interested in. Rather, we may want to know the relationship between two variables <em>after</em> accounting for another set of variables.</p>
+<div class="fragment" data-fragment-index="1">
+<p>Although useful, correlation by itself may not be the measure we are interested in. Rather, we may want to know the relationship between two variables <em>after</em> accounting for another set of variables.</p>
+</div>
 </div></div>
 <p><br></p>
+<div class="fragment" data-fragment-index="2">
 <p><strong>Partial correlation</strong> and <strong>semi-partial correlation</strong> are what we are looking for in this case.</p>
+</div>
 </section>
 <section id="some-formulas-for-reference" class="slide level2">
 <h2>Some Formulas for Reference</h2>
-<p>If <span class="math inline">\(r_{xy}\)</span> represent the correlation between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, then</p>
+<p>If <span class="math inline">\(r_{xy}\)</span> represent the <a href="https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%202.html#/correlation" target="_blank">correlation</a> between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, then</p>
+<div class="fragment" data-fragment-index="1">
 <ul>
 <li><p><strong>Partial correlation</strong>:</p>
 <ul>
 <li><span class="math inline">\(r_{xy.z} = \frac{r_{xy} - r_{xz} \times r_{yz}}{\sqrt{1 - r_{xz}^2}\times\sqrt{1 - r_{yz}^2}}\)</span>, where <span class="math inline">\(z\)</span> is controlled for both <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span></li>
 </ul></li>
-<li><p><strong>Semi-partial correlation</strong>: In semi-partial correlation, the <span class="math inline">\(z\)</span> variable is held constant only for 1 of the other 2 variables. That means that in our case, there are 2 semi-partial correlations that can be calculated</p></li>
 </ul>
+</div>
+<div class="fragment" data-fragment-index="2">
+<ul>
+<li><strong>Semi-partial correlation</strong>: In semi-partial correlation, the <span class="math inline">\(z\)</span> variable is held constant only for 1 of the other 2 variables. That means that in our case, there are 2 semi-partial correlations that can be calculated</li>
+</ul>
+</div>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="3">
 <ul>
 <li><span class="math inline">\(r_{x(y.z)} = \frac{r_{xy} - r_{xz} \times r_{yz}}{\sqrt{1 - r_{yz}^2}}\)</span>,</li>
 </ul>
 <p>where <span class="math inline">\(z\)</span> is controlled only for <span class="math inline">\(y\)</span></p>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="4">
 <ul>
 <li><span class="math inline">\(r_{y(x.z)} = \frac{r_{xy} - r_{xz} \times r_{yz}}{\sqrt{1 - r_{xz}^2}}\)</span>,</li>
 </ul>
 <p>where <span class="math inline">\(z\)</span> is controlled only for <span class="math inline">\(x\)</span></p>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="5">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -537,18 +552,22 @@ friends    0.3242434 -0.02097324  1.00000000</code></pre>
 </div>
 </div>
 </div>
+</div>
 </section>
 <section id="partial-correlation-by-hand" class="slide level2">
 <h2>Partial Correlation “by hand”</h2>
 <p>As always, I like calculating things by hand first to make sure I know what is going on 🤷 Let’s say that <span class="math inline">\(y =\)</span> <code>happiness</code>, <span class="math inline">\(x =\)</span> <code>age</code>, and <span class="math inline">\(z =\)</span> <code>friends</code>.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <p>Let’s first get our vanilla correlations</p>
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>r_xy <span class="ot">&lt;-</span> <span class="fu">cor</span>(dat<span class="sc">$</span>age, dat<span class="sc">$</span>happiness)</span>
 <span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>r_xz <span class="ot">&lt;-</span> <span class="fu">cor</span>(dat<span class="sc">$</span>age, dat<span class="sc">$</span>friends)</span>
 <span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a>r_yz <span class="ot">&lt;-</span> <span class="fu">cor</span>(dat<span class="sc">$</span>happiness, dat<span class="sc">$</span>friends)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</div>
+<div class="fragment" data-fragment-index="2">
 <p>Then, the partial correlation between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, accounting for <span class="math inline">\(z\)</span> is</p>
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a>(r_xy <span class="sc">-</span> r_xz<span class="sc">*</span>r_yz)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r_xz<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r_yz<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -556,7 +575,9 @@ friends    0.3242434 -0.02097324  1.00000000</code></pre>
 <pre><code>[1] -0.162955</code></pre>
 </div>
 </div>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="3">
 <p>Note that this is also equivalent to calculating the correlation between the residuals of <span class="math inline">\(y\)</span> and <span class="math inline">\(x\)</span> after a regression with <span class="math inline">\(z\)</span> as a predictor</p>
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a>resid_y_z <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(happiness <span class="sc">~</span> friends, dat))</span>
@@ -567,14 +588,18 @@ friends    0.3242434 -0.02097324  1.00000000</code></pre>
 <pre><code>[1] -0.162955</code></pre>
 </div>
 </div>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="4">
 <p>So, <span class="math inline">\(r_{xy.z}-.16\)</span> is the correlation between <code>happiness</code> and <code>age</code> after taking out the proportion of variance explained by <code>friends</code> in both variables.</p>
+</div>
 </section>
 <section id="semi-partial-correlation-by-hand" class="slide level2">
 <h2>Semi-Partial Correlation “by hand”</h2>
 <p>The semi-partial correlations between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> accounting for <span class="math inline">\(z\)</span> can either be:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <p>With the formulas from the previous slides:</p>
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a>(r_xy <span class="sc">-</span> r_xz<span class="sc">*</span>r_yz)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r_xz<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -589,7 +614,9 @@ friends    0.3242434 -0.02097324  1.00000000</code></pre>
 <pre><code>[1] -0.1629192</code></pre>
 </div>
 </div>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <p>Similarly, we can get this by using regression residuals:</p>
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dat<span class="sc">$</span>happiness, resid_x_z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -604,14 +631,19 @@ friends    0.3242434 -0.02097324  1.00000000</code></pre>
 <pre><code>[1] -0.1629192</code></pre>
 </div>
 </div>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="3">
 <ul>
 <li><p><span class="math inline">\(r_{y(x.z)} = -.15\)</span> represents the relationship between <span class="math inline">\(y\)</span> and <span class="math inline">\(x\)</span> after the taking out of <span class="math inline">\(x\)</span> the variance explained by <span class="math inline">\(z\)</span>.</p></li>
 <li><p><span class="math inline">\(r_{x(y.z)} = -.16\)</span> represents the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> after the taking out of <span class="math inline">\(y\)</span> the variance explained by <span class="math inline">\(z\)</span>.</p></li>
 </ul>
+</div>
+<div class="fragment" data-fragment-index="4">
 <center>
 Which type of correlation to use? <strong>it depends on your research question</strong>
 </center>
+</div>
 </section>
 <section id="using-ppcor-functions" class="slide level2">
 <h2>Using <code>ppcor</code> Functions</h2>
@@ -619,8 +651,10 @@ Which type of correlation to use? <strong>it depends on your research question</
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a>partial_cor <span class="ot">&lt;-</span> <span class="fu">pcor</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
-<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a>partial_cor<span class="sc">$</span>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># partial correlation</span></span>
+<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a>partial_cor <span class="ot">&lt;-</span> <span class="fu">pcor</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb20-4"><a href="" aria-hidden="true" tabindex="-1"></a>partial_cor<span class="sc">$</span>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           happiness        age   friends
 happiness  1.0000000 -0.1629550 0.3251768
@@ -630,8 +664,10 @@ friends    0.3251768  0.0334209 1.0000000</code></pre>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a>semipartial_cor <span class="ot">&lt;-</span> <span class="fu">spcor</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
-<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a>semipartial_cor<span class="sc">$</span>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># semi-partial correlation</span></span>
+<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="" aria-hidden="true" tabindex="-1"></a>semipartial_cor <span class="ot">&lt;-</span> <span class="fu">spcor</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb22-4"><a href="" aria-hidden="true" tabindex="-1"></a>semipartial_cor<span class="sc">$</span>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           happiness         age    friends
 happiness  1.0000000 -0.15415119 0.32093907
@@ -643,6 +679,7 @@ friends    0.3251053  0.03161529 1.00000000</code></pre>
 Careful! in the semi-partial correlation output, the variable in the row is the variable that has no variance taken out.
 </div>
 </div></div>
+<div class="fragment" data-fragment-index="1">
 <p>The functions from <code>ppcor</code> work in the same way as the ones used in <a href="https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%202.html#/corr_test-output" target="_blank">Lab 2</a>, where significance and other information is saved to a separate element.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -666,13 +703,17 @@ friends   0.001025828 0.7560662 0.000000000</code></pre>
 </div>
 </div>
 </div></div>
+</div>
 </section>
 <section id="model-comparison-gain-in-prediction" class="slide level2">
 <h2>Model Comparison: Gain in Prediction</h2>
-<p>We are often (actually always) interested in comparing different models. Usually we ask: is it <em>worth it</em> to add more variables as predictors?</p>
-<p>In the case of regression, the most popular way of comparing models is by comparing <span class="math inline">\(R^2\)</span> from nested model. Let’s go back to how happiness (<code>happiness</code>) relates to age (<code>age</code>); then, we want to know whether adding number of friends (<code>friends</code>) improves our prediction.</p>
+<p>We are often (actually always) interested in comparing different models. One often relevant question is: “is it <em>worth it</em> to add more variables as predictors?”</p>
+<div class="fragment" data-fragment-index="1">
+<p>In the case of regression, the most popular way of comparing models is by comparing <span class="math inline">\(R^2\)</span> from <a href="https://www.statology.org/nested-model/" target="_blank">nested models</a>. Let’s go back to how happiness (<code>happiness</code>) relates to age (<code>age</code>); then, we want to know whether adding number of friends (<code>friends</code>) improves our prediction.</p>
+</div>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_age <span class="ot">&lt;-</span> <span class="fu">lm</span>(happiness <span class="sc">~</span> age, dat)</span>
 <span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -682,7 +723,9 @@ friends   0.001025828 0.7560662 0.000000000</code></pre>
 </div>
 </div>
 <p>So <code>age</code> roughly explains <span class="math inline">\(3\%\)</span> of the variance in <code>happiness</code></p>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="3">
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_age_fr <span class="ot">&lt;-</span> <span class="fu">lm</span>(happiness <span class="sc">~</span> age <span class="sc">+</span> friends, dat)</span>
 <span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -692,14 +735,18 @@ friends   0.001025828 0.7560662 0.000000000</code></pre>
 </div>
 </div>
 <p><code>age</code> and <code>friends</code> together roughly explains <span class="math inline">\(13\%\)</span> of the variance in <code>happiness</code></p>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="4">
 <p>The answer seems fairly straightforward: the model with both <code>age</code> and <code>friends</code> does better. But there is a catch with <span class="math inline">\(R^2\)</span> 🤨</p>
+</div>
 </section>
 <section id="the-catch-with-r2" class="slide level2">
 <h2>The catch With <span class="math inline">\(R^2\)</span></h2>
-<p>The “problem” with most popular measures of model fit such as <span class="math inline">\(R^2\)</span> is that they always increase as variables are added, even though the added variables are unrelated to <span class="math inline">\(Y\)</span>.</p>
+<p>The “problem” with most popular measures of model fit such as <span class="math inline">\(R^2\)</span> is that they always increase as variables are added, even when the added variables are unrelated to <span class="math inline">\(Y\)</span>.</p>
 <div class="columns">
 <div class="column" style="width:70%;">
+<div class="fragment" data-fragment-index="1">
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate random variable</span></span>
 <span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8879</span>)</span>
@@ -718,17 +765,25 @@ friends   0.001025828 0.7560662 0.000000000</code></pre>
 <pre><code>[1] 0.1361937</code></pre>
 </div>
 </div>
+</div>
 </div><div class="column" style="width:30%;">
+<div class="fragment" data-fragment-index="2">
 <p><span class="math inline">\(R^2\)</span> increases When we add a random variable 😦</p>
+</div>
+<div class="fragment" data-fragment-index="3">
 <p>However, this is certainly a case where adding a randomly generated variable is <em>not worth it</em>.</p>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="4">
 <p>We want to apply the principle of <a href="https://www.britannica.com/topic/Occams-razor" target="_blank">Occam’s razor</a>, and choose the simpler model if the increase in <span class="math inline">\(R^2\)</span> is not worth it.</p>
+</div>
 </section>
 <section id="testing-gain-in-prediction-delta-r2" class="slide level2">
 <h2>Testing gain in prediction: <span class="math inline">\(\Delta R^2\)</span></h2>
-<p>In hierarchical regression we check whether adding variables to a model yields a significant <span class="math inline">\(R^2\)</span> improvement (<span class="math inline">\(\Delta R^2\)</span>). We can use the <code>anova()</code> function to compare <a href="https://www.statology.org/nested-model/" target="_blank">nested regression models</a>. The <em>F</em>-test tells us whether the <span class="math inline">\(R^2\)</span> improvement is significant.</p>
+<p>In hierarchical regression we check whether adding variables to a model yields a significant <span class="math inline">\(R^2\)</span> improvement (<span class="math inline">\(\Delta R^2\)</span>). We can use the <code>anova()</code> function to compare nested regression models. The <em>F</em>-test tells us whether the <span class="math inline">\(R^2\)</span> improvement is significant.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <div class="cell code-115">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(reg_age, reg_age_fr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -746,7 +801,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div style="font-size: 23px">
 Here, adding <code>friends</code> provides a significant improvement in variance explained, <span class="math inline">\(\Delta R^2 = .1, F(1, 97) = 11.47, p = .001\)</span>
 </div>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(reg_age_fr, reg_age_fr_rand)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -762,31 +819,42 @@ Model 2: happiness ~ age + friends + random_var
 <div style="font-size: 23px">
 Unsurprisingly, adding adding a random variable does not provide a significant improvement in variance explained, <span class="math inline">\(\Delta R^2 = .003, F(1, 96) = 0.81, p = .37\)</span>.
 </div>
+</div>
 </div></div>
 <p><br></p>
+<div class="fragment" data-fragment-index="3">
 <div style="font-size: 20px">
 <strong>Note</strong>: For reporting, you need to calculate the difference between the <span class="math inline">\(R^2\)</span> of the two regression models, the <span class="math inline">\(\Delta R^2\)</span>, by hand.
+</div>
 </div>
 </section>
 <section id="information-criteria-for-model-selection" class="slide level2">
 <h2>Information Criteria for Model Selection</h2>
 <p>There also exist a family of statistics used for comparing model based on <a href="https://en.wikipedia.org/wiki/Information_theory" target="_blank">information theory</a>. What you will often see are the Akaike information criterion <span class="citation" data-cites="akaikeNewLookStatistical1974">(AIC; <a href="#/references" role="doc-biblioref" onclick="">Akaike, 1974</a>)</span> and Bayesian information criterion <span class="citation" data-cites="schwarzEstimatingDimensionModel1978">(BIC; <a href="#/references" role="doc-biblioref" onclick="">Schwarz, 1978</a>)</span>.</p>
-<p>Both AIC and BIC calculate model fit, and then penalize it based on model complexity (number of variables in regression). The logic is that if you are going to add an extra variable to a regression, it should improve fit enough to offset the penalty term. For regression:</p>
+<div class="fragment" data-fragment-index="1">
+<p>Both AIC and BIC calculate model fit, and then penalize it based on model complexity (number of estimated <a href="https://en.wikipedia.org/wiki/Statistical_parameter" target="_blank">parameters</a>). The logic is that if you are going to add an extra variable to a regression, it should improve fit enough to offset the penalty term. For regression:</p>
+</div>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <p><span class="math display">\[AIC = N \times ln(\frac{SS_{\mathrm{resisuals}}}{N}) + 2p\]</span></p>
 <p><span class="math inline">\(N =\)</span> sample size</p>
 <p><span class="math inline">\(p =\)</span> number of model parameters (i.e., intercept, slopes, residual variance)</p>
 <p><span class="math inline">\(SS =\)</span> sum of squares of the residuals</p>
 <p><span class="math inline">\(ln() =\)</span> stands for the natural log</p>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <p><span class="math display">\[BIC =  N \times ln(\frac{SS_{\mathrm{resisuals}}}{N}) + p\times ln(N)\]</span></p>
+</div>
+<div class="fragment" data-fragment-index="3">
 <p>The <span class="math inline">\(N \times ln(\frac{SS_{\mathrm{resisuals}}}{N})\)</span> part, which is shared by both formulas, measures model fit. In contrast <span class="math inline">\(2p\)</span> is the AIC penalty, while <span class="math inline">\(p\times ln(N)\)</span> is the BIC penalty. The BIC penalty is stricter.</p>
+</div>
 </div></div>
 </section>
 <section id="the-aic-and-bic-functions" class="slide level2">
 <h2>The <code>AIC()</code> and <code>BIC()</code> Functions</h2>
-<p>We can calculate both AIC and BIC for all our models at once with the <code>AIC()</code> and <code>BIC()</code> functions. In both cases, the smallest value is the model that fits best according to the criteria.</p>
+<p>We can calculate both AIC and BIC for all our models at once with the <code>AIC()</code> and <code>BIC()</code> functions. Both for AIC and BIC, the smallest value is the model that fits best according to the criteria.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell code-125">
@@ -811,14 +879,21 @@ reg_age_fr_rand  5 380.0691</code></pre>
 </div>
 <p>The second model fits best.</p>
 </div></div>
+<div class="fragment" data-fragment-index="1">
 <p>In both cases the second model fits best because the addition of the random variable is not enough to offset the penalty for adding an additional variable (ok, that is to be expected, we added a random variable).</p>
+</div>
+<div class="fragment" data-fragment-index="2">
 <p>Although, AIC and BIC can disagree (often in my experience!). Usually, AIC likes more complex models, while BIC prefers simpler models. If I have to choose, I tend to trust BIC more.</p>
-<p>Finally, information criteria like the AIC and BIC can be used to compare non-nested models, unlike <span class="math inline">\(\Delta R^2\)</span>, which can only be used to compare nested models.</p>
+</div>
+<div class="fragment" data-fragment-index="3">
+<p>Finally, information criteria like the AIC and BIC can be used to compare non-nested models (the data must be the same though), unlike <span class="math inline">\(\Delta R^2\)</span>, which can only be used to compare nested models.</p>
+</div>
 </section>
 <section id="caveats-with-aic-and-bic" class="slide level2">
 <h2>Caveats With AIC and BIC</h2>
 <p>There are a couple of caveats to be aware of when using AIC and BIC.</p>
 <ol style="font-size: 26px">
+<div class="fragment" data-fragment-index="1">
 <li>
 <p>Different functions/software will calculate AIC and BIC differently (I was confused for a bit myself before finding <a href="https://robjhyndman.com/hyndsight/lm_aic.html" target="_blank">this</a> and <a href="https://stackoverflow.com/questions/64531074/why-do-statsmodels-and-r-disagree-on-aic-computation" target="_blank">this</a>). You should not compare AIC and BIC if they come from different functions/software (or, if you need to, be <em>very</em> careful).</p>
 <div class="cell code-125">
@@ -833,9 +908,12 @@ reg_age_fr_rand  5 380.0691</code></pre>
 </div>
 <p>The <code>AIC()</code> function adds a <span class="math inline">\(N \times \mathrm{ln}(2\pi) + N\)</span> to the AIC (for math reasons), but other functions may not. So always use the same function/software to calculate AIC and BIC.</p>
 </li>
+</div>
+<div class="fragment" data-fragment-index="2">
 <li>
 AIC and BIC do not tell you <em>how much better</em> a model fits over another. So, you may reject a model that practically is quite similar to the model you chose, but you will not know that by looking at AIC and BIC alone. Your theory should also guide the model selection choices that you make.
 </li>
+</div>
 
 </ol></section>
 <section id="references" class="slide level2 smaller scrollable">

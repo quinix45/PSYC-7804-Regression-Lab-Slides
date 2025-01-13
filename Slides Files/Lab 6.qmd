@@ -38,7 +38,7 @@ editor: source
 #| classes: code-150
 
 install.packages("ppcor")
-install.packages("tidyverse")
+# install.packages("tidyverse")
 
 ```
 
@@ -73,7 +73,7 @@ The `ppcor` package [@kimPpcorPackageFast2015] contains functions to calculate p
 
 <ul>
 
-<li> Let's also load the [data](https://worldhappiness.report/ed/2024/){target="_blank"}
+<li> Let's also load the [data](https://library.virginia.edu/data/articles/hierarchical-linear-regression){target="_blank"}
  for today: </li>
 </ul>
 
@@ -118,48 +118,62 @@ cor(dat[,1:3])
 :::
 ::: {.column width="40%"}
 
-Although, useful correlation by itself may not be the measure we are interested in. Rather, we may want to know the relationship between two variables *after* accounting for another set of variables.
+::: {.fragment fragment-index=1}
+
+Although useful, correlation by itself may not be the measure we are interested in. Rather, we may want to know the relationship between two variables *after* accounting for another set of variables.
+
+:::
 
 :::
 ::::
 
 <br>
 
+::: {.fragment fragment-index=2}
 **Partial correlation** and **semi-partial correlation** are what we are looking for in this case. 
+:::
 
 
 ## Some Formulas for Reference
 
-If $r_{xy}$ represent the correlation between $x$ and $y$, then 
+If $r_{xy}$ represent the [correlation](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%202.html#/correlation){target="_blank"} between $x$ and $y$, then 
 
+
+::: {.fragment fragment-index=1}
 * **Partial correlation**: 
 
   * $r_{xy.z} = \frac{r_{xy} - r_{xz} \times r_{yz}}{\sqrt{1 - r_{xz}^2}\times\sqrt{1 - r_{yz}^2}}$, where $z$ is controlled for both $x$ and $y$
+:::
 
 
+::: {.fragment fragment-index=2}
 * **Semi-partial correlation**: In semi-partial correlation, the $z$ variable is held constant only for 1 of the other 2 variables. That means that in our case, there are 2 semi-partial correlations that can be calculated
-
+:::
 
 :::: {.columns}
 ::: {.column width="50%"}
 
+
+::: {.fragment fragment-index=3}
   * $r_{x(y.z)} = \frac{r_{xy} - r_{xz} \times r_{yz}}{\sqrt{1 - r_{yz}^2}}$, 
   
   where $z$ is controlled only for $y$
-
+:::
 
 
 :::
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=4}
   * $r_{y(x.z)} = \frac{r_{xy} - r_{xz} \times r_{yz}}{\sqrt{1 - r_{xz}^2}}$, 
   
   where $z$ is controlled only for $x$
-  
+:::
 
 :::
 ::::
 
+::: {.fragment fragment-index=5}
 ::: {.callout-note}
 
 ## spot differences and similarities in related formulas
@@ -167,7 +181,7 @@ If $r_{xy}$ represent the correlation between $x$ and $y$, then
 Notice that the numerator (top part) of these formulas is always the same, and the denominator (bottom part) changes slightly. This means that if you want to understand the differences, you should not look at the numerator at all (pretend it does not exist!), but only at the denominator. 
 
 :::
-
+:::
 
 ## Partial Correlation "by hand"
 
@@ -176,6 +190,7 @@ As always, I like calculating things by hand first to make sure I know what is g
 :::: {.columns}
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=1}
 Let's first get our vanilla correlations
 
 ```{r}
@@ -188,7 +203,9 @@ r_xy <- cor(dat$age, dat$happiness)
 r_xz <- cor(dat$age, dat$friends)
 r_yz <- cor(dat$happiness, dat$friends)
 ```
+:::
 
+::: {.fragment fragment-index=2}
 
 Then, the partial correlation between $x$ and $y$, accounting for $z$ is
 
@@ -201,10 +218,12 @@ Then, the partial correlation between $x$ and $y$, accounting for $z$ is
 (r_xy - r_xz*r_yz)/(sqrt(1 - r_xz^2) * sqrt(1 - r_yz^2))
 
 ```
+:::
 
 :::
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=3}
 Note that this is also equivalent to calculating the correlation between the residuals of $y$ and $x$ after a regression with $z$ as a predictor
 
 ```{r}
@@ -219,9 +238,15 @@ resid_x_z <- residuals(lm(age ~ friends, dat))
 cor(resid_x_z, resid_y_z)
 ```
 :::
+
+:::
 ::::
 
+::: {.fragment fragment-index=4}
+
 So, $r_{xy.z}-.16$ is the correlation between `happiness` and `age` after taking out the proportion of variance explained by `friends` in both variables. 
+
+:::
 
 ## Semi-Partial Correlation "by hand"
 
@@ -229,6 +254,8 @@ The semi-partial correlations between $x$ and $y$ accounting for $z$ can either 
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
 
 With the formulas from the previous slides:
 
@@ -251,7 +278,12 @@ or
 (r_xy - r_xz*r_yz)/(sqrt(1 - r_yz^2))
 ```
 :::
+
+:::
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=2}
+
 
 Similarly, we can get this by using regression residuals:
 
@@ -273,15 +305,25 @@ and
 
 cor(dat$age, resid_y_z)
 ```
+:::
 
 :::
 ::::
+
+
+::: {.fragment fragment-index=3}
 
 - $r_{y(x.z)} = -.15$ represents the relationship between $y$ and $x$ after the taking out of $x$ the variance explained by $z$.  
 
 - $r_{x(y.z)} = -.16$ represents the relationship between $x$ and $y$ after the taking out of $y$ the variance explained by $z$.  
 
+:::
+
+::: {.fragment fragment-index=4}
+
 <center> Which type of correlation to use? **it depends on your research question** </center>
+
+:::
 
 ## Using `ppcor` Functions
 
@@ -295,6 +337,8 @@ In practice, we use the `ppcor` package
 #| echo: true 
 #| code-line-numbers: false
 #| classes: code-125
+
+# partial correlation
 
 partial_cor <- pcor(dat[,1:3])
 partial_cor$estimate
@@ -310,12 +354,16 @@ partial_cor$estimate
 #| code-line-numbers: false
 #| classes: code-125
 
+# semi-partial correlation
+
 semipartial_cor <- spcor(dat[,1:3])
 semipartial_cor$estimate
 ```
 <div style="font-size: 20px">  Careful! in the semi-partial correlation output, the variable in the row is the variable that has no variance taken out.</div>
 :::
 ::::
+
+::: {.fragment fragment-index=1}
 
 The functions from `ppcor` work in the same way as the ones used in [Lab 2](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%202.html#/corr_test-output){target="_blank"}, where significance and other information is saved to a separate element.
 
@@ -343,21 +391,27 @@ partial_cor$p.value
 
 semipartial_cor$p.value
 ```
+
+:::
 :::
 ::::
 
 
 ## Model Comparison: Gain in Prediction
 
-We are often (actually always) interested in comparing different models. Usually we ask: is it *worth it* to add more variables as predictors? 
+We are often (actually always) interested in comparing different models. One often relevant question is: "is it *worth it* to add more variables as predictors?" 
 
-In the case of regression, the most popular way of comparing models is by comparing $R^2$ from nested model. Let's go back to how happiness (`happiness`) relates to age (`age`); then, we want to know whether adding number of friends (`friends`) improves our prediction.
+::: {.fragment fragment-index=1}
 
+In the case of regression, the most popular way of comparing models is by comparing $R^2$ from [nested models](https://www.statology.org/nested-model/){target="_blank"}. Let's go back to how happiness (`happiness`) relates to age (`age`); then, we want to know whether adding number of friends (`friends`) improves our prediction.
+
+:::
 
 :::: {.columns}
 ::: {.column width="50%"}
 
 
+::: {.fragment fragment-index=2}
 
 ```{r}
 #| eval: true
@@ -370,9 +424,13 @@ reg_age <- lm(happiness ~ age, dat)
 summary(reg_age)$r.squared
 ```
 So `age` roughly explains $3\%$ of the variance in `happiness`
+:::
+
 
 :::
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=3}
 
 ```{r}
 #| eval: true
@@ -387,17 +445,22 @@ summary(reg_age_fr)$r.squared
 `age` and `friends` together roughly explains $13\%$ of the variance in `happiness`
 
 :::
+
+:::
 ::::
 
+::: {.fragment fragment-index=4}
 The answer seems fairly straightforward: the model with both `age` and `friends` does better. But there is a catch with $R^2$ 🤨 
-
+:::
 
 ## The catch With $R^2$
 
-The "problem" with most popular measures of model fit such as $R^2$ is that they always increase as variables are added, even though the added variables are unrelated to $Y$. 
+The "problem" with most popular measures of model fit such as $R^2$ is that they always increase as variables are added, even when the added variables are unrelated to $Y$. 
 
 :::: {.columns}
 ::: {.column width="70%"}
+
+::: {.fragment fragment-index=1}
 
 ```{r}
 #| eval: true
@@ -417,26 +480,39 @@ summary(reg_age_fr)$r.squared
 # after 
 summary(reg_age_fr_rand)$r.squared 
 ```
+:::
 
 :::
 ::: {.column width="30%"}
 
+::: {.fragment fragment-index=2}
+
 $R^2$ increases When we add a random variable 😦
 
+:::
+
+::: {.fragment fragment-index=3}
 However, this is certainly a case where adding a randomly generated variable is *not worth it*. 
+:::
+
 
 :::
 ::::
 
-We want to apply the principle of  [Occam's razor](https://www.britannica.com/topic/Occams-razor){target="_blank"}, and choose the simpler model if the increase in $R^2$ is not worth it. 
 
+::: {.fragment fragment-index=4}
+We want to apply the principle of  [Occam's razor](https://www.britannica.com/topic/Occams-razor){target="_blank"}, and choose the simpler model if the increase in $R^2$ is not worth it. 
+:::
 
 ## Testing gain in prediction: $\Delta R^2$
 
-In hierarchical regression we check whether adding variables to a model yields a significant $R^2$ improvement ($\Delta R^2$). We can use the `anova()` function to compare [nested regression models](https://www.statology.org/nested-model/){target="_blank"}. The *F*-test tells us whether the $R^2$ improvement is significant.
+
+In hierarchical regression we check whether adding variables to a model yields a significant $R^2$ improvement ($\Delta R^2$). We can use the `anova()` function to compare nested regression models. The *F*-test tells us whether the $R^2$ improvement is significant.
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
 
 ```{r}
 #| eval: true
@@ -447,12 +523,13 @@ In hierarchical regression we check whether adding variables to a model yields a
 anova(reg_age, reg_age_fr)
 ```
 <div style="font-size: 23px"> Here, adding `friends` provides a significant improvement in variance explained, $\Delta R^2 = .1, F(1, 97) = 11.47, p = .001$  </div>
-
+:::
 
 :::
 
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=2}
 ```{r}
 #| eval: true
 #| echo: true 
@@ -464,22 +541,34 @@ anova(reg_age_fr, reg_age_fr_rand)
 
 <div style="font-size: 23px"> Unsurprisingly, adding adding a random variable does not 
 provide a significant improvement in variance explained, $\Delta R^2 = .003, F(1, 96) = 0.81, p = .37$. </div>
+:::
 
 :::
 ::::
 
 <br>
 
+
+::: {.fragment fragment-index=3}
 <div style="font-size: 20px"> **Note**: For reporting, you need to calculate the difference between the  $R^2$ of the two regression models, the $\Delta R^2$, by hand. </div>
+:::
+
 
 ## Information Criteria for Model Selection
 
 There also exist a family of statistics used for comparing model based on [information theory](https://en.wikipedia.org/wiki/Information_theory){target="_blank"}. What you will often see are the Akaike information criterion [AIC\; @akaikeNewLookStatistical1974] and Bayesian information criterion [BIC\;  @schwarzEstimatingDimensionModel1978]. 
 
-Both AIC and BIC calculate model fit, and then penalize it based on model complexity (number of variables in regression). The logic is that if you are going to add an extra variable to a regression, it should improve fit enough to offset the penalty term. For regression:
+::: {.fragment fragment-index=1}
+Both AIC and BIC calculate model fit, and then penalize it based on model complexity (number of estimated [parameters](https://en.wikipedia.org/wiki/Statistical_parameter){target="_blank"}). The logic is that if you are going to add an extra variable to a regression, it should improve fit enough to offset the penalty term. For regression:
+:::
+
+
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=2}
+
 $$AIC = N \times ln(\frac{SS_{\mathrm{resisuals}}}{N}) + 2p$$ 
 
 $N =$ sample size
@@ -490,17 +579,29 @@ $SS =$ sum of squares of the residuals
 
 $ln() =$ stands for the natural log
 
+
+:::
+
 :::
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=2}
+
 $$BIC =  N \times ln(\frac{SS_{\mathrm{resisuals}}}{N}) + p\times ln(N)$$
 
+:::
+
+::: {.fragment fragment-index=3}
+
 The $N \times ln(\frac{SS_{\mathrm{resisuals}}}{N})$ part, which is shared by both formulas, measures model fit. In contrast $2p$ is the AIC penalty, while $p\times ln(N)$ is the BIC penalty. The BIC penalty is stricter.
+:::
+
 :::
 ::::
 
 ## The `AIC()` and `BIC()` Functions
 
-We can calculate both AIC and BIC for all our models at once with the `AIC()` and `BIC()` functions. In both cases, the smallest value is the model that fits best according to the criteria. 
+We can calculate both AIC and BIC for all our models at once with the `AIC()` and `BIC()` functions. Both for AIC and BIC, the smallest value is the model that fits best according to the criteria. 
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -533,11 +634,18 @@ The second model fits best.
 :::
 ::::
 
+
+::: {.fragment fragment-index=1}
 In both cases the second model fits best because the addition of the random variable is not enough to offset the penalty for adding an additional variable (ok, that is to be expected, we added a random variable).
+:::
 
+::: {.fragment fragment-index=2}
 Although, AIC and BIC can disagree (often in my experience!). Usually, AIC likes more complex models, while BIC prefers simpler models. If I have to choose, I tend to trust BIC more.
+:::
 
-Finally, information criteria like the AIC and BIC can be used to compare non-nested models, unlike $\Delta R^2$, which can only be used to compare nested models. 
+::: {.fragment fragment-index=3}
+Finally, information criteria like the AIC and BIC can be used to compare non-nested models (the data must be the same though), unlike $\Delta R^2$, which can only be used to compare nested models. 
+:::
 
 ## Caveats With AIC and BIC
 
@@ -545,6 +653,8 @@ There are a couple of caveats to be aware of when using AIC and BIC.
 
 <ol style="font-size: 26px">  
 
+
+::: {.fragment fragment-index=1}
 <li>  Different functions/software will calculate AIC and BIC differently (I was confused for a bit myself before finding [this](https://robjhyndman.com/hyndsight/lm_aic.html){target="_blank"} and [this](https://stackoverflow.com/questions/64531074/why-do-statsmodels-and-r-disagree-on-aic-computation){target="_blank"}). You should not compare AIC and BIC if they come from different functions/software (or, if you need to, be *very* careful).
 
 ```{r}
@@ -559,9 +669,14 @@ extractAIC(reg_age)[2]
 
 The `AIC()` function adds a $N \times \mathrm{ln}(2\pi) + N$ to the AIC (for math reasons), but other functions may not. So always use the same function/software to calculate AIC and BIC. 
 
+
 </li>
 
+:::
+
+::: {.fragment fragment-index=2}
 <li> AIC and BIC do not tell you *how much better* a model fits over another. So, you may reject a model that practically is quite similar to the model you chose, but you will not know that by looking at AIC and BIC alone. Your theory should also guide the model selection choices that you make. </li>
+:::
 
 </ul>
 
