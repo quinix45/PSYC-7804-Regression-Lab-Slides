@@ -1,7 +1,13 @@
 
-nice_3D_plot <- function(y, x1, x2, axis_names = NULL, dot_labels = NULL, groups = NULL,  reg_plane = FALSE, plane_res = 50, ...){
-  
-
+nice_3D_plot <- function(y, 
+                         x1, 
+                         x2, 
+                         axis_names = NULL, 
+                         dot_labels = NULL, 
+                         groups = NULL,  
+                         reg_plane = FALSE,
+                         interaction = FALSE, 
+                         plane_res = 50, ...){
   
 require(plotly, quietly = TRUE)
 require(tidyverse, quietly = TRUE)
@@ -53,7 +59,7 @@ require(tidyverse, quietly = TRUE)
   return(p)
     
     }
-  else
+  else if(isTRUE(reg_plane) & isFALSE(interaction))
     {
     # add regression plane
       
@@ -86,13 +92,50 @@ require(tidyverse, quietly = TRUE)
                        inherit = FALSE,
                        showlegend = FALSE,
                        name = paste("Predicted", axz[[1]]),
-                       colorbar = list(title = paste(axz[[1]], "value"),
+                       colorbar = list(title = paste(axz[[1]]),
                                        len = 0.5)) 
-    
+    # plot with regression plane  
   return(p_reg)
 }
-  # plot with regression plane
-  
+  else if(isTRUE(reg_plane) & isTRUE(interaction))
+    {
+    # add regression plane
+    
+    
+    # regression model
+    
+    lm_mod <- lm(y ~ x1*x2 , data = plot_dat)
+    
+    # Values to calculate grid over
+    X1_grid <- seq(min(x1), max(x1), by = (max(x1) - min(x1))/plane_res)
+    X2_grid <- seq(min(x2), max(x2), by = (max(x2) - min(x2))/plane_res)
+    
+    
+    lm_surface <- expand.grid(x1 = X1_grid, x2 = X2_grid)
+    lm_surface$y <- predict.lm(lm_mod, newdata = lm_surface)
+    
+    require(reshape2, quietly = TRUE)
+    lm_surface <- acast(lm_surface, x1 ~ x2, value.var = "y") 
+    
+    
+    p_reg_int <- add_trace(p = p,
+                       z = round(lm_surface, 3),
+                       x = round(X1_grid, 3),
+                       y = round(X2_grid, 3),
+                       hovertemplate = paste0(axx[[1]], ": %{x:0.} <br>",
+                                              axy[[1]], ": %{y:0.} <br>",
+                                              axz[[1]], ": %{z:0.}"),
+                       type = "surface",
+                       colorscale = "Viridis",
+                       inherit = FALSE,
+                       showlegend = FALSE,
+                       name = paste("Predicted", axz[[1]]),
+                       colorbar = list(title = paste(axz[[1]]),
+                                       len = 0.5)) 
+    # plot with regression plane  
+    return(p_reg_int)
+  }
+
 }
 
 
@@ -108,11 +151,11 @@ require(tidyverse, quietly = TRUE)
 #                           x2 = iris$Petal.Width,
 #                           dot_labels = paste("row", 1:150),
 #                           groups = iris$Species,
-#                           axis_names = c("SL", "PL", "PW"),
+#                           axis_names = c("Sepal Length", "PL", "PW"),
 #                           reg_plane = FALSE)
 # 
 # plot_iris
-
+# 
 
 
 ## With regression plane
@@ -126,3 +169,17 @@ require(tidyverse, quietly = TRUE)
 #                               reg_plane = TRUE)
 # 
 # plot_iris_reg
+
+
+## With interaction
+# 
+# plot_iris_int <- nice_3D_plot(y = iris$Sepal.Length,
+#                               x1 = iris$Petal.Length,
+#                               x2 = iris$Petal.Width,
+#                               groups = iris$Species,
+#                               axis_names = c("SL", "PL", "PW"),
+#                               reg_plane = TRUE,
+#                               interaction = TRUE)
+# 
+# plot_iris_int
+# 
