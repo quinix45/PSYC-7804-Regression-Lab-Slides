@@ -1118,7 +1118,7 @@ The <em>length of the dashed lines</em> are the residuals, which represent the d
 <div class="fragment" data-fragment-index="1">
 <p>The <code>qqPlot()</code> function from the <code>car</code> package is helpful here:</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(reg, <span class="at">id =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(reg, <span class="at">id =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As long as the residuals (dots) are within the band, there should be no cause for concern.</p>
 </div>
@@ -1266,7 +1266,7 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <li><p><strong>mean</strong> of <span class="math inline">\(0.46 +  0.08X_{ACT}\)</span>, the <span class="math inline">\(b_0 + b_1X\)</span> part, and</p></li>
 <li><p><strong>standard deviation</strong> of <span class="math inline">\(0.61\)</span>, the <span class="math inline">\(\epsilon\)</span> (residual variance) part.</p></li>
 </ul>
-<p>Let’s look a bit more into the mean and standard deviation are.</p>
+<p>Let’s look a bit more into what the mean and standard deviation are!</p>
 </div></div>
 </section>
 <section id="predictable-and-unpredictable-parts" class="slide level2">
@@ -1339,7 +1339,7 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <span id="cb52-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7757</span>)</span>
 <span id="cb52-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate X values</span></span>
-<span id="cb52-6"><a href="" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">seq</span>(<span class="fu">min</span>(GPA<span class="sc">$</span>act), <span class="fu">max</span>(GPA<span class="sc">$</span>act), <span class="at">by =</span>.<span class="dv">1</span>), <span class="dv">150</span>)</span>
+<span id="cb52-6"><a href="" aria-hidden="true" tabindex="-1"></a>act <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">seq</span>(<span class="fu">min</span>(GPA<span class="sc">$</span>act), <span class="fu">max</span>(GPA<span class="sc">$</span>act), <span class="at">by =</span>.<span class="dv">1</span>), <span class="dv">150</span>)</span>
 <span id="cb52-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the code below generates data according to the regression model</span></span>
 <span id="cb52-9"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1347,13 +1347,13 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <span id="cb52-11"><a href="" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg)[<span class="dv">2</span>]</span>
 <span id="cb52-12"><a href="" aria-hidden="true" tabindex="-1"></a>residual_var <span class="ot">&lt;-</span> <span class="fu">sigma</span>(reg)</span>
 <span id="cb52-13"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-14"><a href="" aria-hidden="true" tabindex="-1"></a>ideal_data <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(X), <span class="at">mean =</span> intercept <span class="sc">+</span> X<span class="sc">*</span>slope, <span class="at">sd =</span> <span class="fu">sigma</span>(reg))</span>
+<span id="cb52-14"><a href="" aria-hidden="true" tabindex="-1"></a>ideal_data <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(act), <span class="at">mean =</span> intercept <span class="sc">+</span> act<span class="sc">*</span>slope, <span class="at">sd =</span> <span class="fu">sigma</span>(reg))</span>
 <span id="cb52-15"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the idealized data</span></span>
 <span id="cb52-17"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-18"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span>  <span class="fu">aes</span>(<span class="at">x =</span> X, <span class="at">y =</span> ideal_data)) <span class="sc">+</span>  </span>
+<span id="cb52-18"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span>  <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> ideal_data)) <span class="sc">+</span>  </span>
 <span id="cb52-19"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb52-20"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb52-20"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb52-21"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>

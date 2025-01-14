@@ -8,9 +8,8 @@ output: html_document
 
 
 ```{r}
-
 install.packages("ppcor")
-install.packages("tidyverse")
+# install.packages("tidyverse")
 ```
 
 

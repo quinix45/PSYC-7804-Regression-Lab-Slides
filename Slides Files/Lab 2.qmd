@@ -911,7 +911,7 @@ The `qqPlot()` function from the `car` package is helpful here:
 #| code-line-numbers: false
 #| classes: code-125
 
-qqPlot(reg, id = FALSE)
+car::qqPlot(reg, id = FALSE)
 ```
 
 As long as the residuals (dots) are within the band, there should be no cause for concern.
@@ -929,7 +929,7 @@ As long as the residuals (dots) are within the band, there should be no cause fo
 #| code-line-numbers: false
 #| classes: code-125
 
-qqPlot(reg, id = FALSE)
+car::qqPlot(reg, id = FALSE)
 ```
 
 :::
@@ -1102,7 +1102,7 @@ if $Y \sim N(b_0 + b_1X, \epsilon)$ is our model...
 - **standard deviation** of $0.61$, the $\epsilon$ (residual variance) part.
 
 
-Let's look a bit more into the mean and standard deviation are.
+Let's look a bit more into what the mean and standard deviation are!
 :::
 ::::
 
@@ -1216,7 +1216,7 @@ We can visualize what our $Y$ variable should look like according to our regress
 set.seed(7757)
 
 # generate X values
-X <- rep(seq(min(GPA$act), max(GPA$act), by =.1), 150)
+act <- rep(seq(min(GPA$act), max(GPA$act), by =.1), 150)
 
 # the code below generates data according to the regression model
 
@@ -1224,13 +1224,13 @@ intercept <- coef(reg)[1]
 slope <- coef(reg)[2]
 residual_var <- sigma(reg)
 
-ideal_data <- rnorm(length(X), mean = intercept + X*slope, sd = sigma(reg))
+ideal_data <- rnorm(length(act), mean = intercept + act*slope, sd = sigma(reg))
 
 # plot the idealized data
 
-ggplot(mapping =  aes(x = X, y = ideal_data)) +  
+ggplot(mapping =  aes(x = act, y = ideal_data)) +  
   geom_point(alpha = .2)+
-      geom_smooth(method = "lm", se = FALSE)+
+      geom_smooth(method = "lm", se = FALSE) +
   ylim(0, 5)
 ```
 

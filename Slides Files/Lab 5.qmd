@@ -282,7 +282,7 @@ When you have more than 2 predictors, it is not possible to build a visualizatio
 
 ## Bootstrapping
 
-Bootstrapping [@efronBootstrapMethodsAnother1977] is a really smart idea to calculate confidence intervals while avoid doing math! You probably have seen some complicated equations that need to be derived to calculate confidence intervals for statistics (e.g., see [here](https://agleontyev.netlify.app/post/2019-09-05-calculating-r-squared-confidence-intervals/){target="_blank"}
+Bootstrapping [@Efron_1992] is a really smart idea to calculate confidence intervals while avoid doing math! You probably have seen some complicated equations that need to be derived to calculate confidence intervals for statistics (e.g., see [here](https://agleontyev.netlify.app/post/2019-09-05-calculating-r-squared-confidence-intervals/){target="_blank"}
 for the 95\% CI of $R^2$).
 
 ::: {.fragment fragment-index=1}

@@ -237,3 +237,95 @@ ggplot(GPA,
               se = FALSE)
 ```
 
+
+## The Meaning of A regression model
+
+
+```{r}
+summary(reg)
+```
+
+
+
+## Predictable and Unpredictable Parts
+
+```{r}
+# generate 5 observations from N~(2, 0)
+rnorm(5, mean = 2, sd = 0)
+```
+
+
+```{r}
+
+set.seed(2356)
+# add randomness to observations on the left
+rnorm(5, mean = 2, sd = 0) + 
+rnorm(5, mean = 0, sd = 4) 
+
+# the two lines above are equivalent to just
+# set.seed(2356)
+# rnorm(5, mean = 2, sd = 4) 
+
+```
+
+
+
+## A Visual Representation
+
+
+```{r}
+ggplot(GPA, 
+  aes(x = act, y = year1gpa)) +  
+  # assume we have no data yet
+  geom_point(alpha = 0) +
+      geom_smooth(method = "lm", se = FALSE) +
+  ylim(0, 5)
+```
+
+
+```{r}
+# Generate idealized data
+
+set.seed(7757)
+
+# generate X values
+act <- rep(seq(min(GPA$act), max(GPA$act), by =.1), 150)
+
+# the code below generates data according to the regression model
+
+intercept <- coef(reg)[1]
+slope <- coef(reg)[2]
+residual_var <- sigma(reg)
+
+ideal_data <- rnorm(length(act), mean = intercept + act*slope, sd = sigma(reg))
+
+# plot the idealized data
+
+ggplot(mapping =  aes(x = act, y = ideal_data)) +  
+  geom_point(alpha = .2)+
+      geom_smooth(method = "lm", se = FALSE) +
+  ylim(0, 5)
+```
+
+
+## Statistical Models VS Reality
+
+```{r}
+ggplot(mapping =  aes(x = act, y = ideal_data)) +  
+  geom_point(alpha = .2)+
+      geom_smooth(method = "lm", se = FALSE) +
+  ylim(0, 5)
+```
+
+
+
+
+```{r}
+ggplot(GPA, 
+  aes(x = act, y = year1gpa)) +  
+  geom_point() +
+      geom_smooth(method = "lm", se = FALSE) +
+  ylim(0, 5)
+```
+
+

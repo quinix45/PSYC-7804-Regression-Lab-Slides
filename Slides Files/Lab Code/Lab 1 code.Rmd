@@ -41,7 +41,7 @@ str(NY_temp)
 ```{r}
 # the `trim = .05` argument calculates means without the bottom/top 2.5% of the data
 # add IQR = TRUE to get the interquartile range
-describe(NY_temp[,-1], trim = .05)
+psych::describe(NY_temp[,-1], trim = .05)
 ```
 
 

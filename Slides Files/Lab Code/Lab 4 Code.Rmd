@@ -267,8 +267,13 @@ var(residuals(reg_full))
 
 
 ```{r}
+
+# R^2 by hand
+
 1 - (0.8158336/1.395344)
 1 - (0.3925608/1.395344)
+
+# R^2 from the regression output
 
 summary(reg_free)$r.squared
 summary(reg_full)$r.squared

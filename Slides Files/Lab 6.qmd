@@ -63,7 +63,7 @@ theme_set(theme_classic(base_size = 14,
 
 ### `ppcor`
 
-The `ppcor` package [@kimPpcorPackageFast2015] contains functions to calculate partial and semi-partial correlations.
+The `ppcor` package [@Kim_2015] contains functions to calculate partial and semi-partial correlations.
 :::
 
 </div>
@@ -556,7 +556,7 @@ provide a significant improvement in variance explained, $\Delta R^2 = .003, F(1
 
 ## Information Criteria for Model Selection
 
-There also exist a family of statistics used for comparing model based on [information theory](https://en.wikipedia.org/wiki/Information_theory){target="_blank"}. What you will often see are the Akaike information criterion [AIC\; @akaikeNewLookStatistical1974] and Bayesian information criterion [BIC\;  @schwarzEstimatingDimensionModel1978]. 
+There also exist a family of statistics used for comparing model based on [information theory](https://en.wikipedia.org/wiki/Information_theory){target="_blank"}. What you will often see are the Akaike information criterion [AIC\; @Akaike_1974] and Bayesian information criterion [BIC\;  @Schwarz_1978]. 
 
 ::: {.fragment fragment-index=1}
 Both AIC and BIC calculate model fit, and then penalize it based on model complexity (number of estimated [parameters](https://en.wikipedia.org/wiki/Statistical_parameter){target="_blank"}). The logic is that if you are going to add an extra variable to a regression, it should improve fit enough to offset the penalty term. For regression:

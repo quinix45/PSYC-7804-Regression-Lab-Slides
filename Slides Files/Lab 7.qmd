@@ -1,5 +1,5 @@
 ---
-title: "Lab 7: Multicollinearity, Suppression, Dominance Analysis"
+title: "Lab 7: Multicollinearity and Dominance Analysis"
 author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
@@ -11,7 +11,7 @@ title-slide-attributes:
   data-visibility: "uncounted"
 format:
    revealjs:
-      footer: "Lab 7: Multicollinearity, Suppression, Dominance Analysis"
+      footer: "Lab 7: Multicollinearity and Dominance Analysis"
       width: 1280
       height: 720
       chalkboard: true
@@ -25,7 +25,6 @@ format:
 
 editor: source
 ---
-
 
 
 ## Today's Packages and Data 🤗
@@ -112,7 +111,154 @@ str(music,
 
 ## Regression coefficients Weirdness 
 
-It is common practice to add covariates to regression models without giving it much thought (*adding a covariate* simply means adding additional predictors). However, some strange things 👽 may happen if you add variables too casually to regression models.
+<div style="font-size: 24px"> It is common practice to add covariates to regression models without giving it much thought (*adding a covariate* simply means adding additional predictors). However, some strange things 👽 may happen if you add variables too casually to regression models.
+ </div>
+
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<div style="font-size: 22px; padding-top: 6px;"> For now, let's see how Adventurousness and intellect relate preference for Intense music: </div>
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+round(cor(music[,1:3]), 2)
+```
+
+<div style="font-size: 22px;"> The correlations are all positive. </div>
+
+
+<br>
+
+
+<div style="font-size: 22px;">  But wait, the relation between `Advnt` and `Intense` becomes negative after accounting for `Intel` 🙀 </div>
+
+:::
+::: {.column width="50%"}
+
+<div style="font-size: 22px"> Let's say we want to know the relation between `Advnt` and `Intense` while accounting for `Intel`. We run a multiple regression: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-115
+#| 
+reg_coll <- lm(Intense ~ Advnt + Intel, data = music)
+
+# car function for shorter regression summary 
+car::S(reg_coll, brief = TRUE)
+```
+
+
+:::
+::::
+
+## Visulazing Multicollinearity
+
+When strange things happen, visualizing your data (if possible) is always a good idea. 
+
+:::: {.columns}
+::: {.column width="35%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-115
+
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
+
+nice_3D_plot(y = music$Intense,
+             x1 = music$Advnt,
+             x2 = music$Intel,
+             axis_names = c("Intese", 
+                            "Adventurousness", 
+                            "Intellect"),
+             reg_plane = TRUE)
+```
+
+<div style="font-size: 22px">  One apparent issue is that `Advnt` and `Intel` are extremely correlated ($r = .96$). You can see it from the 3D plot, which is essentially a 2D plot (`Advnt` and `Intel` are effectively a single variable, not two separate ones). This is a case of **multicollinearity**. </div>
+
+
+<div style="font-size: 22px; padding-top: 12px;">  We are asking for a 3D plane when we should be asking for just line. In such cases, strange things are doomed to happen. </div>
+
+
+:::
+::: {.column width="65%"}
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| classes: code-125
+
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
+
+nice_3D_plot(y = music$Intense,
+             x1 = music$Advnt,
+             x2 = music$Intel,
+             axis_names = c("Intese", "Adventurousness", "Intellect"),
+             reg_plane = TRUE) %>%  
+  bslib::card(full_screen = TRUE)
+```
+
+:::
+::::
+
+
+## Back to Semi-Partial Correlations
+
+If you remember, [semi-partial correlations](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%206.html#/semi-partial-correlation-by-hand){target="_blank"} calculate the correlation between $y$ and $x$ after taking out the explained variance of $z$ from only one variable.
+
+
+:::: {.columns}
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+ppcor::spcor(music[,1:3])[1]
+
+```
+We want to look at the first row. We can see that the relation between `Intense` and `advnt` is negative after the variance explained by `Intel` is taken out of `Advnt`.  
+
+As we saw a few slides back, by themselves both variables are positively correlated with `Intense`
+
+
+```{r}
+#| classes: code-125
+
+cor(music[,1:3])[1,]
+```
+
+
+:::
+::: {.column width="30%"}
+
+::: {.callout-note}
+
+## A Word of Advice
+
+When the sign of correlations and semi-partial correlations are different, something strange is happening. Multicollinearity may be the reason, but other possibilities exist (see [here](https://freerangestats.info/blog/2023/06/04/causality-sims){target="_blank"}). 
+
+::: 
+
+:::
+::::
+
+## Another Perspective: Residuals
+
+As shown in [Lab 5](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%205.html#/calculate-partial-regression-coefficients-by-hand){target="_blank"}, regression coefficients are calculated based on the residuals of the predictors after controlling for all other predictors. But, if `Advnt` and `Intel` are so correlated, what happens to their residual after controlling fo one another? 
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -123,32 +269,98 @@ It is common practice to add covariates to regression models without giving it m
 #| code-line-numbers: false
 #| classes: code-125
 
-round(cor(music), 2)
+resid_Advnt <- residuals(lm(Advnt ~ Intel, music))
+
+var(resid_Advnt)
 ```
+
+:::
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+resid_Intel <- residuals(lm(Intel ~ Advnt, music))
+
+var(resid_Intel)
+```
+:::
+::::
+
+The residuals have almost no variance left! If a variable has variance of 0, it is always the same number (i.e., a constant), and cannot predict anything.
+
+A consequence of multicollinearity is that the regression coefficients that are calculated based on these residuals **should not be interpreted**. 
+
+However, multicollinearity has no bearing on the $R^2$, which is still perfectly interpretable. 
+
+
+## Dominance Analysis
+
+Dominance analysis  [@Budescu_1993; @Azen_Budescu_2003] main application is to determine the *relative* importance of a set of predictor variables. DA provides a way of *ranking* predictors by importance.   
+
+
+:::: {.columns}
+::: {.column width="70%"}
 
 
 
 :::
-::: {.column width="50%"}
+::: {.column width="30%"}
 
+<br>
 
+<center>
+<figure>
+  <img src="Images/David_Budescu.jpg">
+  <figcaption style="font-size: 16px"> [David Budescu](https://scholar.google.com/citations?user=f8zVLj8AAAAJ&hl=en){target="_blank"}, father of dominance analysis and Fordham professor who just retired. You may have seen him roam the halls of Dealy 👀 
+  </figcaption>
+</figure>
+</center>
 
 :::
 ::::
 
 
+## Example with our Data
 
-## Visulazing 
+<div style="font-size: 24px"> In the case of our data we have 3 facets of openness to experience: adventurousness, intellect, and unconventionality. We want to know how these three variables is the most important in predicting preference for Intense music.  </div>
+
+
+:::: {.columns}
+::: {.column width="60%"}
 
 ```{r}
-source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
-# dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/training.sav")
-# 
-# 
-# cor(dat)
+reg_da <- lm(Intense ~ Advnt + Intel + Uncon, music) 
+DA <- dominanceAnalysis(reg_da)
+summary(DA)
 ```
 
+
+:::
+::: {.column width="40%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+
+
+```
+
+
+<div style="font-size: 24px"> We can first see that across all possible regressions, `Uncon` contributes the most to total </div>
+
+:::
+::::
 
 
 
@@ -156,5 +368,7 @@ source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/hea
 ## References 
 
 <div id="refs"> </div>
+
+
 
 
