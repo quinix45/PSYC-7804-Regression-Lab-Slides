@@ -407,6 +407,10 @@
       margin-right: 0; 
     }
   </style>
+  <script src="Lab 7_files/libs/kePrint-0.0.1/kePrint.js"></script>
+
+  <link href="Lab 7_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
   <script src="Fabio_theme/Fabio_theme.js"></script>
 </head>
 <body class="quarto-light">
@@ -459,24 +463,45 @@ Fabio Setti
 </div><div class="column" style="width:50%;">
 <ul>
 <li>
-Let’s also load the <a href="https://library.virginia.edu/data/articles/hierarchical-linear-regression" target="_blank">data</a> for today:
+Let’s also load the data for today:
 </li>
 </ul>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Data from https://library.virginia.edu/data/articles/hierarchical-linear-regression</span></span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/mamm350.csv"</span>)</span>
 <span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Hierarc_data.csv"</span>)</span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># let's peak at our variables</span></span>
-<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dat, <span class="at">vec.len =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>'data.frame':   100 obs. of  5 variables:
- $ happiness: int  5 5 6 4 3 ...
- $ age      : int  24 28 25 26 20 ...
- $ friends  : int  12 8 6 4 8 ...
- $ pets     : int  3 1 0 2 0 ...
- $ gender   : chr  "Male" "Male" ...</code></pre>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>domi_vars <span class="ot">&lt;-</span> dat[, <span class="fu">c</span>(<span class="st">"AGE"</span>, <span class="st">"INCOME"</span>, </span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"HAVEPHYS"</span>,<span class="st">"BENEFIT1"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold;">variable</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">AGE</td>
+<td style="text-align: left; width: 300px;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">INCOME</td>
+<td style="text-align: left; width: 300px;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">HAVEPHYS</td>
+<td style="text-align: left; width: 300px;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">BENEFIT1</td>
+<td style="text-align: left; width: 300px;"></td>
+</tr>
+</tbody>
+</table>
+
+
 </div>
 </div>
 </div></div>
