@@ -407,10 +407,6 @@
       margin-right: 0; 
     }
   </style>
-  <script src="Lab 7_files/libs/kePrint-0.0.1/kePrint.js"></script>
-
-  <link href="Lab 7_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-
   <script src="Fabio_theme/Fabio_theme.js"></script>
 </head>
 <body class="quarto-light">
@@ -461,57 +457,60 @@ Fabio Setti
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<ul>
-<li>
-Let’s also load the data for today:
-</li>
-</ul>
+<p>Let’s also load the data for today:</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/mamm350.csv"</span>)</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>domi_vars <span class="ot">&lt;-</span> dat[, <span class="fu">c</span>(<span class="st">"AGE"</span>, <span class="st">"INCOME"</span>, </span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"HAVEPHYS"</span>,<span class="st">"BENEFIT1"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold;">variable</th>
-<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">AGE</td>
-<td style="text-align: left; width: 300px;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">INCOME</td>
-<td style="text-align: left; width: 300px;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left; font-weight: bold;">HAVEPHYS</td>
-<td style="text-align: left; width: 300px;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left; font-weight: bold;">BENEFIT1</td>
-<td style="text-align: left; width: 300px;"></td>
-</tr>
-</tbody>
-</table>
-
-
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>music <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/music.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(music, </span>
+<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">give.attr =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   369 obs. of  4 variables:
+ $ Intense                 : num  0.499 -1.517 0.655 1.275 -1.207 ...
+ $ Adventurousness_NEO     : num  4.28 3.38 3.83 4.35 3.92 ...
+ $ Intellect_NEO           : num  4.14 3.32 3.74 4.24 3.62 ...
+ $ Unconventionality_HEXACO: num  3.8 2.7 3.4 3.4 2 2.5 2.9 3.5 2.8 3.8 ...</code></pre>
 </div>
 </div>
 </div></div>
 </section>
-<section id="regresssion-coefficients-weirdness" class="slide level2">
-<h2>Regresssion coefficients Weirdness</h2>
+<section id="background-about-the-data" class="slide level2">
+<h2>Background About the data</h2>
+<ul style="font-size: 22px">
+<li>
+<strong>Intense</strong>:
+</li>
+<li>
+<strong>Adventurousness_NEO</strong>:
+</li>
+<li>
+<strong>Intellect_NEO</strong>:
+</li>
+<li>
+<strong>Unconventionality_HEXACO</strong>:
+</li>
+</ul>
+</section>
+<section id="regression-coefficients-weirdness" class="slide level2">
+<h2>Regression coefficients Weirdness</h2>
 <p>It is common practice to add covariates to regression models without giving it much thought (<em>adding a covariate</em> simply means adding additional predictors). However, some strange things 👽 may happen if you add variables too casually to regression models.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(music), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                         Intense Adventurousness_NEO Intellect_NEO
+Intense                     1.00                0.24          0.27
+Adventurousness_NEO         0.24                1.00          0.96
+Intellect_NEO               0.27                0.96          1.00
+Unconventionality_HEXACO    0.31                0.44          0.46
+                         Unconventionality_HEXACO
+Intense                                      0.31
+Adventurousness_NEO                          0.44
+Intellect_NEO                                0.46
+Unconventionality_HEXACO                     1.00</code></pre>
+</div>
+</div>
 </div><div class="column" style="width:50%;">
 
 </div></div>

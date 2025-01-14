@@ -76,8 +76,7 @@ The `dominanceanalysis` package [@Navarrete_etal_2024] contains functions to run
 ::: {.column width="50%"}
 
 
-
- Let's also load the data for today:
+Let's also load the data for today:
 
 ```{r}
 #| warning: false
@@ -86,76 +85,53 @@ The `dominanceanalysis` package [@Navarrete_etal_2024] contains functions to run
 #| code-line-numbers: false
 #| output: true
 
-dat <- rio::import("Data/Mergeddata.sav")[,-c(1,2,8)] %>% 
-          select(Intense,
-                 Adventurousness_NEO,
-                 Intellect_NEO,
-                 Unconventionality_HEXACO)
+music <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/music.csv") %>% 
+  na.omit()
 
-
-cor_mat <- cor(dat[,c("Intense",
-                      "Adventurousness_NEO",
-                      "Intellect_NEO", 
-                      "Unconventionality_HEXACO")], use = "complete.obs")
-
-
-write.csv(dat, "Data/music.csv", row.names = FALSE)
-
-
-
-formula <- paste("Intense  ~ ", paste(colnames(dat)[6:15], collapse = "+"))
-
-reg_intense <- lm(Intense ~ Adventurousness_NEO +  Intellect_NEO, data = dat)
-
-
-
-dom_a <- dominanceAnalysis(reg_intense)
-
-summary(dom_a)
-
-summary(reg_intense)
-
-car::vif(reg_intense)
-
-
-paste0(colnames(dat)[6:15])
-
+str(music, 
+    give.attr = FALSE)
 ```
-
-
-<ul style="font-size: 22px">  
-
-<li> **INTENT1**: Intention to obtain mammogram in next 3 months  </li>
-
-<li> **AGE**: </li>
-
-<li> **INCOME**: </li>
-
-<li> **HAVEPHYS**: </li>
-
-<li> **BENEFIT1**: </li>
-
-</ul>
-
-
-
-
 
 :::
 ::::
 
+## Background About the data
 
-## Regresssion coefficients Weirdness
+<ul style="font-size: 22px">  
+
+<li> **Intense**:  </li>
+
+<li> **Adventurousness_NEO**: </li>
+
+<li> **Intellect_NEO**: </li>
+
+<li> **Unconventionality_HEXACO**: </li>
+
+</ul>
+
+
+## Regression coefficients Weirdness 
 
 It is common practice to add covariates to regression models without giving it much thought (*adding a covariate* simply means adding additional predictors). However, some strange things 👽 may happen if you add variables too casually to regression models.
 
 :::: {.columns}
 ::: {.column width="50%"}
 
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+round(cor(music), 2)
+```
+
 
 
 :::
 ::: {.column width="50%"}
+
+
 
 :::
 ::::
