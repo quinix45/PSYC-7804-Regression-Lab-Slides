@@ -27,6 +27,80 @@ editor: source
 ---
 
 
+
+## Today's Packages and Data 🤗
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| code-fold: true
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| code-summary: "Install Packages Code"
+#| classes: code-150
+
+install.packages("dominanceanalysis")
+# install.packages("tidyverse")
+
+```
+
+```{r}
+#| eval: true
+#| echo: true
+#| code-line-numbers: false
+#| warning: false
+#| classes: code-150
+
+library(dominanceanalysis)
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+```
+
+</br>
+
+<div style="font-size: 26px">
+
+::: {.panel-tabset}
+
+### `dominanceanalysis`
+
+The `dominanceanalysis` package [@Navarrete_etal_2024] contains functions to run dominance analysis in R.
+:::
+
+</div>
+
+:::
+::: {.column width="50%"}
+
+<ul>
+
+<li> Let's also load the [data](https://library.virginia.edu/data/articles/hierarchical-linear-regression){target="_blank"}
+ for today: </li>
+</ul>
+
+```{r}
+#| warning: false
+#| classes: code-125
+#| echo: true
+#| code-line-numbers: false
+#| output: true
+
+# Data from https://library.virginia.edu/data/articles/hierarchical-linear-regression
+
+dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Hierarc_data.csv")
+
+
+# let's peak at our variables
+str(dat, vec.len = 2)
+```
+
+:::
+::::
+
+
 ## Regresssion coefficients Weirdness
 
 It is common practice to add covariates to regression models without giving it much thought (*adding a covariate* simply means adding additional predictors). However, some strange things 👽 may happen if you add variables too casually to regression models.
@@ -54,6 +128,9 @@ source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/hea
 # 
 # cor(dat)
 ```
+
+
+
 
 
 ## References 
