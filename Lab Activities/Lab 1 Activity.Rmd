@@ -1,0 +1,225 @@
+---
+title: "Lab 1 Activity"
+output: pdf_document
+header-includes:
+    - \usepackage{setspace}
+---
+
+
+\onehalfspacing
+
+## Lab Activity 
+
+**1.** Write a function to read "NY_Temp.txt" into R. 
+
+```{r}
+temps <- read.table("NY_Temp.txt", header = TRUE)
+```
+
+**2.** Use a function to find the descriptive statistics including IQR for the windspeed variable, "Wind" .
+
+```{r}
+describe(temps$Wind, IQR = TRUE)
+```
+
+**3.** Make a basic index plot (scatterplot of Windspeed according to Case Number).
+
+```{r}
+scatterplot(temps$Case, temps$Wind, main = "index plot", xlab = "Case number", ylab = "Windspeed", regLine = FALSE, smooth = FALSE, boxplots = FALSE)
+```
+
+**4.** Add a linear regression line and a quadratic regression line to the index plot. 
+
+```{r}
+scatterplot(temps$Case, temps$Wind, boxplots=FALSE, regLine = TRUE, main="Linear and 
+            Quadratic Fit", xlab = "Case Number", ylab="Temperature", col=1, smooth=FALSE)
+
+quad <- fitted(lm(temps$Wind~temps$Case + I(temps$Case^2)))
+lines(quad, col = 4)
+
+#based on the graph, either solution might be appropriate. I would personally choose linear because it's close enough and makes interpretation easier, but other researchers might choose quadratic and that's ok.
+```
+
+**5.** Fit a one-dimensional scatterplot as well.
+
+```{r}
+ONE_D <- data.frame(temps$Wind, 1) 
+scatterplot(ONE_D$temps.Wind, ONE_D$X1, 
+            boxplots=FALSE,
+            regLine = FALSE, 
+            main="One Dimensional Scatterplot",
+            xlab = "Windspeed",
+            ylab = " ",
+            col=1,
+            smooth=FALSE)
+```
+
+**6.** Choose one graph to help you evaluate normality (histogram, boxplot, Q-Q plot, or kernal density plot.) Generate the graph you choose.
+
+
+
+\newpage
+
+
+## Some R Practice
+
+**1.** The `rep()` function can be used to repeat objects:
+
+```{r}
+
+# we define vectors with the `c()` function
+
+vec <- c(2, 3)
+vec
+
+# can you spot the difference between the `times =` and `each =` argument?  
+
+rep(vec, times = 3)
+
+rep(vec, each = 3)
+```
+
+**Task**
+
+- Repeat the vector `c(-1,3,-5,7,-9)` twice, with each element repeated 3 times, and store the result. Display the result sorted from largest to smallest (use the `sort()` function; run `help(sort)` for the help page of the `sort()` function).
+
+```{r include=FALSE}
+x <- c(-1,3,-5,7,-9)
+
+x_rep <- rep(rep(x, each = 3), 2)
+
+sort(x_rep, decreasing = TRUE)
+```
+
+**2.** 
+
+**Task**
+
+-  If I have a vector with 5 elements, I use the `rep()` function to repeat each element 4 times, and then I repeat the resulting vector 3 times, how long is the final vector?
+
+```{r include=FALSE}
+5*4*3
+
+# demonstration
+vec <- c(1, 1, 1, 1, 1)
+
+length(rep(rep(vec, each = 4), times = 3))
+
+```
+
+**3.**  Let's look at some common R objects and how to subset them:
+
+vectors (1-Dimensional):
+
+```{r}
+x <- c(2,1,5,6, 17)
+
+# element 3 is extracted like so
+
+x[3]
+
+# elements 1 and 3 can be extracted like so
+
+x[c(1,3)]
+
+# elements can be dropped by using the "-" sign
+# to drop the elements 2 and 4
+
+x[-c(2,4)]
+```
+
+matrices (2-Dimensional):
+
+```{r}
+# many ways to define matrices
+# a quick way is to use the `cbind()` of `rbind()` functions
+# `cbind()` glues together 1D vectors as columns 
+# `rbind()` glues together 1D vectors as rows 
+
+# for example we create a matrix we 3 rows and 4 columns
+
+mat <- rbind(c(4,2,5, 8),
+             c(14,78,6, 38),
+             c(33,7,10, 326))
+
+# to extract the element in the second row and the fourth column, we run
+
+mat[2, 4]
+
+# so for 2D objects, [Row, Column]
+
+# to get the second column
+
+mat[,2]
+
+```
+
+lists (1-Dimensional):
+
+```{r}
+# lists can store any type of object
+# to create a list
+
+list_1 <- list(x, mat)
+
+# to extract elements from a list we use [[]]
+# so to extract the second element
+
+list_1[[2]]
+
+# we can also name list elements
+
+list_names <- list("vector" = x,
+                   "matrix" = mat)
+
+# now we can also use the `$` operator to access named elements
+
+list_names$matrix
+
+# the [[]] method still works just fine
+
+list_names[[2]]
+```
+
+**Tasks**
+
+- If you create a new vector `y` that contains the first to the fourth element of `x` and the third row of the `mat` object, what will be the length of `y`?
+
+```{r include=FALSE}
+length(x[1:4]) + length(mat[3,]) 
+```
+
+
+- Create `y` as specified above. Print `y`.
+
+```{r include=FALSE}
+y <- c(x[1:4], mat[3,])
+y
+```
+
+- Extract the second and fifth elements of the "vector" element inside the `list_names` object in a single line of code
+
+```{r include=FALSE}
+list_names$vector[c(2,5)]
+```
+- assign `NA` to the element in the third row and second column of the "matrix" element inside the `list_names` object in a single line of code. (hint: you will need to use the `<-` operator). Print the "matrix" element inside the `list_names` object to confirm.
+
+```{r include=FALSE}
+list_names$matrix[3, 2] <- NA
+
+list_names$matrix
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

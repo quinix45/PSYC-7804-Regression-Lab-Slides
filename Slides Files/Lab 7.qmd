@@ -187,7 +187,7 @@ nice_3D_plot(y = music$Intense,
 <div style="font-size: 22px">  One apparent issue is that `Advnt` and `Intel` are extremely correlated ($r = .96$). You can see it from the 3D plot, which is essentially a 2D plot (`Advnt` and `Intel` are effectively a single variable, not two separate ones). This is a case of **multicollinearity**. </div>
 
 
-<div style="font-size: 22px; padding-top: 12px;">  We are asking for a 3D plane when we should be asking for just line. In such cases, strange things are doomed to happen. </div>
+<div style="font-size: 22px; padding-top: 12px;">  We are asking for a 3D plane when we should just ask for a line. In such cases, strange things are bound to happen. </div>
 
 
 :::
@@ -256,6 +256,50 @@ When the sign of correlations and semi-partial correlations are different, somet
 :::
 ::::
 
+
+## Variance Inflation Factor
+
+
+Probably the quickest way to check for multicollinearity is to calculate the variance inflation factor (VIF) for each predictor. For a predictor $x$, the formula is:
+
+
+$$VIF_x = \frac{1}{1 - R^2}$$
+
+Importantly, the $R^2$ in the VIF formula stands for the variance explained in the predictor $x$ by *all other predictors*. 
+
+:::: {.columns}
+::: {.column width="70%"}
+
+We use the `vif()` function from `car` to get the VIF for our regression variables 
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+car::vif(reg_coll)
+```
+
+
+<div style="font-size: 22px"> A VIF higher than 10 usually suggest sizable multicollinearity between predictors. </div>
+
+:::
+
+::: {.column width="30%"}
+
+
+::: {.callout-note}
+## Question?
+
+Why is the VIF for our two variables the same?  
+::: 
+
+:::
+
+::::
+
+
 ## Another Perspective: Residuals
 
 As shown in [Lab 5](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%205.html#/calculate-partial-regression-coefficients-by-hand){target="_blank"}, regression coefficients are calculated based on the residuals of the predictors after controlling for all other predictors. But, if `Advnt` and `Intel` are so correlated, what happens to their residual after controlling fo one another? 
@@ -289,12 +333,16 @@ var(resid_Intel)
 :::
 ::::
 
-The residuals have almost no variance left! If a variable has variance of 0, it is always the same number (i.e., a constant), and cannot predict anything.
+<br>
 
-A consequence of multicollinearity is that the regression coefficients that are calculated based on these residuals **should not be interpreted**. 
+<div style="font-size: 22px"> The residuals have almost no variance left! If a variable has variance of 0, it is always the same number (i.e., a constant), and cannot predict anything. A consequence of multicollinearity is that the regression coefficients that are calculated based on these residuals **should not be interpreted**. 
+ </div>
+ 
+<center>
 
-However, multicollinearity has no bearing on the $R^2$, which is still perfectly interpretable. 
+However, $R^2$ is untouched by multicollinearity! So, you can still interpret $R^2$ just fine with high multicollinearity.
 
+</center>
 
 ## Dominance Analysis
 
