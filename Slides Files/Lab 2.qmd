@@ -52,7 +52,6 @@ install.packages("car")
 #| classes: code-150
 
 library(car)
-library(rio)
 library(psych)
 library(tidyverse)
 theme_set(theme_classic(base_size = 14, 
@@ -95,7 +94,7 @@ The `psych` package [@Revelle_2024a] includes MANY functions that help with data
 #| echo: true
 #| code-line-numbers: false
 
-GPA <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/GPA.sav")
+GPA <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/GPA.sav")
 
 str(GPA, vec.len = 2)
 ```
@@ -118,6 +117,9 @@ Whenever working with new data it's good practice to run descriptive statistics 
 #| eval: true
 #| echo: true 
 #| code-line-numbers: false
+
+
+# run in your R to get clearer output
 describe(GPA)
 ```
 
@@ -1004,6 +1006,7 @@ You may have seen regression model formulated in different ways. Turns out, the 
 :::: {.columns}
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=1}
 
 <ul style="font-size: 24px">  
 
@@ -1028,23 +1031,35 @@ Where
 
 </ul>
 
-
+:::
 
 :::
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=2}
 
 Now, the "real" regression model is actually
 
 $Y \sim N(\mu = b_0 + b_1X, \sigma = \epsilon)$
 
+<div style="font-size: 16px"> in math, $\sim$ reads "distributed as"</div>
+
+:::
+
+::: {.fragment fragment-index=3}
 Equivalently, you may see this written as
 
 $Y = b_0 + b_1X + e$ where, $e \sim N(\mu = 0, \sigma = \epsilon)$
+:::
 
+::: {.fragment fragment-index=4}
+<div style="font-size: 24px">  The second formulation is more explicit about the main assumption of regression, that the residuals, $e$, are normally distributed. Let's explore a bit more...</div>
 
-The second formulation is more explicit about the main assumption of regression, that the residuals, $e$, are normally distributed. Let's explore a bit more...
+</br>
 
 <div style="font-size: 22px"> **NOTE**: regression makes no assumption about the distribution of the predictors (i.e., $X$ need not to be normally distributed, regression does not care) </div>
+:::
+
 
 :::
 ::::
@@ -1054,20 +1069,31 @@ The second formulation is more explicit about the main assumption of regression,
 
 On the previous slide you saw we had $Y_i$, $\hat{Y_i}$, $\hat{Y}$, and crucially, just $Y$ (). One important thing to keep in mind is that, whenever we run statistics, the question that we are asking is really...
 
+
+::: {.fragment fragment-index=1}
 <div style="font-size: 34px"> <center> **What is the probabilistic process by which the data that I observed came into existence? (i.e., the data generating process)** </center> </div>
+:::
+
 
 :::: {.columns}
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=2}
 Likewise, regression tries to answer how your observed sample of the $Y$ random variable comes into existence. 
+:::
 
 <br>
 
+::: {.fragment fragment-index=4}
 The $Y \sim N(b_0 + b_1X, \epsilon)$ (for simplicity, I dropped the $\mu$ and $\sigma$) is how linear regression thinks $Y$ crosses over the dotted line and ends up in our data. 
+:::
+
 :::
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=3}
 ![](Images/data_process.png){width="76%"}
+:::
 
 :::
 ::::
@@ -1095,14 +1121,20 @@ summary(reg)
 
 if $Y \sim N(b_0 + b_1X, \epsilon)$ is our model...
 
+::: {.fragment fragment-index=1}
+
 ...what we are saying with the results on the left is that $Y$ is normally distributed with 
 
 - **mean**  of $0.46 +  0.08X_{ACT}$, the $b_0 + b_1X$ part, and 
 
 - **standard deviation** of $0.61$, the $\epsilon$ (residual variance) part.
+:::
 
 
-Let's look a bit more into what the mean and standard deviation are!
+::: {.fragment fragment-index=2}
+Let's look a bit more into what the *mean* and *standard deviation* represent conceptually!
+:::
+
 :::
 ::::
 
@@ -1112,6 +1144,8 @@ You think of the normal distribution as a predictable and unpredictable part. Th
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
 
 For example, if I generate data from a normal distribution with 0 standard deviation
 
@@ -1128,7 +1162,11 @@ rnorm(5, mean = 2, sd = 0)
 The outcome is fully predictable, and we always get 2. 
 
 :::
+
+:::
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=2}
 
 ```{r}
 #| eval: true
@@ -1148,12 +1186,14 @@ rnorm(5, mean = 0, sd = 4)
 ```
 
 In contrast, here we know that our values will be centered around 2, the mean. However, there is unpredictable randomness introduced by the standard deviation of 4. 
+:::
 
 :::
 ::::
 
+::: {.fragment fragment-index=3}
 In regression, we swap the mean of the normal distribution for the **regression line** (predictable part), and the randomness for $\epsilon$, the **residual variance** (unpredictable part). 
-
+:::
 
 ## A Visual Representation
 
@@ -1234,10 +1274,13 @@ ggplot(mapping =  aes(x = act, y = ideal_data)) +
   ylim(0, 5)
 ```
 
-Each "column of dots" is normally distributed around the line, with standard deviation of $.61$, the residual variance ($\epsilon$). The dots are our residuals, $e$. 
+Each "column of dots" is normally distributed around the line, with standard deviation of $.61$, the residual variance ($\epsilon$). The dots are our essentially residuals, $e$. 
 
 
-*This is the data our regression model expects to see*
+::: {.fragment fragment-index=1}
+***This is the data our regression model expects to see***
+:::
+
 :::
 ::: {.column width="70%"}
 
@@ -1273,7 +1316,9 @@ ggplot(mapping =  aes(x = act, y = ideal_data)) +
 :::
 ::::
 
+::: {.fragment fragment-index=2}
 The $Y$ variable looking like this is the only "assumption" of regression.
+:::
 
 ## Statistical Models VS Reality
 
@@ -1314,12 +1359,15 @@ ggplot(GPA,
 :::
 ::::
 
+::: {.fragment fragment-index=1}
 <div style="font-size: 22px"> Violating assumptions? Assumptions are $always$ "violated". To "check assumptions" is knowing what data your model expects to see and evaluating how different the observed data is (QQplots for example, help you do this). </div>
+:::
 
+::: {.fragment fragment-index=2}
 <div style="font-size: 22px">  
 Whether you think your observed data it "too different" from the expected data is usually a *very subjective* process. 
 </div>
-
+:::
 
 
 

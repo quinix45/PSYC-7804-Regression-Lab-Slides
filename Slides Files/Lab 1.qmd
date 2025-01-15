@@ -184,7 +184,6 @@ NY_temp <- try(import("NY_Temp.txt"))
 ```
 
 <center>
-
 ![](Images/confused_cat.png){width="35%"}
 <figcaption style="font-size: 18px"> Me spending 10 minutes to load the data at the beginning of lab and then be completely lost because we are already on slide 9 </figcaption>
 </center>
@@ -208,7 +207,6 @@ I have uploaded all the datasets that we will use for this lab to a [github repo
 </ul>
 
 
-
 ```{r}
 #| echo: true
 #| code-line-numbers: false
@@ -226,11 +224,10 @@ NY_temp <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/r
 ![](Images/happy_cat.gif){width="20%"}
 
 :::
+
 </center>
-
-
 :::
-:::
+
 ::::
 
 ## Some Descriptive Statistics

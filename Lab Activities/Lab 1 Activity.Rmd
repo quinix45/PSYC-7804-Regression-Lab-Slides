@@ -10,51 +10,67 @@ header-includes:
 
 ## Lab Activity 
 
-**1.** Write a function to read "NY_Temp.txt" into R. 
-
-```{r}
-temps <- read.table("NY_Temp.txt", header = TRUE)
+```{r include=FALSE}
+library(tidyverse)
 ```
 
-**2.** Use a function to find the descriptive statistics including IQR for the windspeed variable, "Wind" .
 
-```{r}
-describe(temps$Wind, IQR = TRUE)
+**1.** Read "NY_Temp.txt" into R as shown in Lab 1. 
+
+```{r include=FALSE}
+NY_temp <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/NY_Temp.txt")
+```
+
+**2.** Use a function to find the descriptive statistics including IQR for the windspeed variable, `Wind`.
+
+```{r include=FALSE}
+psych::describe(NY_temp$Wind, IQR = TRUE)
 ```
 
 **3.** Make a basic index plot (scatterplot of Windspeed according to Case Number).
 
-```{r}
-scatterplot(temps$Case, temps$Wind, main = "index plot", xlab = "Case number", ylab = "Windspeed", regLine = FALSE, smooth = FALSE, boxplots = FALSE)
+```{r include=FALSE}
+ggplot(NY_temp,  
+ aes(x = Case, y = Wind)) +
+ geom_point() +
+ theme_classic()
 ```
 
-**4.** Add a linear regression line and a quadratic regression line to the index plot. 
+**4.** Add a linear regression line and a quadratic regression line to the index plot. Which line describes the trend more appropriately in your opinion?
 
-```{r}
-scatterplot(temps$Case, temps$Wind, boxplots=FALSE, regLine = TRUE, main="Linear and 
-            Quadratic Fit", xlab = "Case Number", ylab="Temperature", col=1, smooth=FALSE)
-
-quad <- fitted(lm(temps$Wind~temps$Case + I(temps$Case^2)))
-lines(quad, col = 4)
+```{r include=FALSE}
+ggplot(NY_temp,  
+ aes(x = Case, y = Wind)) +
+ geom_point() +
+ theme_classic() +
+ geom_smooth(method = "lm", 
+             se = FALSE) +
+ geom_smooth(method = "lm", 
+             formula = y ~ poly(x, 2), 
+             color = "red", 
+             se = FALSE)
 
 #based on the graph, either solution might be appropriate. I would personally choose linear because it's close enough and makes interpretation easier, but other researchers might choose quadratic and that's ok.
 ```
 
-**5.** Fit a one-dimensional scatterplot as well.
+**5.** Create a 1D-scatterplot of Wind.
 
-```{r}
-ONE_D <- data.frame(temps$Wind, 1) 
-scatterplot(ONE_D$temps.Wind, ONE_D$X1, 
-            boxplots=FALSE,
-            regLine = FALSE, 
-            main="One Dimensional Scatterplot",
-            xlab = "Windspeed",
-            ylab = " ",
-            col=1,
-            smooth=FALSE)
+```{r include=FALSE}
+ggplot(NY_temp,  
+       aes(x = Wind, y = 0)) +
+       geom_point(shape = 1) +
+       theme_classic()
 ```
 
-**6.** Choose one graph to help you evaluate normality (histogram, boxplot, Q-Q plot, or kernal density plot.) Generate the graph you choose.
+**6.** Choose and create one graph to help you evaluate normality (histogram, boxplot, Q-Q plot, or kernal density plot).
+
+```{r include=FALSE}
+ggplot(NY_temp,
+       aes(x = Wind)) +
+       geom_density() +
+       theme_classic()
+```
+
 
 
 

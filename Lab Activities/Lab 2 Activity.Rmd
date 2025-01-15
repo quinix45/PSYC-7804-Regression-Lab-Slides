@@ -1,0 +1,26 @@
+---
+title: "Lab 2 Activity"
+output: pdf_document
+header-includes:
+    - \usepackage{setspace}
+---
+
+
+```{r include=FALSE}
+library(tidyverse)
+```
+
+
+In this lab activity we are going to use the `attitude` dataset, which is already loaded into R. 
+
+**1.** Run `help("attitude")` to get some info on the data and the meaning of each variable. You can also run `View(attitude)` to 
+
+```{r include=FALSE}
+# View(attitude)
+```
+
+
+```{r include=FALSE}
+# summary(fm2 <- lm(rating ~ complaints, data = attitude))
+```
+

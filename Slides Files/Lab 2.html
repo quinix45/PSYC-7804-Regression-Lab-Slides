@@ -1190,6 +1190,7 @@ Wickham, H., &amp; RStudio. (2023). <em>Tidyverse: <span>Easily Install</span> a
 <p>You may have seen regression model formulated in different ways. Turns out, the notation can have subtle differences that changes the meaning of what you are looking at:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <ul style="font-size: 24px">
 <p><span class="math inline">\(Y_i = b_0 + b_1X_i + e_i\)</span></p>
 <p><span class="math inline">\(\hat{Y_i} = b_0 + b_1X_i\)</span></p>
@@ -1205,32 +1206,53 @@ Wickham, H., &amp; RStudio. (2023). <em>Tidyverse: <span>Easily Install</span> a
 <span class="math inline">\(\hat{Y}\)</span>: the <em>predicted</em> <span class="math inline">\(Y\)</span> value (e.g., predictions on data not yet observed)
 </li>
 </ul>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <p>Now, the “real” regression model is actually</p>
 <p><span class="math inline">\(Y \sim N(\mu = b_0 + b_1X, \sigma = \epsilon)\)</span></p>
+<div style="font-size: 16px">
+in math, <span class="math inline">\(\sim\)</span> reads “distributed as”
+</div>
+</div>
+<div class="fragment" data-fragment-index="3">
 <p>Equivalently, you may see this written as</p>
 <p><span class="math inline">\(Y = b_0 + b_1X + e\)</span> where, <span class="math inline">\(e \sim N(\mu = 0, \sigma = \epsilon)\)</span></p>
-<p>The second formulation is more explicit about the main assumption of regression, that the residuals, <span class="math inline">\(e\)</span>, are normally distributed. Let’s explore a bit more…</p>
+</div>
+<div class="fragment" data-fragment-index="4">
+<div style="font-size: 24px">
+The second formulation is more explicit about the main assumption of regression, that the residuals, <span class="math inline">\(e\)</span>, are normally distributed. Let’s explore a bit more…
+</div>
+<p><br></p>
 <div style="font-size: 22px">
 <strong>NOTE</strong>: regression makes no assumption about the distribution of the predictors (i.e., <span class="math inline">\(X\)</span> need not to be normally distributed, regression does not care)
+</div>
 </div>
 </div></div>
 </section>
 <section id="the-data-generating-process" class="slide level2">
 <h2>The Data Generating Process</h2>
 <p>On the previous slide you saw we had <span class="math inline">\(Y_i\)</span>, <span class="math inline">\(\hat{Y_i}\)</span>, <span class="math inline">\(\hat{Y}\)</span>, and crucially, just <span class="math inline">\(Y\)</span> (). One important thing to keep in mind is that, whenever we run statistics, the question that we are asking is really…</p>
+<div class="fragment" data-fragment-index="1">
 <div style="font-size: 34px">
 <center>
 <strong>What is the probabilistic process by which the data that I observed came into existence? (i.e., the data generating process)</strong>
 </center>
 </div>
+</div>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <p>Likewise, regression tries to answer how your observed sample of the <span class="math inline">\(Y\)</span> random variable comes into existence.</p>
+</div>
 <p><br></p>
+<div class="fragment" data-fragment-index="4">
 <p>The <span class="math inline">\(Y \sim N(b_0 + b_1X, \epsilon)\)</span> (for simplicity, I dropped the <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>) is how linear regression thinks <span class="math inline">\(Y\)</span> crosses over the dotted line and ends up in our data.</p>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="3">
 <p><img data-src="Images/data_process.png" style="width:76.0%"></p>
+</div>
 </div></div>
 </section>
 <section id="the-meaning-of-a-regression-model" class="slide level2">
@@ -1261,12 +1283,16 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 </div>
 </div><div class="column" style="width:50%;">
 <p>if <span class="math inline">\(Y \sim N(b_0 + b_1X, \epsilon)\)</span> is our model…</p>
+<div class="fragment" data-fragment-index="1">
 <p>…what we are saying with the results on the left is that <span class="math inline">\(Y\)</span> is normally distributed with</p>
 <ul>
 <li><p><strong>mean</strong> of <span class="math inline">\(0.46 +  0.08X_{ACT}\)</span>, the <span class="math inline">\(b_0 + b_1X\)</span> part, and</p></li>
 <li><p><strong>standard deviation</strong> of <span class="math inline">\(0.61\)</span>, the <span class="math inline">\(\epsilon\)</span> (residual variance) part.</p></li>
 </ul>
-<p>Let’s look a bit more into what the mean and standard deviation are!</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p>Let’s look a bit more into what the <em>mean</em> and <em>standard deviation</em> represent conceptually!</p>
+</div>
 </div></div>
 </section>
 <section id="predictable-and-unpredictable-parts" class="slide level2">
@@ -1274,6 +1300,7 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <p>You think of the normal distribution as a predictable and unpredictable part. The predictable part is the mean, whereas the unpredictable part is the standard deviation.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <p>For example, if I generate data from a normal distribution with 0 standard deviation</p>
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 5 observations from N~(2, 0)</span></span>
@@ -1283,7 +1310,9 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 </div>
 </div>
 <p>The outcome is fully predictable, and we always get 2.</p>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2356</span>)</span>
 <span id="cb48-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># add randomness to observations on the left</span></span>
@@ -1297,8 +1326,11 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <span id="cb50-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># rnorm(5, mean = 2, sd = 4) </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In contrast, here we know that our values will be centered around 2, the mean. However, there is unpredictable randomness introduced by the standard deviation of 4.</p>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="3">
 <p>In regression, we swap the mean of the normal distribution for the <strong>regression line</strong> (predictable part), and the randomness for <span class="math inline">\(\epsilon\)</span>, the <strong>residual variance</strong> (unpredictable part).</p>
+</div>
 </section>
 <section id="a-visual-representation" class="slide level2">
 <h2>A Visual Representation</h2>
@@ -1357,8 +1389,10 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <span id="cb52-21"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Each “column of dots” is normally distributed around the line, with standard deviation of <span class="math inline">\(.61\)</span>, the residual variance (<span class="math inline">\(\epsilon\)</span>). The dots are our residuals, <span class="math inline">\(e\)</span>.</p>
-<p><em>This is the data our regression model expects to see</em></p>
+<p>Each “column of dots” is normally distributed around the line, with standard deviation of <span class="math inline">\(.61\)</span>, the residual variance (<span class="math inline">\(\epsilon\)</span>). The dots are our essentially residuals, <span class="math inline">\(e\)</span>.</p>
+<div class="fragment" data-fragment-index="1">
+<p><strong><em>This is the data our regression model expects to see</em></strong></p>
+</div>
 </div><div class="column" style="width:70%;">
 <div class="cell">
 <div class="cell-output-display">
@@ -1370,7 +1404,9 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 </div>
 </div>
 </div></div>
+<div class="fragment" data-fragment-index="2">
 <p>The <span class="math inline">\(Y\)</span> variable looking like this is the only “assumption” of regression.</p>
+</div>
 </section>
 <section id="statistical-models-vs-reality" class="slide level2">
 <h2>Statistical Models VS Reality</h2>
