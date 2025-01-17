@@ -13,14 +13,121 @@ library(tidyverse)
 
 In this lab activity we are going to use the `attitude` dataset, which is already loaded into R. 
 
-**1.** Run `help("attitude")` to get some info on the data and the meaning of each variable. You can also run `View(attitude)` to 
+**1.** Run `help("attitude")` to get some info on the data and the meaning of each variable. You can also run `View(attitude)` to open the data in the data viewer window.
 
 ```{r include=FALSE}
-# View(attitude)
+help("attitude")
+
+dat <- attitude
 ```
 
 
+**1.** Run `help("attitude")` to get some info on the data and the meaning of each variable. You can also run `View(attitude)` to open the data in the data viewer window.
+
+
+**2.** plot `rating` on the $y$-axis and `complaints` on the $x$-axis. If you were to run a regression, do you think the slope ($b_1$) will be positive or negative? Why? 
+
 ```{r include=FALSE}
-# summary(fm2 <- lm(rating ~ complaints, data = attitude))
+
+ggplot(attitude,  
+ aes(x = complaints, y = rating)) +
+ geom_point() +
+ theme_classic()
+
+
+# positive as when complaint handling is more positive, ratings increase 
 ```
+
+**3.** Run a linear regression with `complaints` predicting `rating`. 
+
+```{r include=FALSE}
+reg <- lm(rating ~ complaints, attitude_std)
+
+summary(reg)
+```
+
+
+- What do you conclude about the relation between rating and complaints? 
+
+```{r include=FALSE}
+# there is a significantly positive relation between positive handling of complaints and rating
+```
+
+- How much would we expect `rating` increase to be on average if `complaints` increased by 3 units?
+
+```{r include=FALSE}
+# rating would increase by
+
+coef(reg)[2]*3
+```
+
+**4.** Run a *standardized* regression with `complaints` predicting `rating`. What changes do you see in the `summary()` output?
+
+```{r include=FALSE}
+attitude_std <- data.frame(scale(attitude))
+
+reg_std <- lm(rating ~ complaints, attitude_std)
+
+summary(reg_std)
+
+# intercept is now 0 and the slope is now .83. Everything else remains the same.
+```
+
+**5.** What is the predicted value of `rating` in standardized units when `complaints` is 1 standard deviation below average?
+
+```{r include=FALSE}
+# we would expect ratings to be
+coef(reg_std)[2]*-1
+```
+
+**Tricky questions**
+
+- can you convert this value of `rating` back into unstandardized units? (HINT: you will need to use the mean and standard deviation of the original `rating` variable)
+
+```{r}
+
+mean_rtg <- mean(attitude$rating) 
+sd_rtg <- sd(attitude$rating)
+
+
+# the formula to do so is Mean + (SD_rating*predicted_y_value_std)
+
+mean_rtg + (sd_rtg * (coef(reg_std)[2]*-1))
+
+
+# this is because -.83 stands for "-.83 standard deviations below the mean of rating", which is   54.56 in unstandardized units.
+
+# for IQ it would be 100 + (15*-.83) = 87.55
+
+```
+
+- How do you get the same value using the unstandardized regression equation? (HINT: you need to use the mean value and standard deviation of the `complaints` variable)
+
+```{r}
+mean_cmpl <- mean(attitude$complaints) 
+sd_cmpl <- sd(attitude$complaints)
+
+# simpler here because we just need to multiply by -1 because we are "one standard deviation below the average complaint handling" 
+
+X_value <- mean_cmpl + (sd_cmpl * -1)
+
+coef(reg)[1] + coef(reg)[2]*X_value
+```
+
+
+\newpage
+
+
+## Some R Practice
+
+
+
+
+
+
+
+
+
+
+
 

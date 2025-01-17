@@ -96,18 +96,48 @@ str(music,
 
 ## Background About the data
 
+I am using some of the data from @Setti_Kahn_2024, where<span style="font-size: 12px"> (yes I am citing myself, but it makes sense for this lab, I promise 😶🫣) </span> we looked at how facets of openness to experience (both from the  [big five](https://ipip.ori.org/newNEO_FacetsTable.htm){target="_blank"} and the [HEXACO](https://ipip.ori.org/newHEXACO_PI_key.htm){target="_blank"}) predict music preference.  
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+For the data here I selected only 3 personality facets and 1 dimension of music preference.
+
+
+
 <ul style="font-size: 22px">  
 
-<li> **Intense**:  </li>
+<li> **Intense**: Preference for the *intense* music dimension, which includes genres such as rock, punk, metal. </li>
 
-<li> **Adventurousness_NEO**: </li>
+<li> **Advnt**: Adventurousness facet of big 5 openness to experience. </li>
 
-<li> **Intellect_NEO**: </li>
+<li> **Intel**: Intellect facet of big 5 openness to experience. </li>
 
-<li> **Unconventionality_HEXACO**: </li>
+<li> **Uncon**: Unconventionality facet of HEXACO openness to experience. </li>
+
+
+Higher values mean higher preference/levels of personality trait
 
 </ul>
 
+:::
+
+::: {.column width="50%"}
+
+::: {.callout-note}
+## Dimensions of Music Preference 🎶
+
+@Rentfrow_Gosling_2003 was a seminal study in the field of music preference, where it was found that preference for music genres clusters together (e.g., if you like *punk* music, you tend to like *metal* music). Later @Rentfrow_etal_2011 proposed a 5-factor structure of music preference: *sophisticated* (e.g., classical, blues, jazz), *unpretentious* (e.g., country and folk), intense (e.g, rock, punk, metal), mellow (e.g., pop, electronic), and *contemporary* (e.g., rap, RnB). This 5-factor structure seems to work fairly well, although I would suspect that 1 or 2 more factors would emerge with a more comprehensive selection of music genres. 
+
+:::
+
+
+:::
+::::
+
+
+This data fits the lab topic well because in the paper we had to figure out a way of dealing with high multicollinearity, and dominance analysis ended up helping a lot!
 
 ## Regression coefficients Weirdness 
 
@@ -352,7 +382,15 @@ Dominance analysis  [@Budescu_1993; @Azen_Budescu_2003] main application is to d
 :::: {.columns}
 ::: {.column width="70%"}
 
+<div style="font-size: 24px"> Let's say we have three predictors, $x_1$, $x_2$ and $x_3$. We want know which one is the most important relative to the other 2 predictors. DA looks at how much each variable adds to $R^2$ when it is added to *all possible regression subsets*. </div>
 
+<br>
+
+<div style="font-size: 24px">  For Example, for $x_1$, we would look at how much the $R^2$ increases when we add it to a regression (1) with no variables , (2) only with $x_2$, (3) only with $x_3$, and (4) with $x_2$ and $x_3$.  </div>
+
+<br>
+
+Different dominance patterns (complete dominance, conditional dominance, general dominance) between variables can be established depending on the results of DA.
 
 :::
 ::: {.column width="30%"}
@@ -373,7 +411,7 @@ Dominance analysis  [@Budescu_1993; @Azen_Budescu_2003] main application is to d
 
 ## Example with our Data
 
-<div style="font-size: 24px"> In the case of our data we have 3 facets of openness to experience: adventurousness, intellect, and unconventionality. We want to know how these three variables is the most important in predicting preference for Intense music.  </div>
+<div style="font-size: 24px"> In the case of our data we have 3 facets of openness to experience: adventurousness, intellect, and unconventionality. We want to know how these three variables is the most important in predicting preference for *Intense* music.  </div>
 
 
 :::: {.columns}
@@ -394,24 +432,127 @@ summary(DA)
 :::
 ::: {.column width="40%"}
 
+
+<ul style="font-size: 22px">  
+
+let's go over the meaning of the columns in the output
+
+<li>  `model`: variables in the regression.  </li>
+<li>  `level`: number of variables in the regression. </li>
+<li>  `fit`: $R^2$ value for given regression. </li>
+<li>  `remaining columns`: contribution in $R^2$ when adding variable in column. </li>
+</ul>
+
+
+
+
+<div style="font-size: 22px"> We see that across all possible regressions, `Uncon` contributes the most $R^2$ on average, $.064$ (i.e., general dominance). </div>
+
+<div style="font-size: 18px; padding-top: 14px;"> Note the the $R^2$ values in the average contribution add up to the $R^2$ of the regression with all variables: </div>
+
 ```{r}
 #| eval: true
 #| echo: true 
 #| code-line-numbers: false
 #| classes: code-125
 
-
-
+summary(reg_da)$r.squared
 ```
 
-
-<div style="font-size: 24px"> We can first see that across all possible regressions, `Uncon` contributes the most to total </div>
 
 :::
 ::::
 
 
+## Additional Dominance Patterns
 
+So, on average `Uncon` is the most important predictor or preference for *Intense* music. This is just on average across all possible regression. We can build dominance matrices with *j* rows and *i* columns.
+
+
+A dominance matrix will contain a **1** if the variable in the row $j$ has a dominates the one in column $i$. You will see a **.5** if the dominance pattern between two variables cannot be established. 
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<center> **Conditional Dominance** </center>
+
+<div style="font-size: 22px"> We can check whether `Uncon` conditionally dominates the other variables, if on average it contributes more to $R^2$ across all the levels in the `level` column: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+dominanceMatrix(DA, type = "conditional")
+```
+
+:::
+::: {.column width="50%"}
+
+<center> **Complete Dominance** </center>
+
+
+<div style="font-size: 22px"> We can check whether `Uncon` completely dominates the other variables, if it contributes more to $R^2$ across **all regressions**: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+dominanceMatrix(DA, type = "complete")
+```
+
+:::
+::::
+
+In both cases, `Uncon` dominates the other two variables. We now have a really strong case to claim that `Uncon` is the most important predictor of preference for *Intense* music among our 3 openness facets.
+
+## Uncertainty and Inference in DA
+
+As it is the case with any statistical procedure, our results are based on a sample, and there is uncertainty about our results (e.g., are they due to sampling error?). We can use bootstrap to check how often the dominance pattern replicates across every bootstrap sample (1000 in this case):
+
+
+:::: {.columns}
+::: {.column width="60%"}
+
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+
+set.seed(2341)
+DA_boot <- bootDominanceAnalysis(reg_da, R = 1000)
+summary(DA_boot)
+```
+
+
+```{r}
+DA_boot <- readRDS("Additional files/DA_boot.RDS")
+summary(DA_boot)
+```
+
+:::
+::: {.column width="40%"}
+
+Skipping over some stuff, the column that we care most about is the `rep` column. 
+
+This column shows the proportion of bootstrap samples where the dominance pattern in the row was replicated. In general, `Uncon` seems to fairly consistently dominate all other variables.  
+
+:::
+::::
+
+
+::: {.callout-note}
+## DA and Multicollinearity
+
+<div style="font-size: 18px"> If you remember $R^2$ is unaffected by multicollinearity. By extension, DA is unaffected too, as it only deals with $R^2$. Thus, DA can be a good way of making inferences about your variables when your regression coefficients are not interpretable due to high multicollinearity (which is why it came up in my case!) </div>
+:::
 
 ## References 
 
