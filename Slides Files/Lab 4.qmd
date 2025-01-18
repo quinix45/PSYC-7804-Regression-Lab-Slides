@@ -56,7 +56,7 @@ install.packages("plotly")
 library(GGally)
 library(plotly)
 library(tidyverse)
-theme_set(theme_classic(base_size = 14, 
+theme_set(theme_classic(base_size = 16, 
                         base_family = 'serif'))
 ```
 
@@ -80,11 +80,9 @@ The `plotly` package [@Sievert_etal_2024a] is a Python and R package used to cre
 :::
 ::: {.column width="50%"}
 
-<ul>
+<center> **Data** </center>
 
-<li> Let's also load the [data](https://worldhappiness.report/ed/2024/){target="_blank"}
- for today: </li>
-</ul>
+</br>
 
 ```{r}
 #| warning: false

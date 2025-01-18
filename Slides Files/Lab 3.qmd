@@ -4,6 +4,8 @@ author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
 csl: Additional files/apa.csl
+notice: |
+  @Wickham_RStudio_2023
 title-slide-attributes:
   data-transition: "zoom"
   data-visibility: "uncounted"
@@ -25,7 +27,7 @@ editor: source
 ---
 
 
-## Today's Packages 🤗
+## Today's Packages and Data 🤗
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -54,7 +56,7 @@ install.packages("flextable")
 
 library(flextable)
 library(tidyverse)
-theme_set(theme_classic(base_size = 14, 
+theme_set(theme_classic(base_size = 16, 
                         base_family = 'serif'))
 ```
 
@@ -74,11 +76,9 @@ The `flextable` package [@Gohel_etal_2024] helps create pretty tables from R. Ca
 ::: {.column width="50%"}
 
 
-<ul>
+<center> **Data** </center>
 
-<li> Let's also load the [data](https://www.kaggle.com/datasets/mirichoi0218/insurance?resource=download){target="_blank"}
- for today: </li>
-</ul>
+</br>
 
 ```{r}
 #| warning: false
@@ -92,7 +92,6 @@ insurance <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-S
 # let's peak at our variables
 str(insurance)
 ```
-
 :::
 ::::
 
@@ -587,7 +586,6 @@ save_as_docx(table, path = "reg_table.docx")
 <li> `intercept = TRUE`: Set to `FALSE` if the intercept is not wanted (e.g., for standardized regression). </li>
 
 </ol>
-:::
 :::
 
 :::
