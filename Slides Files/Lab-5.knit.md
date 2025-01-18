@@ -6,7 +6,6 @@ bibliography: Additional files/R packages.bib
 csl: Additional files/apa.csl
 notice: |
   @Fox_etal_2024
-  @Wickham_RStudio_2023
 title-slide-attributes:
   data-transition: "zoom"
   data-visibility: "uncounted"
@@ -27,6 +26,8 @@ format:
 editor: source
 ---
 
+
+
 ## Today's Packages and Data 🤗
 
 :::: {.columns}
@@ -36,31 +37,49 @@ editor: source
 
 Let's continue with the example from  [Lab 4](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%204.html#/variables-of-interest){target="_blank"}
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 WH_2024 <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/World_happiness_2024.csv")
 
 # let's peak at our variables
 str(WH_2024, vec.len = 2)
 ```
 
+::: {.cell-output .cell-output-stdout}
+
+```
+'data.frame':	140 obs. of  9 variables:
+ $ Country_name           : chr  "Finland" "Denmark" ...
+ $ Region                 : chr  "Western Europe" "Western Europe" ...
+ $ Happiness_score        : num  7.74 7.58 ...
+ $ Log_GDP                : num  1.84 1.91 ...
+ $ Social_support         : num  1.57 1.52 ...
+ $ Healthy_life_expectancy: num  0.695 0.699 0.718 0.724 0.74 ...
+ $ Freedom                : num  0.859 0.823 0.819 0.838 0.641 ...
+ $ Generosity             : num  0.142 0.204 0.258 0.221 0.153 ...
+ $ Corruption             : num  0.454 0.452 0.818 0.476 0.807 ...
+```
+
+
+:::
+:::
+
+
+
 :::
 ::: {.column width="40%"}
 
 <br>
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
 
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 # get the variable we are using in a single object
 # not needed, but makes things cleaner
 
@@ -68,20 +87,24 @@ reg_vars <- WH_2024[, c("Happiness_score",
                         "Log_GDP",
                         "Freedom")]
 ```
+:::
+
+
 
 And let's load good old `tidyverse`
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
 
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 library(tidyverse)
-theme_set(theme_classic(base_size = 16, 
+theme_set(theme_classic(base_size = 14, 
                         base_family = 'serif'))
 ```
+:::
+
+
 
 :::
 ::::
@@ -101,17 +124,29 @@ In [Lab 4](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main
 
 The intercept and slopes with both predictors in the model
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 reg_full <- lm(Happiness_score ~ Log_GDP + Freedom, 
           reg_vars)
 
 coef(reg_full)
 ```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+(Intercept)     Log_GDP     Freedom 
+   1.437184    1.682053    2.859202 
+```
+
+
+:::
+:::
+
+
 
 :::
 
@@ -122,21 +157,44 @@ coef(reg_full)
 
 The intercept and slopes with separate models with one predictor are quite different
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 reg_free <- lm(Happiness_score ~ Freedom, 
               reg_vars)
 coef(reg_free)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+(Intercept)     Freedom 
+   2.623351    4.684888 
+```
 
 
+:::
+
+```{.r .cell-code  code-line-numbers="false"}
 reg_GDP <- lm(Happiness_score ~ Log_GDP, 
               reg_vars)
 coef(reg_GDP)
 ```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+(Intercept)     Log_GDP 
+   2.586466    2.135488 
+```
+
+
+:::
+:::
+
+
 :::
 
 :::
@@ -161,12 +219,11 @@ Personally, the concept of **partial regression coefficients** starts making sen
 
 Partial regression coefficient for `Log_GDP`
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 resid_happy_Free <- residuals(lm(Happiness_score ~ Freedom, 
                reg_vars))
 
@@ -177,6 +234,19 @@ resid_GDP <- residuals(lm(Log_GDP ~ Freedom,
 coef(lm(resid_happy_Free ~ 0 + resid_GDP))
 ```
 
+::: {.cell-output .cell-output-stdout}
+
+```
+resid_GDP 
+ 1.682053 
+```
+
+
+:::
+:::
+
+
+
 :::
 
 :::
@@ -186,12 +256,11 @@ coef(lm(resid_happy_Free ~ 0 + resid_GDP))
 
 Partial regression coefficient for `Freedom`
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 resid_happy_GDP <- residuals(lm(Happiness_score ~ Log_GDP, 
                reg_vars))
 
@@ -201,6 +270,19 @@ resid_Free <- residuals(lm(Freedom ~ Log_GDP,
 # the 0 + takes out the intercept, which is exactly 0 anyway in this case 
 coef(lm(resid_happy_GDP ~ 0 + resid_Free))
 ```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+resid_Free 
+  2.859202 
+```
+
+
+:::
+:::
+
+
 :::
 :::
 ::::
@@ -220,32 +302,42 @@ Then, added variables plots are simply plots between the residuals of one the pr
 :::: {.columns}
 ::: {.column width="50%"}
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 ggplot() +
   geom_point(aes(y = resid_happy_Free, 
                  x = resid_GDP))
-
 ```
+
+::: {.cell-output-display}
+![](Lab-5_files/figure-revealjs/unnamed-chunk-8-1.png){width=960}
+:::
+:::
+
+
 
 :::
 ::: {.column width="50%"}
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 ggplot() +
   geom_point(aes(y = resid_happy_GDP, 
                  x = resid_Free))
-
 ```
+
+::: {.cell-output-display}
+![](Lab-5_files/figure-revealjs/unnamed-chunk-9-1.png){width=960}
+:::
+:::
+
+
 :::
 ::::
 
@@ -258,15 +350,20 @@ The slopes that you get when you include both predictors are the slopes for the 
 :::: {.columns}
 ::: {.column width="75%"}
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
 
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 car::avPlots(reg_full)
 ```
+
+::: {.cell-output-display}
+![](Lab-5_files/figure-revealjs/unnamed-chunk-10-1.png){width=960}
+:::
+:::
+
+
 :::
 ::: {.column width="25%"}
 
@@ -311,14 +408,11 @@ As always, we can do things ourselves to get a better understanding of the proce
 
 ::: {.fragment fragment-index=1}
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
-#| code-fold: true
-#| code-summary: "Bootstrap $R^2$ code"
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-fold="true" code-summary="Bootstrap $R^2$ code" code-line-numbers="false"}
 # empty element to save R^2 to
 r_squared <- c()
 
@@ -340,6 +434,9 @@ reg_boot <- lm(Happiness_score ~ Log_GDP + Freedom,
 r_squared[i] <- summary(reg_boot)$r.squared
 }
 ```
+:::
+
+
 
 :::
 
@@ -354,14 +451,25 @@ There is a lot of value in understanding how the code above works, but the main 
 
 The $R^2$ from our regression with both variables was
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 summary(reg_full)$r.squared
 ```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+[1] 0.7186638
+```
+
+
+:::
+:::
+
+
 :::
 
 :::
@@ -371,24 +479,38 @@ summary(reg_full)$r.squared
 
 If we look out the distribution of the all the 2000 $R^2$ we get 
 
-```{r}
-#| eval: true
-#| echo: true 
-#| out-width: "80%"
-#| code-line-numbers: false
 
+
+::: {.cell}
+
+```{.r .cell-code  code-line-numbers="false"}
 # need to run bootstrap code on the left first
 hist(r_squared)
 ```
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
+::: {.cell-output-display}
+![](Lab-5_files/figure-revealjs/unnamed-chunk-13-1.png){width=80%}
+:::
+:::
 
+::: {.cell}
+
+```{.r .cell-code  code-line-numbers="false"}
 quantile(r_squared, c(.025, .5, .975))
+```
+
+::: {.cell-output .cell-output-stdout}
 
 ```
+     2.5%       50%     97.5% 
+0.6131015 0.7291690 0.8139789 
+```
+
+
+:::
+:::
+
+
 :::
 :::
 ::::
@@ -400,17 +522,33 @@ Once again, the `car` package comes to the rescue
 :::: {.columns}
 ::: {.column width="50%"}
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 set.seed(875)
 boot_model <- car::Boot(reg_full, R = 2000)
 
 confint(boot_model, type = "perc")
 ```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+Bootstrap percent confidence intervals
+
+                2.5 %   97.5 %
+(Intercept) 0.8712328 1.993144
+Log_GDP     1.2646729 2.094521
+Freedom     1.8735919 3.724216
+```
+
+
+:::
+:::
+
+
 
 The confidence interval for $R^2$ is a bit annoying to get from `car`, so here we just have the CIs for intercept and slopes
 
@@ -421,14 +559,28 @@ The confidence interval for $R^2$ is a bit annoying to get from `car`, so here w
 
 These are our normal confidence intervals from the regression:
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 confint(reg_full)
 ```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+                2.5 %   97.5 %
+(Intercept) 0.9769482 1.897419
+Log_GDP     1.4083851 1.955721
+Freedom     2.1432532 3.575151
+```
+
+
+:::
+:::
+
+
 :::
 
 :::
@@ -450,29 +602,41 @@ You can also visualize the distribution of the bootstrapped samples for the regr
 :::: {.columns}
 ::: {.column width="50%"}
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 hist(boot_model, 
      parm = "Log_GDP")
 ```
+
+::: {.cell-output-display}
+![](Lab-5_files/figure-revealjs/unnamed-chunk-17-1.png){width=960}
+:::
+:::
+
+
 
 :::
 
 ::: {.column width="50%"}
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 hist(boot_model, 
      parm = "Freedom")
 ```
+
+::: {.cell-output-display}
+![](Lab-5_files/figure-revealjs/unnamed-chunk-18-1.png){width=960}
+:::
+:::
+
+
 
 :::
 ::::
@@ -487,6 +651,7 @@ Notice that the bootstrap samples are very normally distributed. This is almost 
 ## References 
 
 <div id="refs"> </div>
+
 
 
 

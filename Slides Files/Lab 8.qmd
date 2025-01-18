@@ -4,6 +4,9 @@ author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
 csl: Additional files/apa.csl
+notice: |
+  @Fox_etal_2024
+  @Wickham_RStudio_2023
 title-slide-attributes:
   data-transition: "zoom"
   data-visibility: "uncounted"
@@ -23,3 +26,66 @@ format:
 
 editor: source
 ---
+
+
+@Wickham_RStudio_2023
+
+## Today's Packages and Data 🤗
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| code-fold: true
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| code-summary: "Install Packages Code"
+#| classes: code-150
+
+# install.packages("tidyverse")
+```
+
+```{r}
+#| eval: true
+#| echo: true
+#| code-line-numbers: false
+#| warning: false
+#| classes: code-150
+
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+```
+
+:::
+
+
+::: {.column width="50%"}
+
+<center> **Data** </center>
+
+</br>
+
+```{r}
+#| warning: false
+#| classes: code-125
+#| echo: true
+#| code-line-numbers: false
+#| output: true
+
+NY_temp <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/NY_Temp.txt")
+
+str(NY_temp, 
+    give.attr = FALSE)
+```
+
+:::
+::::
+
+
+## References 
+
+<div id="refs"> </div>
+
+

@@ -6,6 +6,7 @@ bibliography: Additional files/R packages.bib
 csl: Additional files/apa.csl
 notice: |
   @Fox_etal_2024
+  @Wickham_RStudio_2023
 title-slide-attributes:
   data-transition: "zoom"
   data-visibility: "uncounted"
@@ -54,7 +55,7 @@ install.packages("dominanceanalysis")
 
 library(dominanceanalysis)
 library(tidyverse)
-theme_set(theme_classic(base_size = 14, 
+theme_set(theme_classic(base_size = 16, 
                         base_family = 'serif'))
 ```
 
@@ -74,8 +75,9 @@ The `dominanceanalysis` package [@Navarrete_etal_2024] contains functions to run
 :::
 ::: {.column width="50%"}
 
+<center> **Data** </center>
 
-Let's also load the data for today:
+</br>
 
 ```{r}
 #| warning: false

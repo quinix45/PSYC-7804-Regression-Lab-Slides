@@ -4,6 +4,8 @@ author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
 csl: Additional files/apa.csl
+notice: |
+  @Wickham_RStudio_2023
 title-slide-attributes:
   data-transition: "zoom"
   data-visibility: "uncounted"
@@ -51,7 +53,7 @@ install.packages("ppcor")
 
 library(ppcor)
 library(tidyverse)
-theme_set(theme_classic(base_size = 14, 
+theme_set(theme_classic(base_size = 16, 
                         base_family = 'serif'))
 ```
 
@@ -71,11 +73,9 @@ The `ppcor` package [@Kim_2015] contains functions to calculate partial and semi
 :::
 ::: {.column width="50%"}
 
-<ul>
+<center> **Data** </center>
 
-<li> Let's also load the [data](https://library.virginia.edu/data/articles/hierarchical-linear-regression){target="_blank"}
- for today: </li>
-</ul>
+</br>
 
 ```{r}
 #| warning: false
@@ -87,7 +87,6 @@ The `ppcor` package [@Kim_2015] contains functions to calculate partial and semi
 # Data from https://library.virginia.edu/data/articles/hierarchical-linear-regression
 
 dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Hierarc_data.csv")
-
 
 # let's peak at our variables
 str(dat, vec.len = 2)
