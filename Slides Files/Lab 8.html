@@ -428,10 +428,6 @@ Fabio Setti
 </div>
 
 </section>
-<section class="slide level2">
-
-<p><span class="citation" data-cites="Wickham_RStudio_2023">Wickham &amp; RStudio (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></p>
-</section>
 <section id="todays-packages-and-data" class="slide level2">
 <h2>Today’s Packages and Data 🤗</h2>
 <div class="columns">
@@ -439,31 +435,755 @@ Fabio Setti
 <div class="cell code-150">
 <details class="code-fold">
 <summary>Install Packages Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("tidyverse")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("tidyverse")</span></span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"lubridate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell code-150">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">14</span>, </span>
-<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">base_family =</span> <span class="st">'serif'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">base_family =</span> <span class="st">'serif'</span>))</span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div style="font-size: 26px">
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>lubridate</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<p>The <code>lubridate</code> package <span class="citation" data-cites="Spinu_etal_2024">(<a href="#/references" role="doc-biblioref" onclick="">Spinu et al., 2024</a>)</span> provides many functions to help you work with date and times.</p>
+</div>
+</div>
+</div>
 </div>
 </div><div class="column" style="width:50%;">
-<center>
-<strong>Data</strong>
+<center style="padding-bottom: 41px;">
+<span class="data-title">Data</span>
 </center>
-<p><br></p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>NY_temp <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/NY_Temp.txt"</span>)</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>NY_waeth <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/NYC_Weather_2016_2022.csv"</span>)</span>
 <span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(NY_temp, </span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">give.attr =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(NY_waeth, <span class="at">vec.len =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>'data.frame':   111 obs. of  5 variables:
- $ Case    : int  1 2 3 4 5 6 7 8 9 10 ...
- $ NY_Ozone: int  41 36 12 18 23 19 8 16 11 14 ...
- $ SolR    : int  190 118 149 313 299 99 19 256 290 274 ...
- $ Temp    : int  67 72 74 62 65 59 61 69 66 68 ...
- $ Wind    : num  7.4 8 12.6 11.5 8.6 13.8 20.1 9.7 9.2 10.9 ...</code></pre>
+<pre><code>'data.frame':   59760 obs. of  10 variables:
+ $ time                 : chr  "2016-01-01T00:00" "2016-01-01T01:00" ...
+ $ temperature_2m (°C)  : num  7.6 7.5 7.1 6.6 6.3 ...
+ $ precipitation (mm)   : num  0 0 0 0 0 ...
+ $ rain (mm)            : num  0 0 0 0 0 ...
+ $ cloudcover (%)       : num  69 20 32 35 34 ...
+ $ cloudcover_low (%)   : num  53 4 3 5 4 ...
+ $ cloudcover_mid (%)   : num  0 0 0 0 0 ...
+ $ cloudcover_high (%)  : num  72 56 99 100 100 ...
+ $ windspeed_10m (km/h) : num  10 9.8 9.7 9.2 9.1 ...
+ $ winddirection_10m (°): num  296 287 285 281 279 ...</code></pre>
+</div>
+</div>
+</div></div>
+<p>The data includes weather recordings in NY for every hour of the day over a period of roughly 7 years (lots of data 😱). This is a bit too granular for what we need to do, so let’s do some data cleaning!</p>
+</section>
+<section id="working-with-dates" class="slide level2">
+<h2>Working with Dates</h2>
+<p>This Data provides a good opportunity to show how you can work with dates in R! Although I will only show one function here, the <code>lubridate</code> package is your friend if you work a lot with dates and times in your research.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="font-size: 22px">
+We want to turn the <code>time</code> variable into a date in days that R recognizes. we would use the <code>ymd()</code> function normally, but the correct format should be <em>YYYY-MM-DD</em>. Instead we also have the time here, which we do not need:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>NY_waeth<span class="sc">$</span>time[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2016-01-01T00:00" "2016-01-01T01:00" "2016-01-01T02:00"</code></pre>
+</div>
+</div>
+<div style="font-size: 22px">
+We can do some <a href="https://www.geeksforgeeks.org/string-manipulation-in-r/" target="_blank">string manipulation</a> to remove the last 6 characters!
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># substr() takes a sting and extract characters from (1 here) to (10 here)</span></span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a>NY_waeth<span class="sc">$</span>time <span class="ot">&lt;-</span> <span class="fu">substr</span>(NY_waeth<span class="sc">$</span>time, <span class="dv">1</span>, <span class="dv">10</span>)</span>
+<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a>NY_waeth<span class="sc">$</span>time[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2016-01-01" "2016-01-01" "2016-01-01"</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="font-size: 22px">
+Now we can turn the <code>time</code> variable into a date:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a>NY_waeth<span class="sc">$</span>time <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(NY_waeth<span class="sc">$</span>time)</span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(NY_waeth<span class="sc">$</span>time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Date"</code></pre>
+</div>
+</div>
+<div style="font-size: 22px; padding-top: 12px;">
+It is interesting to note that dates in R are interpreted as the time that has passed since the <a href="https://en.wikipedia.org/wiki/Unix_time" target="_blank">Unix Epoch</a>, January 1<sup>st</sup>, 1970. This is how most software/computers keep track of time 🤓
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>NY_waeth<span class="sc">$</span>time[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2016-01-01"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(NY_waeth<span class="sc">$</span>time[<span class="dv">1</span>])<span class="sc">/</span><span class="dv">365</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 46.03014</code></pre>
+</div>
+</div>
+<div style="font-size: 24px; padding-top: 12px;">
+So “2016-01-01” is 46 years after January 1<sup>st</sup>, 1970.
+</div>
+</div></div>
+</section>
+<section id="summarizing-and-filtering-the-data" class="slide level2">
+<h2>Summarizing and Filtering the Data</h2>
+<div style="font-size: 22px; padding-bottom: 14px;">
+We still have 23 measurements per day over 7 years, which is a bit much. For now, let’s reduce our data to just the average temperature each day in 2021.
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="font-size: 22px">
+We will be using some functions from the <code>dplyr</code> package, which is always loaded by <code>tidyverse</code>. Let’s get the average for each day:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a>Temp_avg <span class="ot">&lt;-</span> NY_waeth <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="fu">select</span>(time, <span class="st">`</span><span class="at">temperature_2m (°C)</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="fu">group_by</span>(time) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-4"><a href="" aria-hidden="true" tabindex="-1"></a>          <span class="fu">summarise</span>(<span class="at">Temp_C =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">temperature_2m (°C)</span><span class="st">`</span>))</span>
+<span id="cb15-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Temp_avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [2,490 × 2] (S3: tbl_df/tbl/data.frame)
+ $ time  : Date[1:2490], format: "2016-01-01" "2016-01-02" ...
+ $ Temp_C: num [1:2490] 5.41 2.39 3.01 0.1 -6.78 ...</code></pre>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>The <code>tidyverse</code> Pipe Operator %&gt;%</strong></p>
+</div>
+<div class="callout-content">
+<p>The <code>%&gt;%</code> operator, AKA the <em>pipe operator</em>, passes the element on its left to the function to its right. It is helpful to do multiple operations without needing to redefine an object on every line.</p>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="font-size: 22px">
+For the Americans 🦅, let’s also transform temperature to Fahrenheit (The inferior way of measuring temperature 😤)
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a>Temp_avg<span class="sc">$</span>Temp_F <span class="ot">&lt;-</span> (Temp_avg<span class="sc">$</span>Temp_C <span class="sc">*</span> <span class="dv">9</span><span class="sc">/</span><span class="dv">5</span>) <span class="sc">+</span> <span class="dv">32</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div style="font-size: 22px; padding-top: 14px;">
+Now let’s filter the data fo the year 2021. We can take advantage of the fact that Dates in R are treated as numbers:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a>Temp_avg_2021 <span class="ot">&lt;-</span> Temp_avg <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">filter</span>(time <span class="sc">&gt;=</span> <span class="st">"2021-01-01"</span>, </span>
+<span id="cb18-3"><a href="" aria-hidden="true" tabindex="-1"></a>                         time <span class="sc">&lt;=</span> <span class="st">"2021-12-30"</span>)</span>
+<span id="cb18-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Temp_avg_2021)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [364 × 3] (S3: tbl_df/tbl/data.frame)
+ $ time  : Date[1:364], format: "2021-01-01" "2021-01-02" ...
+ $ Temp_C: num [1:364] 0.729 5.463 2.25 2.75 3.125 ...
+ $ Temp_F: num [1:364] 33.3 41.8 36 37 37.6 ...</code></pre>
+</div>
+</div>
+<p><br></p>
+<center>
+✨ clean data ✨
+</center>
+</div></div>
+</section>
+<section id="plot-the-data" class="slide level2">
+<h2>Plot The Data</h2>
+<p>Let’s see what is the temperature trend in NY for the year 2021.</p>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Temp_avg_2021,</span>
+<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> Temp_F)) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Quite clearly, we need a quadratic curve here.</p>
+</div><div class="column" style="width:70%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="plot-the-data-1" class="slide level2">
+<h2>Plot The Data</h2>
+<p>Let’s see what is the temperature trend in NY for the year 2021.</p>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Temp_avg_2021,</span>
+<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> Temp_F)) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb21-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, </span>
+<span id="cb21-5"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>), </span>
+<span id="cb21-6"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The quadratic line fits very well. Let’s see if the loess line agrees.</p>
+</div><div class="column" style="width:70%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="plot-the-data-2" class="slide level2">
+<h2>Plot The Data</h2>
+<p>Let’s see what is the temperature trend in NY for the year 2021.</p>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Temp_avg_2021,</span>
+<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> Temp_F)) <span class="sc">+</span></span>
+<span id="cb22-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_point</span>()  <span class="sc">+</span></span>
+<span id="cb22-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, </span>
+<span id="cb22-5"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>), </span>
+<span id="cb22-6"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb22-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, </span>
+<span id="cb22-8"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">col =</span> <span class="st">"red"</span>,</span>
+<span id="cb22-9"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The loess line is pretty close to the quadratic one!</p>
+<p>Let’s run a quadratic regression with <code>time</code> as the predictor…</p>
+</div><div class="column" style="width:70%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="quadratic-regression-centering-variables" class="slide level2">
+<h2>Quadratic Regression: Centering Variables</h2>
+<div style="font-size: 24px; padding-bottom: 12px;">
+I will first show the “manual” way of running a quadratic regression, and I will show the slightly more practical way later.
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="font-size: 24px">
+First, let’s create the quadratic version of the <code>time</code> variable
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># dates don't like the "^", so we need to turn it into a numeric first </span></span>
+<span id="cb23-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="" aria-hidden="true" tabindex="-1"></a>Temp_avg_2021<span class="sc">$</span>time2 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(Temp_avg_2021<span class="sc">$</span>time)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div style="font-size: 24px">
+Oh wait…this does not work too well 🫤
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(Temp_avg_2021<span class="sc">$</span>time2, <span class="fu">as.numeric</span>(Temp_avg_2021<span class="sc">$</span>time))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9999969</code></pre>
+</div>
+</div>
+<p>We will not be able to interpret our regression coefficients (the linear term specifically) with such multicollinearity, as discussed in <a href="https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%207.html#/another-perspective-residuals" target="_blank">Lab 7</a></p>
+<p>We need to center our variables first!</p>
+</div><div class="column" style="width:50%;">
+<p>To center a variable we just subtract the mean</p>
+<p><span class="math display">\[X_{\mathrm{centered}} = X - \bar{X}\]</span></p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a>Temp_avg_2021<span class="sc">$</span>time_cent <span class="ot">&lt;-</span> Temp_avg_2021<span class="sc">$</span>time <span class="sc">-</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time)</span>
+<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># btw, check out what the time_cent variable looks like now!</span></span>
+<span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># we create the quadratic term by squaring the centered variable</span></span>
+<span id="cb26-5"><a href="" aria-hidden="true" tabindex="-1"></a>Temp_avg_2021<span class="sc">$</span>time_cent2 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(Temp_avg_2021<span class="sc">$</span>time_cent)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And the mulitcollinearity problem is solved 🪄</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(Temp_avg_2021<span class="sc">$</span>time_cent2, </span>
+<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(Temp_avg_2021<span class="sc">$</span>time_cent))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<center>
+Now we are good to proceed with our quadratic regression.
+</center>
+</div></div>
+</section>
+<section id="quadratic-regression" class="slide level2">
+<h2>Quadratic Regression</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a>quad_reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(Temp_F <span class="sc">~</span> time_cent <span class="sc">+</span> time_cent2 , </span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> Temp_avg_2021)</span>
+<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(quad_reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Temp_F ~ time_cent + time_cent2, data = Temp_avg_2021)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-18.8248  -5.4369   0.3819   5.0293  25.2432 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  7.116e+01  6.140e-01  115.90   &lt;2e-16 ***
+time_cent    5.562e-02  3.896e-03   14.28   &lt;2e-16 ***
+time_cent2  -1.367e-03  4.145e-05  -32.98   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.81 on 361 degrees of freedom
+Multiple R-squared:  0.7815,    Adjusted R-squared:  0.7803 
+F-statistic: 645.7 on 2 and 361 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><span class="math inline">\(\widehat{\mathrm{F_{temp}}} = b_0 + b_1 \times \mathrm{time} + b_2 \times \mathrm{time}^2\)</span></p>
+<center>
+↓
+</center>
+<p><span class="math inline">\(\widehat{\mathrm{F_{temp}}} = 71.16 + 0.06 \times \mathrm{time} - 0.001 \times \mathrm{time}^2\)</span></p>
+<ul style="font-size: 22px">
+<li>
+71.16 is the expected temperature in Fahrenheit when <code>time</code> is 0. Our variable is centered, so 0 represent the middle of the year, roughly July 2<sup>nd</sup>
+</li>
+<li>
+0.06 is the expected slope of the tangent line when <code>time</code> is 0 (confusing 😕)
+</li>
+<li>
+-0.001 is the expected change in the slope of the tangent line per unit-change in <code>time</code> (even more confusing 😕😕)
+</li>
+<p>We need some graphical help because some of this stuff honestly makes not sense in words 🤷</p>
+</ul>
+</div></div>
+</section>
+<section id="b_0-in-quadratic-regression" class="slide level2">
+<h2><span class="math inline">\(b_0\)</span> in Quadratic Regression</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="cell">
+<details class="code-fold">
+<summary>Plot code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Temp_avg_2021,</span>
+<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> Temp_F)) <span class="sc">+</span></span>
+<span id="cb31-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">5</span>, <span class="at">shape =</span> <span class="dv">1</span>)  <span class="sc">+</span></span>
+<span id="cb31-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>( <span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">1</span>], </span>
+<span id="cb31-5"><a href="" aria-hidden="true" tabindex="-1"></a>                  <span class="at">x =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time)),</span>
+<span id="cb31-6"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="fl">3.5</span>,</span>
+<span id="cb31-7"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">col =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb31-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, </span>
+<span id="cb31-9"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>), </span>
+<span id="cb31-10"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb31-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_segment</span>(<span class="at">x =</span> <span class="dv">0</span>, </span>
+<span id="cb31-12"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">xend =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time), </span>
+<span id="cb31-13"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">1</span>],</span>
+<span id="cb31-14"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">yend =</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">1</span>],</span>
+<span id="cb31-15"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb31-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_segment</span>(<span class="at">x =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time), </span>
+<span id="cb31-17"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">xend =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time), </span>
+<span id="cb31-18"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> <span class="dv">0</span>,</span>
+<span id="cb31-19"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">yend =</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">1</span>],</span>
+<span id="cb31-20"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><span class="math display">\[b_0 = 71.16\]</span></p>
+<div style="font-size: 24px">
+<p>Given that the <code>time</code> variable was centered, 0 corresponds to the middle of the year, July 2<sup>nd</sup>.</p>
+The expected temperature on July 2<sup>nd</sup> (when <code>time</code> = 0) given the quadratic regression equation is indeed 71.16 degrees Fahrenheit.
+</div>
+</div><div class="column" style="width:70%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-23-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="b_1-in-quadratic-regression" class="slide level2">
+<h2><span class="math inline">\(b_1\)</span> in Quadratic Regression</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="cell">
+<details class="code-fold">
+<summary>Plot code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Temp_avg_2021,</span>
+<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> Temp_F)) <span class="sc">+</span></span>
+<span id="cb32-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">5</span>, <span class="at">shape =</span> <span class="dv">1</span>)  <span class="sc">+</span></span>
+<span id="cb32-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, </span>
+<span id="cb32-5"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>), </span>
+<span id="cb32-6"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb32-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_segment</span>(<span class="at">x =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time) <span class="sc">-</span> <span class="dv">130</span>, </span>
+<span id="cb32-8"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">xend =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time) <span class="sc">+</span> <span class="dv">130</span>, </span>
+<span id="cb32-9"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">1</span>] <span class="sc">-</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">130</span>,</span>
+<span id="cb32-10"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">yend =</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">130</span>,</span>
+<span id="cb32-11"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="dv">1</span>,</span>
+<span id="cb32-12"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">linewidth =</span> .<span class="dv">7</span>,</span>
+<span id="cb32-13"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><span class="math display">\[b_1 = 0.06\]</span></p>
+<div style="font-size: 24px">
+<p>The slope of the tangent line when <code>time</code> is at 0. The tangent line is the red line in the plot on the right.</p>
+For this to make a bit more sense, we also need to look at <span class="math inline">\(b_2\)</span>.
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Slope-ception 🤔</strong></p>
+</div>
+<div class="callout-content">
+<p>If you think about it, in linear regression, the slope, <span class="math inline">\(b_1\)</span>, is also the slope of the tangent line to the regression line.</p>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:70%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="b_2-in-quadratic-regression" class="slide level2">
+<h2><span class="math inline">\(b_2\)</span> in Quadratic Regression</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="cell">
+<details class="code-fold">
+<summary>Plot code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a>x_val <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># accurate calculations, there is rounding error in the equation on the slides</span></span>
+<span id="cb33-4"><a href="" aria-hidden="true" tabindex="-1"></a>slope_new <span class="ot">&lt;-</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">coef</span>(quad_reg)[<span class="dv">3</span>]<span class="sc">*</span>x_val</span>
+<span id="cb33-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Temp_avg_2021,</span>
+<span id="cb33-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> Temp_F)) <span class="sc">+</span></span>
+<span id="cb33-8"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">5</span>, <span class="at">shape =</span> <span class="dv">1</span>)  <span class="sc">+</span></span>
+<span id="cb33-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, </span>
+<span id="cb33-10"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>), </span>
+<span id="cb33-11"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb33-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_segment</span>(<span class="at">x =</span> (<span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time) <span class="sc">+</span> x_val) <span class="sc">-</span> <span class="dv">130</span>, </span>
+<span id="cb33-13"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">xend =</span> (<span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time) <span class="sc">+</span> x_val) <span class="sc">+</span> <span class="dv">130</span>, </span>
+<span id="cb33-14"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span>  (<span class="fu">coef</span>(quad_reg)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">2</span>]<span class="sc">*</span>x_val <span class="sc">+</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">3</span>]<span class="sc">*</span>x_val<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span> (slope_new<span class="sc">*</span><span class="dv">130</span>),</span>
+<span id="cb33-15"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">yend =</span> (<span class="fu">coef</span>(quad_reg)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">2</span>]<span class="sc">*</span>x_val <span class="sc">+</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">3</span>]<span class="sc">*</span>x_val<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> (slope_new<span class="sc">*</span><span class="dv">130</span>),</span>
+<span id="cb33-16"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="dv">1</span>,</span>
+<span id="cb33-17"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">linewidth =</span> .<span class="dv">7</span>,</span>
+<span id="cb33-18"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">col =</span> <span class="st">"red"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><span class="math display">\[b_2 = - 0.001\]</span></p>
+<div style="font-size: 24px">
+<p><span class="math inline">\(b_2\)</span> lets us calculate the slope of the tangent line at <em>any</em> point of the curve. The value of <span class="math inline">\(b_2\)</span>, describes the change of the slope of the tangent line per 1-unit change in <code>time</code>. More formally,</p>
+<span class="math display">\[b_{\mathrm{tang}} = b_1 + 2b_2 X\]</span>
+</div>
+<div style="font-size: 22px">
+For example, if <code>time</code> = 100, then the slope of the tangent line is given by <span class="math inline">\(b_{\mathrm{tang}} = .06 + 2\times -.001 \times100 = -.14\)</span>. Indeed, the tangent line goes downwards, as its slope suggests.
+</div>
+</div><div class="column" style="width:70%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="why-b_2-is-what-you-care-about" class="slide level2">
+<h2>Why <span class="math inline">\(b_2\)</span> is What You care about</h2>
+<p>So why do we care about slopes of tangent lines? Well, generally, we don’t. The thing that we care about is that the slope of tangent lines <em>changes</em> at all. This is what a non-zero <span class="math inline">\(b_2\)</span> value tells us.</p>
+<p>What would it mean for the slope of the tangent line to be <em>constant across every <span class="math inline">\(X\)</span> value</em>? What happens if <span class="math inline">\(b_2 = 0\)</span>?</p>
+<p>We can check our quadratic regression equation, so <span class="math inline">\(\hat{Y} = b_0 + b_1X +  0X^2\)</span> → <span class="math inline">\(\hat{Y} = b_0 + b_1X\)</span></p>
+<p>Oh, we are back to the linear regression formula 🙃 If the slope of the tangent line is always constant, we have a <em>line</em>.</p>
+<p>So, <span class="math inline">\(b_2\)</span> informs us about 3 things:</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>1.</strong> Whether the line bends at all (i.e., is <span class="math inline">\(b_2 \neq 0\)</span>)</p>
+</div><div class="column" style="width:33%;">
+<p><strong>2.</strong> How much the line bends, which it depends on the <em>magnitude</em> of <span class="math inline">\(b_2\)</span> (more extreme <span class="math inline">\(b_2\)</span> values imply steeper curves)</p>
+</div><div class="column" style="width:33%;">
+<p><strong>3.</strong> The direction of the bend. If the sign of <span class="math inline">\(b_2\)</span> is positive, the curve will be a bell, if the sign is negative, it will be a U, as in our case.</p>
+</div></div>
+</section>
+<section id="climbing-to-the-top-or-bottom" class="slide level2">
+<h2>Climbing to the top (or bottom)</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell">
+<details class="code-fold">
+<summary>Plot code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># accurate calculations, there is rounding error in the equation on the slides</span></span>
+<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a>top <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>(<span class="fu">coef</span>(quad_reg)[<span class="dv">2</span>]<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span><span class="fu">coef</span>(quad_reg)[<span class="dv">3</span>]))</span>
+<span id="cb34-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="" aria-hidden="true" tabindex="-1"></a>Y_val <span class="ot">&lt;-</span> (<span class="fu">coef</span>(quad_reg)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">2</span>]<span class="sc">*</span>top <span class="sc">+</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">3</span>]<span class="sc">*</span>top<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb34-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># this is the formula for the tangent slope. if you print this, you will see that it equals exactly 0. This means that the X value provided is the top of the curve, which is the only point where the tangent slope is exactly 0</span></span>
+<span id="cb34-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="" aria-hidden="true" tabindex="-1"></a>slope_new <span class="ot">&lt;-</span> <span class="fu">coef</span>(quad_reg)[<span class="dv">2</span>] <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">coef</span>(quad_reg)[<span class="dv">3</span>]<span class="sc">*</span>top</span>
+<span id="cb34-9"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Temp_avg_2021,</span>
+<span id="cb34-12"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> Temp_F)) <span class="sc">+</span></span>
+<span id="cb34-13"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">5</span>, <span class="at">shape =</span> <span class="dv">1</span>)  <span class="sc">+</span></span>
+<span id="cb34-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> Y_val, </span>
+<span id="cb34-15"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="at">x =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time) <span class="sc">+</span> top),</span>
+<span id="cb34-16"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="fl">3.5</span>,</span>
+<span id="cb34-17"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">col =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb34-18"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, </span>
+<span id="cb34-19"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>), </span>
+<span id="cb34-20"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb34-21"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_segment</span>(<span class="at">x =</span> <span class="dv">0</span>, </span>
+<span id="cb34-22"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">xend =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time) <span class="sc">+</span> top, </span>
+<span id="cb34-23"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> Y_val,</span>
+<span id="cb34-24"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">yend =</span> Y_val,</span>
+<span id="cb34-25"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb34-26"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_segment</span>(<span class="at">x =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time) <span class="sc">+</span> top, </span>
+<span id="cb34-27"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">xend =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time) <span class="sc">+</span> top, </span>
+<span id="cb34-28"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> <span class="dv">0</span>,</span>
+<span id="cb34-29"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">yend =</span> Y_val,</span>
+<span id="cb34-30"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb34-31"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_segment</span>(<span class="at">x =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time) <span class="sc">-</span><span class="dv">130</span>, </span>
+<span id="cb34-32"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">xend =</span> <span class="fu">mean</span>(Temp_avg_2021<span class="sc">$</span>time) <span class="sc">+</span> <span class="dv">130</span>, </span>
+<span id="cb34-33"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span>  Y_val,</span>
+<span id="cb34-34"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">yend =</span> Y_val,</span>
+<span id="cb34-35"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="dv">1</span>,</span>
+<span id="cb34-36"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">linewidth =</span> .<span class="dv">7</span>,</span>
+<span id="cb34-37"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">col =</span> <span class="st">"red"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div style="font-size: 24px">
+<p>Last but not least, we can find the top (or bottom if <span class="math inline">\(b_2 &gt; 0\)</span>) of our curve (which is also the turning point). The formula is <span class="math inline">\(\mathrm{top} = -\frac{b_1}{2b_2}\)</span>.</p>
+<p>For us that would mean that the predicted highest average temperature is around:</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># accurate calculations, there is rounding error in slide regression coefficients</span></span>
+<span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>(<span class="fu">coef</span>(quad_reg)[<span class="dv">2</span>]<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span><span class="fu">coef</span>(quad_reg)[<span class="dv">3</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>time_cent 
+ 20.34353 </code></pre>
+</div>
+</div>
+<p>July 22<sup>nd</sup></p>
+</div>
+</div><div class="column" style="width:60%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-30-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<div style="font-size: 22px">
+Why does <span class="math inline">\(-\frac{b_1}{2b_2}\)</span> always finds the top/bottom? Turns out that <span class="math inline">\(-\frac{b_1}{2b_2}\)</span> finds the <span class="math inline">\(X\)</span> point where the slopes of the tangent line is <em>exactly 0</em>. That means that the tangent line is <em>perfectly flat</em>, which happens only at the top/bottom of a quadratic function.
+</div>
+<p>This concept of <a href="https://en.wikipedia.org/wiki/Mathematical_optimization" target="_blank">“finding the top (or bottom)”</a> happens to be the foundation of almost all estimation algorithms in statistics.</p>
+</section>
+<section id="bootsrap-ci-for-maximumminumum-point" class="slide level2">
+<h2>Bootsrap CI for Maximum/Minumum point</h2>
+<p>We can create a 95% CI for the <code>time</code> value at which we expect the maximum temperature with bootstrapping.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="font-size: 24px">
+First we create the bootstrapped regression:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a>boot_quad <span class="ot">&lt;-</span> car<span class="sc">::</span><span class="fu">Boot</span>(quad_reg, <span class="at">R =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div style="font-size: 24px; padding-top: 12px;">
+Then we need to calculate <span class="math inline">\(-\frac{b_1}{2b_2}\)</span> for all our 1000 bootstrap samples (very easy actually!). The bootstrap samples are saved in the <code>t</code> element of <code>boot_quad</code>:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># View(boot_quad$t)</span></span>
+<span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># we can compute -b1/(2*b2) for all sample at once with this</span></span>
+<span id="cb38-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="" aria-hidden="true" tabindex="-1"></a>top_boot <span class="ot">&lt;-</span> <span class="sc">-</span>boot_quad<span class="sc">$</span>t[,<span class="dv">2</span>]<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>boot_quad<span class="sc">$</span>t[,<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="font-size: 24px; padding-top: 12px;">
+The 95% CI for the <code>time</code> value at which we expect the highest temperatures is:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(top_boot, <span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    2.5%    97.5% 
+17.29640 23.42135 </code></pre>
+</div>
+</div>
+<div style="font-size: 24px;">
+And the full distribution
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">density</span>(top_boot))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-34-1.png" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="how-many-polynomials-do-i-need" class="slide level2">
+<h2>How Many Polynomials do I need?</h2>
+<p>It is my opinion that will almost never need more than a quadratic term if you are doing research in Psychology. In our case, we are dealing with a physical phenomenon (temperature), so higher polynomials may not be as far fetched.</p>
+<div style="font-size: 24px">
+How do we find out how many polynomials we need? Since we are just adding additional variables to the regression model, we can use in <span class="math inline">\(\Delta R^2\)</span> just as we did in <a href="https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%206.html#/testing-gain-in-prediction-delta-r2" target="_blank">Lab 6</a>.
+</div>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><br></p>
+<div style="font-size: 24px">
+We can easily add polynomials to regressions thanks to the <code>poly()</code> function:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_lin <span class="ot">&lt;-</span> <span class="fu">lm</span>(Temp_F <span class="sc">~</span> time, <span class="at">data =</span> Temp_avg_2021)  </span>
+<span id="cb42-2"><a href="" aria-hidden="true" tabindex="-1"></a>reg_quad <span class="ot">&lt;-</span> <span class="fu">lm</span>(Temp_F <span class="sc">~</span> <span class="fu">poly</span>(time, <span class="dv">2</span>), <span class="at">data =</span> Temp_avg_2021)  </span>
+<span id="cb42-3"><a href="" aria-hidden="true" tabindex="-1"></a>reg_cube <span class="ot">&lt;-</span> <span class="fu">lm</span>(Temp_F <span class="sc">~</span> <span class="fu">poly</span>(time, <span class="dv">3</span>), <span class="at">data =</span> Temp_avg_2021)  </span>
+<span id="cb42-4"><a href="" aria-hidden="true" tabindex="-1"></a>reg_fourth <span class="ot">&lt;-</span> <span class="fu">lm</span>(Temp_F <span class="sc">~</span> <span class="fu">poly</span>(time, <span class="dv">4</span>), <span class="at">data =</span> Temp_avg_2021) </span>
+<span id="cb42-5"><a href="" aria-hidden="true" tabindex="-1"></a>reg_fifth <span class="ot">&lt;-</span> <span class="fu">lm</span>(Temp_F <span class="sc">~</span> <span class="fu">poly</span>(time, <span class="dv">5</span>), <span class="at">data =</span> Temp_avg_2021) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:40%;">
+<p><br></p>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>The <code>poly()</code> Function</strong></p>
+</div>
+<div class="callout-content">
+<p>Be careful! It may seem that the <code>poly()</code> function saves us a lot of time, but it does some interesting stuff behind the scenes to calculate polynomials. Do not interpret the regression coefficients of regressions that use <code>poly()</code> without first reading the appendix of this Lab <em>very carefully</em>!</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="comparing-polynomial-regressions" class="slide level2">
+<h2>Comparing Polynomial Regressions</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>The <span class="math inline">\(\Delta R^2\)</span> suggests that there is a significant <span class="math inline">\(R^2\)</span> improvement up to a polynomial of the 4<sup>th</sup> degree. Here are the <span class="math inline">\(R^2\)</span> values of the 5 regression models:</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">summary</span>(reg_lin)<span class="sc">$</span>r.squared,</span>
+<span id="cb43-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg_quad)<span class="sc">$</span>r.squared,</span>
+<span id="cb43-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg_cube)<span class="sc">$</span>r.squared,</span>
+<span id="cb43-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg_fourth)<span class="sc">$</span>r.squared,</span>
+<span id="cb43-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(reg_fifth)<span class="sc">$</span>r.squared)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1233529 0.7815182 0.8341097 0.8943139 0.8950277</code></pre>
+</div>
+</div>
+<p>The 5<sup>th</sup> degree polynomial offers essentially no improvement.</p>
+</div><div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(reg_lin, reg_quad, reg_cube, reg_fourth, reg_fifth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Model 1: Temp_F ~ time
+Model 2: Temp_F ~ poly(time, 2)
+Model 3: Temp_F ~ poly(time, 3)
+Model 4: Temp_F ~ poly(time, 4)
+Model 5: Temp_F ~ poly(time, 5)
+  Res.Df   RSS Df Sum of Sq         F Pr(&gt;F)    
+1    362 88352                                  
+2    361 22019  1     66332 2244.6235 &lt;2e-16 ***
+3    360 16719  1      5300  179.3593 &lt;2e-16 ***
+4    359 10651  1      6068  205.3219 &lt;2e-16 ***
+5    358 10579  1        72    2.4343 0.1196    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div></div>
+<p><br></p>
+<center>
+<p>Let’s quickly look at what the polynomial regression lines look like.</p>
+</center>
+</section>
+<section id="plotting-polynomials" class="slide level2">
+<h2>Plotting polynomials</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-38-1.png" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-39-1.png" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-40-1.png" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-8_files/figure-revealjs/unnamed-chunk-41-1.png" style="width:80.0%"></p>
+</figure>
+</div>
 </div>
 </div>
 </div></div>
@@ -474,16 +1194,42 @@ Fabio Setti
 <div id="ref-Fox_etal_2024" class="csl-entry" role="listitem">
 Fox, J., Weisberg, S., Price, B., Adler, D., Bates, D., Baud-Bovy, G., Bolker, B., Ellison, S., Firth, D., Friendly, M., Gorjanc, G., Graves, S., Heiberger, R., Krivitsky, P., Laboissiere, R., Maechler, M., Monette, G., Murdoch, D., Nilsson, H., … R-Core. (2024). <em>Car: <span>Companion</span> to <span>Applied Regression</span></em> (Version 3.1-3) [Computer software]. <a href="https://cran.r-project.org/web/packages/car/index.html">https://cran.r-project.org/web/packages/car/index.html</a>
 </div>
+<div id="ref-Spinu_etal_2024" class="csl-entry" role="listitem">
+Spinu, V., Grolemund, G., Wickham, H., Vaughan, D., Lyttle, I., Costigan, I., Law, J., Mitarotonda, D., Larmarange, J., Boiser, J., &amp; Lee, C. H. (2024). <em>Lubridate: <span>Make Dealing</span> with <span>Dates</span> a <span>Little Easier</span></em> (Version 1.9.4) [Computer software]. <a href="https://cran.r-project.org/web/packages/lubridate/index.html">https://cran.r-project.org/web/packages/lubridate/index.html</a>
+</div>
 <div id="ref-Wickham_RStudio_2023" class="csl-entry" role="listitem">
 Wickham, H., &amp; RStudio. (2023). <em>Tidyverse: <span>Easily Install</span> and <span>Load</span> the ’<span>Tidyverse</span>’</em> (Version 2.0.0) [Computer software]. <a href="https://cran.r-project.org/web/packages/tidyverse/index.html">https://cran.r-project.org/web/packages/tidyverse/index.html</a>
 </div>
 </div>
+</section>
+<section>
+<section id="appendix-the-poly-function" class="title-slide slide level1 center">
+<h1>Appendix: The <code>poly()</code> function</h1>
+
+</section>
+<section id="the-poly-function-1" class="slide level2">
+<h2>The <code>poly()</code> function</h2>
+<p>The <code>poly()</code> is interesting. Namely, it generates polynomials up to specified degree of the given variable.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>For example if we give a variable <code>1,2,3</code>, <code>poly()</code> will return:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  X1 X2 X3
+1  1  1  1
+2  2  4  8
+3  3  9 27</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+
+</div></div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p>Lab 8: Quadratic regression and non-linear alternatives</p>
 </div>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 

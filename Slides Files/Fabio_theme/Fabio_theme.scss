@@ -144,6 +144,14 @@ $selection-bg: lighten($theme-color, 15%);
   text-shadow: none;
 }
 
+// "Data" heading class
+
+.data-title {
+  font-weight: 800;
+  color: $theme-color;
+  font-size: 1.5em;
+}
+
 
 // Bold color
 b,

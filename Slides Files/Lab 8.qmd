@@ -28,8 +28,6 @@ editor: source
 ---
 
 
-@Wickham_RStudio_2023
-
 ## Today's Packages and Data 🤗
 
 :::: {.columns}
@@ -44,6 +42,7 @@ editor: source
 #| classes: code-150
 
 # install.packages("tidyverse")
+install.packages("lubridate")
 ```
 
 ```{r}
@@ -56,16 +55,30 @@ editor: source
 library(tidyverse)
 theme_set(theme_classic(base_size = 14, 
                         base_family = 'serif'))
+library(lubridate)
 ```
+
+
+</br>
+
+<div style="font-size: 26px">
+
+::: {.panel-tabset}
+### `lubridate`
+
+The `lubridate` package [@Spinu_etal_2024] provides many functions to help you work with date and times.
+:::
+
+</div>
+
 
 :::
 
 
 ::: {.column width="50%"}
 
-<center> **Data** </center>
+<center style="padding-bottom: 41px;"> [Data]{.data-title} </center>
 
-</br>
 
 ```{r}
 #| warning: false
@@ -74,10 +87,1026 @@ theme_set(theme_classic(base_size = 14,
 #| code-line-numbers: false
 #| output: true
 
-NY_temp <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/NY_Temp.txt")
+NY_waeth <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/NYC_Weather_2016_2022.csv")
 
-str(NY_temp, 
-    give.attr = FALSE)
+str(NY_waeth, vec.len = 2)
+```
+
+:::
+::::
+
+The data includes weather recordings in NY for every hour of the day over a period of roughly 7 years (lots of data 😱). This is a bit too granular for what we need to do, so let's do some data cleaning!
+
+## Working with Dates
+
+This Data provides a good opportunity to show how you can work with dates in R! Although I will only show one function here, the `lubridate` package is your friend if you work a lot with dates and times in your research. 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<div style="font-size: 22px"> We want to turn the `time` variable into a date in days that R recognizes. we would use the `ymd()` function normally, but the correct format should be *YYYY-MM-DD*. Instead we also have the time here, which we do not need: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+NY_waeth$time[1:3]
+```
+<div style="font-size: 22px"> We can do some [string manipulation](https://www.geeksforgeeks.org/string-manipulation-in-r/){target="_blank"} to remove the last 6 characters! </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# substr() takes a sting and extract characters from (1 here) to (10 here)
+
+NY_waeth$time <- substr(NY_waeth$time, 1, 10)
+NY_waeth$time[1:3]
+```
+
+
+:::
+::: {.column width="50%"}
+
+<div style="font-size: 22px"> Now we can turn the `time` variable into a date: </div>
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+NY_waeth$time <- lubridate::ymd(NY_waeth$time)
+class(NY_waeth$time)
+```
+
+
+<div style="font-size: 22px; padding-top: 12px;"> It is interesting to note that dates in R are interpreted as the time that has passed since the [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time){target="_blank"}, January 1<sup>st</sup>, 1970. This is how most software/computers keep track of time 🤓
+  </div>
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+NY_waeth$time[1]
+as.numeric(NY_waeth$time[1])/365
+
+
+```
+
+<div style="font-size: 24px; padding-top: 12px;"> So "2016-01-01" is 46 years after January 1<sup>st</sup>, 1970. </div>
+
+:::
+::::
+
+## Summarizing and Filtering the Data
+
+<div style="font-size: 22px; padding-bottom: 14px;"> We still have 23 measurements per day over 7 years, which is a bit much. For now, let's reduce our data to just the average temperature each day in 2021. </div>
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<div style="font-size: 22px"> We will be using some functions from the `dplyr` package, which is always loaded by `tidyverse`. Let's get the average for each day: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+
+Temp_avg <- NY_waeth %>% 
+              select(time, `temperature_2m (°C)`) %>%
+                group_by(time) %>% 
+          summarise(Temp_C = mean(`temperature_2m (°C)`))
+
+str(Temp_avg)
+```
+::: {.callout-note}
+
+## The `tidyverse` Pipe Operator %>% 
+
+The `%>%` operator, AKA the *pipe operator*, passes the element on its left to the function to its right. It is helpful to do multiple operations without needing to redefine an object on every line. 
+
+::: 
+
+:::
+::: {.column width="50%"}
+
+<div style="font-size: 22px"> For the Americans 🦅, let's also transform temperature to Fahrenheit (The inferior way of measuring temperature 😤) </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+
+Temp_avg$Temp_F <- (Temp_avg$Temp_C * 9/5) + 32 
+```
+
+
+<div style="font-size: 22px; padding-top: 14px;"> Now let's filter the data fo the year 2021. We can take advantage of the fact that Dates in R are treated as numbers: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+
+Temp_avg_2021 <- Temp_avg %>% 
+                  filter(time >= "2021-01-01", 
+                         time <= "2021-12-30")
+str(Temp_avg_2021)
+```
+
+</br>
+
+<center> ✨ clean data ✨</center>
+
+:::
+::::
+
+## Plot The Data
+
+Let's see what is the temperature trend in NY for the year 2021.
+
+:::: {.columns}
+::: {.column width="30%"}
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| classes: code-125
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point()
+```
+
+Quite clearly, we need a quadratic curve here.
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point()
+
+```
+
+:::
+::::
+
+
+## Plot The Data 
+
+Let's see what is the temperature trend in NY for the year 2021.
+
+:::: {.columns}
+::: {.column width="30%"}
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| classes: code-125
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point() +
+geom_smooth(method = "lm", 
+            formula = y ~ poly(x, 2), 
+            se = FALSE)
+```
+
+The quadratic line fits very well. Let's see if the loess line agrees.
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point()  +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 2), 
+           se = FALSE)
+  
+
+```
+
+:::
+::::
+
+## Plot The Data 
+
+Let's see what is the temperature trend in NY for the year 2021.
+
+:::: {.columns}
+::: {.column width="30%"}
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| classes: code-125
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point()  +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 2), 
+           se = FALSE) +
+geom_smooth(method = "loess", 
+            col = "red",
+           se = FALSE)
+```
+
+The loess line is pretty close to the quadratic one! 
+
+
+Let's run a quadratic regression with `time` as the predictor...
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point()  +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 2), 
+           se = FALSE) +
+geom_smooth(method = "loess", 
+            col = "red",
+           se = FALSE)
+  
+```
+
+:::
+::::
+
+## Quadratic Regression: Centering Variables
+
+<div style="font-size: 24px; padding-bottom: 12px;"> I will first show the "manual" way of running a quadratic regression, and I will show the slightly more practical way later. </div>
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<div style="font-size: 24px"> First, let's create the quadratic version of the `time` variable </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# dates don't like the "^", so we need to turn it into a numeric first 
+
+Temp_avg_2021$time2 <- as.numeric(Temp_avg_2021$time)^2
+
+```
+</br>
+
+<div style="font-size: 24px"> Oh wait...this does not work too well 🫤 </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+
+cor(Temp_avg_2021$time2, as.numeric(Temp_avg_2021$time))
+```
+
+ We will not be able to interpret our regression coefficients (the linear term specifically) with such multicollinearity, as discussed in [Lab 7](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%207.html#/another-perspective-residuals){target="_blank"}
+
+
+We need to center our variables first!
+
+:::
+::: {.column width="50%"}
+
+To center a variable we just subtract the mean
+
+$$X_{\mathrm{centered}} = X - \bar{X}$$
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+Temp_avg_2021$time_cent <- Temp_avg_2021$time - mean(Temp_avg_2021$time)
+# btw, check out what the time_cent variable looks like now!
+
+# we create the quadratic term by squaring the centered variable
+Temp_avg_2021$time_cent2 <- as.numeric(Temp_avg_2021$time_cent)^2
+```
+
+And the mulitcollinearity problem is solved 🪄
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+cor(Temp_avg_2021$time_cent2, 
+    as.numeric(Temp_avg_2021$time_cent))
+```
+
+<center> Now we are good to proceed with our quadratic regression. </center>
+
+:::
+::::
+
+
+## Quadratic Regression
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+
+quad_reg <- lm(Temp_F ~ time_cent + time_cent2 , 
+               data = Temp_avg_2021)
+
+summary(quad_reg)
+```
+
+
+
+:::
+::: {.column width="50%"}
+
+$\widehat{\mathrm{F_{temp}}} = b_0 + b_1 \times \mathrm{time} + b_2 \times \mathrm{time}^2$
+
+<center> &darr; </center>
+
+$\widehat{\mathrm{F_{temp}}} = 71.16 + 0.06 \times \mathrm{time} - 0.001 \times \mathrm{time}^2$
+
+
+<ul style="font-size: 22px">  
+
+<li> 71.16 is the expected temperature in Fahrenheit when `time` is 0. Our variable is centered, so 0 represent the middle of the year, roughly July 2<sup>nd</sup> </li>
+
+<li>  0.06 is the expected slope of the tangent line when `time` is 0 (confusing 😕)  </li>
+
+<li>  -0.001 is the expected change in the slope of the tangent line per unit-change in `time` (even more confusing 😕😕) </li>
+
+
+We need some graphical help because some of this stuff honestly makes not sense in words 🤷
+
+</ul>
+
+
+
+:::
+::::
+
+
+## $b_0$ in Quadratic Regression
+
+
+:::: {.columns}
+::: {.column width="30%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-fold: true
+#| code-summary: "Plot code"
+#| code-line-numbers: false
+
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point(alpha = .5, shape = 1)  +
+  geom_point( aes(y = coef(quad_reg)[1], 
+                  x = mean(Temp_avg_2021$time)),
+              size = 3.5,
+              col = "red") +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 2), 
+           se = FALSE) +
+geom_segment(x = 0, 
+               xend = mean(Temp_avg_2021$time), 
+               y = coef(quad_reg)[1],
+               yend = coef(quad_reg)[1],
+               linetype = 2) +
+geom_segment(x = mean(Temp_avg_2021$time), 
+             xend = mean(Temp_avg_2021$time), 
+             y = 0,
+             yend = coef(quad_reg)[1],
+             linetype = 2)
+```
+
+
+$$b_0 = 71.16$$
+
+<div style="font-size: 24px"> Given that the `time` variable was centered, 0 corresponds to the middle of the year, July 2<sup>nd</sup>. 
+
+The expected temperature on July 2<sup>nd</sup> (when `time` = 0) given the quadratic regression equation is indeed 71.16 degrees Fahrenheit. </div>
+
+
+
+
+
+:::
+::: {.column width="70%"}
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point(alpha = .5, shape = 1)  +
+  geom_point( aes(y = coef(quad_reg)[1], 
+                  x = mean(Temp_avg_2021$time)),
+              size = 3.5,
+              col = "red") +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 2), 
+           se = FALSE) +
+geom_segment(x = 0, 
+               xend = mean(Temp_avg_2021$time), 
+               y = coef(quad_reg)[1],
+               yend = coef(quad_reg)[1],
+               linetype = 2) +
+geom_segment(x = mean(Temp_avg_2021$time), 
+             xend = mean(Temp_avg_2021$time), 
+             y = 0,
+             yend = coef(quad_reg)[1],
+             linetype = 2)
+```
+
+
+:::
+::::
+
+## $b_1$ in Quadratic Regression
+
+:::: {.columns}
+::: {.column width="30%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-fold: true
+#| code-summary: "Plot code"
+#| code-line-numbers: false
+
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point(alpha = .5, shape = 1)  +
+geom_smooth(method = "lm", 
+            formula = y ~ poly(x, 2), 
+            se = FALSE) +
+geom_segment(x = mean(Temp_avg_2021$time) - 130, 
+             xend = mean(Temp_avg_2021$time) + 130, 
+             y = coef(quad_reg)[1] - coef(quad_reg)[2]*130,
+             yend = coef(quad_reg)[1] + coef(quad_reg)[2]*130,
+             linetype = 1,
+             linewidth = .7,
+             col = "red")
+
+```
+
+
+$$b_1 = 0.06$$
+
+<div style="font-size: 24px"> The slope of the tangent line when `time` is at 0. The tangent line is the red line in the plot on the right. 
+
+For this to make a bit more sense, we also need to look at $b_2$. </div>
+
+
+::: {.callout-note}
+
+## Slope-ception 🤔
+
+If you think about it, in linear regression, the slope, $b_1$, is also the slope of the tangent line to the regression line. 
+
+::: 
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point(alpha = .5, shape = 1)  +
+geom_smooth(method = "lm", 
+            formula = y ~ poly(x, 2), 
+            se = FALSE) +
+geom_segment(x = mean(Temp_avg_2021$time) - 130, 
+             xend = mean(Temp_avg_2021$time) + 130, 
+             y = coef(quad_reg)[1] - coef(quad_reg)[2]*130,
+             yend = coef(quad_reg)[1] + coef(quad_reg)[2]*130,
+             linetype = 1,
+             linewidth = .7,
+             col = "red")
+
+```
+
+:::
+::::
+
+## $b_2$ in Quadratic Regression
+
+:::: {.columns}
+::: {.column width="30%"}
+
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-fold: true
+#| code-summary: "Plot code"
+#| code-line-numbers: false
+
+x_val <- 100
+
+# accurate calculations, there is rounding error in the equation on the slides
+slope_new <- coef(quad_reg)[2] + 2*coef(quad_reg)[3]*x_val
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point(alpha = .5, shape = 1)  +
+geom_smooth(method = "lm", 
+            formula = y ~ poly(x, 2), 
+            se = FALSE) +
+geom_segment(x = (mean(Temp_avg_2021$time) + x_val) - 130, 
+             xend = (mean(Temp_avg_2021$time) + x_val) + 130, 
+             y =  (coef(quad_reg)[1] + coef(quad_reg)[2]*x_val + coef(quad_reg)[3]*x_val^2) - (slope_new*130),
+             yend = (coef(quad_reg)[1] + coef(quad_reg)[2]*x_val + coef(quad_reg)[3]*x_val^2) + (slope_new*130),
+             linetype = 1,
+             linewidth = .7,
+             col = "red") 
+
+```
+
+
+$$b_2 = - 0.001$$
+
+<div style="font-size: 24px"> $b_2$ lets us calculate the slope of the tangent line at *any* point of the curve. The value of $b_2$, describes the change of the slope of the tangent line per 1-unit change in `time`. More formally, 
+
+
+$$b_{\mathrm{tang}} = b_1 + 2b_2 X$$ </div>
+
+
+<div style="font-size: 22px"> For example, if `time` = 100, then the slope of the tangent line is given by $b_{\mathrm{tang}} = .06 + 2\times -.001 \times100 = -.14$. Indeed, the tangent line goes downwards, as its slope suggests. </div>
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+
+
+
+x_val <- 100
+
+# accurate calculations, there is rounding error in the equation on the slides
+slope_new <- coef(quad_reg)[2] + 2*coef(quad_reg)[3]*x_val
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point(alpha = .5, shape = 1)  +
+geom_smooth(method = "lm", 
+            formula = y ~ poly(x, 2), 
+            se = FALSE) +
+geom_segment(x = (mean(Temp_avg_2021$time) + x_val) - 130, 
+             xend = (mean(Temp_avg_2021$time) + x_val) + 130, 
+             y =  (coef(quad_reg)[1] + coef(quad_reg)[2]*x_val + coef(quad_reg)[3]*x_val^2) - (slope_new*130),
+             yend = (coef(quad_reg)[1] + coef(quad_reg)[2]*x_val + coef(quad_reg)[3]*x_val^2) + (slope_new*130),
+             linetype = 1,
+             linewidth = .7,
+             col = "red") 
+```
+
+:::
+::::
+
+## Why $b_2$ is What You care about
+
+So why do we care about slopes of tangent lines? Well, generally, we don't. The thing that we care about is that the slope of tangent lines *changes* at all. This is what a non-zero $b_2$ value tells us.  
+
+What would it mean for the slope of the tangent line to be *constant across every $X$ value*? What happens if $b_2 = 0$?
+
+
+We can check our quadratic regression equation, so $\hat{Y} = b_0 + b_1X +  0X^2$ &rarr; $\hat{Y} = b_0 + b_1X$
+
+Oh, we are back to the linear regression formula 🙃 If the slope of the tangent line is always constant, we have a *line*.
+
+So, $b_2$ informs us about 3 things:
+
+
+:::: {.columns}
+
+::: {.column width="33%"}
+
+**1.** Whether the line bends at all (i.e., is $b_2 \neq 0$) 
+
+:::
+
+::: {.column width="33%"}
+
+**2.** How much the line bends, which it depends on the *magnitude* of $b_2$ (more extreme $b_2$ values imply steeper curves)
+
+:::
+
+
+::: {.column width="33%"}
+
+**3.** The direction of the bend. If the sign of $b_2$ is positive, the curve will be a bell, if the sign is negative, it will be a U, as in our case.
+
+:::
+::::
+
+## Climbing to the top (or bottom)
+
+:::: {.columns}
+::: {.column width="40%"}
+
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-fold: true
+#| code-summary: "Plot code"
+#| code-line-numbers: false
+
+# accurate calculations, there is rounding error in the equation on the slides
+top <- -1*(coef(quad_reg)[2]/(2*coef(quad_reg)[3]))
+
+Y_val <- (coef(quad_reg)[1] + coef(quad_reg)[2]*top + coef(quad_reg)[3]*top^2)
+
+# this is the formula for the tangent slope. if you print this, you will see that it equals exactly 0. This means that the X value provided is the top of the curve, which is the only point where the tangent slope is exactly 0
+
+slope_new <- coef(quad_reg)[2] + 2*coef(quad_reg)[3]*top
+
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point(alpha = .5, shape = 1)  +
+  geom_point(aes(y = Y_val, 
+                x = mean(Temp_avg_2021$time) + top),
+              size = 3.5,
+              col = "red") +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 2), 
+           se = FALSE) +
+geom_segment(x = 0, 
+               xend = mean(Temp_avg_2021$time) + top, 
+               y = Y_val,
+               yend = Y_val,
+               linetype = 2) +
+geom_segment(x = mean(Temp_avg_2021$time) + top, 
+             xend = mean(Temp_avg_2021$time) + top, 
+             y = 0,
+             yend = Y_val,
+             linetype = 2) +
+geom_segment(x = mean(Temp_avg_2021$time) -130, 
+             xend = mean(Temp_avg_2021$time) + 130, 
+             y =  Y_val,
+             yend = Y_val,
+             linetype = 1,
+             linewidth = .7,
+             col = "red") 
+```
+
+
+<div style="font-size: 24px"> Last but not least, we can find the top (or bottom if $b_2 > 0$) of our curve (which is also the turning point). The formula is $\mathrm{top} = -\frac{b_1}{2b_2}$. 
+
+For us that would mean that the predicted highest average temperature is around:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# accurate calculations, there is rounding error in slide regression coefficients
+-1*(coef(quad_reg)[2]/(2*coef(quad_reg)[3]))
+```
+
+July 22<sup>nd</sup>
+
+</div>
+
+:::
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+
+
+# accurate calculations, there is rounding error in the equation on the slides
+top <- -1*(coef(quad_reg)[2]/(2*coef(quad_reg)[3]))
+
+Y_val <- (coef(quad_reg)[1] + coef(quad_reg)[2]*top + coef(quad_reg)[3]*top^2)
+
+# this is the formula for the tangent slope. if you print this, you will see that it equals exactly 0. This means that the X value provided is the top of the curve, which is the only point where the tangent slope is exactly 0
+
+slope_new <- coef(quad_reg)[2] + 2*coef(quad_reg)[3]*top
+
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point(alpha = .5, shape = 1)  +
+  geom_point(aes(y = Y_val, 
+                x = mean(Temp_avg_2021$time) + top),
+              size = 3.5,
+              col = "red") +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 2), 
+           se = FALSE) +
+geom_segment(x = 0, 
+               xend = mean(Temp_avg_2021$time) + top, 
+               y = Y_val,
+               yend = Y_val,
+               linetype = 2) +
+geom_segment(x = mean(Temp_avg_2021$time) + top, 
+             xend = mean(Temp_avg_2021$time) + top, 
+             y = 0,
+             yend = Y_val,
+             linetype = 2) +
+geom_segment(x = mean(Temp_avg_2021$time) -130, 
+             xend = mean(Temp_avg_2021$time) + 130, 
+             y =  Y_val,
+             yend = Y_val,
+             linetype = 1,
+             linewidth = .7,
+             col = "red") 
+```
+
+:::
+::::
+
+<div style="font-size: 22px"> Why does $-\frac{b_1}{2b_2}$ always finds the top/bottom? Turns out that $-\frac{b_1}{2b_2}$ finds the $X$ point where the slopes of the tangent line is *exactly 0*. That means that the tangent line is *perfectly flat*, which happens only at the top/bottom of a quadratic function. </div>
+
+This concept of ["finding the top (or bottom)"](https://en.wikipedia.org/wiki/Mathematical_optimization){target="_blank"} happens to be the foundation of almost all estimation algorithms in statistics. 
+
+## Bootsrap CI for Maximum/Minumum point
+
+We can create a 95% CI for the `time` value at which we expect the maximum temperature with bootstrapping.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<div style="font-size: 24px"> First we create the bootstrapped regression: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+boot_quad <- car::Boot(quad_reg, R = 1000)
+```
+<div style="font-size: 24px; padding-top: 12px;"> Then we need to calculate $-\frac{b_1}{2b_2}$ for all our 1000 bootstrap samples (very easy actually!). The bootstrap samples are saved in the `t` element of `boot_quad`:  </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# View(boot_quad$t)
+# we can compute -b1/(2*b2) for all sample at once with this
+
+top_boot <- -boot_quad$t[,2]/(2*boot_quad$t[,3])
+```
+
+
+:::
+::: {.column width="50%"}
+
+<div style="font-size: 24px; padding-top: 12px;"> The 95% CI for the `time` value at which we expect the highest temperatures is: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+quantile(top_boot, c(.025, .975))
+```
+<div style="font-size: 24px;"> And the full distribution </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| out-width: "80%"
+
+plot(density(top_boot))
+```
+:::
+::::
+
+
+## How Many Polynomials do I need?
+
+It is my opinion that will almost never need more than a quadratic term if you are doing research in Psychology. In our case, we are dealing with a physical phenomenon (temperature), so higher polynomials may not be as far fetched. 
+
+<div style="font-size: 24px">  How do we find out how many polynomials we need? Since we are just adding additional variables to the regression model, we can use in  $\Delta R^2$ just as we did in [Lab 6](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%206.html#/testing-gain-in-prediction-delta-r2){target="_blank"}. </div>
+
+:::: {.columns}
+::: {.column width="60%"}
+
+
+</br>
+
+<div style="font-size: 24px"> We can easily add polynomials to regressions thanks to the `poly()` function: </div>
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_lin <- lm(Temp_F ~ time, data = Temp_avg_2021)  
+reg_quad <- lm(Temp_F ~ poly(time, 2), data = Temp_avg_2021)  
+reg_cube <- lm(Temp_F ~ poly(time, 3), data = Temp_avg_2021)  
+reg_fourth <- lm(Temp_F ~ poly(time, 4), data = Temp_avg_2021) 
+reg_fifth <- lm(Temp_F ~ poly(time, 5), data = Temp_avg_2021) 
+```
+
+
+:::
+::: {.column width="40%"}
+
+</br>
+
+::: {.callout-warning}
+
+## The `poly()` Function 
+
+Be careful! It may seem that the `poly()` function saves us a lot of time, but it does some interesting stuff behind the scenes to calculate polynomials. Do not interpret the regression coefficients of regressions that use `poly()` without first reading the appendix of this Lab *very carefully*! 
+::: 
+
+
+:::
+::::
+
+## Comparing Polynomial Regressions
+
+:::: {.columns}
+::: {.column width="50%"}
+
+The $\Delta R^2$ suggests that there is a significant $R^2$ improvement up to a polynomial of the 4<sup>th</sup> degree. Here are the $R^2$ values of the 5 regression models:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+
+
+c(summary(reg_lin)$r.squared,
+  summary(reg_quad)$r.squared,
+  summary(reg_cube)$r.squared,
+  summary(reg_fourth)$r.squared,
+  summary(reg_fifth)$r.squared)
+
+```
+The 5<sup>th</sup> degree polynomial offers essentially no improvement. 
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+anova(reg_lin, reg_quad, reg_cube, reg_fourth, reg_fifth)
+```
+
+:::
+::::
+
+</br>
+
+<center>
+
+Let's quickly look at what the polynomial regression lines look like.
+
+</center>
+
+
+## Plotting polynomials
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r out.width="80%"}
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point() +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 2), 
+           se = FALSE) +
+  ggtitle("Second Degree Polynomial") +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+  
+```
+
+
+:::
+::: {.column width="50%"}
+
+```{r out.width="80%"}
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point() +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 3), 
+           se = FALSE) +
+  ggtitle("Third Degree Polynomial") +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+```
+
+:::
+::::
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r out.width="80%"}
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point() +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 4), 
+           se = FALSE) +
+  ggtitle("Fourth Degree Polynomial") +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+```
+
+:::
+::: {.column width="50%"}
+
+```{r out.width="80%"}
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point() +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 5), 
+           se = FALSE) +
+  ggtitle("Fifth Degree Polynomial") +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
 ```
 
 :::
@@ -87,5 +1116,31 @@ str(NY_temp,
 ## References 
 
 <div id="refs"> </div>
+
+
+# Appendix: The `poly()` function
+
+
+## The `poly()` function 
+
+The `poly()` is interesting. Namely, it generates polynomials up to specified degree of the given variable. 
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+For example if we give a variable `1,2,3`, `poly()` will return:
+
+```{r}
+# for a polynomial of 3rd degree (cubic)
+data.frame(poly(c(1,2,3), 3, raw = TRUE))
+```
+
+
+:::
+::: {.column width="50%"}
+
+:::
+::::
 
 
