@@ -41,6 +41,8 @@ editor: source
 #| classes: code-150
 
 install.packages("flextable")
+install.packages("devtools")
+devtools::install_github("quinix45/FabioFun")
 
 # Tidyverse should be already installed
 # install.packages("tidyverse")
@@ -55,6 +57,8 @@ install.packages("flextable")
 #| classes: code-150
 
 library(flextable)
+library(devtools)
+library(FabioFun)
 library(tidyverse)
 theme_set(theme_classic(base_size = 16, 
                         base_family = 'serif'))
@@ -68,6 +72,15 @@ theme_set(theme_classic(base_size = 16,
 ### `flextable`
 
 The `flextable` package [@Gohel_etal_2024] helps create pretty tables from R. Can also be used to create publication ready APA style tables.
+
+
+### `devtools`
+
+The `devtools` package [@Wickham_etal_2022] helps developing R packages. It is more commonly used to download R packages from [github](https://github.com){target="_blank"}. 
+
+### `FabioFun`
+
+This is a package where I save functions that I either use a bunch or that I think may be useful in the future. Make sure you run `devtools::install_github("quinix45/FabioFun")` to install it. 
 :::
 
 </div>
@@ -533,7 +546,7 @@ For now, notice that this ANOVA output provides the same *F*-statistic and *p*-v
 
 ## Creating APA Style regression tables
 
-To not have to manually recreate result tables over and over, I created a function that generates APA style regression tables ✨. The  function code is [here](https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/blob/main/Slides%20Files/R_scripts/Regression_flextable.R){target="_blank"} if you are curious. 
+To not have to manually recreate result tables over and over, I created a function that generates APA style regression tables ✨. The  function code is [here](https://github.com/quinix45/FabioFun/blob/main/R/regression_flextable.R){target="_blank"} if you are curious. 
 
 
 :::: {.columns}
@@ -545,15 +558,11 @@ To not have to manually recreate result tables over and over, I created a functi
 #| code-line-numbers: false
 #| classes: code-125
 
-
-# load the function (`source()` runs R code from other files)
-source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/Regression_flextable.R")
-
 # any regression model
 reg_model <- lm(charges ~ bmi + sex, insurance)
 
 # create the table
-table <- regression_flextable(reg_model)
+table <-  FabioFun::regression_flextable(reg_model)
 
 # save the table to as a word doc. You should see the files in the `path` argument appear in your working directory
 save_as_docx(table, path = "reg_table.docx")
@@ -611,7 +620,7 @@ If you open the `reg_table.docx` document that was just saved to your working di
 #| classes: code-125
 #| code-line-numbers: false
 
-table <- regression_flextable(reg_model,
+table <- FabioFun::regression_flextable(reg_model,
          var_names = c("Intercept", 
                        "BMI", 
                        "Sex"))
@@ -626,14 +635,12 @@ save_as_docx(table,
 ::: {.column width="65%"}
 
 ```{r}
-# load the function (`source()` runs R code from other files)
-source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/Regression_flextable.R")
 
 # any regression model
 reg_model <- lm(charges ~ bmi + sex, insurance)
 
 # print
-regression_flextable(reg_model)
+FabioFun::regression_flextable(reg_model)
 ```
 
 <ul style="font-size: 24px">
@@ -641,7 +648,7 @@ regression_flextable(reg_model)
 </ul>
 
 ```{r}
-regression_flextable(reg_model, 
+FabioFun::regression_flextable(reg_model, 
                      var_names = c("Intercept", "BMI", "Sex"))
 ```
 

@@ -130,10 +130,9 @@ Higher values mean higher preference/levels of personality trait
 ::: {.callout-note}
 ## Dimensions of Music Preference 🎶
 
-@Rentfrow_Gosling_2003 was a seminal study in the field of music preference, where it was found that preference for music genres clusters together (e.g., if you like *punk* music, you tend to like *metal* music). Later @Rentfrow_etal_2011 proposed a 5-factor structure of music preference: *sophisticated* (e.g., classical, blues, jazz), *unpretentious* (e.g., country and folk), intense (e.g, rock, punk, metal), mellow (e.g., pop, electronic), and *contemporary* (e.g., rap, RnB). This 5-factor structure seems to work fairly well, although I would suspect that 1 or 2 more factors would emerge with a more comprehensive selection of music genres. 
+@Rentfrow_Gosling_2003 was a seminal study in the field of music preference, where it was found that preference for music genres cluster together (e.g., if you like *punk* music, you tend to like *metal* music). Later @Rentfrow_etal_2011 proposed a 5-factor structure of music preference: *sophisticated* (e.g., classical, blues, jazz), *unpretentious* (e.g., country and folk), intense (e.g, rock, punk, metal), mellow (e.g., pop, electronic), and *contemporary* (e.g., rap, RnB). This 5-factor structure seems to work fairly well, although I would suspect that 1 or 2 more factors would emerge with a more comprehensive selection of music genres. 
 
 :::
-
 
 :::
 ::::
@@ -205,7 +204,7 @@ When strange things happen, visualizing your data (if possible) is always a good
 #| code-line-numbers: false
 #| classes: code-115
 
-source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
+library(FabioFun)
 
 nice_3D_plot(y = music$Intense,
              x1 = music$Advnt,
@@ -231,7 +230,7 @@ nice_3D_plot(y = music$Intense,
 #| code-line-numbers: false
 #| classes: code-125
 
-source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
+library(FabioFun)
 
 nice_3D_plot(y = music$Intense,
              x1 = music$Advnt,

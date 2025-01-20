@@ -412,8 +412,9 @@ I made a function for making interactive 3D plots easily
 #| classes: code-125
 
 
-# load the function
-source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
+# run "devtools::install_github("quinix45/FabioFun")" if you haven't installed the package yet
+
+library(FabioFun)
 
 nice_3D_plot(y = reg_vars$Happiness_score,
              x1 = reg_vars$Log_GDP,
@@ -439,8 +440,8 @@ The 2D plots from the previous slide are just the *sides of the box* 🤓
 
 
 ```{r out.width = "100%"}
-source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/R_scripts/3D_plot.R")
 
+library(FabioFun)
 
 nice_3D_plot(y = reg_vars$Happiness_score,
                             x1 = reg_vars$Log_GDP,

@@ -158,8 +158,6 @@ class(NY_waeth$time)
 
 NY_waeth$time[1]
 as.numeric(NY_waeth$time[1])/365
-
-
 ```
 
 <div style="font-size: 24px; padding-top: 12px;"> So "2016-01-01" is 46 years after January 1<sup>st</sup>, 1970. </div>
