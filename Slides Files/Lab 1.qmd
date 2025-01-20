@@ -594,7 +594,7 @@ ggplot(NY_temp,
        geom_smooth(method = "lm") +
        geom_smooth(method = "lm", formula = y ~ poly(x, 2), 
                    color = "red") + 
-       labs(title = "Temperature in New York City Measured ove a Year",
+       labs(title = "Temperature in New York City Measured over a Year",
             y= "Temperature", 
             x = "Measurement") +
        theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
@@ -619,7 +619,7 @@ ggplot(NY_temp,
        theme_classic() +
        geom_smooth(method = "lm") +
        geom_smooth(method = "lm", formula = y ~ poly(x, 2), color = "red") + 
-       labs(title = "Temperature in New York City Measured ove a Year",
+       labs(title = "Temperature in New York City Measured Over a Year",
             y= "Temperature", 
             x = "Measurement") +
        theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
@@ -821,7 +821,7 @@ ggplot(NY_temp,
 ::: {.callout-note}
 # Reading a Box-plot
 
-The square represents the interquartile range, meaning that the bottom edge is the $25^{th}$ percentile of the variable and the top edge is the $75^{th}$ percentile of the variable. The line is the median of the variable, which is not quite in the middle of the box (the median). This suggests some degree of skew. 
+The square represents the interquartile range, meaning that the bottom edge is the $25^{th}$ percentile of the variable and the top edge is the $75^{th}$ percentile of the variable. The bolded line is the median of the variable, which is not quite in the middle of the box (the median). This suggests some degree of skew. 
 :::
 
 :::
@@ -919,6 +919,7 @@ You can also use the `adjust =` argument to determine how fine-grained you want 
 #| eval: false
 #| echo: true 
 #| code-line-numbers: false
+#| code-overflow: scroll
 #| classes: code-125
 
 
@@ -1020,7 +1021,7 @@ qnorm(c(.1, .5, .8), mean = 0, sd = 1)
 
 ::: {.fragment fragment-index=2}
 
-<li> **y-axis:** Values corresponding to the corresponding observed quantiles of our variable </li>
+<li> **y-axis:** Values of the corresponding observed quantiles of our variable </li>
  
 ```{r}
 #| eval: true

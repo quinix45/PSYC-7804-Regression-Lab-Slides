@@ -114,7 +114,7 @@ ggplot(NY_temp,
        geom_smooth(method = "lm") +
        geom_smooth(method = "lm", formula = y ~ poly(x, 2), 
                    color = "red") + 
-       labs(title = "Temperature in New York City Measured ove a Year",
+       labs(title = "Temperature in New York City Measured Over a Year",
             y= "Temperature", 
             x = "Measurement") +
        theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),

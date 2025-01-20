@@ -1581,7 +1581,7 @@ ggplot(mapping =  aes(x = act, y = ideal_data)) +
 
 
 
-Each "column of dots" is normally distributed around the line, with standard deviation of $.61$, the residual variance ($\epsilon$). The dots are our essentially residuals, $e$. 
+Each "column of dots" is normally distributed around the line, with standard deviation of $.61$, the residual variance ($\epsilon$). The dots are essentially our residuals, $e$. 
 
 
 ::: {.fragment fragment-index=1}
@@ -1609,7 +1609,6 @@ The $Y$ variable looking like this is the only "assumption" of regression.
 :::
 
 ## Statistical Models VS Reality
-
 
 :::: {.columns}
 ::: {.column width="50%"}

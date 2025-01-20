@@ -852,7 +852,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 <span id="cb18-5" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span></span>
 <span id="cb18-6" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>), </span>
 <span id="cb18-7" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb18-8" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Temperature in New York City Measured ove a Year"</span>,</span>
+<span id="cb18-8" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Temperature in New York City Measured over a Year"</span>,</span>
 <span id="cb18-9" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">y=</span> <span class="st">"Temperature"</span>, </span>
 <span id="cb18-10" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">x =</span> <span class="st">"Measurement"</span>) <span class="sc">+</span></span>
 <span id="cb18-11" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
@@ -1019,7 +1019,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 <p><strong>Reading a Box-plot</strong></p>
 </div>
 <div class="callout-content">
-<p>The square represents the interquartile range, meaning that the bottom edge is the <span class="math inline">\(25^{th}\)</span> percentile of the variable and the top edge is the <span class="math inline">\(75^{th}\)</span> percentile of the variable. The line is the median of the variable, which is not quite in the middle of the box (the median). This suggests some degree of skew.</p>
+<p>The square represents the interquartile range, meaning that the bottom edge is the <span class="math inline">\(25^{th}\)</span> percentile of the variable and the top edge is the <span class="math inline">\(75^{th}\)</span> percentile of the variable. The bolded line is the median of the variable, which is not quite in the middle of the box (the median). This suggests some degree of skew.</p>
 </div>
 </div>
 </div>
@@ -1100,7 +1100,7 @@ Look things up. Usually I start with some plot code that I find online that prod
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb26-1" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NY_temp,</span>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-overflow-scroll code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb26-1" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NY_temp,</span>
 <span id="cb26-2" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Temp)) <span class="sc">+</span></span>
 <span id="cb26-3" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_density</span>(<span class="at">kernel =</span> <span class="st">"epanechnikov"</span>,</span>
 <span id="cb26-4" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">adjust =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
@@ -1181,7 +1181,7 @@ What do the <strong>x-axis</strong> and the <strong>y-axis</strong> represent in
 </div>
 <div class="fragment" data-fragment-index="2">
 <li>
-<strong>y-axis:</strong> Values corresponding to the corresponding observed quantiles of our variable
+<strong>y-axis:</strong> Values of the corresponding observed quantiles of our variable
 </li>
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># The quantile function calculates the observed percentiles fo a given variable.</span></span>
