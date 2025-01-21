@@ -22,9 +22,6 @@ dat <- attitude
 ```
 
 
-**1.** Run `help("attitude")` to get some info on the data and the meaning of each variable. You can also run `View(attitude)` to open the data in the data viewer window.
-
-
 **2.** plot `rating` on the $y$-axis and `complaints` on the $x$-axis. If you were to run a regression, do you think the slope ($b_1$) will be positive or negative? Why? 
 
 ```{r include=FALSE}
@@ -41,7 +38,7 @@ ggplot(attitude,
 **3.** Run a linear regression with `complaints` predicting `rating`. 
 
 ```{r include=FALSE}
-reg <- lm(rating ~ complaints, attitude_std)
+reg <- lm(rating ~ complaints, attitude)
 
 summary(reg)
 ```
@@ -84,7 +81,7 @@ coef(reg_std)[2]*-1
 
 - can you convert this value of `rating` back into unstandardized units? (HINT: you will need to use the mean and standard deviation of the original `rating` variable)
 
-```{r}
+```{r include=FALSE}
 
 mean_rtg <- mean(attitude$rating) 
 sd_rtg <- sd(attitude$rating)
@@ -101,9 +98,9 @@ mean_rtg + (sd_rtg * (coef(reg_std)[2]*-1))
 
 ```
 
-- How do you get the same value using the unstandardized regression equation? (HINT: you need to use the mean value and standard deviation of the `complaints` variable)
+- How do you get the same value using the unstandardized regression equation? (HINT: you need to use the mean and standard deviation of the `complaints` variable)
 
-```{r}
+```{r include=FALSE}
 mean_cmpl <- mean(attitude$complaints) 
 sd_cmpl <- sd(attitude$complaints)
 

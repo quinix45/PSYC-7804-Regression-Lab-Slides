@@ -1,0 +1,84 @@
+---
+title: "Lab 3 Activity"
+output: pdf_document
+header-includes:
+    - \usepackage{setspace}
+---
+
+
+
+```{r include=FALSE}
+library(tidyverse)
+```
+
+For this activity we will be looking at some data about [the 1907 Romanian peasant revolt](https://en.wikipedia.org/wiki/1907_Romanian_peasants%27_revolt#:~:text=A%20peasant%20revolt%20(Romanian%3A%20Răscoala,including%20as%20far%20as%20Oltenia.){target="_blank"}! The data is called `Chirot` and is stored in the `carData` package. Run `help("Chirot")` to find out more about the data.
+
+
+**1.** Load the `carData` and create a separate `data.frame` object called `rev_int` that only contains the the `intensity` and `inequality` variables from the `chirot` data.
+
+```{r include=FALSE}
+library(carData)
+
+# MANY ways of doing this
+
+rev_int <- Chirot[,c("intensity","inequality")]
+
+# or also any of tyhe lines below works
+
+# rev_int <- Chirot[,c(1,5)]
+# rev_int <- dplyr::select(.data = Chirot, intensity, inequality)
+# rev_int <- data.frame(Chirot$intensity, Chirot$inequality)
+# rev_int <- cbind(Chirot$intensity, Chirot$inequality)
+
+```
+
+**2.** Find the correaltion between `inequality` and `intesity`. Is it significantly different from 0? What is the 95% confidence interval?
+
+```{r include=FALSE}
+
+cor <- psych::corr.test(rev_int)
+
+# correlation
+cor$r[2]
+
+# significance and 95%CI
+cor$ci
+
+
+# not significant
+```
+
+
+
+**3.**
+
+
+
+**4.**
+
+
+
+
+**5.**
+
+
+
+**6.**
+
+
+\newpage
+
+
+## Some R Practice
+
+
+
+
+
+
+
+
+
+
+
+
