@@ -821,7 +821,7 @@ ggplot(NY_temp,
 ::: {.callout-note}
 # Reading a Box-plot
 
-The square represents the interquartile range, meaning that the bottom edge is the $25^{th}$ percentile of the variable and the top edge is the $75^{th}$ percentile of the variable. The bolded line is the median of the variable, which is not quite in the middle of the box (the median). This suggests some degree of skew. 
+The square represents the interquartile range, meaning that the bottom edge is the $25^{th}$ percentile of the variable and the top edge is the $75^{th}$ percentile of the variable. The bolded line is the median of the variable, which is not quite in the middle of the box. This suggests some degree of skew. 
 :::
 
 :::
