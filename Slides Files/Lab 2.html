@@ -621,7 +621,7 @@ We can add a loess line, which usually helps with checking for <strong>non-linea
 </section>
 <section id="correlation" class="slide level2">
 <h2>Correlation</h2>
-<p>Correlation, usually denoted with <span class="math inline">\(r\)</span>, measures the strength of linear association between two variables that ranges between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span>.</p>
+<p>Correlation, usually denoted with <span class="math inline">\(r\)</span>, measures the strength of linear association between two variables (always ranges between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span>).</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <center>
@@ -693,9 +693,9 @@ all the denominator does is guarantee that <span class="math inline">\(r\)</span
 <div class="fragment" data-fragment-index="1">
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that the line below is equivalent to corr.test(GPA$year1gpa, GPA$act)</span></span>
-<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">corr.test</span>(GPA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">corr.test</span>(GPA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Call:corr.test(x = GPA)
+<pre><code>Call:psych::corr.test(x = GPA)
 Correlation matrix 
          year1gpa  act
 year1gpa     1.00 0.36
@@ -719,7 +719,7 @@ act          0.12 0.00
 <div style="font-size: 26px">
 <p>To get more insight into what <code>R</code> functions actually do, sometimes you want to save results as objects and explore the object content.</p>
 </div>
-<div class="cell">
+<div class="cell code-125">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a>correlation <span class="ot">&lt;-</span> <span class="fu">corr.test</span>(GPA)</span>
 <span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># this prints the name of all the elements of the `correlation` object</span></span>
@@ -730,7 +730,6 @@ act          0.12 0.00
 </div>
 </div>
 </div>
-<p><br></p>
 <div class="fragment" data-fragment-index="4">
 <div style="font-size: 26px">
 <p>Turns out the <code>corr_test()</code> function stores much more information than it lets on. This is the case for most <code>R</code> functions, which will save a lot of information inside a <code>list</code> object.</p>
@@ -912,60 +911,137 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 </div>
 </div></div>
 </section>
-<section id="standardized-regression-output" class="slide level2">
-<h2>Standardized Regression Output</h2>
-<div style="font-size: 26px">
-To run standardized regression in R we first standardize our data. The <code>scale()</code> function standardizes (or mean-centers) data. The <code>scale()</code> function can be a bit particular (<a href="https://www.r-bloggers.com/2021/12/how-to-use-the-scale-function-in-r/" target="_blank">see here</a> if you have troubles with it)
-</div>
+<section id="making-predictions" class="slide level2">
+<h2>Making Predictions</h2>
+<p>For many reasons, once we have a regression model, we may want to predict values of <span class="math inline">\(Y\)</span> based on some values of <span class="math inline">\(X\)</span>.</p>
 <div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell code-125">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a>GPA_std <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">scale</span>(GPA))</span>
-<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-3"><a href="" aria-hidden="true" tabindex="-1"></a>reg_std <span class="ot">&lt;-</span> <span class="fu">lm</span>(year1gpa <span class="sc">~</span> act, <span class="at">data =</span> GPA_std)</span>
-<span id="cb31-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_std)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = year1gpa ~ act, data = GPA_std)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--2.34329 -0.51515  0.04249  0.49945  1.55896 
-
-Coefficients:
-             Estimate Std. Error t value Pr(&gt;|t|)
-(Intercept) 1.172e-16  2.143e-01    0.00    1.000
-act         3.606e-01  2.198e-01    1.64    0.118
-
-Residual standard error: 0.9583 on 18 degrees of freedom
-Multiple R-squared:  0.1301,    Adjusted R-squared:  0.08172 
-F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
+<div class="column" style="width:30%;">
 <div class="fragment" data-fragment-index="1">
-<p>The meaning of the results does not change, just the coefficients. So…</p>
-<p><span class="math display">\[Y = 0 + .36X,\]</span></p>
-<p><span class="math inline">\(.36\)</span> is also the correlation coefficient between <code>act</code> and <code>year1gpa</code>. Just remember that X and Y are in standard deviation units.</p>
+<div style="font-size: 24px">
+From the previous slide, we found that <span class="math inline">\(\hat{Y} = .46 + .09\times X\)</span> (we don’t look at <span class="math inline">\(e\)</span> when making predictions!) So, to find values of <span class="math inline">\(\hat{Y}\)</span> we plug in some values of <span class="math inline">\(X\)</span>.
+</div>
+</div>
+<ul style="font-size: 22px; padding-top: 26px;">
+<div class="fragment" data-fragment-index="2">
+<li>
+If <span class="math inline">\(X = 23\)</span>, then <span class="math inline">\(\hat{Y} = .46 + .09\times23 = 2.53\)</span>
+</li>
+<li>
+If <span class="math inline">\(X = 27\)</span>, then <span class="math inline">\(\hat{Y} = .46 + .09\times27 = 2.89\)</span>
+</li>
+</div>
+</ul>
+<div class="fragment" data-fragment-index="3">
+<center>
+<strong>Predictions are <em>always</em> on the regression line</strong>
+</center>
+</div>
+</div><div class="column" style="width:70%;">
+<div class="fragment" data-fragment-index="2">
+<div class="cell code-125">
+<details class="code-fold">
+<summary>Plot Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GPA,</span>
+<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> year1gpa)) <span class="sc">+</span></span>
+<span id="cb31-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">5</span>, <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb31-5"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb31-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x =</span> <span class="dv">23</span>,</span>
+<span id="cb31-7"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">xend =</span> <span class="dv">23</span>,</span>
+<span id="cb31-8"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> <span class="dv">0</span>,</span>
+<span id="cb31-9"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">yend =</span> <span class="fu">coef</span>(reg)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg)[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">23</span>,</span>
+<span id="cb31-10"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb31-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_segment</span>(<span class="at">x =</span> <span class="dv">0</span>,</span>
+<span id="cb31-12"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xend =</span> <span class="dv">23</span>,</span>
+<span id="cb31-13"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="fu">coef</span>(reg)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg)[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">23</span>,</span>
+<span id="cb31-14"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">yend =</span> <span class="fu">coef</span>(reg)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg)[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">23</span>,</span>
+<span id="cb31-15"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">linetype =</span> <span class="dv">2</span>)  <span class="sc">+</span></span>
+<span id="cb31-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x =</span> <span class="dv">27</span>,</span>
+<span id="cb31-17"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">xend =</span> <span class="dv">27</span>,</span>
+<span id="cb31-18"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> <span class="dv">0</span>,</span>
+<span id="cb31-19"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">yend =</span> <span class="fu">coef</span>(reg)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg)[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">27</span>,</span>
+<span id="cb31-20"><a href="" aria-hidden="true" tabindex="-1"></a>               <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb31-21"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_segment</span>(<span class="at">x =</span> <span class="dv">0</span>,</span>
+<span id="cb31-22"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xend =</span> <span class="dv">27</span>,</span>
+<span id="cb31-23"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="fu">coef</span>(reg)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg)[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">27</span>,</span>
+<span id="cb31-24"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">yend =</span> <span class="fu">coef</span>(reg)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg)[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">27</span>,</span>
+<span id="cb31-25"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">linetype =</span> <span class="dv">2</span>)   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-22-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="making-predictions-the-right-way" class="slide level2">
+<h2>Making Predictions The “right way”</h2>
+<p>Whenever you are doing calculations in R, you <em>should never</em> copy and paste output numbers because there may be rounding error (and your code will not be generalizable!).</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 26px">
+For any <code>lm()</code> object, the <code>coef()</code> function will extract the exact coefficient values (intercepts and slopes in order of predictor):
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)         act 
+ 0.46452446  0.08886497 </code></pre>
+</div>
+</div>
 </div>
 <div class="fragment" data-fragment-index="2">
-<div style="font-size: 22px">
-<p>🧐 Standardizing our variables simply changes measurement units. You can think of it as switching between degrees Fahrenheit and Celsius. the state of the world (temperature) remains the same, only the numbers that we use to describe it change 🧘</p>
+<div style="font-size: 26px; padding-top: 18px;">
+So, the appropriate way of calculating the predicted value of <span class="math inline">\(Y\)</span> if <span class="math inline">\(X = 23\)</span> is:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="fu">coef</span>(reg)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coef</span>(reg)[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">23</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.508419</code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:60%;">
+<div class="fragment" data-fragment-index="3">
+<div style="font-size: 26px">
+Usually, you need predictions for some new data, so you would use the <code>predict()</code> function. The predict function requires that you input data that has <em>the exact same structure as the original data</em>, but without the <span class="math inline">\(Y\)</span> variable.
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># first we create new data that we want to get predictions on</span></span>
+<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a>pred_dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"act"</span> <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">20</span>, <span class="dv">30</span>, <span class="at">by =</span> .<span class="dv">01</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="4">
+<div style="font-size: 26px; padding-top: 18px;">
+Here I save the predictions as a new variable. Look at the <code>pred_dat</code> object after running the code below:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a>pred_dat<span class="sc">$</span>y_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(reg, pred_dat)</span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(pred_dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   1001 obs. of  2 variables:
+ $ act   : num  20 20 20 20 20 ...
+ $ y_pred: num  2.24 2.24 2.24 2.24 2.25 ...</code></pre>
+</div>
 </div>
 </div>
 </div></div>
 </section>
 <section id="predictions-and-residuals" class="slide level2">
 <h2>Predictions and residuals</h2>
-<p>The <code>lm()</code> objects also saves predictions for all data points (<span class="math inline">\(\hat{Y}_i\)</span>) and the residuals for all data points (<span class="math inline">\(e_i\)</span>).</p>
+<p><code>lm()</code> objects also save predictions for all data points (<span class="math inline">\(\hat{Y}_i\)</span>) and the residuals for all data points (<span class="math inline">\(e_i\)</span>).</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Predictions</strong></p>
 <div class="fragment" data-fragment-index="1">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(reg)</span>
-<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(predictions, <span class="at">give.attr =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">fitted</span>(reg)</span>
+<span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(predictions, <span class="at">give.attr =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Named num [1:20] 2.24 2.24 2.33 2.42 2.42 ...</code></pre>
 </div>
@@ -976,8 +1052,8 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <p><strong>Residuals</strong></p>
 <div class="fragment" data-fragment-index="2">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a>residuals <span class="ot">&lt;-</span> <span class="fu">resid</span>(reg)</span>
-<span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(residuals, <span class="at">give.attr =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a>residuals <span class="ot">&lt;-</span> <span class="fu">residuals</span>(reg)</span>
+<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(residuals, <span class="at">give.attr =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Named num [1:20] -0.7118 0.5282 0.8193 -0.0196 0.0404 ...</code></pre>
 </div>
@@ -989,7 +1065,7 @@ These are the differences between the <em>observed</em> values of <span class="m
 <div class="fragment" data-fragment-index="3">
 <p>The residuals always sum to 0:</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4.024558e-16</code></pre>
 </div>
@@ -1017,9 +1093,9 @@ These are the differences between the <em>observed</em> values of <span class="m
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb39-1" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GPA,</span>
-<span id="cb39-2" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> year1gpa)) <span class="sc">+</span></span>
-<span id="cb39-3" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb45-1" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GPA,</span>
+<span id="cb45-2" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> year1gpa)) <span class="sc">+</span></span>
+<span id="cb45-3" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul style="font-size: 26px">
 <li>
@@ -1031,7 +1107,7 @@ The <em>black circles</em> are the observed data points.
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-31-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1043,11 +1119,11 @@ The <em>black circles</em> are the observed data points.
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb40-1" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GPA,</span>
-<span id="cb40-2" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> year1gpa)) <span class="sc">+</span></span>
-<span id="cb40-3" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb40-4" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> predictions), </span>
-<span id="cb40-5" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="at">colour =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb46-1" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GPA,</span>
+<span id="cb46-2" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> year1gpa)) <span class="sc">+</span></span>
+<span id="cb46-3" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb46-4" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> predictions), </span>
+<span id="cb46-5" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="at">colour =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul style="font-size: 26px">
 <li>
@@ -1062,7 +1138,7 @@ The <em>red dots</em> are the predicted values for our data points.
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-29-1.png" width="960"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-33-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1074,17 +1150,17 @@ The <em>red dots</em> are the predicted values for our data points.
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="cell code-115">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb41-1" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GPA,</span>
-<span id="cb41-2" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> year1gpa)) <span class="sc">+</span></span>
-<span id="cb41-3" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb41-4" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> predictions), </span>
-<span id="cb41-5" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb41-6" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_segment</span>(<span class="at">y =</span> predictions,</span>
-<span id="cb41-7" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">x =</span> GPA<span class="sc">$</span>act,</span>
-<span id="cb41-8" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">xend =</span> GPA<span class="sc">$</span>act,</span>
-<span id="cb41-9" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">yend =</span> GPA<span class="sc">$</span>year1gpa,</span>
-<span id="cb41-10" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">linetype =</span> <span class="dv">2</span>,</span>
-<span id="cb41-11" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha =</span> .<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb47-1" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GPA,</span>
+<span id="cb47-2" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> year1gpa)) <span class="sc">+</span></span>
+<span id="cb47-3" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb47-4" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> predictions), </span>
+<span id="cb47-5" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb47-6" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_segment</span>(<span class="at">y =</span> predictions,</span>
+<span id="cb47-7" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">x =</span> GPA<span class="sc">$</span>act,</span>
+<span id="cb47-8" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">xend =</span> GPA<span class="sc">$</span>act,</span>
+<span id="cb47-9" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">yend =</span> GPA<span class="sc">$</span>year1gpa,</span>
+<span id="cb47-10" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">linetype =</span> <span class="dv">2</span>,</span>
+<span id="cb47-11" class="hljs-ln-code"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha =</span> .<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul style="font-size: 24px">
 <li>
@@ -1102,7 +1178,7 @@ The <em>length of the dashed lines</em> are the residuals, which represent the d
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-31-1.png" width="960"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-35-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1117,7 +1193,7 @@ The <em>length of the dashed lines</em> are the residuals, which represent the d
 <div class="fragment" data-fragment-index="1">
 <p>The <code>qqPlot()</code> function from the <code>car</code> package is helpful here:</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(reg, <span class="at">id =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(reg, <span class="at">id =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As long as the residuals (dots) are within the band, there should be no cause for concern.</p>
 </div>
@@ -1127,7 +1203,7 @@ The <em>length of the dashed lines</em> are the residuals, which represent the d
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-33-1.png" width="960"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-37-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1142,12 +1218,12 @@ The <em>length of the dashed lines</em> are the residuals, which represent the d
 <div class="column" style="width:30%;">
 <div class="fragment" data-fragment-index="1">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GPA, </span>
-<span id="cb43-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> residuals)) <span class="sc">+</span></span>
-<span id="cb43-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb43-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb43-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>,</span>
-<span id="cb43-6"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GPA, </span>
+<span id="cb49-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> residuals)) <span class="sc">+</span></span>
+<span id="cb49-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb49-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb49-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>,</span>
+<span id="cb49-6"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Once again, the loess line does not do too well because there are few points. The points look reasonably distributed around the 0 line to me.</p>
 </div>
@@ -1157,10 +1233,54 @@ The <em>length of the dashed lines</em> are the residuals, which represent the d
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-35-1.png" width="960"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-39-1.png" width="960"></p>
 </figure>
 </div>
 </div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="standardized-regression-output" class="slide level2">
+<h2>Standardized Regression Output</h2>
+<div style="font-size: 26px">
+To run standardized regression in R we first standardize our data. The <code>scale()</code> function standardizes (or mean-centers) data. The <code>scale()</code> function can be a bit particular (<a href="https://www.r-bloggers.com/2021/12/how-to-use-the-scale-function-in-r/" target="_blank">see here</a> if you have troubles with it)
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="" aria-hidden="true" tabindex="-1"></a>GPA_std <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">scale</span>(GPA))</span>
+<span id="cb50-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="" aria-hidden="true" tabindex="-1"></a>reg_std <span class="ot">&lt;-</span> <span class="fu">lm</span>(year1gpa <span class="sc">~</span> act, <span class="at">data =</span> GPA_std)</span>
+<span id="cb50-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_std)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = year1gpa ~ act, data = GPA_std)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.34329 -0.51515  0.04249  0.49945  1.55896 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) 1.172e-16  2.143e-01    0.00    1.000
+act         3.606e-01  2.198e-01    1.64    0.118
+
+Residual standard error: 0.9583 on 18 degrees of freedom
+Multiple R-squared:  0.1301,    Adjusted R-squared:  0.08172 
+F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<p>The meaning of the results does not change, just the coefficients. So…</p>
+<p><span class="math display">\[Y = 0 + .36X,\]</span></p>
+<p><span class="math inline">\(.36\)</span> is also the correlation coefficient between <code>act</code> and <code>year1gpa</code>. Just remember that X and Y are in standard deviation units.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 24px">
+<p>🧐 Standardizing our variables simply changes measurement units. You can think of it as switching between degrees Fahrenheit and Celsius. the state of the world (temperature) remains the same, only the numbers that we use to describe it change 🧘</p>
 </div>
 </div>
 </div></div>
@@ -1181,16 +1301,16 @@ Wickham, H., &amp; RStudio. (2023). <em>Tidyverse: <span>Easily Install</span> a
 </section>
 <section>
 <section id="appendix-the-true-regression-model-and-its-assumptions" class="title-slide slide level1 center" data-visibility="uncounted">
-<h1>Appendix: The true Regression Model and its assumptions</h1>
+<h1>Appendix: The “true” Regression Model and its assumptions</h1>
 
 </section>
 <section id="the-true-regression-model" class="slide level2">
 <h2>The “true” Regression Model</h2>
-<p>You may have seen regression model formulated in different ways. Turns out, the notation can have subtle differences that changes the meaning of what you are looking at:</p>
+<p>You may have seen regression models formulated in different ways. Turns out, the notation can have subtle differences that change the meaning of what you are looking at:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="fragment" data-fragment-index="1">
-<ul style="font-size: 24px">
+<ul style="font-size: 26px">
 <p><span class="math inline">\(Y_i = b_0 + b_1X_i + e_i\)</span></p>
 <p><span class="math inline">\(\hat{Y_i} = b_0 + b_1X_i\)</span></p>
 <p><span class="math inline">\(\hat{Y} = b_0 + b_1X\)</span></p>
@@ -1211,7 +1331,7 @@ Wickham, H., &amp; RStudio. (2023). <em>Tidyverse: <span>Easily Install</span> a
 <p>Now, the “real” regression model is actually</p>
 <p><span class="math inline">\(Y \sim N(\mu = b_0 + b_1X, \sigma = \epsilon)\)</span></p>
 <div style="font-size: 16px">
-in math, <span class="math inline">\(\sim\)</span> reads “distributed as”
+in math, “<span class="math inline">\(\sim\)</span>” reads “distributed as”
 </div>
 </div>
 <div class="fragment" data-fragment-index="3">
@@ -1260,7 +1380,7 @@ The second formulation is more explicit about the main assumption of regression,
 <div class="column" style="width:50%;">
 <p>The regression output was:</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1302,8 +1422,8 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <div class="fragment" data-fragment-index="1">
 <p>For example, if I generate data from a normal distribution with 0 standard deviation</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 5 observations from N~(2, 0)</span></span>
-<span id="cb46-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 5 observations from N~(2, 0)</span></span>
+<span id="cb54-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2 2 2 2 2</code></pre>
 </div>
@@ -1313,16 +1433,16 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 </div><div class="column" style="width:50%;">
 <div class="fragment" data-fragment-index="2">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2356</span>)</span>
-<span id="cb48-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># add randomness to observations on the left</span></span>
-<span id="cb48-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">0</span>) <span class="sc">+</span> </span>
-<span id="cb48-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">4</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2356</span>)</span>
+<span id="cb56-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># add randomness to observations on the left</span></span>
+<span id="cb56-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">2</span>, <span class="at">sd =</span> <span class="dv">0</span>) <span class="sc">+</span> </span>
+<span id="cb56-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">4</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  1.416078  1.911307 -1.559635 -5.324674  2.095688</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the two lines above are equivalent to just</span></span>
-<span id="cb50-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed(2356)</span></span>
-<span id="cb50-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># rnorm(5, mean = 2, sd = 4) </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the two lines above are equivalent to just</span></span>
+<span id="cb58-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed(2356)</span></span>
+<span id="cb58-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># rnorm(5, mean = 2, sd = 4) </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In contrast, here we know that our values will be centered around 2, the mean. However, there is unpredictable randomness introduced by the standard deviation of 4.</p>
 </div>
@@ -1337,12 +1457,12 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GPA, </span>
-<span id="cb51-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> year1gpa)) <span class="sc">+</span>  </span>
-<span id="cb51-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="co"># assume we have no data yet</span></span>
-<span id="cb51-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb51-5"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb51-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(GPA, </span>
+<span id="cb59-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> year1gpa)) <span class="sc">+</span>  </span>
+<span id="cb59-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="co"># assume we have no data yet</span></span>
+<span id="cb59-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb59-5"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb59-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The line is what the <em>mean</em> of <code>year1gpa</code> should be at every value of <code>act</code>. However, there is no data yet.</p>
 </div><div class="column" style="width:70%;">
@@ -1350,7 +1470,7 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-40-1.png" width="960"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-45-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1365,39 +1485,41 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <div class="cell code-125">
 <details class="code-fold">
 <summary>Plot Code</summary>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate idealized data</span></span>
-<span id="cb52-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7757</span>)</span>
-<span id="cb52-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate X values</span></span>
-<span id="cb52-6"><a href="" aria-hidden="true" tabindex="-1"></a>act <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">seq</span>(<span class="fu">min</span>(GPA<span class="sc">$</span>act), <span class="fu">max</span>(GPA<span class="sc">$</span>act), <span class="at">by =</span>.<span class="dv">1</span>), <span class="dv">150</span>)</span>
-<span id="cb52-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the code below generates data according to the regression model</span></span>
-<span id="cb52-9"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-10"><a href="" aria-hidden="true" tabindex="-1"></a>intercept <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg)[<span class="dv">1</span>]</span>
-<span id="cb52-11"><a href="" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg)[<span class="dv">2</span>]</span>
-<span id="cb52-12"><a href="" aria-hidden="true" tabindex="-1"></a>residual_var <span class="ot">&lt;-</span> <span class="fu">sigma</span>(reg)</span>
-<span id="cb52-13"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-14"><a href="" aria-hidden="true" tabindex="-1"></a>ideal_data <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(act), <span class="at">mean =</span> intercept <span class="sc">+</span> act<span class="sc">*</span>slope, <span class="at">sd =</span> <span class="fu">sigma</span>(reg))</span>
-<span id="cb52-15"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the idealized data</span></span>
-<span id="cb52-17"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-18"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span>  <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> ideal_data)) <span class="sc">+</span>  </span>
-<span id="cb52-19"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb52-20"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb52-21"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate idealized data</span></span>
+<span id="cb60-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7757</span>)</span>
+<span id="cb60-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate X values</span></span>
+<span id="cb60-6"><a href="" aria-hidden="true" tabindex="-1"></a>act <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">seq</span>(<span class="fu">min</span>(GPA<span class="sc">$</span>act), <span class="fu">max</span>(GPA<span class="sc">$</span>act), <span class="at">by =</span>.<span class="dv">1</span>), <span class="dv">150</span>)</span>
+<span id="cb60-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the code below generates data according to the regression model</span></span>
+<span id="cb60-9"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-10"><a href="" aria-hidden="true" tabindex="-1"></a>intercept <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg)[<span class="dv">1</span>]</span>
+<span id="cb60-11"><a href="" aria-hidden="true" tabindex="-1"></a>slope <span class="ot">&lt;-</span> <span class="fu">coef</span>(reg)[<span class="dv">2</span>]</span>
+<span id="cb60-12"><a href="" aria-hidden="true" tabindex="-1"></a>residual_var <span class="ot">&lt;-</span> <span class="fu">sigma</span>(reg)</span>
+<span id="cb60-13"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-14"><a href="" aria-hidden="true" tabindex="-1"></a>ideal_data <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(act), <span class="at">mean =</span> intercept <span class="sc">+</span> act<span class="sc">*</span>slope, <span class="at">sd =</span> <span class="fu">sigma</span>(reg))</span>
+<span id="cb60-15"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the idealized data</span></span>
+<span id="cb60-17"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-18"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span>  <span class="fu">aes</span>(<span class="at">x =</span> act, <span class="at">y =</span> ideal_data)) <span class="sc">+</span>  </span>
+<span id="cb60-19"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb60-20"><a href="" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb60-21"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Each “column of dots” is normally distributed around the line, with standard deviation of <span class="math inline">\(.61\)</span>, the residual variance (<span class="math inline">\(\epsilon\)</span>). The dots are essentially our residuals, <span class="math inline">\(e\)</span>.</p>
 <div class="fragment" data-fragment-index="1">
-<p><strong><em>This is the data our regression model expects to see</em></strong></p>
+<center>
+<strong><em>This is the data our regression model expects to see</em></strong>
+</center>
 </div>
 </div><div class="column" style="width:70%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-42-1.png" width="960"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-47-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1416,7 +1538,7 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-43-1.png" width="960"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-48-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1427,19 +1549,19 @@ F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183</code></pre>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-44-1.png" width="960"></p>
+<p><img data-src="Lab-2_files/figure-revealjs/unnamed-chunk-49-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 </div></div>
 <div class="fragment" data-fragment-index="1">
-<div style="font-size: 22px">
+<div style="font-size: 24px">
 Violating assumptions? Assumptions are <span class="math inline">\(always\)</span> “violated”. To “check assumptions” is knowing what data your model expects to see and evaluating how different the observed data is (QQplots for example, help you do this).
 </div>
 </div>
 <div class="fragment" data-fragment-index="2">
-<div style="font-size: 22px">
+<div style="font-size: 24px">
 <p>Whether you think your observed data it “too different” from the expected data is usually a <em>very subjective</em> process.</p>
 </div>
 </div>

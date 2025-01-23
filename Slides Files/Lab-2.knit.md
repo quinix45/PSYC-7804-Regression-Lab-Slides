@@ -337,7 +337,7 @@ ggplot(GPA,
 
 ## Correlation 
 
-Correlation, usually denoted with $r$, measures the strength of linear association between two variables that ranges between $-1$ and $1$. 
+Correlation, usually denoted with $r$, measures the strength of linear association between two variables (always ranges between $-1$ and $1$). 
 
 
 :::: {.columns}
@@ -469,13 +469,13 @@ The `cor()` function does not run any significance test for our correlations. To
 
 ```{.r .cell-code  code-line-numbers="false"}
 # Note that the line below is equivalent to corr.test(GPA$year1gpa, GPA$act)
-corr.test(GPA)
+psych::corr.test(GPA)
 ```
 
 ::: {.cell-output .cell-output-stdout}
 
 ```
-Call:corr.test(x = GPA)
+Call:psych::corr.test(x = GPA)
 Correlation matrix 
          year1gpa  act
 year1gpa     1.00 0.36
@@ -513,7 +513,7 @@ To get more insight into what `R` functions actually do, sometimes you want to s
 
 
 
-::: {.cell}
+::: {.cell .code-125}
 
 ```{.r .cell-code  code-line-numbers="false"}
 correlation <- corr.test(GPA)
@@ -535,8 +535,6 @@ names(correlation)
 
 
 :::
-
-<br>
 
 ::: {.fragment fragment-index=4}
 
@@ -840,79 +838,190 @@ $$Y = b_0 + b_1X + e$$
 ::::
 
 
-## Standardized Regression Output
+## Making Predictions
 
-<div style="font-size: 26px">  To run standardized regression in R we first standardize our data. The `scale()` function standardizes (or mean-centers) data. The `scale()` function can be a bit particular ([see here](https://www.r-bloggers.com/2021/12/how-to-use-the-scale-function-in-r/){target="_blank"} if you have troubles with it) </div>
+For many reasons, once we have a regression model, we may want to predict values of $Y$ based on some values of $X$. 
 
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="30%"}
 
+::: {.fragment fragment-index=1}
+<div style="font-size: 24px"> From the previous slide, we found that $\hat{Y} = .46 + .09\times X$ (we don't look at $e$ when making predictions!) So, to find values of $\hat{Y}$ we plug in some values of $X$. </div>
+:::
+
+<ul style="font-size: 22px; padding-top: 26px;">  
+
+
+::: {.fragment fragment-index=2}
+<li> If $X = 23$, then $\hat{Y} = .46 + .09\times23 = 2.53$     </li>
+
+<li> If $X = 27$, then $\hat{Y} = .46 + .09\times27 = 2.89$   </li>
+:::
+
+</ul>
+
+::: {.fragment fragment-index=3}
+<center> **Predictions are *always* on the regression line**</center>
+:::
+
+
+:::
+::: {.column width="70%"}
+
+::: {.fragment fragment-index=2}
 
 
 ::: {.cell .code-125}
 
-```{.r .cell-code  code-line-numbers="false"}
-GPA_std <- data.frame(scale(GPA))
-
-reg_std <- lm(year1gpa ~ act, data = GPA_std)
-summary(reg_std)
+```{.r .cell-code  code-fold="true" code-summary="Plot Code" code-line-numbers="false"}
+ggplot(GPA,
+       aes(x = act, y = year1gpa)) +
+  geom_point(alpha = .5, shape = 1) +
+  geom_smooth(method = "lm",
+              se = FALSE) +
+  geom_segment(x = 23,
+               xend = 23,
+               y = 0,
+               yend = coef(reg)[1] + coef(reg)[2]*23,
+               linetype = 2) +
+    geom_segment(x = 0,
+                 xend = 23,
+                 y = coef(reg)[1] + coef(reg)[2]*23,
+                 yend = coef(reg)[1] + coef(reg)[2]*23,
+                 linetype = 2)  +
+  geom_segment(x = 27,
+               xend = 27,
+               y = 0,
+               yend = coef(reg)[1] + coef(reg)[2]*27,
+               linetype = 2) +
+    geom_segment(x = 0,
+                 xend = 27,
+                 y = coef(reg)[1] + coef(reg)[2]*27,
+                 yend = coef(reg)[1] + coef(reg)[2]*27,
+                 linetype = 2)   
 ```
 
-::: {.cell-output .cell-output-stdout}
-
-```
-
-Call:
-lm(formula = year1gpa ~ act, data = GPA_std)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--2.34329 -0.51515  0.04249  0.49945  1.55896 
-
-Coefficients:
-             Estimate Std. Error t value Pr(>|t|)
-(Intercept) 1.172e-16  2.143e-01    0.00    1.000
-act         3.606e-01  2.198e-01    1.64    0.118
-
-Residual standard error: 0.9583 on 18 degrees of freedom
-Multiple R-squared:  0.1301,	Adjusted R-squared:  0.08172 
-F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183
-```
-
-
+::: {.cell-output-display}
+![](Lab-2_files/figure-revealjs/unnamed-chunk-22-1.png){width=960}
 :::
 :::
 
 
-:::
-
-::: {.column width="50%"}
-
-::: {.fragment fragment-index=1}
-
-The meaning of the results does not change, just the coefficients. So...
-
-$$Y = 0 + .36X,$$
-
-$.36$ is also the correlation coefficient between `act` and `year1gpa`. Just remember that X and Y are in standard deviation units.
-
-:::
-
-
-::: {.fragment fragment-index=2}
-<div style="font-size: 22px"> 
-🧐 Standardizing our variables simply changes measurement units. You can think of it as switching between degrees Fahrenheit and Celsius. the state of the world (temperature) remains the same, only the numbers that we use to describe it change 🧘
-</div>
 :::
 
 :::
 ::::
 
 
+## Making Predictions The "right way"
+
+Whenever you are doing calculations in R, you *should never* copy and paste output numbers because there may be rounding error (and your code will not be generalizable!). 
+
+:::: {.columns}
+::: {.column width="40%"}
+
+::: {.fragment fragment-index=1}
+<div style="font-size: 26px"> For any `lm()` object, the `coef()` function will extract the exact coefficient values (intercepts and slopes in order of predictor):</div>
+
+
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
+coef(reg)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+(Intercept)         act 
+ 0.46452446  0.08886497 
+```
+
+
+:::
+:::
+
+
+:::
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 26px; padding-top: 18px;"> So, the appropriate way of calculating the predicted value of $Y$ if $X = 23$ is: </div>
+
+
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
+as.numeric(coef(reg)[1] + coef(reg)[2]*23)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+[1] 2.508419
+```
+
+
+:::
+:::
+
+
+:::
+
+:::
+::: {.column width="60%"}
+
+::: {.fragment fragment-index=3}
+<div style="font-size: 26px">  Usually, you need predictions for some new data, so you would use the `predict()` function. The predict function requires that you input data that has *the exact same structure as the original data*, but without the $Y$ variable. </div>
+
+
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
+# first we create new data that we want to get predictions on
+pred_dat <- data.frame("act" = seq(20, 30, by = .01))
+```
+:::
+
+
+:::
+
+::: {.fragment fragment-index=4}
+<div style="font-size: 26px; padding-top: 18px;"> Here I save the predictions as a new variable. Look at the `pred_dat` object after running the code below: </div>
+
+
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
+pred_dat$y_pred <- predict(reg, pred_dat)
+str(pred_dat)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+'data.frame':	1001 obs. of  2 variables:
+ $ act   : num  20 20 20 20 20 ...
+ $ y_pred: num  2.24 2.24 2.24 2.24 2.25 ...
+```
+
+
+:::
+:::
+
+
+:::
+
+:::
+::::
+
 ## Predictions and residuals
 
-The `lm()` objects also saves predictions for all data points ($\hat{Y}_i$) and the residuals for all data points ($e_i$).
+`lm()` objects also save predictions for all data points ($\hat{Y}_i$) and the residuals for all data points ($e_i$).
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -925,7 +1034,7 @@ The `lm()` objects also saves predictions for all data points ($\hat{Y}_i$) and 
 ::: {.cell .code-125}
 
 ```{.r .cell-code  code-line-numbers="false"}
-predictions <- predict(reg)
+predictions <- fitted(reg)
 str(predictions, give.attr = FALSE)
 ```
 
@@ -956,7 +1065,7 @@ These are the predicted values of $Y$ given the observed $X$ values.
 ::: {.cell .code-125}
 
 ```{.r .cell-code  code-line-numbers="false"}
-residuals <- resid(reg)
+residuals <- residuals(reg)
 str(residuals, give.attr = FALSE)
 ```
 
@@ -1042,7 +1151,7 @@ ggplot(GPA,
 
 ::: {.cell}
 ::: {.cell-output-display}
-![](Lab-2_files/figure-revealjs/unnamed-chunk-27-1.png){width=960}
+![](Lab-2_files/figure-revealjs/unnamed-chunk-31-1.png){width=960}
 :::
 :::
 
@@ -1089,7 +1198,7 @@ ggplot(GPA,
 
 ::: {.cell}
 ::: {.cell-output-display}
-![](Lab-2_files/figure-revealjs/unnamed-chunk-29-1.png){width=960}
+![](Lab-2_files/figure-revealjs/unnamed-chunk-33-1.png){width=960}
 :::
 :::
 
@@ -1143,7 +1252,7 @@ ggplot(GPA,
 
 ::: {.cell}
 ::: {.cell-output-display}
-![](Lab-2_files/figure-revealjs/unnamed-chunk-31-1.png){width=960}
+![](Lab-2_files/figure-revealjs/unnamed-chunk-35-1.png){width=960}
 :::
 :::
 
@@ -1187,7 +1296,7 @@ As long as the residuals (dots) are within the band, there should be no cause fo
 
 ::: {.cell .code-125}
 ::: {.cell-output-display}
-![](Lab-2_files/figure-revealjs/unnamed-chunk-33-1.png){width=960}
+![](Lab-2_files/figure-revealjs/unnamed-chunk-37-1.png){width=960}
 :::
 :::
 
@@ -1236,7 +1345,7 @@ Once again, the loess line does not do too well because there are few points. Th
 
 ::: {.cell}
 ::: {.cell-output-display}
-![](Lab-2_files/figure-revealjs/unnamed-chunk-35-1.png){width=960}
+![](Lab-2_files/figure-revealjs/unnamed-chunk-39-1.png){width=960}
 :::
 :::
 
@@ -1247,18 +1356,89 @@ Once again, the loess line does not do too well because there are few points. Th
 :::
 ::::
 
+## Standardized Regression Output
+
+<div style="font-size: 26px">  To run standardized regression in R we first standardize our data. The `scale()` function standardizes (or mean-centers) data. The `scale()` function can be a bit particular ([see here](https://www.r-bloggers.com/2021/12/how-to-use-the-scale-function-in-r/){target="_blank"} if you have troubles with it) </div>
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
+GPA_std <- data.frame(scale(GPA))
+
+reg_std <- lm(year1gpa ~ act, data = GPA_std)
+summary(reg_std)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+Call:
+lm(formula = year1gpa ~ act, data = GPA_std)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.34329 -0.51515  0.04249  0.49945  1.55896 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)
+(Intercept) 1.172e-16  2.143e-01    0.00    1.000
+act         3.606e-01  2.198e-01    1.64    0.118
+
+Residual standard error: 0.9583 on 18 degrees of freedom
+Multiple R-squared:  0.1301,	Adjusted R-squared:  0.08172 
+F-statistic: 2.691 on 1 and 18 DF,  p-value: 0.1183
+```
+
+
+:::
+:::
+
+
+:::
+
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
+
+The meaning of the results does not change, just the coefficients. So...
+
+$$Y = 0 + .36X,$$
+
+$.36$ is also the correlation coefficient between `act` and `year1gpa`. Just remember that X and Y are in standard deviation units.
+
+:::
+
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 24px"> 
+🧐 Standardizing our variables simply changes measurement units. You can think of it as switching between degrees Fahrenheit and Celsius. the state of the world (temperature) remains the same, only the numbers that we use to describe it change 🧘
+</div>
+:::
+
+:::
+::::
+
+
+
 
 ## References 
 
 <div id="refs"> </div>
 
 
-# Appendix: The true Regression Model and its assumptions {data-visibility="uncounted"}
+# Appendix: The "true" Regression Model and its assumptions {data-visibility="uncounted"}
 
 
 ## The "true" Regression Model
 
-You may have seen regression model formulated in different ways. Turns out, the notation can have subtle differences that changes the meaning of what you are looking at:
+You may have seen regression models formulated in different ways. Turns out, the notation can have subtle differences that change the meaning of what you are looking at:
 
 
 :::: {.columns}
@@ -1266,7 +1446,7 @@ You may have seen regression model formulated in different ways. Turns out, the 
 
 ::: {.fragment fragment-index=1}
 
-<ul style="font-size: 24px">  
+<ul style="font-size: 26px">  
 
 $Y_i = b_0 + b_1X_i + e_i$ 
 
@@ -1300,7 +1480,7 @@ Now, the "real" regression model is actually
 
 $Y \sim N(\mu = b_0 + b_1X, \sigma = \epsilon)$
 
-<div style="font-size: 16px"> in math, $\sim$ reads "distributed as"</div>
+<div style="font-size: 16px"> in math, "$\sim$" reads "distributed as"</div>
 
 :::
 
@@ -1533,7 +1713,7 @@ The line is what the *mean* of `year1gpa` should be at every value of `act`. How
 
 ::: {.cell}
 ::: {.cell-output-display}
-![](Lab-2_files/figure-revealjs/unnamed-chunk-40-1.png){width=960}
+![](Lab-2_files/figure-revealjs/unnamed-chunk-45-1.png){width=960}
 :::
 :::
 
@@ -1585,7 +1765,9 @@ Each "column of dots" is normally distributed around the line, with standard dev
 
 
 ::: {.fragment fragment-index=1}
+<center>
 ***This is the data our regression model expects to see***
+</center>
 :::
 
 :::
@@ -1595,7 +1777,7 @@ Each "column of dots" is normally distributed around the line, with standard dev
 
 ::: {.cell}
 ::: {.cell-output-display}
-![](Lab-2_files/figure-revealjs/unnamed-chunk-42-1.png){width=960}
+![](Lab-2_files/figure-revealjs/unnamed-chunk-47-1.png){width=960}
 :::
 :::
 
@@ -1619,7 +1801,7 @@ The $Y$ variable never looks like this.
 
 ::: {.cell}
 ::: {.cell-output-display}
-![](Lab-2_files/figure-revealjs/unnamed-chunk-43-1.png){width=960}
+![](Lab-2_files/figure-revealjs/unnamed-chunk-48-1.png){width=960}
 :::
 :::
 
@@ -1634,7 +1816,7 @@ This is what the $Y$ variable looks like usually (our data).
 
 ::: {.cell}
 ::: {.cell-output-display}
-![](Lab-2_files/figure-revealjs/unnamed-chunk-44-1.png){width=960}
+![](Lab-2_files/figure-revealjs/unnamed-chunk-49-1.png){width=960}
 :::
 :::
 
@@ -1644,11 +1826,11 @@ This is what the $Y$ variable looks like usually (our data).
 ::::
 
 ::: {.fragment fragment-index=1}
-<div style="font-size: 22px"> Violating assumptions? Assumptions are $always$ "violated". To "check assumptions" is knowing what data your model expects to see and evaluating how different the observed data is (QQplots for example, help you do this). </div>
+<div style="font-size: 24px"> Violating assumptions? Assumptions are $always$ "violated". To "check assumptions" is knowing what data your model expects to see and evaluating how different the observed data is (QQplots for example, help you do this). </div>
 :::
 
 ::: {.fragment fragment-index=2}
-<div style="font-size: 22px">  
+<div style="font-size: 24px">  
 Whether you think your observed data it "too different" from the expected data is usually a *very subjective* process. 
 </div>
 :::
