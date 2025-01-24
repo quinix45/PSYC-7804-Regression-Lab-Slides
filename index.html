@@ -8,24 +8,53 @@
 	<link rel="stylesheet" href="styles.css">
 	<script src="script.js" href="script.js"></script>
 
-	<title>My Webpage</title>
+  <title>PSYC 7804 Lab</title>
 </head>
 
 <body>
 
-	<header>
-		<h1>Welcome to My Webpage</h1>
+	<header style="text-align:center;">
+ 	<h1>PSYC 7804: Regression with Lab</h1>
 	</header>
 	<main> 
 		<section>
-			<h2>About</h2>
-			<p>This is a basic HTML template to kickstart your project.</p>
+			<p style="text-align:center; font-size: 1.5rem;"> Materials for graduate level regression lab course at Fordham University</p>
 		</section>
 
-		<h2>Example link</h2>
-		<a href="./Slides%20Files/Lab%201.html">Test Link</a>
+		<h2>The Labs (clicky links)</h2>
+		<hr /> 
 
-		<button onclick="showAlert()">Click me</button>
+		<div class="lab-card-grid">
+			
+			<div class="lab-card">
+				<h1 class="custom-bs">Lab 1</h1>
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
+				
+				<div class="button-box">
+					<button onclick="window.open('./Slides%20Files/Lab%201.html', '_blank');" class="fancy-button">Slides</button>
+					<a href="./Slides%20Files/Lab%20Code/Lab%201%20code.Rmd" download="Lab_1_code.Rmd" class="fancy-button">Code</a>
+					<button href="./Slides Files/Lab 2.html" class="fancy-button">Activities</button>
+				</div>
+			</div>
+
+
+
+
+			<a class="lab-card" href="./Slides%20Files/Lab%202.html" target="_blank">
+				<h1 class="custom-bs">Lab 2</h1>
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat itaque temporibus
+					est ea sed repudiandae, laudantium nisi repellat aliquam! Aspernatur tempore vel repellendus temporibus nobis
+					possimus!</p>
+			</a>
+			
+			<a class="lab-card" href="./Slides%20Files/Lab%203.html" target="_blank">
+				<h1 class="custom-bs">Lab 3</h1>
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat itaque temporibus
+					est ea sed repudiandae, laudantium nisi repellat aliquam! Aspernatur tempore vel repellendus temporibus nobis
+					possimus!</p>
+			</a>
+
+		</div>
 	</main>
 </body>
 
