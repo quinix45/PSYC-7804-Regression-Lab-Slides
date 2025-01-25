@@ -8,9 +8,9 @@ html {
 	font-size: 16px;
 }
 body {
-	/* background-color: #ecdede; */
 	padding: 0;
 	margin: 0;
+	background-image: url(https://images.unsplash.com/photo-1615800098779-1be32e60cca3?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2OTUyNDAwMTN8&ixlib=rb-4.0.3&q=85)
 }
 
 header {
@@ -18,10 +18,24 @@ header {
 	margin: 0;
 	margin-bottom: 1rem;
 	padding: 1rem;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	height: 80vh;
 }
 
 header h1 {
 	margin: 0;
+
+	display: block;
+	font-size: 6rem;
+}
+
+header p {
+	margin-top: 4rem;
 }
 
 main {
@@ -49,8 +63,14 @@ p {
 }
 
 .lab-card {
-	/* border: thin solid gray; */
-	display: block;
+	background-color: white;
+
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+
+	justify-content: space-between;
 
 	width: 45%;
 
@@ -62,6 +82,8 @@ p {
 	box-shadow: 3px 6px 12px 0px rgba(0, 0, 0, 0.35);
 		-webkit-box-shadow: 3px 6px 12px 0px rgba(0, 0, 0, 0.35);
 		-moz-box-shadow: 3px 6px 12px 0px rgba(0, 0, 0, 0.35);
+
+	overflow: hidden;
 }
 
 @media (max-width: 550px) {
@@ -76,9 +98,39 @@ p {
 		-moz-box-shadow: 3px 6px 12px 4px rgba(0, 0, 0, 0.41);
 }
 
+.lab-number {
+	position: absolute;
+	text-align: center;
+	line-height: 5rem;
+	font-size: 2rem;
+	font-weight: bold;
+	/* top: -0.4rem;
+	left: -0.8rem; */
+	top: -1rem;
+	left: -1rem;
+	width: 5rem;
+	height: 5rem;
+
+	border-bottom-right-radius: 50%;
+	/* border-radius: 50%; */
+	
+	color: white;
+	background-color: #1c74d8;
+	/* color: black; */
+	/* background-color: white; */
+}
+
+.lab-number div {
+	margin-left: 0.5rem;
+}
+
 .lab-card h1 {
 	font-size: 1.5rem;
 	margin: 0;
+	margin-left: 3.5rem;
+	margin-bottom: 0.6rem;
+	text-align: center;
+	min-height: 3.5rem;
 }
 
 .button-box {
