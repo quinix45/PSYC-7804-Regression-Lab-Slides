@@ -1,5 +1,5 @@
 ---
-title: "Lab 11: Categorical  Interactions variable and ANOVA equivalence"
+title: "Lab 11: Categorical Variables Interactions and ANOVA Equivalence"
 author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
@@ -9,7 +9,7 @@ title-slide-attributes:
   data-visibility: "uncounted"
 format:
    revealjs:
-      footer: "Lab 11: Categorical  Interactions variable and ANOVA equivalence"
+      footer: "Lab 11: Categorical Variables Interactions and ANOVA Equivalence"
       width: 1280
       height: 720
       chalkboard: true

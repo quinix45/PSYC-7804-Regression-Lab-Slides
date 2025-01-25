@@ -17,7 +17,7 @@ class LabCard extends HTMLElement {
 		slidesButton.onclick = () => window.open(`./Slides%20Files/Lab%20${labNumber}.html`, '_blank');
 
 		let codeLink = this.shadowRoot.getElementById('code-link');
-		codeLink.setAttribute('href', `./Slides%20Files/Lab%20Code/Lab%20${labNumber}%20code.Rmd`);
+		codeLink.setAttribute('href', `./Slides Files/Lab Code/Lab ${labNumber} Code.Rmd`);
 		codeLink.setAttribute('download', `Lab_${labNumber}_code.Rmd`);
 
 		let activityLink = this.shadowRoot.getElementById('activity-link');
