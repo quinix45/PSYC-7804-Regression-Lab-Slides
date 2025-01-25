@@ -8,10 +8,35 @@
 	<link rel="stylesheet" href="styles.css">
 	<script src="script.js" href="script.js"></script>
 
+	<script src="Components/LabCard.js"></script>
+
 	<title> PSYC 7804 Lab</title>
 </head>
 
 <body>
+	<template id="lab-card-template">
+		<link rel="stylesheet" href="styles.css">
+
+		<div id="lab-number-box" class="lab-number">
+			0
+		</div>
+		<div>
+			<h1 part="h1">
+				<slot name="title">Lab Title</slot>
+			</h1>
+			<p>
+				<slot name="description">Lab Description</slot>
+			</p>
+		</div>
+		<div class="button-box">
+			<button id="slides-button" onclick="window.open('./Slides%20Files/Lab%201.html', '_blank');"
+				class="fancy-button">Slides</button>
+			<a id="code-link" href="./Slides%20Files/Lab%20Code/Lab%201%20code.Rmd" download="Lab_1_code.Rmd" target="_blank"
+				class="fancy-button">Code</a>
+			<a id="activity-link" href="./Lab Activities/Lab 1 Activity.Rmd" download="Lab_1_activity.Rmd" target="_blank"
+				class="fancy-button">Activity</a>
+		</div>
+	</template>
 
 	<header>
 		<h1>PSYC 7804 <br />Regression With Lab</h1>
@@ -19,8 +44,78 @@
 	</header>
 	<main> 
 		<div class="lab-card-grid">
+
+			<lab-card lab-number="1">
+				<span slot="title">Descriptive Statistics and Plots</span>
+				<span slot="description">Yummy yummy yummy they call me big yummy yummy.</span>
+			</lab-card>
+
+			<lab-card lab-number="2">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+
+			<lab-card lab-number="3">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+
+			<lab-card lab-number="4">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+
+			<lab-card lab-number="5">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+
+			<lab-card lab-number="6">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+
+			<lab-card lab-number="7">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
 			
-			<div class="lab-card">
+			<lab-card lab-number="8">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+			
+			<lab-card lab-number="9">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+			
+			<lab-card lab-number="10">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+			
+			<lab-card lab-number="11">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+
+			<lab-card lab-number="12">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+
+			<lab-card lab-number="13">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+
+			<lab-card lab-number="14">
+				<span slot="title">Title Me</span>
+				<span slot="description">Describe Me.</span>
+			</lab-card>
+
+			<!-- <div class="lab-card">
 				<div class="lab-number">
 					<div>1</div>
 				</div>
@@ -233,7 +328,7 @@
 					<a href="./Slides%20Files/Lab%20Code/Lab%2014%20code.Rmd" download="Lab_14_code.Rmd" class="fancy-button">Code</a>
 					<a href="./Lab Activities/Lab 14 Activity.Rmd" download="Lab_14_activity.Rmd" class="fancy-button">Activity</a>
 				</div>
-			</div>
+			</div> -->
 
 		</div>
 	</main>
