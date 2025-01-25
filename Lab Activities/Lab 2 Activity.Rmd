@@ -79,7 +79,13 @@ coef(reg_std)[2]*-1
 
 **Tricky questions**
 
-- can you convert this value of `rating` back into unstandardized units? (HINT: you will need to use the mean and standard deviation of the original `rating` variable)
+Predictions based on regression represent the *mean* expected value of $Y$ given some value of $X$. Then if the formula to standardize any variable ($\mathrm{Var}$) is:
+
+$$\mathrm{Var_{std}} = \frac{\mathrm{Var} - \mathrm{Var_{mean}}}{\mathrm{Var_{SD}}}$$
+
+Try answering the following questions:
+
+- can you convert the value of `rating` from question **5** back into unstandardized units? (HINT: you will need to use the mean and standard deviation of the original `rating` variable)
 
 ```{r include=FALSE}
 

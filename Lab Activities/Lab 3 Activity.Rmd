@@ -32,7 +32,7 @@ rev_int <- Chirot[,c("intensity","inequality")]
 
 ```
 
-**2.** Find the correaltion between `inequality` and `intesity`. Is it significantly different from 0? What is the 95% confidence interval?
+**2.** Find the correlation between `inequality` and `intesity`. Is it significantly different from 0? What is the 95% confidence interval?
 
 ```{r include=FALSE}
 
@@ -67,6 +67,8 @@ cor$ci
 
 
 \newpage
+
+
 
 
 ## Some R Practice

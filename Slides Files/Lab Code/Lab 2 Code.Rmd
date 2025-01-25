@@ -151,14 +151,64 @@ correlation$ci
 reg <- lm(year1gpa ~ act, data = GPA)
 summary(reg)
 ```
-## Standardized Regression Output
+## Making Predictions
+
 
 ```{r}
-GPA_std <- data.frame(scale(GPA))
-
-reg_std <- lm(year1gpa ~ act, data = GPA_std)
-summary(reg_std)
+ggplot(GPA,
+       aes(x = act, y = year1gpa)) +
+  geom_point(alpha = .5, shape = 1) +
+  geom_smooth(method = "lm",
+              se = FALSE) +
+  geom_segment(x = 23,
+               xend = 23,
+               y = 0,
+               yend = coef(reg)[1] + coef(reg)[2]*23,
+               linetype = 2) +
+    geom_segment(x = 0,
+                 xend = 23,
+                 y = coef(reg)[1] + coef(reg)[2]*23,
+                 yend = coef(reg)[1] + coef(reg)[2]*23,
+                 linetype = 2)  +
+  geom_segment(x = 27,
+               xend = 27,
+               y = 0,
+               yend = coef(reg)[1] + coef(reg)[2]*27,
+               linetype = 2) +
+    geom_segment(x = 0,
+                 xend = 27,
+                 y = coef(reg)[1] + coef(reg)[2]*27,
+                 yend = coef(reg)[1] + coef(reg)[2]*27,
+                 linetype = 2)   
 ```
+
+
+## Making Predictions The "right way"
+
+
+```{r}
+coef(reg)
+```
+
+
+
+```{r}
+as.numeric(coef(reg)[1] + coef(reg)[2]*23)
+```
+
+
+```{r}
+# first we create new data that we want to get predictions on
+pred_dat <- data.frame("act" = seq(20, 30, by = .01))
+
+
+# then we use the `predict()` function to make prediction
+
+pred_dat$y_pred <- predict(reg, pred_dat)
+str(pred_dat)
+```
+
+
 ## Predictions and residuals
 
 ```{r}
@@ -236,6 +286,17 @@ ggplot(GPA,
   geom_smooth(method = "loess",
               se = FALSE)
 ```
+
+
+## Standardized Regression Output
+
+```{r}
+GPA_std <- data.frame(scale(GPA))
+
+reg_std <- lm(year1gpa ~ act, data = GPA_std)
+summary(reg_std)
+```
+
 
 
 ## The Meaning of A regression model

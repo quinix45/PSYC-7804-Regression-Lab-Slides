@@ -654,7 +654,8 @@ For many reasons, once we have a regression model, we may want to predict values
 </ul>
 
 ::: {.fragment fragment-index=3}
-<center> **Predictions are *always* on the regression line**</center>
+
+<center> **Predictions Represent the *mean* expected value of *Y* given some value of *X*. Predictions are *always* on the regression line** </center>
 :::
 
 
