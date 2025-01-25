@@ -4,6 +4,10 @@
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+:root {
+	--primary: #1c74d8;
+}
+
 html {
 	font-size: 16px;
 }
@@ -24,27 +28,32 @@ header {
 	justify-content: center;
 	align-items: center;
 
-	height: 75vh;
-}
+	padding-top: 4rem;
+	padding-bottom: 4rem;
+	margin-bottom: 4rem;
 
-.row {
-	display: flex;                /* Align the columns in a row */
-	justify-content: space-evenly; /* Evenly distribute the columns */
-	width: 80vw;                  /* Ensure the row spans the full width */
-	margin-top: 1rem;             /* Optional, space between header and row */
-  }
-  
-  .column {
-	flex: 1;                      /* Make each column take equal space */
-	text-align: center;           /* Center the text in each column */
-	padding: 1rem;                /* Add some padding inside each column */
-  }
+	border-image: url('https: //www.w3schools.com/css/border.png') 80 80 80 repeat;
+
+	background-color: rgba(255, 255, 255, 0.7);
+	
+}
 
 header h1 {
 	margin: 0;
 
 	display: block;
 	font-size: 6rem;
+}
+
+header div div b {
+	color: var(--primary);
+	font-size: 1.5rem;
+}
+
+@media (max-width: 1000px) {
+	header h1 {
+		font-size: 3rem;
+	}
 }
 
 header p {
@@ -62,21 +71,6 @@ a {
 	all: unset;
 	display: inline;
 }
-
-/* link class */
-
-.inline-link {
-	color: #007bff; /* Blue color for the link */
-	text-decoration: none; /* Remove underline */
-	font-weight: bold; /* Make the link text bold */
-	cursor: pointer; /* Change cursor to hand */
-  }
-  
-  .inline-link:hover {
-	text-decoration: underline; /* Underline the link on hover */
-	color: #0056b3; /* Darker shade of blue when hovered */
-  }
-  
 
 p {
 	margin: 0;
@@ -114,7 +108,7 @@ lab-card {
 	overflow: hidden;
 }
 
-@media (max-width: 550px) {
+@media (max-width: 800px) {
 	lab-card {
 		width: 100%;
 	}
@@ -143,7 +137,7 @@ lab-card:hover {
 	/* border-radius: 50%; */
 	
 	color: white;
-	background-color: #1c74d8;
+	background-color: var(--primary);
 	/* color: black; */
 	/* background-color: white; */
 }
@@ -169,7 +163,7 @@ lab-card::part(h1) {
 	gap: 0.8rem;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 500px) {
 	.button-box {
 		flex-direction: column;
 	}
@@ -193,7 +187,7 @@ lab-card::part(h1) {
 	border: medium;
 	border-radius: 8px;
 
-	background-color: #1c74d8;
+	background-color: var(--primary);
 	/* background-image: linear-gradient(90deg, rgb(35, 162, 221), #ffffff, #1c74d8); */
 	/* box-shadow: rgb(0, 0, 0, 0.4) 0px 4px 15px 3px; */
 
@@ -204,4 +198,41 @@ lab-card::part(h1) {
 	/* margin-left: 65px; */
 	transition: 0.2s ease-in-out;
 	background-position: 10% 0px;
+}
+
+.description-box {
+	display: flex;
+	flex-direction: row;
+	max-width: 60rem;
+	margin-top: 3rem;
+	gap: 2rem;
+}
+
+@media (max-width: 800px) {
+	.description-box {
+		flex-direction: column;
+	}
+}
+
+.description-box div {
+	flex: 1 1 0
+}
+
+.icon-box {
+	position: fixed;
+	right: 2rem;
+	top: 2rem;
+	display: flex;
+	gap: 2rem;
+}
+
+.icon-link {
+	font-size: 32px;
+	cursor: pointer;
+	transition: all 0.15s ease-out;
+}
+
+.icon-link:hover {
+	transition: all 0.15s ease-out;
+	transform: scale(1.2);
 }
