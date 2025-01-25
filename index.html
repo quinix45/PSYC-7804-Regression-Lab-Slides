@@ -7,13 +7,36 @@
 	<meta name="description" content="A basic HTML template">
 	<link rel="stylesheet" href="styles.css">
 	<script src="script.js" href="script.js"></script>
-	<!-- <script src="Components/LabCard.js" type="text/javascript"></script> -->
+
 	<script src="Components/LabCard.js"></script>
 
 	<title> PSYC 7804 Lab</title>
 </head>
 
 <body>
+	<template id="lab-card-template">
+		<link rel="stylesheet" href="styles.css">
+
+		<div class="lab-number">
+			<slot name="number">0</slot>
+		</div>
+		<div>
+			<h1 part="h1">
+				<slot name="title">Lab Title</slot>
+			</h1>
+			<p>
+				<slot name="description">Lab Description</slot>
+			</p>
+		</div>
+		<div class="button-box">
+			<button onclick="window.open('./Slides%20Files/Lab%201.html', '_blank');"
+				class="fancy-button">Slides</button>
+			<a href="./Slides%20Files/Lab%20Code/Lab%201%20code.Rmd" download="Lab_1_code.Rmd"
+				class="fancy-button">Code</a>
+			<a href="./Lab Activities/Lab 1 Activity.Rmd" download="Lab_1_activity.Rmd"
+				class="fancy-button">Activity</a>
+		</div>
+	</template>
 
 	<header>
 		<h1>PSYC 7804 <br />Regression With Lab</h1>
@@ -21,8 +44,12 @@
 	</header>
 	<main> 
 		<div class="lab-card-grid">
-			
-			<lab-card></lab-card>
+
+			<lab-card class="lab-card">
+				<span slot="number">69</span>
+				<span slot="title">Big Title</span>
+				<span slot="description">Yummy yummy yummy they call me big yummy yummy.</span>
+			</lab-card>
 
 			<div class="lab-card">
 				<div class="lab-number">

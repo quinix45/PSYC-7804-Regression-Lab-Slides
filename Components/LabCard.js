@@ -1,16 +1,9 @@
 class LabCard extends HTMLElement {
 	constructor() {
 		super();
-	}
-
-	connectedCallback() {
-		alert("TEST");
-
-		this.innerHTML = `
-			<div>
-				<h2>HEYO!!</h2>
-			</div>
-		`;
+		const template = document.getElementById("lab-card-template").content;
+		const shadowRoot = this.attachShadow({ mode: "open" });
+		shadowRoot.appendChild(template.cloneNode(true));
 	}
 }
 
