@@ -40,295 +40,93 @@
 
 	<header>
 		<h1>PSYC 7804 <br />Regression With Lab</h1>
-		<p style="text-align:center; font-size: 1.5rem;"> Materials for graduate level regression lab course at Fordham University</p>
+
+	    <!-- not sure that We need a description if I have the 3 columns kinda doing that already -->
+		<!-- <p style="text-align:center; font-size: 1.5rem;"> Hi 👋 I am Fabio Setti, currently a graduate student at Fordham University. </p> -->
+		<div class="row" > 
+			<div class="column"> <b style ="color: #1c74d8;font-size: 1.5rem;">Slides</b> <br /> Click to access Lab presentations. The slides are created with the <a href="https://quarto.org/docs/presentations/" target="_blank" class="inline-link">quarto</a> extension of <a href="https://posit.co/download/rstudio-desktop/" target="_blank" class="inline-link">RStudio</a> and use the <a href="https://revealjs.com" target="_blank" class="inline-link">revealjs</a> framework.</div>  
+			<div class="column"> <b style ="color: #1c74d8;font-size: 1.5rem;">Code</b> <br /> Click to download raw R code that is used in the Lab slides. The code is included in a .Rmd file that is divided according to the title of each Lab slide. </div>
+			<div class="column"> <b style ="color: #1c74d8;font-size: 1.5rem;"> Activity </b> </br> Click to download Lab activity with practice questions and solutions as a .Rmd file. A Lab activity presents questions of varying difficulty related to the respective Lab. </div>
+		  </div>
+	
 	</header>
+	
+
+	
+	
+	
 	<main> 
 		<div class="lab-card-grid">
 
 			<lab-card lab-number="1">
 				<span slot="title">Descriptive Statistics and Plots</span>
-				<span slot="description">Yummy yummy yummy they call me big yummy yummy.</span>
+				<span slot="description"> This Lab goes over how to import data into R, compute some descriptive statistics, and the logic and process behind creating plots with <a href="https://ggplot2.tidyverse.org" target="_blank" class="inline-link">ggplot</a>. An in depth-explanation of QQplots is also included in the last slides. </span>
 			</lab-card>
 
 			<lab-card lab-number="2">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">One-Predictor Regression</span>
+				<span slot="description"> This Lab disucsses how to intepret one-predictor regression output, how to use regression to make predictions, what residuals are, and how to run a standardized regression in R. The appendix touches upon the meaning of a regression model and the root of regression asusmptions. </span>
 			</lab-card>
 
 			<lab-card lab-number="3">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">Significance Tests and Reporting Results</span>
+				<span slot="description"> This Lab goes over the significance-testing of regression coefficients, as well as the meaning of <i>p</i>-values, and reporting regression results. This Lab also includes a custom function to create APA style regression tables. </span>
 			</lab-card>
 
 			<lab-card lab-number="4">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">Introduction To Two-Predictor Regression</span>
+				<span slot="description"> This Lab introduces multiple regression, contrasts one-predictor and multiple regression, includes interactive 3D visulizations of regression planes, and goes over <i>R</i><sup>2</sup> and the meaning of the term <i>variance explained</i>. </span>
 			</lab-card>
 
 			<lab-card lab-number="5">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">Added Variable Plots and Bootstrapping</span>
+				<span slot="description"> This lab introduces added variable plots as a way of visualizing partial regresison coefficients. The idea of bootrapping and its applications in the context of linear regression are also discussed. For learning purposes, this Lab also includes raw code that details the steps to create added variable plots, as well as bootstrapped confidence intervals for <i>R</i><sup>2</sup>. </span>
 			</lab-card>
 
 			<lab-card lab-number="6">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">Semi-partial, Partial-correlations, and Model Comparison</span>
+				<span slot="description">This Lab introduces semi-partials and partial-correaltions, and contrasts them with correlation. This lab also discusses model comparison with hierarchical regression and information criteria methods such as AIC and BIC. </span>
 			</lab-card>
 
 			<lab-card lab-number="7">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title"> Multicollinearity and Dominance Analysis </span>
+				<span slot="description">This Lab touches upone multicollinearity in linear regression and its consequences. Dominance analysis is also disucssed as a method to evaluate relative importance of predictors in a regression. </span>
 			</lab-card>
 			
 			<lab-card lab-number="8">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">Quadratic regression and non-linear alternatives</span>
+				<span slot="description">This Lab goes over quadratic regression and detailed interpretations of its regression coefficients. This Lab also includes alteranitve methods such as piece-wise regression and splines. </span>
 			</lab-card>
 			
 			<lab-card lab-number="9">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">Interactions Between Continuous Variables</span>
+				<span slot="description"> Coming soon! </span>
 			</lab-card>
 			
 			<lab-card lab-number="10">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">Categorical Predictors</span>
+				<span slot="description"> Coming soon!</span>
 			</lab-card>
 			
 			<lab-card lab-number="11">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">Categorical Variables Interactions and ANOVA Equivalence</span>
+				<span slot="description">Coming soon!</span>
 			</lab-card>
 
 			<lab-card lab-number="12">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">Mediation Analysis</span>
+				<span slot="description">Coming soon!</span>
 			</lab-card>
 
 			<lab-card lab-number="13">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">Missing Data</span>
+				<span slot="description">Coming soon!</span>
 			</lab-card>
 
 			<lab-card lab-number="14">
-				<span slot="title">Title Me</span>
-				<span slot="description">Describe Me.</span>
+				<span slot="title">Regression Diagnostics and GLMs</span>
+				<span slot="description">Coming soon!</span>
 			</lab-card>
-
-			<!-- <div class="lab-card">
-				<div class="lab-number">
-					<div>1</div>
-				</div>
-				<div>
-					<h1>Descriptive Statistics and Plots</h1>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				</div>
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%201.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%201%20code.Rmd" download="Lab_1_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 1 Activity.Rmd" download="Lab_1_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>2</div>
-				</div>
-				<div>
-					<h1>Lab 2</h1>
-					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.
-					</p>
-				</div>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%202.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%202%20code.Rmd" download="Lab_2_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 2 Activity.Rmd" download="Lab_2_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>3</div>
-				</div>
-				<h1>Lab 3</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%203.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%203%20code.Rmd" download="Lab_3_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 3 Activity.Rmd" download="Lab_3_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>4</div>
-				</div>
-				<h1>Lab 4</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%204.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%204%20code.Rmd" download="Lab_4_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 4 Activity.Rmd" download="Lab_4_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>5</div>
-				</div>
-				<h1>Lab 5</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%205.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%205%20code.Rmd" download="Lab_5_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 5 Activity.Rmd" download="Lab_5_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>6</div>
-				</div>
-				<h1>Lab 6</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%206.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%206%20code.Rmd" download="Lab_6_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 6 Activity.Rmd" download="Lab_6_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>7</div>
-				</div>
-				<h1>Lab 7</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%207.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%207%20code.Rmd" download="Lab_7_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 7 Activity.Rmd" download="Lab_7_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>8</div>
-				</div>
-				<h1>Lab 8</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%208.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%208%20code.Rmd" download="Lab_8_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 8 Activity.Rmd" download="Lab_8_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>9</div>
-				</div>
-				<h1>Lab 9</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%209.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%209%20code.Rmd" download="Lab_9_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 9 Activity.Rmd" download="Lab_9_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>10</div>
-				</div>
-				<h1>Lab 10</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%2010.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%2010%20code.Rmd" download="Lab_10_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 10 Activity.Rmd" download="Lab_10_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>11</div>
-				</div>
-				<h1>Lab 11</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%2011.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%2011%20code.Rmd" download="Lab_11_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 11 Activity.Rmd" download="Lab_11_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>12</div>
-				</div>
-				<h1>Lab 12</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%2012.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%2012%20code.Rmd" download="Lab_12_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 12 Activity.Rmd" download="Lab_12_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>13</div>
-				</div>
-				<h1>Lab 13</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%2013.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%2013%20code.Rmd" download="Lab_13_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 13 Activity.Rmd" download="Lab_13_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div>
-
-
-			<div class="lab-card">
-				<div class="lab-number">
-					<div>14</div>
-				</div>
-				<h1>Lab 14</h1>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur beatae, fuga totam placeat.</p>
-				
-				<div class="button-box">
-					<button onclick="window.open('./Slides%20Files/Lab%2014.html', '_blank');" class="fancy-button">Slides</button>
-					<a href="./Slides%20Files/Lab%20Code/Lab%2014%20code.Rmd" download="Lab_14_code.Rmd" class="fancy-button">Code</a>
-					<a href="./Lab Activities/Lab 14 Activity.Rmd" download="Lab_14_activity.Rmd" class="fancy-button">Activity</a>
-				</div>
-			</div> -->
 
 		</div>
 	</main>
