@@ -5,6 +5,7 @@ header-includes:
     - \usepackage{setspace}
 ---
 
+\onehalfspacing
 
 ```{r include=FALSE}
 library(tidyverse)
@@ -121,7 +122,108 @@ coef(reg)[1] + coef(reg)[2]*X_value
 \newpage
 
 
-## Some R Practice
+## Some R Practice: Functions
+
+
+Functions are the foundation of R and many other programming languages. A function works in **3 steps**:
+
+1. The function take in some objects and possibly instructions (input). 
+
+2. The function runs some R code that performs operations based on the given objects and instructions. 
+
+3. The function returns the result of the R operations in step 2 (output).
+
+Here is how you define a function in R:
+
+
+```{r eval=FALSE, include=TRUE}
+
+# you need to name you function as you wold a normal variable
+# the function() part is used to define the function arguments (the inputs that the function accepts)
+
+new_function <- function(input){
+  
+  # run come code that does something to input
+  
+  
+  # the function need to return some output
+  # you specify what is return by using return()
+  
+  return(output)
+}
+
+```
+
+So, for example, we can create a function that calculates the mean of any given vector:
+
+```{r}
+
+
+# we specify vector as the only function argument
+
+mean_function <- function(vector){
+  
+  mean <- sum(vector)/length(vector)
+  
+  return(mean)
+}
+
+
+# now we can call our function and input a vector
+
+x <- c(1, 2, 4, 5, 6)
+
+mean_function(vector = x)
+
+```
+
+We can see that this is the exact same result as the `mean()` function in R:
+
+
+```{r}
+mean(x)
+```
+
+Note that you can call a function argument whatever you like as long as you are consistent:
+
+```{r}
+mean_function_2 <- function(ice_cream){
+  
+  name_doesnotmatter <- sum(ice_cream)/length(ice_cream)
+  
+  return(name_doesnotmatter)
+}
+
+# will produce the same exact output
+mean_function_2(x)
+```
+Why use functions? Usually you have some code that you run multiple times where you only change a few things. Functions help you not having to copy and paste code over an over, as well as making code more readable. Of course, there are MANY more benefits to being familiar with functions and using functions.
+
+
+**Tasks:**
+
+- can you create a function that computes the standard deviation? The function that you create must only use the `sum()`, `mean()`, `sqrt()`, and `length()` functions. To test your function, use the vector `c(1,5,66,7,4,3,2)` as input. Then, check that you get the same result as:
+
+```{r}
+x <- c(1,5,66,7,4,3,2)
+sd(x)
+```
+The formula for the sample standard deviation of a variable $X$ is:
+
+$$SD_X = \sqrt{\frac{\sum(X - \bar{X})^2}{N - 1}},$$
+
+```{r include=FALSE}
+
+sd_function <- function(x){
+  
+  sd <- sqrt(sum((x - mean(x))^2)/(length(x)-1))
+  
+  return(sd)
+}
+
+sd_function(x)
+```
+
 
 
 

@@ -5,7 +5,7 @@ header-includes:
     - \usepackage{setspace}
 ---
 
-
+\onehalfspacing
 
 ```{r include=FALSE}
 library(tidyverse)
