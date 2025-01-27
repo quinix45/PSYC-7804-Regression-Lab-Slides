@@ -993,7 +993,7 @@ ggplot(GPA,
 
 ## Normality of Residuals
 
-The fact that residuals must be normally distributed (and have a mean of 0) is an assumption built into regression (why? The appendix explains it). QQplots can help us infer how much residuals deviate from normality.
+The fact that residuals must be normally distributed is an assumption built into regression (why? The appendix explains it). QQplots can help us infer how much residuals deviate from normality.
 
 :::: {.columns}
 ::: {.column width="30%"}
@@ -1011,9 +1011,19 @@ The `qqPlot()` function from the `car` package is helpful here:
 car::qqPlot(reg, id = FALSE)
 ```
 
-As long as the residuals (dots) are within the band, there should be no cause for concern.
+:::
+
+::: {.fragment fragment-index=2}
+
+As long as roughly 95% of the residuals (dots) are within the band, there should be no cause for concern.
+
+<div style="font-size: 22px"> **NOTE:** since the shaded area represents a 95% confidence interval, seeing roughly 5% of the residuals outside would be within our expectations. </div>
 
 :::
+
+
+
+
 
 :::
 ::: {.column width="70%"}

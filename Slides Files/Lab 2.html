@@ -1187,7 +1187,7 @@ The <em>length of the dashed lines</em> are the residuals, which represent the d
 </section>
 <section id="normality-of-residuals" class="slide level2">
 <h2>Normality of Residuals</h2>
-<p>The fact that residuals must be normally distributed (and have a mean of 0) is an assumption built into regression (why? The appendix explains it). QQplots can help us infer how much residuals deviate from normality.</p>
+<p>The fact that residuals must be normally distributed is an assumption built into regression (why? The appendix explains it). QQplots can help us infer how much residuals deviate from normality.</p>
 <div class="columns">
 <div class="column" style="width:30%;">
 <div class="fragment" data-fragment-index="1">
@@ -1195,7 +1195,12 @@ The <em>length of the dashed lines</em> are the residuals, which represent the d
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(reg, <span class="at">id =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>As long as the residuals (dots) are within the band, there should be no cause for concern.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p>As long as roughly 95% of the residuals (dots) are within the band, there should be no cause for concern.</p>
+<div style="font-size: 22px">
+<strong>NOTE:</strong> since the shaded area represents a 95% confidence interval, seeing roughly 5% of the residuals outside would be within our expectations.
+</div>
 </div>
 </div><div class="column" style="width:70%;">
 <div class="fragment" data-fragment-index="1">
