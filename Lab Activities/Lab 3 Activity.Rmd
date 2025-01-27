@@ -3,6 +3,7 @@ title: "Lab 3 Activity"
 output: pdf_document
 header-includes:
     - \usepackage{setspace}
+urlcolor: blue
 ---
 
 \onehalfspacing
@@ -11,7 +12,7 @@ header-includes:
 library(tidyverse)
 ```
 
-For this activity we will be looking at some data about [the 1907 Romanian peasant revolt](https://en.wikipedia.org/wiki/1907_Romanian_peasants%27_revolt#:~:text=A%20peasant%20revolt%20(Romanian%3A%20Răscoala,including%20as%20far%20as%20Oltenia.){target="_blank"}! The data is called `Chirot` and is stored in the `carData` package. Run `help("Chirot")` to find out more about the data.
+For this activity we will be looking at some data about [the 1907 Romanian peasant revolt](https://en.wikipedia.org/wiki/1907_Romanian_peasants%27_revolt){target="_blank"}! The data is called `Chirot` and is stored in the `carData` package. Run `help("Chirot")` to find out more about the data.
 
 
 **1.** Load the `carData` and create a separate `data.frame` object called `rev_int` that only contains the the `intensity` and `inequality` variables from the `chirot` data.
@@ -44,35 +45,121 @@ cor$r[2]
 # significance and 95%CI
 cor$ci
 
-
 # not significant
 ```
 
 
+**3.** Run a linear regression with `inequality` predicting `intensity`. Report the estimated regression coefficient in APA style. Do you notice any similarities between the regression coefficient of `inequality` and the correlation you calculated in the previous question? (yes, what is the same?)
 
-**3.**
+```{r include=FALSE}
+reg <- lm(intensity ~ inequality, rev_int)
 
-
-
-**4.**
-
-
-
-
-**5.**
+summary(reg)
+```
 
 
+**4.** According to the previous regression model, what happens to the `intensity` once `inequality ` increases by 3 units?
 
-**6.**
+```{r include=FALSE}
+# intensity increases by
+
+coef(reg)[2]*3
+```
+
+**5.** What is the predicted value of `intensity` if `inequality` is 10? Make sure there is no rounding error in the answer (i.e., do not copy and paste numbers from the output).
+
+```{r include=FALSE}
+coef(reg)[1] + coef(reg)[2]*10  
+```
+**6.** Create a QQplot that evaluates the normality of residuals. What do you think?
+
+```{r include=FALSE}
+
+# not doing very well
+
+car::qqPlot(reg, id = FALSE)
+```
+
+- Afterwards, create a scatterplot with `inequality` on the x-axis and `intensity` on the y-axis to check whether a linear relationship is appropriate for the two variables. What do you think?
+
+```{r include=FALSE}
+library(tidyverse)
+
+ggplot(rev_int,
+       aes(x = inequality, y = intensity)) +
+     geom_point() +
+  geom_smooth(method = "loess",
+              se = FALSE) +
+  theme_classic()
+
+# the relationship between the two variables is not linear. Linear regression does not characterize the relationship between the two variables well.
+
+# Likely poisson/negative binomial process? (https://en.wikipedia.org/wiki/Poisson_distribution) (https://en.wikipedia.org/wiki/Negative_binomial_distribution)
+```
+
 
 
 \newpage
 
 
+## Some R Practice: `for` loops
+
+Loops are used to repeat an operation a certain number of times based on certain criteria. There are different types of loops, but the most used type of loop across computer languages is the `for` loop. 
+
+Here is an example of a `for` loop:
+
+```{r}
+for(i in 1:10){
+  
+  print(2*i)
+}
+```
+Did you see what happened? the loop ran *10 times*, determined by the `1:10` part. Remember that `1:10` actually represents:
+
+```{r}
+1:10
+```
+
+Now, the loop was repeated 10 times, but every time `i`, the *index*, was substituted for one of the numbers in `1:10`. So every time the loop multiplied 2 by a number from 1 to 10. 
+
+This is a simple example, but loops are used in many ways. One way that loops are often used is to save a series of results to some object. The task requires you to do one such operation:\.
 
 
-## Some R Practice
+**Task**
 
+- You have the following matrix `dat_ex` and the empty object `SDs`. 
+
+```{r}
+dat_ex <- cbind(c(1,4,6,77,3,12),
+                c(87,789,35,72,33,4),
+                c(134,455,66,776,397,1289))
+
+# create an empty object
+
+SDs <- c()
+```
+
+
+Create a `for` loop that stores the standard deviations of each of the columns of `dat_ex` into the `SDs` object. At the end of the `for` loop, the `SDs` object should look like this:
+
+```{r include=FALSE}
+# ncol() is "better" than just using 3 because the code will generalize to any number of columns
+
+for(i in 1:ncol(dat_ex)){
+  
+  SDs[i] <- sd(dat_ex[,i])
+  
+}
+```
+
+
+```{r}
+SDs
+```
+
+To solve this task, it is important to know how to index vectors and matrices as discussed in the R practice from Lab 1. 
+
+**Note:** use the `sd()` function calculate the standard deviation. 
 
 
 
