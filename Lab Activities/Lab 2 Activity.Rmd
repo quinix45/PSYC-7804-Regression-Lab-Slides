@@ -138,16 +138,16 @@ Here is how you define a function in R:
 
 ```{r eval=FALSE, include=TRUE}
 
-# you need to name you function as you wold a normal variable
+# you need to name you function as you wold a normal R object
 # the function() part is used to define the function arguments (the inputs that the function accepts)
 
 new_function <- function(input){
   
-  # run come code that does something to input
+  # run some code that does something to the input
   
   
-  # the function need to return some output
-  # you specify what is return by using return()
+  # the function needs to return some output
+  # you specify what is returned by using return()
   
   return(output)
 }
@@ -159,7 +159,7 @@ So, for example, we can create a function that calculates the mean of any given 
 ```{r}
 
 
-# we specify vector as the only function argument
+# we specify `vector` as the only function argument
 
 mean_function <- function(vector){
   
@@ -202,11 +202,14 @@ Why use functions? Usually you have some code that you run multiple times where 
 
 **Tasks:**
 
-- can you create a function that computes the standard deviation? The function that you create must only use the `sum()`, `mean()`, `sqrt()`, and `length()` functions. To test your function, use the vector `c(1,5,66,7,4,3,2)` as input. Then, check that you get the same result as:
+- can you create a function that computes the standard deviation of a vector? The function that you create must only use the `sum()`, `mean()`, `sqrt()`, and `length()` functions. To test your function, try it on both `c(1,5,66,7,4,3,2)` and `c(17,34,23,2)` as inputs. Then, check that you get the same result as:
 
 ```{r}
-x <- c(1,5,66,7,4,3,2)
-sd(x)
+x1 <- c(1,5,66,7,4,3,2)
+sd(x1)
+
+x2 <- c(17,34,23,2)
+sd(x2)
 ```
 The formula for the sample standard deviation of a variable $X$ is:
 
@@ -221,7 +224,8 @@ sd_function <- function(x){
   return(sd)
 }
 
-sd_function(x)
+sd_function(x1)
+sd_function(x2)
 ```
 
 
