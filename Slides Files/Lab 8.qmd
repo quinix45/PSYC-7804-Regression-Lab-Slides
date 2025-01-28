@@ -889,7 +889,7 @@ geom_segment(x = mean(Temp_avg_2021$time) -130,
 
 This concept of ["finding the top (or bottom)"](https://en.wikipedia.org/wiki/Mathematical_optimization){target="_blank"} happens to be the foundation of almost all estimation algorithms in statistics. 
 
-## Bootsrap CI for Maximum/Minumum point
+## Bootsrap CI for Maximum/Minimum point
 
 We can create a 95% CI for the `time` value at which we expect the maximum temperature with bootstrapping.
 
@@ -987,7 +987,7 @@ reg_fifth <- lm(Temp_F ~ poly(time, 5), data = Temp_avg_2021)
 
 ## The `poly()` Function 
 
-Be careful! It may seem that the `poly()` function saves us a lot of time, but it does some interesting stuff behind the scenes to calculate polynomials. Do not interpret the regression coefficients of regressions that use `poly()` without first reading the appendix of this Lab *very carefully*! 
+Be careful! It may seem that the `poly()` function saves us a lot of time, but it calculates **orthogonal polynomials**. Do not interpret the regression coefficients of regressions that use `poly()` functions! For more, see [this link](https://online.stat.psu.edu/stat502/lesson/10/10.2){target="_blank"}.
 ::: 
 
 
@@ -1115,30 +1115,7 @@ geom_smooth(method = "lm",
 
 <div id="refs"> </div>
 
+# Appendix: Piece-wise Regression and Splines
 
-# Appendix: The `poly()` function
-
-
-## The `poly()` function 
-
-The `poly()` is interesting. Namely, it generates polynomials up to specified degree of the given variable. 
-
-
-:::: {.columns}
-::: {.column width="50%"}
-
-For example if we give a variable `1,2,3`, `poly()` will return:
-
-```{r}
-# for a polynomial of 3rd degree (cubic)
-data.frame(poly(c(1,2,3), 3, raw = TRUE))
-```
-
-
-:::
-::: {.column width="50%"}
-
-:::
-::::
 
 

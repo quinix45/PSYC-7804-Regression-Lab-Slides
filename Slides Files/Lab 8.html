@@ -1016,8 +1016,8 @@ Why does <span class="math inline">\(-\frac{b_1}{2b_2}\)</span> always finds the
 </div>
 <p>This concept of <a href="https://en.wikipedia.org/wiki/Mathematical_optimization" target="_blank">“finding the top (or bottom)”</a> happens to be the foundation of almost all estimation algorithms in statistics.</p>
 </section>
-<section id="bootsrap-ci-for-maximumminumum-point" class="slide level2">
-<h2>Bootsrap CI for Maximum/Minumum point</h2>
+<section id="bootsrap-ci-for-maximumminimum-point" class="slide level2">
+<h2>Bootsrap CI for Maximum/Minimum point</h2>
 <p>We can create a 95% CI for the <code>time</code> value at which we expect the maximum temperature with bootstrapping.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -1044,7 +1044,7 @@ The 95% CI for the <code>time</code> value at which we expect the highest temper
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(top_boot, <span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    2.5%    97.5% 
-17.29640 23.42135 </code></pre>
+17.56999 23.30871 </code></pre>
 </div>
 </div>
 <div style="font-size: 24px;">
@@ -1092,7 +1092,7 @@ We can easily add polynomials to regressions thanks to the <code>poly()</code> f
 <p><strong>The <code>poly()</code> Function</strong></p>
 </div>
 <div class="callout-content">
-<p>Be careful! It may seem that the <code>poly()</code> function saves us a lot of time, but it does some interesting stuff behind the scenes to calculate polynomials. Do not interpret the regression coefficients of regressions that use <code>poly()</code> without first reading the appendix of this Lab <em>very carefully</em>!</p>
+<p>Be careful! It may seem that the <code>poly()</code> function saves us a lot of time, but it calculates <strong>orthogonal polynomials</strong>. Do not interpret the regression coefficients of regressions that use <code>poly()</code> functions! For more, see <a href="https://online.stat.psu.edu/stat502/lesson/10/10.2" target="_blank">this link</a>.</p>
 </div>
 </div>
 </div>
@@ -1202,34 +1202,14 @@ Wickham, H., &amp; RStudio. (2023). <em>Tidyverse: <span>Easily Install</span> a
 </div>
 </div>
 </section>
-<section>
-<section id="appendix-the-poly-function" class="title-slide slide level1 center">
-<h1>Appendix: The <code>poly()</code> function</h1>
-
-</section>
-<section id="the-poly-function-1" class="slide level2">
-<h2>The <code>poly()</code> function</h2>
-<p>The <code>poly()</code> is interesting. Namely, it generates polynomials up to specified degree of the given variable.</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>For example if we give a variable <code>1,2,3</code>, <code>poly()</code> will return:</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>  X1 X2 X3
-1  1  1  1
-2  2  4  8
-3  3  9 27</code></pre>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-
-</div></div>
+<section id="appendix-piece-wise-regression-and-splines" class="title-slide slide level1 center">
+<h1>Appendix: Piece-wise Regression and Splines</h1>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p>Lab 8: Quadratic regression and non-linear alternatives</p>
 </div>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
