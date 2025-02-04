@@ -24,32 +24,28 @@ format:
 editor: source
 ---
 
+
+
 ## Today's Packages and Data 🤗
 
 :::: {.columns}
 ::: {.column width="50%"}
 
-```{r}
-#| code-fold: true
-#| eval: false
-#| echo: true
-#| code-line-numbers: false
-#| code-summary: "Install Packages Code"
-#| classes: code-150
 
+
+::: {.cell .code-150}
+
+```{.r .cell-code  code-fold="true" code-summary="Install Packages Code" code-line-numbers="false"}
 # install.packages("tidyverse")
 # devtools::install_github("quinix45/FabioFun")
 install.packages("ggeffects")
 install.packages("interactions")
 ```
+:::
 
-```{r}
-#| eval: true
-#| echo: true
-#| code-line-numbers: false
-#| warning: false
-#| classes: code-150
+::: {.cell .code-150}
 
+```{.r .cell-code  code-line-numbers="false"}
 library(tidyverse)
 library(ggeffects)
 library(interactions)
@@ -57,6 +53,9 @@ library(FabioFun)
 theme_set(theme_classic(base_size = 14, 
                         base_family = 'serif'))
 ```
+:::
+
+
 
 
 </br>
@@ -82,13 +81,11 @@ theme_set(theme_classic(base_size = 14,
 
 <center style="padding-bottom: 41px;"> [Data]{.data-title} </center>
 
-```{r}
-#| warning: false
-#| classes: code-125
-#| echo: true
-#| code-line-numbers: false
-#| output: true
 
+
+::: {.cell .code-125}
+
+```{.r .cell-code  code-line-numbers="false"}
 dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Attend.dta")
 
 # select only the variables we are interested in
@@ -96,6 +93,21 @@ attend <- dat[,c("final", "attend", "priGPA")]
 
 str(attend, give.attr = FALSE)
 ```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+'data.frame':	680 obs. of  3 variables:
+ $ final : num  28 26 30 27 34 25 10 34 26 26 ...
+ $ attend: num  27 22 30 31 32 29 30 26 24 29 ...
+ $ priGPA: num  2.64 3.52 2.46 2.61 3.32 ...
+```
+
+
+:::
+:::
+
+
 
 :::
 ::::
@@ -151,6 +163,7 @@ When hypothesizing interaction effects, it is useful to make a distinction betwe
 
 
 ## References
+
 
 
 

@@ -80,7 +80,7 @@ The `devtools` package [@Wickham_etal_2022] helps developing R packages. It is m
 
 ### `FabioFun`
 
-This is a package where I save functions that I either use a bunch or that I think may be useful in the future. Make sure you run `devtools::install_github("quinix45/FabioFun")` to install it. 
+This is a package where I save functions that I either use a bunch or that I think may be useful in the future. Run `devtools::install_github("quinix45/FabioFun")` to install it. 
 :::
 
 </div>
