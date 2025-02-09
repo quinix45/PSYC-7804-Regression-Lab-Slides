@@ -40,7 +40,7 @@ editor: source
 
 install.packages("GGally")
 install.packages("plotly")
-# Should be isntaleld already
+# Should be installed already
 # install.packages("rio")
 # install.packages("tidyverse")
 
@@ -68,7 +68,7 @@ theme_set(theme_classic(base_size = 16,
 
 ### `GGally`
 
-The ``GGally` package [@Schloerke_etal_2024] builds upon `ggplot2` and includes many fucntions for creating complex plots. 
+The `GGally` package [@Schloerke_etal_2024] builds upon `ggplot2` and includes many fucntions for creating complex plots. 
 
 ### `plotly`
 
