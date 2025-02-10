@@ -37,7 +37,7 @@ editor: source
 #| code-summary: "Install Packages Code"
 #| classes: code-150
 
-# install.packages("tidyverse")
+
 # devtools::install_github("quinix45/FabioFun")
 install.packages("ggeffects")
 install.packages("interactions")
@@ -66,10 +66,11 @@ theme_set(theme_classic(base_size = 14,
 ::: {.panel-tabset}
 ### `ggeffects`
 
-
-
+The `ggeffects` package [@Ludecke_etal_2025] is described as *a light-weight package that aims at easily calculating adjusted predictions and estimated marginal means at meaningful values of covariates from statistical models*.
 
 ### `interactions`
+
+The `interactions` package [@Long_2024] is a package that provides helpful functions to explore interaction effects. 
 
 :::
 
@@ -92,9 +93,9 @@ theme_set(theme_classic(base_size = 14,
 dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Attend.dta")
 
 # select only the variables we are interested in
-attend <- dat[,c("final", "attend", "priGPA")]
+grade_fin <- dat[,c("final", "attend", "priGPA")]
 
-str(attend, give.attr = FALSE)
+str(grade_fin, give.attr = FALSE)
 ```
 
 :::
@@ -114,10 +115,6 @@ If we believe that two variables should interact in how they influence $Y$, we c
 $$
 \hat{Y} = b_0 + b_1X_1 + b_2X_2 + b_3(X_1 \times X_2) 
 $$
-
-
-
-
 
 ## By the way, Interaction or Moderation? 
 
@@ -147,12 +144,263 @@ When hypothesizing interaction effects, it is useful to make a distinction betwe
 ::::
 
 
+## Our hypothesis
 
+<div style="font-size: 24px"> We hypothesize that the grade on a statistics final (`final`, ,$Y$) is predicted by prior GPA before starting the class (`priGPA`, $X_1$). Additionally, we also think that the effect on that `priGPA` has on `final` is *moderated* by class grade_finance (`attend`, $X_2$). </div>
+
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-115
+
+# we use "*" to specify an interaction effect between two variables
+reg_int <- lm(final ~ attend*priGPA, data = grade_fin)
+summary(reg_int)
+```
+
+
+
+:::
+::: {.column width="50%"}
+
+our regression equation is:
+
+$$
+\hat{Y} = 30. 14 - 0.48X_1 - 2.21X_2 + 0.20 X_1 X_2
+$$
+
+<div style="font-size: 24px"> Crucially, our interaction term is significantly different from 0. The intercept, $30.14$, is still the expected value of $Y$ when $X_1 = 0$ and $X_2 = 0$... </div>
+
+</br>
+
+<div style="font-size: 24px; text-align:center;">  However, now that we are dealing with a significant interaction effect, $0.20 X_1 X_2$, things are not so simple! The slopes now have very specific meanings 🧐 </div>
+
+
+
+
+:::
+::::
+
+## Visualizing Interactions
+
+We can visualize what interaction effects imply graphically. Interactions between continuous variables ***bend*** the regression plane:
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+library(plotly)
+
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA,
+                       x2 = grade_fin$attend,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE,
+             opacity = 0.3) %>% 
+   layout(title = 'Regression Plane with no Interaction')%>%  
+  bslib::card(full_screen = TRUE)
+
+
+```
+
+
+
+:::
+::: {.column width="50%"}
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA,
+                       x2 = grade_fin$attend,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE, 
+                       interaction = TRUE,
+             opacity = 0.3)%>% 
+  layout(title = 'Regression Plane with Interaction')%>%  
+  bslib::card(full_screen = TRUE)
+
+
+```
+
+:::
+::::
+
+
+
+## Regression Planes Bend?
+
+So what does it mean for a regression plane to bend or not? We can start by thinking about the regression equation without any interactions.
+
+:::: {.columns}
+::: {.column width="50%"}
+if we say:
+
+$$
+\hat{Y} = b_0 + b_1X_1 + b_2X_2 
+$$
+You can see that the *slopes* of $b_1$ and $b_2$ are always constant, no matter what values you plug in the equation. 
+
+This means that we believe that the relation that $X_1$ and $X_2$ have on $Y$ is independent. 
+
+A regression plane is flat on the surface only when the slopes are always constant (i.e. no interaction is assumed).
+
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA,
+                       x2 = grade_fin$attend,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE,
+             opacity = 0.3) %>% 
+   layout(title = 'Regression Plane with no Interaction')%>%  
+  bslib::card(full_screen = TRUE)
+```
+
+:::
+::::
+
+## Regression Planes Bend Indeed!
+
+:::: {.columns}
+::: {.column width="50%"}
+
+Instead, if we say:
+
+$$
+\hat{Y} = b_0 + b_1X_1 + b_2X_2 + b_3X_1 X_2  
+$$
+You can see that the *slopes* of $X_1$ and $X_2$ will respectively change depending on what values you give to $X_1$ or $X_2$. Let's say that $X_2 = 2$. Then:
+
+<center>
+
+$\hat{Y} = b_0 + b_1X_1 + 2b_2 + 2b_3X_1$
+
+ &#8595; 
+
+$\hat{Y} = (b_0 + 2b_2) + (b_1 + 2b_3)X_1$ 
+
+</center>
+
+<div style="font-size: 24px"> If a slope is the relation between $X$ and $Y$, an interaction implies that the relation *changes* depending on the value of another variable. This is represented by the plane bending, reflecting the change in slope.
+ </div>
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA,
+                       x2 = grade_fin$attend,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE,
+                       interaction = TRUE,
+             opacity = 0.3) %>% 
+   layout(title = 'Regression Plane with no Interaction') %>%  
+  bslib::card(full_screen = TRUE)
+```
+
+:::
+::::
+
+## What about the Regression coefficients?
+
+<div style="font-size: 24px"> With that in mind, our variables were final grade ($Y$), GPA prior to taking the class ($X_1$), and attendance ($X_2$):  </div>
+
+$$
+\hat{Y} = 30. 14 - 0.48X_1 - 2.21X_2 + 0.20 X_1 X_2
+$$
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+<div style="font-size: 24px"> If you look at the regression coefficients for $X_1$ and $X_2$, you will see that they are negative, meaning that...as GPA prior to taking the class and attendance increase, the final grade...decreases?!🤨  </div>
+
+<div style="font-size: 24px"> The regression coefficients of $X_1$ and $X_2$ shown here are the slopes on the plane, when either $X_1 = 0$ or $X_2 = 0$. The minimum value of our predictors is respectively: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+min(grade_fin$attend)
+min(grade_fin$priGPA)
+```
+
+
+:::
+::: {.column width="50%"}
+<div style="font-size: 24px"> So we are looking at the slopes at a single point of the plane that does not have any data...that's not very useful 😧 </div>
+
+<div style="font-size: 24px"> This is also why you do not interpret slopes individually with a significant interaction effect. They only capture a small fraction of the regression plane. </div>
+
+</br>
+
+<div style="font-size: 24px"> Still, we can pull some shenanigans  to make the meaning of $X_1 = 0$ or $X_2 = 0$ more informative 😀 Any ideas? </div>
+
+:::
+::::
+
+
+## Mean Centering 
+
+Turns out that we can transform our variables such that we can decide the meaning of $0$! Making the $0$ be the mean 
 
 
 ## References
 
-
+<div id="refs"> </div>
 
 
 

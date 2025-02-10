@@ -41,6 +41,7 @@ require(tidyverse, quietly = TRUE)
                text = dot_labels,
                hoverinfo = "text",
                color = ~groups,
+               ...,
                hovertemplate = paste0("%{text} <br>" ,
                                       axx[[1]], ": %{x:0.} <br>",
                                       axy[[1]], ": %{y:0.} <br>",
