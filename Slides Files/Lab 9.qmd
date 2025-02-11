@@ -4,6 +4,9 @@ author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
 csl: Additional files/apa.csl
+notice: |
+  @Wickham_RStudio_2023
+  @Becker_etal_2024
 title-slide-attributes:
   data-transition: "zoom"
   data-visibility: "uncounted"
@@ -39,7 +42,6 @@ editor: source
 
 
 # devtools::install_github("quinix45/FabioFun")
-install.packages("ggeffects")
 install.packages("interactions")
 ```
 
@@ -51,7 +53,6 @@ install.packages("interactions")
 #| classes: code-150
 
 library(tidyverse)
-library(ggeffects)
 library(interactions)
 library(FabioFun)
 theme_set(theme_classic(base_size = 14, 
@@ -64,9 +65,6 @@ theme_set(theme_classic(base_size = 14,
 <div style="font-size: 26px">
 
 ::: {.panel-tabset}
-### `ggeffects`
-
-The `ggeffects` package [@Ludecke_etal_2025] is described as *a light-weight package that aims at easily calculating adjusted predictions and estimated marginal means at meaningful values of covariates from statistical models*.
 
 ### `interactions`
 

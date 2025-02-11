@@ -4,3 +4,256 @@ author: "Fabio Setti"
 date: "Spring-2025"
 output: html_document
 ---
+
+
+## Today's Packages and Data 🤗
+
+
+
+```{r}
+# devtools::install_github("quinix45/FabioFun")
+# install.packages("interactions")
+```
+
+```{r}
+library(tidyverse)
+library(interactions)
+library(FabioFun)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+```
+
+
+
+```{r}
+dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Attend.dta")
+
+# select only the variables we are interested in
+grade_fin <- dat[,c("final", "attend", "priGPA")]
+
+str(grade_fin, give.attr = FALSE)
+```
+
+
+## Our hypothesis
+
+
+```{r}
+# we use "*" to specify an interaction effect between two variables
+reg_int <- lm(final ~ attend*priGPA, data = grade_fin)
+summary(reg_int)
+```
+
+
+## Visualizing Interactions
+
+
+```{r}
+library(plotly)
+
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA,
+                       x2 = grade_fin$attend,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE,
+             opacity = 0.3) %>% 
+   layout(title = 'Regression Plane with no Interaction')
+```
+
+
+
+```{r}
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA,
+                       x2 = grade_fin$attend,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE, 
+                       interaction = TRUE,
+             opacity = 0.3)%>% 
+  layout(title = 'Regression Plane with Interaction')
+```
+
+
+## Regression Planes Bend?
+
+
+```{r}
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA,
+                       x2 = grade_fin$attend,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE,
+             opacity = 0.3) %>% 
+   layout(title = 'Regression Plane with no Interaction')
+```
+
+
+
+## Regression Planes Bend Indeed!
+
+
+```{r}
+
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA,
+                       x2 = grade_fin$attend,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE,
+                       interaction = TRUE,
+             opacity = 0.3) %>% 
+   layout(title = 'Regression Plane with no Interaction')
+```
+
+
+
+## What about the Regression coefficients?
+
+
+```{r}
+min(grade_fin$attend)
+min(grade_fin$priGPA)
+```
+
+
+## Mean Centering 
+
+
+```{r}
+# the scale() function is a bit strange as previously mentioned, so we need to add the [,1] (see what happens to the column name if you don't)
+# `scale = FALSE` tells the fucntion to not standardize the variable (i.e., do not make the standard deviation 1)
+
+grade_fin$attend_cnt <- scale(grade_fin$attend, scale = FALSE)[,1]
+grade_fin$priGPA_cnt <- scale(grade_fin$priGPA, scale = FALSE)[,1]
+```
+
+
+
+```{r}
+round(rbind(apply(grade_fin[, 2:3], 2, mean),
+            apply(grade_fin[, 2:3], 2, sd)), 2)
+```
+
+
+```{r}
+round(rbind(apply(grade_fin[, 4:5], 2, mean),
+            apply(grade_fin[, 4:5], 2, sd)), 2)
+```
+
+
+## Mean Centering Graphically
+
+
+
+```{r}
+grade_fin %>% 
+  ggplot(aes(x = attend)) +
+  geom_density(col = "red") +
+  geom_density(aes(x = attend_cnt), col = "blue") +
+  xlim(-30, 40) +
+  xlab("Centerd and Uncentered Distribution of `attend`")
+```
+## Comparing Uncentered and Centered Results
+
+```{r}
+
+#uncentered
+reg_int <- lm(final ~ attend*priGPA, data = grade_fin)
+summary(reg_int)
+
+```
+
+
+
+```{r}
+# centered
+reg_int_cnt <- lm(final ~ attend_cnt*priGPA_cnt, data = grade_fin)
+summary(reg_int_cnt)
+```
+
+
+## Graphical comparison
+
+
+```{r}
+
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA,
+                       x2 = grade_fin$attend,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE, 
+                       interaction = TRUE,
+             opacity = 0.1)%>% 
+  layout(title = 'Uncentered')
+```
+
+
+```{r}
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA_cnt,
+                       x2 = grade_fin$attend_cnt,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE, 
+                       interaction = TRUE,
+             opacity = 0.1)%>% 
+  layout(title = 'Centered')
+```
+
+
+
+## Probing Interactions: Simple Slopes
+
+
+```{r}
+# you need to provide specify which variable is the focal predictor and which is the moderator!
+
+sim_slopes <- interactions::sim_slopes(reg_int_cnt, 
+                                       modx = "priGPA_cnt",
+                                       pred = "attend_cnt")
+
+# rounding to 3 decimal places for nicer output
+round(sim_slopes$slopes,3)
+```
+
+
+
+
+## Plotting Simple Slopes
+
+
+```{r}
+interact_plot(reg_int_cnt, 
+              modx = "priGPA_cnt",
+              pred = "attend_cnt")
+```
+
+
+```{r}
+# choose values of the moderator
+
+interact_plot(reg_int_cnt, 
+     modx = "priGPA_cnt",
+     pred = "attend_cnt",
+     modx.values = c(-4, 3, 4))
+```
+
+
+## The johnson-neyman Plot
+
+```{r}
+johnson_neyman(reg_int_cnt, 
+              modx = "priGPA_cnt",
+              pred = "attend_cnt")
+```
+
