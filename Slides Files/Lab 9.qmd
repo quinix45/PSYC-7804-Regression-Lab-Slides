@@ -387,7 +387,7 @@ min(grade_fin$priGPA)
 
 </br>
 
-<div style="font-size: 24px"> Still, we can pull some shenanigans  to make the meaning of $X_1 = 0$ or $X_2 = 0$ more informative 😀 Any ideas? </div>
+<div style="font-size: 24px"> Still, we can pull some shenanigans to make the meaning of $X_1 = 0$ or $X_2 = 0$ more informative 😀 Any ideas? </div>
 
 :::
 ::::
@@ -395,7 +395,452 @@ min(grade_fin$priGPA)
 
 ## Mean Centering 
 
-Turns out that we can transform our variables such that we can decide the meaning of $0$! Making the $0$ be the mean 
+Turns out that we can transform our variables such that we can decide the meaning of $0$! Transforming our dependent variables such that *$0$ represents the mean* is generally a good choice.
+
+We can use the `scale()` function to center our predictors:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# the scale() function is a bit strange as previously mentioned, so we need to add the [,1] (see what happens to the column name if you don't)
+# `scale = FALSE` tells the fucntion to not standardize the variable (i.e., do not make the standard deviation 1)
+
+grade_fin$attend_cnt <- scale(grade_fin$attend, scale = FALSE)[,1]
+grade_fin$priGPA_cnt <- scale(grade_fin$priGPA, scale = FALSE)[,1]
+```
+
+Centering changes the means of the variables to 0, but does not change the standard deviations:
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+<div style="font-size: 24px; padding-bottom: 12px;"> Mean (row 1) and SD (row 2) of uncentered variables </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+round(rbind(apply(grade_fin[, 2:3], 2, mean),
+            apply(grade_fin[, 2:3], 2, sd)), 2)
+```
+
+
+
+
+:::
+::: {.column width="50%"}
+
+<div style="font-size: 24px; padding-bottom: 12px;"> Mean (row 1) and SD (row 2) of centered variables </div>
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+round(rbind(apply(grade_fin[, 4:5], 2, mean),
+            apply(grade_fin[, 4:5], 2, sd)), 2)
+```
+
+:::
+::::
+
+## Mean Centering Graphically
+
+Changing the mean of a variable simply means shifting it along the *x*-axis. For example, if we plot the density of the uncentered and centered `attend` variable:
+
+
+:::: {.columns}
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+grade_fin %>% 
+  ggplot(aes(x = attend)) +
+  geom_density(col = "red") +
+  geom_density(aes(x = attend_cnt), col = "blue") +
+  xlim(-30, 40) +
+  xlab("Centerd and Uncentered Distribution of `attend`")
+
+```
+
+:::
+::: {.column width="30%"}
+
+- The red distribution is the original uncentered variable.
+- the blue distribution is the mean centered variable. 
+
+
+:::{.callout-note}
+### Linear Transformations
+
+Centering and standardizing are known as *linear transformations*. The "linear" comes from the fact that all these transformations do is shift all the data along a line. You can see that from the graph on the left. These transformations have no effect on the results of statistical analyses, but can make interpretation easier. 
+
+:::
+
+:::
+::::
+
+## Comparing Uncentered and Centered Results
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+#uncentered
+reg_int <- lm(final ~ attend*priGPA, data = grade_fin)
+summary(reg_int)
+```
+
+
+:::
+::: {.column width="50%"}
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-115
+
+# centered
+reg_int_cnt <- lm(final ~ attend_cnt*priGPA_cnt, data = grade_fin)
+summary(reg_int_cnt)
+```
+
+:::
+::::
+
+
+
+## What Changed?
+
+We can see that the value of the interaction term remains the same, but the values of the intercept and the slopes for $X_1$ and $X_2$ change:
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<center> **Uncentered Result** </center>
+
+
+$$
+\hat{Y} = 30. 14 - 0.48X_1 - 2.21X_2 + 0.20 X_1 X_2
+$$
+
+
+:::
+::: {.column width="50%"}
+
+<center> **Centered Result** </center>
+
+$$
+\hat{Y} = 25. 63 + 0.47X_1 + 3.08X_2 + 0.20 X_1 X_2
+$$
+:::
+::::
+
+In the centered result, where $0$ represents the mean of $X_1$ and $X_2$, both slopes are positive, and indicate that as GPA prior to taking the class and attendance increase, the final grade...increases!
+
+Nothing changed about our analysis, but in the centered solution, we are looking a the slopes at a **different point of the regression plane**. This point is not out of range, so it makes sense to choose it as a reference point. 
+
+
+:::{.callout-note}
+### Regression Coefficients Flipping? 🤔
+
+The regression coefficients flipping signs is reflected by the direction of the plane flipping. Look for that on the plot on the next slide. You should see that the plane changes direction as some point as the values of the predictors change. 
+:::
+
+
+
+
+## Graphical comparison
+
+<div style="font-size: 24px"> The plane and the data in the centered version on the right has been shifted such that the $0$ point for both predictors corresponds to a location where we have most of our data. On the left, there is no data at the $0$ point for either predictors. 
+ </div>
+
+
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA,
+                       x2 = grade_fin$attend,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE, 
+                       interaction = TRUE,
+             opacity = 0.1)%>% 
+  layout(title = 'Uncentered')%>%  
+  bslib::card(full_screen = TRUE)
+
+
+```
+
+
+
+:::
+::: {.column width="50%"}
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+FabioFun::nice_3D_plot(y = grade_fin$final,
+                       x1 = grade_fin$priGPA_cnt,
+                       x2 = grade_fin$attend_cnt,
+                       axis_names = c("Final",
+                                      "Prior GPA",
+                                      "Attendance"),
+                       reg_plane = TRUE, 
+                       interaction = TRUE,
+             opacity = 0.1)%>% 
+  layout(title = 'Centered')%>%  
+  bslib::card(full_screen = TRUE)
+
+
+```
+
+:::
+::::
+
+## The Interpretation of The Interaction Term
+
+So far we have discussed why we should not interpret slopes in isolation, but what does the interaction effect, $0.20$, mean in our case? 
+
+<center> $0.20$ is the *expected change in slope* of one predictor per 1-unit change in the other predictor. </center>
+
+so, if our equation is $\hat{Y} = 25. 63 + 0.47X_1 + 3.08X_2 + 0.20 X_1 X_2$
+
+:::: {.columns}
+::: {.column width="60%"}
+
+For a prior GPA of $X_2 = 3.5$  we get:
+
+$\hat{Y} = 25.63 + 0.47X_1 + 3.08 \times 3.5 + 0.20 X_1\times 3.5$
+
+$\hat{Y} = (25.63 + 10.78) + 0.47X_1 + 0.7X_1$
+
+$\hat{Y} = 36.41 + 1.17X_1$
+
+
+<div style="font-size: 16px; padding-top:24px;"> **NOTE:** If you paid attention, now that $X_2$ is centered, $3.5$ does not actually mean a GPA of $3.5$. Here, for the sake of the interpretation and plugging in some numbers, I assume it means a GPA of $3.5$, although that is incorrect. </div>
+
+
+:::
+::: {.column width="40%"}
+
+So, when someone starts the class with a prior GPA of $3.5$, the relation between attendance and final grade strengthens: the slope of $X_1$ goes from $0.47$ to $1.17$.  
+
+:::{.callout-note}
+### Sounds Familiar? 
+
+If you remember, the interpretation of the quadratic term in [Lab 8](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%208.html#/b_2-in-quadratic-regression){target="_blank"} is *suspiciously* similar to an interaction effect 🧐 Could it be that the quadratic term is also an interaction effect? Give it some thought 🤔 
+:::
+
+
+:::
+::::
+
+
+## Probing Interactions: Simple Slopes
+
+On the previous slide, we plugged in some value for $X_2$ and looked at the resulting value of the slope for $X_1$. The resulting $1.17$ value for the slope of $X_1$ is generally referred to as a *simple slope*.
+
+<div style="font-size: 24px"> When testing specific hypotheses, you plug in values for your *moderator* variable, and look the resulting slopes of the *focal predictor*. Generally, we choose to look at the simple slopes of the focal predictor at the mean of the *moderator* and at 1 SD below/above the mean of the moderator.  </div>
+
+:::: {.columns}
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# you need to provide specify which variable is the focal predictor and which is the moderator!
+
+sim_slopes <- interactions::sim_slopes(reg_int_cnt, 
+                                       modx = "priGPA_cnt",
+                                       pred = "attend_cnt")
+
+# rounding to 3 decimal places for nicer output
+round(sim_slopes$slopes,3)
+```
+
+The simple slopes are under the *Est.* column. Any questions about the other columns?
+
+
+:::
+::: {.column width="40%"}
+
+<div style="font-size: 23px; padding-bottom: 24px;"> Notice that only once `priGPA` is 1 SD above the mean is the slope of `attend_cnt` positive and significant. That suggests that attendance helps with the final grade only if you prior GPA is 1 SD above average.
+ </div>
+
+
+<center> Practical implication? Only students who are already good benefit from going to class. The teacher in this class is not the best 😱 </center>
+
+:::
+::::
+
+## Plotting Simple Slopes {auto-animate="true"}
+
+:::: {.columns}
+::: {.column width="30%"}
+
+</br>
+
+<div style="font-size: 24px"> The code below plots the simple slopes at different values of the moderator: </div>
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+interact_plot(reg_int_cnt, 
+              modx = "priGPA_cnt",
+              pred = "attend_cnt")
+```
+
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| classes: code-125
+
+interact_plot(reg_int_cnt, 
+              modx = "priGPA_cnt",
+              pred = "attend_cnt")
+```
+
+:::
+::::
+
+
+## Plotting Simple Slopes {auto-animate="true" data-visibility="uncounted"}
+
+:::: {.columns}
+::: {.column width="30%"}
+
+</br>
+
+<div style="font-size: 24px"> We can also specify values of the moderator manually: </div>
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+interact_plot(reg_int_cnt, 
+     modx = "priGPA_cnt",
+     pred = "attend_cnt",
+     modx.values = c(-4, 3, 4))
+```
+
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| classes: code-125
+
+interact_plot(reg_int_cnt, 
+              modx = "priGPA_cnt",
+              pred = "attend_cnt",
+              modx.values = c(-4, 3, 4))
+```
+
+:::
+::::
+
+## The johnson-neyman Plot 😱
+
+:::: {.columns}
+::: {.column width="30%"}
+
+
+<div style="font-size: 24px"> Instead the simple slopes, we can visualize how  the slope of the focal predictor changes as the moderator changes: </div>
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+johnson_neyman(reg_int_cnt, 
+              modx = "priGPA_cnt",
+              pred = "attend_cnt")
+```
+
+<ul style="font-size: 22px">  
+
+<li> **x-axis:** the value of the moderator.  </li>
+
+<li> **y-axis:** the value of the slope of the focal predictor (make sure this makes sense to you!)  </li>
+
+</ul>
+
+<div style="font-size: 24px"> The blue band means that the slope of the focal predictor is significant at the value of the moderator. </div>
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| classes: code-125
+
+johnson_neyman(reg_int_cnt, 
+              modx = "priGPA_cnt",
+              pred = "attend_cnt")$plot
+```
+<div style="font-size: 24px"> **Advice:** If you are presenting your research and interactions are involved...I would use simple slopes instead of a Johnson-Neyman plot. Why? It's an absolute truth about the universe that Johnson-Neyman plots are confusing 🤷 keep it simple (slopes 🫣). </div>
+
+:::
+::::
+
 
 
 ## References
