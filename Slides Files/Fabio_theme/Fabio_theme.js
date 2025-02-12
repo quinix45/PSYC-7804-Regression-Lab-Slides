@@ -376,17 +376,6 @@ function disableAllFragments(fragments)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // hide slide Number (JS code seems to need to go before this)
 
 

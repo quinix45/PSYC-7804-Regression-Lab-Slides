@@ -40,6 +40,8 @@ editor: source
 
 install.packages("GGally")
 install.packages("plotly")
+# made some changes to the package, the updated version
+devtools::install_github("quinix45/FabioFun")
 # Should be installed already
 # install.packages("rio")
 # install.packages("tidyverse")
@@ -949,7 +951,7 @@ summary(reg_full)$r.squared
 <div id="refs"> </div>
 
 
-# Appendix: Adding Groups to 3D plots
+# Appendix: `nice_3D_plot()` Showcase
 
 
 ## Example with World Happiness Data
@@ -1012,10 +1014,50 @@ nice_3D_plot(y = reg_vars$Happiness_score,
 
 ## Example with iris Data
 
-A more practical example with the [iris](https://en.wikipedia.org/wiki/Iris_flower_data_set){target="_blank"} dataset, which is always loaded into R. 
+A more practical example with the [iris](https://en.wikipedia.org/wiki/Iris_flower_data_set){target="_blank"} dataset, Let's start with just providing 3 variables.
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="40%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width)
+```
+
+
+
+:::
+::: {.column width="60%"}
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width) %>%  
+  bslib::card(full_screen = TRUE)
+```
+
+:::
+::::
+
+
+## Name Axes
+
+Let's name our axes:
+
+:::: {.columns}
+::: {.column width="40%"}
 
 ```{r}
 #| eval: false
@@ -1026,15 +1068,100 @@ A more practical example with the [iris](https://en.wikipedia.org/wiki/Iris_flow
 nice_3D_plot(y = iris$Sepal.Length,
              x1 = iris$Petal.Length,
              x2 = iris$Petal.Width,
-             groups = iris$Species,
-             axis_names = c("SL", "PL", "PW"),
-             reg_plane = FALSE)
+             axis_names = c("SL", "PL", "PW"))
 ```
 
-You can also still add a regression plane with `reg_plane = TRUE`. 
+
 
 :::
-::: {.column width="50%"}
+::: {.column width="60%"}
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW")) %>%  
+  bslib::card(full_screen = TRUE)
+```
+
+:::
+::::
+
+
+
+
+## Add Groups 
+
+Let's add colors for the 3 different species of flowers:
+
+:::: {.columns}
+::: {.column width="40%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW"),
+             groups = iris$Species)
+```
+
+
+:::
+::: {.column width="60%"}
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             groups = iris$Species,
+             axis_names = c("SL", "PL", "PW")) %>%  
+  bslib::card(full_screen = TRUE)
+```
+
+:::
+::::
+
+## Add Regression Plane
+
+Let's add a regression plane:
+
+:::: {.columns}
+::: {.column width="40%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW"),
+             groups = iris$Species,
+             reg_plane = TRUE)
+```
+
+
+:::
+::: {.column width="60%"}
 
 
 ```{r}
@@ -1048,15 +1175,114 @@ nice_3D_plot(y = iris$Sepal.Length,
              x2 = iris$Petal.Width,
              groups = iris$Species,
              axis_names = c("SL", "PL", "PW"),
-             reg_plane = FALSE) %>%  
-             bslib::card(full_screen = TRUE)
+             reg_plane = TRUE)%>%  
+  bslib::card(full_screen = TRUE)
 ```
 
 :::
 ::::
 
 
+## Pass Arguments to `plot_Ly()`
 
+You can also pass arguments to the `plot_ly()` function. Let's make the dots more transparent by passing the `opacity =` argument to `plot_ly()`:
+
+:::: {.columns}
+::: {.column width="40%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW"),
+             groups = iris$Species,
+             reg_plane = TRUE,
+             opacity = .3)
+```
+
+
+See [here](https://www.r-bloggers.com/2015/02/r-three-dots-ellipsis/){target="_blank"} for what "passing arguments" to a function within a function means in R. 
+
+
+:::
+::: {.column width="60%"}
+
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW"),
+             groups = iris$Species,
+             reg_plane = TRUE,
+             opacity = .3)%>%  
+  bslib::card(full_screen = TRUE)
+```
+
+:::
+::::
+
+
+## Add Interaction Term to Regression Plane
+
+You can also specify an interaction between the two predictors and get an interaction plane. You will see that the reression plane now bends:
+
+:::: {.columns}
+::: {.column width="40%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW"),
+             groups = iris$Species,
+             reg_plane = TRUE,
+             opacity = .3,
+             interaction = TRUE)
+```
+
+See [Lab 9](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%209.html#/title-slide){target="_blank"} if you are curious to know what is happening. 
+
+
+:::
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW"),
+             groups = iris$Species,
+             reg_plane = TRUE,
+             opacity = .3,
+             interaction = TRUE)%>%  
+  bslib::card(full_screen = TRUE)
+```
+
+:::
+::::
 
 
 

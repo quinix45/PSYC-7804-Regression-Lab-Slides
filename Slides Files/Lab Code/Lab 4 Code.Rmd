@@ -10,8 +10,11 @@ output: html_document
 ```{r}
 install.packages("GGally")
 install.packages("plotly")
-install.packages("rio")
-install.packages("tidyverse")
+# made some changes to the package, the updated version
+devtools::install_github("quinix45/FabioFun")
+# Should be installed already
+# install.packages("rio")
+# install.packages("tidyverse")
 ```
 
 ```{r}
