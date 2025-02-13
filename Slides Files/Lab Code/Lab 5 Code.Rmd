@@ -98,6 +98,21 @@ ggplot() +
 car::avPlots(reg_full)
 ```
 
+## Another Look at the 3D plane
+
+```{r}
+library(FabioFun)
+
+nice_3D_plot(y = reg_vars$Happiness_score,
+             x1 = reg_vars$Log_GDP,
+             x2 = reg_vars$Freedom,
+             axis_names = c("Happiness", 
+                            "GDP", 
+                            "Freedom"),
+             reg_plane = TRUE) 
+```
+
+
 
 ## "By Hand" Example of Bootstrapping
 

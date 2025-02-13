@@ -282,6 +282,65 @@ When you have more than 2 predictors, it is not possible to build a visualizatio
 ::::
 
 
+## Another Look at the 3D plane
+
+
+You can see that the `avPlots()` function identifies 4 point per plot: 2 points with the highest residuals, and 2 points with the highest [leverage](https://en.wikipedia.org/wiki/Leverage_(statistics)){target="_blank"}
+
+
+:::: {.columns}
+::: {.column width="40%"}
+
+<div style="font-size: 22px; padding-bottom: 16px;"> Try tilting the plane such that it resembles the added variable plots on the previous slide. If you hover over the dots in the 3D plot, you should see what point you are looking at ("row #"). Use the points on the added variable plots as a reference. 
+ </div>
+
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+library(FabioFun)
+
+nice_3D_plot(y = reg_vars$Happiness_score,
+             x1 = reg_vars$Log_GDP,
+             x2 = reg_vars$Freedom,
+             axis_names = c("Happiness", 
+                            "GDP", 
+                            "Freedom"),
+             reg_plane = TRUE)
+
+```
+
+
+:::
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+
+library(FabioFun)
+
+nice_3D_plot(y = reg_vars$Happiness_score,
+             x1 = reg_vars$Log_GDP,
+             x2 = reg_vars$Freedom,
+             axis_names = c("Happiness", 
+                            "GDP", 
+                            "Freedom"),
+             reg_plane = TRUE)%>%  
+                    bslib::card(full_screen = TRUE)
+
+
+```
+
+
+:::
+::::
+
+
 ## Bootstrapping
 
 Bootstrapping [@Efron_1992] is a really smart idea to calculate confidence intervals while avoid doing math! You probably have seen some complicated equations that need to be derived to calculate confidence intervals for statistics (e.g., see [here](https://agleontyev.netlify.app/post/2019-09-05-calculating-r-squared-confidence-intervals/){target="_blank"}

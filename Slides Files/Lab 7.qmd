@@ -470,7 +470,7 @@ summary(reg_da)$r.squared
 So, on average `Uncon` is the most important predictor or preference for *Intense* music. This is just on average across all possible regression. We can build dominance matrices with *j* rows and *i* columns.
 
 
-A dominance matrix will contain a **1** if the variable in the row $j$ has a dominates the one in column $i$. You will see a **.5** if the dominance pattern between two variables cannot be established. 
+A dominance matrix will contain a **1** if the variable in the row $j$ dominates the one in column $i$. You will see a **.5** if the dominance pattern between two variables cannot be established. 
 
 
 :::: {.columns}
@@ -558,6 +558,88 @@ This column shows the proportion of bootstrap samples where the dominance patter
 ## References 
 
 <div id="refs"> </div>
+
+
+# Power Analysis in Multiple Regression
+
+
+## What is Power⚡?
+
+**Power:** Statistical power is defined as *the probability of correctly rejecting the null hypothesis if $H_0$ is false*. Power is also known as 1 - Type II error rate. Type II error rate is denoted with $\beta$, and is the probability of failing to reject a false $H_0$. 
+
+In practice, power is used is mostly to answer the question: "how big of a sample size do I need to get a *p*-value lower than .05 given a certain effect size?" 
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+</br>
+
+<div style="font-size: 24px"> The probability of making a Type I error is always the level of significance, $\alpha$. As you know, the level of significance is almost unilaterally $.05$. So, unless specified otherwise,  $\alpha = .05$. </div>
+
+
+<div style="font-size: 24px"> On the other hand, it is common to generally look for a sample size that gives a power of $\beta = .8$. This would mean that if $H_0$ is false, you would reject it $80\%$ of the times. </div>
+
+
+:::
+::: {.column width="50%"}
+
+![](Images/type-i-and-ii-error-2.png)
+
+
+:::
+::::
+
+
+## Power in Regresison
+
+In regression, power is 
+
+
+## Personal opinions and Rant 
+
+Feel free to ignore this slide, but...I personally *really, strongly, dislike* the idea of power and how it is used. In no particular order:
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<center> **Theoretical Reasons:** </center>
+
+- The answer is always get as high of a sample size as you can.
+
+- Type I and type II error rates are not real. We should focus on other things (see [here](https://statmodeling.stat.columbia.edu/2004/12/29/type_1_type_2_t/){target="_blank"}).
+
+- Why do I care how many people I need to get $p < .05$? (no seriously, think about it)
+
+
+
+:::
+::: {.column width="50%"}
+
+<center> **Practical Reasons:** </center>
+
+- people who will ask you to do power analysis, will do it becasue:
+
+
+
+:::
+::::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
