@@ -10,12 +10,14 @@ output: html_document
 
 ```{r}
 install.packages("dominanceanalysis")
+install.packages("pwr")
 # install.packages("tidyverse")
 ```
 
 
 ```{r}
 library(dominanceanalysis)
+library(pwr)
 library(tidyverse)
 theme_set(theme_classic(base_size = 14, 
                         base_family = 'serif'))
@@ -146,4 +148,51 @@ DA_boot <- bootDominanceAnalysis(reg_da, R = 1000)
 summary(DA_boot)
 ```
 
+
+
+## Power For $R^2$
+
+```{r}
+(f2 <- .15/(1-.15))
+
+
+pwr::pwr.f2.test(u = 3,  f2 = f2, 
+                 sig.level = 0.05, power = 0.8)
+```
+
+
+## Power For $\Delta R^2$
+
+
+```{r}
+#.05 increase in R^2
+
+(f2 <- .05/(1-.20))
+
+pwr::pwr.f2.test(u = 1,  f2 = f2, 
+                 sig.level = 0.05, power = 0.8)
+```
+
+
+
+## Power by hand
+
+
+```{r}
+(crit_val <- qf(.95, df1 = 3, df2 = 96))
+
+f2 <- .15/(1-.15)
+L_par <- f2*100
+# ncp = is the non-centrality parameter argument. It defaults to 0
+pf(crit_val, df1 = 3, df2 = 96, ncp = L_par, 
+   lower.tail = FALSE)
+```
+
+
+## Checking with the `pwr.f2.test()` function
+
+
+```{r}
+pwr::pwr.f2.test(u = 3, v = 96, f2 = f2)
+```
 

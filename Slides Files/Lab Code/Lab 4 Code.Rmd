@@ -283,6 +283,66 @@ summary(reg_free)$r.squared
 summary(reg_full)$r.squared
 ```
 
+
+
+## *P*-value from the $F$-distribution
+
+
+```{r}
+# the probability for the F-distribution
+pf(175, df1 = 2, df2 = 137, lower.tail = FALSE)
+```
+
+
+
+
+```{r}
+ggplot() +
+  geom_function(
+    fun = df, 
+    args = list(df1 = 2, df2 = 137), 
+    col = "blue") + 
+  labs(x = "All Possible F-values if R\U00B2 = 0", 
+       y = "Density") +
+  xlim(0, 10)
+```
+
+
+## Looking at the regression Ouput
+
+
+```{r}
+summary(reg_full)
+```
+
+
+## Simulating Experiments where $H_0$ is true
+
+```{r}
+sample_size <- 300
+
+# object where we save F-statistic
+F_statistics <- c()
+
+for(i in 1:2000){
+  
+X <- rnorm(sample_size, mean = 0, sd = 1)
+# the regression coefficient of X is exactly 0
+Y <- rnorm(sample_size, mean = 0*X, sd = 1)
+
+reg_YX <- lm(Y ~ X)
+
+# store F-statistic at every iteration
+F_statistics[i] <-  as.numeric(summary(reg_YX)$fstatistic[1])
+}
+
+ggplot() +
+  geom_density(aes(x = F_statistics)) +
+      scale_y_continuous(expand = c(0, 0))
+```
+
+
+
 # Appendix: Adding Groups to 3D plots
 
 
@@ -308,16 +368,73 @@ nice_3D_plot(y = reg_vars$Happiness_score,
 ```{r}
 nice_3D_plot(y = iris$Sepal.Length,
              x1 = iris$Petal.Length,
-             x2 = iris$Petal.Width,
-             groups = iris$Species,
-             axis_names = c("SL", "PL", "PW"),
-             reg_plane = FALSE)
+             x2 = iris$Petal.Width)
 ```
 
 
 
+## Name Axes
+
+
+```{r}
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW"))
+```
+
+
+## Add Groups 
+
+
+```{r}
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW"),
+             groups = iris$Species)
+```
+
+
+## Add Regression Plane
+
+
+```{r}
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW"),
+             groups = iris$Species,
+             reg_plane = TRUE)
+```
 
 
 
+## Pass Arguments to `plot_ly()`
 
+
+```{r}
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW"),
+             groups = iris$Species,
+             reg_plane = TRUE,
+             opacity = .3)
+```
+
+
+## Add Interaction Term to Regression Plane
+
+
+```{r}
+nice_3D_plot(y = iris$Sepal.Length,
+             x1 = iris$Petal.Length,
+             x2 = iris$Petal.Width,
+             axis_names = c("SL", "PL", "PW"),
+             groups = iris$Species,
+             reg_plane = TRUE,
+             opacity = .3,
+             interaction = TRUE)
+```
 

@@ -733,7 +733,7 @@ Although this may not sound very intuitive, you should think of residuals as a n
 :::: {.columns}
 ::: {.column width="30%"}
 
-Now, after we add both `freedom` and `GDP` as predictors, we se that the dots are even less spread out
+Now, after we add both `freedom` and `GDP` as predictors, we see that the dots are even less spread out
 
 ```{r}
 #| eval: false
@@ -945,10 +945,279 @@ summary(reg_full)$r.squared
 :::
 ::::
 
+## Significance For *R* <sup>2</sup>
+
+As mentioned in [Lab 3](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%203.html#/sampling-distributions){target="_blank"}, significance testing targets the sampling distribution of a statistic. For regression coefficients, the sampling distribution is a $t$-distribution. For $R^2$, we use an $F-$distribution.
+
+
+::: {.fragment fragment-index=1}
+Now, why we use an $F-$distribution takes a few steps to explain, so I will go on a bit of a tangent. 
+:::
+
+<ol style="font-size: 22px">  
+
+::: {.fragment fragment-index=2}
+<li> As we just saw, $R^2$ tells you *the percentage of variance* (i.e., unpredictability) that was taken out of $Y$ by using all the predictors in a regression. How do we tests that the $R^2$ is not $0$ (null hypothesis)?  </li>
+:::
+
+::: {.fragment fragment-index=3}
+<li> Some smart people have figured out that we can do a "transformation" of $R^2$, 
+
+$$F = \frac{\mathrm{df_{residual}}\times R^2}{k(1 - R^2)},$$
+Where $k$ is the number of predictors, and if $N$ is the sample size, $\mathrm{df_{residual}} = N - k - 1$. </li>
+:::
+
+
+::: {.fragment fragment-index=4}
+<li> And it also turns out that if $R^2$ is truly $0$ and $H_0$ is true, we would expect to see $F = \frac{\mathrm{df_{residual}}}{\mathrm{df_{residual}} - 2}$. this is usually around $F = 1$. </li>
+:::
+
+</ul>
+
+::: {.fragment fragment-index=5}
+<div style="font-size: 24px; padding-top: 18px; text-align: center;"> Look at the formula for $F$ and plug in some $R^2$ values, you will see that $F$ increases as $R^2$ increases. And by the way, what happens to $F$ if $R^2 = 1$? </div>
+:::
+
+## Why $F$ and not $R^2$ Directly?
+
+Why do we got thorough all this trouble to calculate $F$ and confuse students taking regression courses? 
+
+::: {.fragment fragment-index=1}
+The formula for $F$ on the previous slide accounts for a very important fact that we will return to in [Lab 6](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%206.html#/the-catch-with-r2){target="_blank"}: $R^2$ always increases when you add additional predictors, even if the new predictors are completely unrelated to $Y$. 
+:::
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 26px; text-align: center;"> The denominator of $F$, $k(1 - R^2)$ accounts for that through the $k$ part. The raw $R^2$ does not. </div>
+:::
+
+::: {.fragment fragment-index=3}
+The *sampling distribution* for an $F$-statistic calculated when $H_0$ is true and $R^2 = 0$ is, as the name suggests, an $F$-distribution with $\mathrm{df}_1 = k$, and $\mathrm{df}_2 = \mathrm{df_{residual}}$. 
+:::
+
+::: {.fragment fragment-index=4}
+For significance testing, the further an $F$-value is from 1, the smaller the $p$-value will be.
+
+::: {.callout-note title="ANOVA and all the $F$s"}
+If you remember looking at ANOVA results, you should remember seeing a whole bunch of $F$-statistics. As we will see, ANOVA is a regression, but it focuses on variance explained ($R^2$!) by its predictors rather than regression coefficients. That is why all you will see from ANOVA are $F$-statistics.
+:::
+:::
+
+
+
+## *P*-value from the $F$-distribution
+
+
+We want to calculate how likely it is to get our $F$-value from an $F$-distribution with $\mathrm{df}_1 = k = 2$, and $\mathrm{df}_2 = \mathrm{df_{residual}} = 137$.
+
+:::: {.columns}
+::: {.column width="40%"}
+
+::: {.fragment fragment-index=1}
+If we look at our full regression, our $F$-value was $\frac{\mathrm{df_{residual}}\times R^2}{k(1 - R^2)} = \frac{137\times .63}{2(1 - .63)} \approx 175$
+:::
+
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 24px"> You can see that $175$ is way off to the right. The probability of getting $175$ or more from this distribution is the $p$-value: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# the probability for the F-distribution
+pf(175, df1 = 2, df2 = 137, lower.tail = FALSE)
+```
+:::
+
+
+::: {.fragment fragment-index=3}
+<div style="font-size: 22px"> So, extremely unlikely ($p = 1.86\times10^{-38}$) to see $F = 175$ from the distribution on the right if $R^2 = 0$. We reject $H_0$. </div>
+:::
+
+:::
+::: {.column width=60%"}
+
+
+::: {.fragment fragment-index=2}
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot Code"
+
+ggplot() +
+  geom_function(
+    fun = df, 
+    args = list(df1 = 2, df2 = 137), 
+    col = "blue") + 
+  labs(x = "All Possible F-values if R\U00B2 = 0", 
+       y = "Density") +
+  xlim(0, 10)
+
+```
+:::
+
+:::
+::::
+
+
+## Looking at the regression Ouput
+
+
+If we look at the regression output again, we will see that  $\mathrm{df}_1 = 2$, $\mathrm{df_{residual}} = 137$, $F = 175$, and $p = 1.86\times10^{-38}$ are in the line below the $R^2$ value.
+
+:::: {.columns}
+::: {.column width="70%"}
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+summary(reg_full)
+```
+
+
+:::
+
+::: {.column width="30%"}
+
+::: {.fragment fragment-index=1}
+
+In APA style you would report this at the end of the regression results as:
+
+> ...the model explained a significant porportion of variance in country happiness, $R^2 = .72$, $F$(2, 137) = 175, $p < .001$. 
+
+:::
+::::
+:::
+
+
+## What does the $F$-distribution look like?
+
+:::: {.columns}
+::: {.column width="30%"}
+
+<div style="font-size: 22px"> Where degrees of freedom come from is a very complex question (see [here](https://stats.stackexchange.com/questions/16921/how-to-understand-degrees-of-freedom){target="_blank"}). The practical effect that they have in significance testing is to *tell the sampling distribution to adapt to sample size and/or number of predictors*. </div>
+
+
+::: {.fragment fragment-index=1}
+We can see what the $F$-distribution looks like when we change degrees of freedom
+:::
+
+
+::: {.fragment fragment-index=2}
+$\mathrm{df}_1$, representing number of variables, is much more influential on the shape compared to $\mathrm{df}_2$, which represents the sample size. 
+
+
+<div style="font-size: 18px"> Note that $F$-values are *always positive*. </div>
+:::
+
+:::
+::: {.column width="70%"}
+
+<iframe width="90%" height="550px" src="https://fabiosetti.shinyapps.io/F_distribution/"> </iframe>
+:::
+::::
+
+
+## Simulating Experiments where $H_0$ is true
+
+<div style="font-size: 24px"> The idea of sampling distributions can be a bit abstract. To convince myself that smart math people are not lying to me, I sometime simulate things; simulating a large (not quite infinite) number of experiments if pretty straightforward in R! </div>
+
+
+:::: {.columns}
+::: {.column width="40%"}
+
+::: {.fragment fragment-index=1}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+sample_size <- 300
+
+# object where we save F-statistic
+F_statistics <- c()
+
+for(i in 1:2000){
+  
+X <- rnorm(sample_size, mean = 0, sd = 1)
+# the regression coefficient of X is exactly 0
+Y <- rnorm(sample_size, mean = 0*X, sd = 1)
+
+reg_YX <- lm(Y ~ X)
+
+# store F-statistic at every iteration
+F_statistics[i] <-  as.numeric(summary(reg_YX)$fstatistic[1])
+}
+
+ggplot() +
+  geom_density(aes(x = F_statistics)) +
+      scale_y_continuous(expand = c(0, 0))
+```
+:::
+
+:::
+::: {.column width="60%"}
+
+
+::: {.fragment fragment-index=1}
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| classes: code-125
+
+sample_size <- 300
+
+F_statistics <- c()
+
+for(i in 1:2000){
+  
+X <- rnorm(sample_size, mean = 0, sd = 1)
+# the regression coefficient of X is exactly 0
+Y <- rnorm(sample_size, mean = 0*X, sd = 1)
+
+reg_YX <- lm(Y ~ X)
+
+# store F-statistic at every iteration
+F_statistics[i] <-  as.numeric(summary(reg_YX)$fstatistic[1])
+}
+
+ggplot() +
+  geom_density(aes(x = F_statistics)) +
+      scale_y_continuous(expand = c(0, 0))
+```
+
+<div style="font-size: 20px"> On the left, there is code that simulates 2000 "experiments" with one predictor and $N = 300$ where $R^2 = 0$. If we save the $F$-values from each experiment and plot them, you will see that the plot matches an $F$-distribution with $\mathrm{df}_1 = 1$ and $\mathrm{df}_2 = 298$. Check with the plot on the previous slide! (make sure the range of the *x*-axis match) </div>
+:::
+
+:::
+::::
+
 
 ## References 
 
 <div id="refs"> </div>
+
+
+
+
+
+
+
+
+
 
 
 # Appendix: `nice_3D_plot()` Showcase
@@ -1183,7 +1452,7 @@ nice_3D_plot(y = iris$Sepal.Length,
 ::::
 
 
-## Pass Arguments to `plot_Ly()`
+## Pass Arguments to `plot_ly()`
 
 You can also pass arguments to the `plot_ly()` function. Let's make the dots more transparent by passing the `opacity =` argument to `plot_ly()`:
 

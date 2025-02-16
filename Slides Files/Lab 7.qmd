@@ -1,5 +1,5 @@
 ---
-title: "Lab 7: Multicollinearity and Dominance Analysis"
+title: "Lab 7: Multicollinearity, Dominance Analysis, and Power"
 author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
@@ -12,7 +12,7 @@ title-slide-attributes:
   data-visibility: "uncounted"
 format:
    revealjs:
-      footer: "Lab 7: Multicollinearity and Dominance Analysis"
+      footer: "Lab 7: Multicollinearity, Dominance Analysis, and Power"
       width: 1280
       height: 720
       chalkboard: true
@@ -42,6 +42,7 @@ editor: source
 #| classes: code-150
 
 install.packages("dominanceanalysis")
+install.packages("pwr")
 # install.packages("tidyverse")
 
 ```
@@ -54,6 +55,7 @@ install.packages("dominanceanalysis")
 #| classes: code-150
 
 library(dominanceanalysis)
+library(pwr)
 library(tidyverse)
 theme_set(theme_classic(base_size = 16, 
                         base_family = 'serif'))
@@ -68,6 +70,11 @@ theme_set(theme_classic(base_size = 16,
 ### `dominanceanalysis`
 
 The `dominanceanalysis` package [@Navarrete_etal_2024] contains functions to run dominance analysis in R.
+
+### `pwr`
+
+The `pwr` package [@Champely_etal_2020] includes functions to conduct power analysis for some statistical analyses and experimental designs. Click [here](https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html){target="_blank"} for examples on all the types of power calculations that the package allows for.
+
 :::
 
 </div>
@@ -107,19 +114,25 @@ I am using some of the data from @Setti_Kahn_2024, where<span style="font-size: 
 For the data here I selected only 3 personality facets and 1 dimension of music preference.
 
 
-
 <ul style="font-size: 22px">  
 
-<li> **Intense**: Preference for the *intense* music dimension, which includes genres such as rock, punk, metal. </li>
 
+::: {.fragment fragment-index=1}
+<li> **Intense**: Preference for the *intense* music dimension, which includes genres such as rock, punk, metal. </li>
+:::
+
+::: {.fragment fragment-index=2}
 <li> **Advnt**: Adventurousness facet of big 5 openness to experience. </li>
 
 <li> **Intel**: Intellect facet of big 5 openness to experience. </li>
 
 <li> **Uncon**: Unconventionality facet of HEXACO openness to experience. </li>
+:::
 
 
+::: {.fragment fragment-index=3}
 Higher values mean higher preference/levels of personality trait
+:::
 
 </ul>
 
@@ -137,8 +150,9 @@ Higher values mean higher preference/levels of personality trait
 :::
 ::::
 
-
+::: {.fragment fragment-index=4}
 This data fits the lab topic well because in the paper we had to figure out a way of dealing with high multicollinearity, and dominance analysis ended up helping a lot!
+:::
 
 ## Regression coefficients Weirdness 
 
@@ -150,6 +164,7 @@ This data fits the lab topic well because in the paper we had to figure out a wa
 :::: {.columns}
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=1}
 <div style="font-size: 22px; padding-top: 6px;"> For now, let's see how Adventurousness and intellect relate preference for Intense music: </div>
 
 
@@ -163,16 +178,20 @@ round(cor(music[,1:3]), 2)
 ```
 
 <div style="font-size: 22px;"> The correlations are all positive. </div>
-
+:::
 
 <br>
 
-
+::: {.fragment fragment-index=3}
 <div style="font-size: 22px;">  But wait, the relation between `Advnt` and `Intense` becomes negative after accounting for `Intel` 🙀 </div>
+:::
+
 
 :::
 ::: {.column width="50%"}
 
+
+::: {.fragment fragment-index=2}
 <div style="font-size: 22px"> Let's say we want to know the relation between `Advnt` and `Intense` while accounting for `Intel`. We run a multiple regression: </div>
 
 ```{r}
@@ -186,7 +205,7 @@ reg_coll <- lm(Intense ~ Advnt + Intel, data = music)
 # car function for shorter regression summary 
 car::S(reg_coll, brief = TRUE)
 ```
-
+:::
 
 :::
 ::::
@@ -215,10 +234,14 @@ nice_3D_plot(y = music$Intense,
              reg_plane = TRUE)
 ```
 
+
+::: {.fragment fragment-index=1}
 <div style="font-size: 22px">  One apparent issue is that `Advnt` and `Intel` are extremely correlated ($r = .96$). You can see it from the 3D plot, which is essentially a 2D plot (`Advnt` and `Intel` are effectively a single variable, not two separate ones). This is a case of **multicollinearity**. </div>
+:::
 
-
+::: {.fragment fragment-index=2}
 <div style="font-size: 22px; padding-top: 12px;">  We are asking for a 3D plane when we should just ask for a line. In such cases, strange things are bound to happen. </div>
+:::
 
 
 :::
@@ -252,6 +275,7 @@ If you remember, [semi-partial correlations](https://raw.githack.com/quinix45/PS
 :::: {.columns}
 ::: {.column width="70%"}
 
+::: {.fragment fragment-index=1}
 ```{r}
 #| eval: true
 #| echo: true 
@@ -262,7 +286,9 @@ ppcor::spcor(music[,1:3])[1]
 
 ```
 We want to look at the first row. We can see that the relation between `Intense` and `advnt` is negative after the variance explained by `Intel` is taken out of `Advnt`.  
+:::
 
+::: {.fragment fragment-index=2}
 As we saw a few slides back, by themselves both variables are positively correlated with `Intense`
 
 
@@ -271,18 +297,21 @@ As we saw a few slides back, by themselves both variables are positively correla
 
 cor(music[,1:3])[1,]
 ```
+:::
 
 
 :::
 ::: {.column width="30%"}
 
+
+::: {.fragment fragment-index=3}
+
 ::: {.callout-note}
-
 ## A Word of Advice
-
 When the sign of correlations and semi-partial correlations are different, something strange is happening. Multicollinearity may be the reason, but other possibilities exist (see [here](https://freerangestats.info/blog/2023/06/04/causality-sims){target="_blank"}). 
-
 ::: 
+
+:::
 
 :::
 ::::
@@ -296,11 +325,15 @@ Probably the quickest way to check for multicollinearity is to calculate the var
 
 $$VIF_x = \frac{1}{1 - R^2}$$
 
+::: {.fragment fragment-index=1}
 Importantly, the $R^2$ in the VIF formula stands for the variance explained in the predictor $x$ by *all other predictors*. 
+:::
+
 
 :::: {.columns}
 ::: {.column width="70%"}
 
+::: {.fragment fragment-index=2}
 We use the `vif()` function from `car` to get the VIF for our regression variables 
 
 ```{r}
@@ -314,17 +347,19 @@ car::vif(reg_coll)
 
 
 <div style="font-size: 22px"> A VIF higher than 10 usually suggest sizable multicollinearity between predictors. </div>
+:::
 
 :::
 
 ::: {.column width="30%"}
 
-
+::: {.fragment fragment-index=3}
 ::: {.callout-note}
 ## Question?
 
 Why is the VIF for our two variables the same?  
 ::: 
+:::
 
 :::
 
@@ -335,6 +370,7 @@ Why is the VIF for our two variables the same?
 
 As shown in [Lab 5](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%205.html#/calculate-partial-regression-coefficients-by-hand){target="_blank"}, regression coefficients are calculated based on the residuals of the predictors after controlling for all other predictors. But, if `Advnt` and `Intel` are so correlated, what happens to their residual after controlling fo one another? 
 
+::: {.fragment fragment-index=1}
 :::: {.columns}
 ::: {.column width="50%"}
 
@@ -363,17 +399,23 @@ var(resid_Intel)
 ```
 :::
 ::::
+:::
 
 <br>
 
+::: {.fragment fragment-index=2}
 <div style="font-size: 22px"> The residuals have almost no variance left! If a variable has variance of 0, it is always the same number (i.e., a constant), and cannot predict anything. A consequence of multicollinearity is that the regression coefficients that are calculated based on these residuals **should not be interpreted**. 
  </div>
+:::
  
+::: {.fragment fragment-index=3}
 <center>
 
 However, $R^2$ is untouched by multicollinearity! So, you can still interpret $R^2$ just fine with high multicollinearity.
 
 </center>
+:::
+
 
 ## Dominance Analysis
 
@@ -383,15 +425,21 @@ Dominance analysis  [@Budescu_1993; @Azen_Budescu_2003] main application is to d
 :::: {.columns}
 ::: {.column width="70%"}
 
+::: {.fragment fragment-index=1}
 <div style="font-size: 24px"> Let's say we have three predictors, $x_1$, $x_2$ and $x_3$. We want know which one is the most important relative to the other 2 predictors. DA looks at how much each variable adds to $R^2$ when it is added to *all possible regression subsets*. </div>
+:::
 
 <br>
 
+::: {.fragment fragment-index=2}
 <div style="font-size: 24px">  For Example, for $x_1$, we would look at how much the $R^2$ increases when we add it to a regression (1) with no variables , (2) only with $x_2$, (3) only with $x_3$, and (4) with $x_2$ and $x_3$.  </div>
+:::
 
 <br>
 
+::: {.fragment fragment-index=3}
 Different dominance patterns (complete dominance, conditional dominance, general dominance) between variables can be established depending on the results of DA.
+:::
 
 :::
 ::: {.column width="30%"}
@@ -418,6 +466,7 @@ Different dominance patterns (complete dominance, conditional dominance, general
 :::: {.columns}
 ::: {.column width="60%"}
 
+::: {.fragment fragment-index=1}
 ```{r}
 #| eval: true
 #| echo: true 
@@ -428,7 +477,7 @@ reg_da <- lm(Intense ~ Advnt + Intel + Uncon, music)
 DA <- dominanceAnalysis(reg_da)
 summary(DA)
 ```
-
+:::
 
 :::
 ::: {.column width="40%"}
@@ -436,19 +485,30 @@ summary(DA)
 
 <ul style="font-size: 22px">  
 
+::: {.fragment fragment-index=2}
 let's go over the meaning of the columns in the output
-
+:::
+::: {.fragment fragment-index=3}
 <li>  `model`: variables in the regression.  </li>
+:::
+::: {.fragment fragment-index=4}
 <li>  `level`: number of variables in the regression. </li>
+:::
+::: {.fragment fragment-index=5}
 <li>  `fit`: $R^2$ value for given regression. </li>
+:::
+::: {.fragment fragment-index=6}
 <li>  `remaining columns`: contribution in $R^2$ when adding variable in column. </li>
+:::
 </ul>
 
 
 
-
+::: {.fragment fragment-index=7}
 <div style="font-size: 22px"> We see that across all possible regressions, `Uncon` contributes the most $R^2$ on average, $.064$ (i.e., general dominance). </div>
+:::
 
+::: {.fragment fragment-index=8}
 <div style="font-size: 18px; padding-top: 14px;"> Note the the $R^2$ values in the average contribution add up to the $R^2$ of the regression with all variables: </div>
 
 ```{r}
@@ -459,7 +519,7 @@ let's go over the meaning of the columns in the output
 
 summary(reg_da)$r.squared
 ```
-
+:::
 
 :::
 ::::
@@ -469,13 +529,15 @@ summary(reg_da)$r.squared
 
 So, on average `Uncon` is the most important predictor or preference for *Intense* music. This is just on average across all possible regression. We can build dominance matrices with *j* rows and *i* columns.
 
-
+::: {.fragment fragment-index=1}
 A dominance matrix will contain a **1** if the variable in the row $j$ dominates the one in column $i$. You will see a **.5** if the dominance pattern between two variables cannot be established. 
+:::
 
 
 :::: {.columns}
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=2}
 <center> **Conditional Dominance** </center>
 
 <div style="font-size: 22px"> We can check whether `Uncon` conditionally dominates the other variables, if on average it contributes more to $R^2$ across all the levels in the `level` column: </div>
@@ -488,10 +550,12 @@ A dominance matrix will contain a **1** if the variable in the row $j$ dominates
 
 dominanceMatrix(DA, type = "conditional")
 ```
+:::
 
 :::
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=3}
 <center> **Complete Dominance** </center>
 
 
@@ -505,11 +569,15 @@ dominanceMatrix(DA, type = "conditional")
 
 dominanceMatrix(DA, type = "complete")
 ```
+:::
+
 
 :::
 ::::
 
+::: {.fragment fragment-index=4}
 In both cases, `Uncon` dominates the other two variables. We now have a really strong case to claim that `Uncon` is the most important predictor of preference for *Intense* music among our 3 openness facets.
+:::
 
 ## Uncertainty and Inference in DA
 
@@ -519,7 +587,7 @@ As it is the case with any statistical procedure, our results are based on a sam
 :::: {.columns}
 ::: {.column width="60%"}
 
-
+::: {.fragment fragment-index=1}
 ```{r}
 #| eval: false
 #| echo: true 
@@ -537,22 +605,303 @@ summary(DA_boot)
 DA_boot <- readRDS("Additional files/DA_boot.RDS")
 summary(DA_boot)
 ```
+:::
 
 :::
 ::: {.column width="40%"}
 
+::: {.fragment fragment-index=2}
 Skipping over some stuff, the column that we care most about is the `rep` column. 
 
 This column shows the proportion of bootstrap samples where the dominance pattern in the row was replicated. In general, `Uncon` seems to fairly consistently dominate all other variables.  
+:::
+
+:::
+::::
+
+::: {.fragment fragment-index=3}
+::: {.callout-note}
+## DA and Multicollinearity
+
+<div style="font-size: 18px"> If you remember $R^2$ is unaffected by multicollinearity. By extension, DA is unaffected too, as it only deals with $R^2$. Thus, DA can be a good way of making inferences about your variables when your regression coefficients are not interpretable due to high multicollinearity (which is why it came up in my case!) </div>
+:::
+:::
+
+## What is Power⚡?
+
+**Power:** Statistical power is defined as *the probability of correctly rejecting the null hypothesis if $H_0$ is false*. Power is also known as 1 - Type II error rate. Type II error rate is denoted with $\beta$, and is the probability of failing to reject a false $H_0$. 
+
+::: {.fragment fragment-index=1}
+<div style="font-size: 24px"> In practice, power is used is mostly to answer the question: "how big of a sample size do I need to get a *p*-value lower than .05 given a certain effect size?" (not the most useful question if you ask me) </div>
+:::
+
+:::: {.columns}
+::: {.column width="50%"}
+
+</br>
+
+::: {.fragment fragment-index=3}
+<div style="font-size: 24px"> The probability of making a Type I error is always the level of significance, $\alpha$. As you know, the level of significance is almost unilaterally $.05$. So, unless specified otherwise,  $\alpha = .05$. </div>
+
+
+<div style="font-size: 24px"> On the other hand, it is common to generally look for a sample size that gives a power of $\beta = .8$. This would mean that if $H_0$ is false, you would reject it $80\%$ of the times. </div>
+:::
+
+:::
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=3}
+![](Images/type-i-and-ii-error-2.png)
+:::
 
 :::
 ::::
 
 
-::: {.callout-note}
-## DA and Multicollinearity
+## Power in Regression
 
-<div style="font-size: 18px"> If you remember $R^2$ is unaffected by multicollinearity. By extension, DA is unaffected too, as it only deals with $R^2$. Thus, DA can be a good way of making inferences about your variables when your regression coefficients are not interpretable due to high multicollinearity (which is why it came up in my case!) </div>
+In regression, We calculate power based on $R^2$. More specifically, we use Cohen's $f^2$. there are two slight variations on $f^2$:
+
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
+When you have a single set of predictors and you want to calculate power for a regression, 
+
+$$
+f^2 = \frac{R^2}{1 - R^2}
+$$
+:::
+
+:::
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=2}
+When you want to calculate power for $\Delta R^2$ (see [Lab 6](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%206.html#/testing-gain-in-prediction-delta-r2){target="_blank"}), whether a set of predictors *B* provide a significant improvement over an original set of predictors *A*,
+
+$$
+f^2 = \frac{R^2_{AB} - R^2_{A}}{1 - R^2_{AB}}
+$$
+Where $R^2_{AB} - R^2_{A} = \Delta R^2$, the improvement of adding the set of predictors *B*. 
+:::
+
+:::
+::::
+
+::: {.fragment fragment-index=3}
+Larger $R^2$ value imply larger $f^2$ values. Some guidelines are that $f^2$ of .02, .15, and .35 can be interpreted as small, medium, and large effect sizes respectively. Why do we use $f^2$? Check out the [appendix](#appendix) if you are curious!
+:::
+
+
+## Power For $R^2$
+
+<div style="font-size: 22px; padding-bottom: 20px;"> Let's say that we hypothesize that depression ($X_1$), anxiety ($X_2$), and social support ($X_3$) should predict willingness to partake in novel social experiences ($Y$). We look at the literature and we expect our variables to jointly explain $15\%$ (i.e., $R^2 = .15$) of the variance in willingness to partake in novel social experiences. How many participants do we need to collect to get $80\%$ power? </div>
+
+:::: {.columns}
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
+<div style="font-size: 24px"> Fist we need to calculate $f^2$: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+(f2 <- .15/(1-.15))
+```
+:::
+
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 24px"> Then, we can use the `pwr.f2.test` function from the `pwr` package </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+pwr::pwr.f2.test(u = 3,  f2 = f2, 
+                 sig.level = 0.05, power = 0.8)
+```
+:::
+
+:::
+::: {.column width="50%"}
+
+
+::: {.fragment fragment-index=3}
+<div style="font-size: 24px; padding-bottom: 15px;"> Notice that the `pwr` function will give you the missing function argument. We did not specify `v`, and `pwr` returns it as `61.8227`. </div>
+:::
+
+::: {.fragment fragment-index=4}
+<div style="font-size: 24px"> `u` stands for $\mathrm{df_1}$ and `v` stands for the $\mathrm{df_2}$ of the $F$-distribution. We know from Lab 4 that $\mathrm{df_2} = n - \mathrm{df_1} - 1$. Thus, </div>
+
+
+$$
+n = \mathrm{df_2} + 1 + \mathrm{df_1} = 61.18 + 1 + 3 = 65.18
+$$
+
+
+<div style="font-size: 24px"> We need $66$ participants (you always round up!) to achieve $80\%$ power. </div>
+:::
+
+:::
+::::
+
+
+## Power For $\Delta R^2$
+
+<div style="font-size: 22px; padding-bottom: 20px;"> We further hypothesize that if we add openness to experience ($X_4$) to our model, we will explain an additional $5\%$ ($\Delta R^2 = .05$) of variance in willingness to partake in novel social experiences ($Y$). Originally, we specified $R^2 = .15$, so after adding $X_4$, we expect $R^2 = .2$. </div>
+
+:::: {.columns}
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
+<div style="font-size: 24px">  We use the second formula from 2 slides ago to get $f^2$: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+(f2 <- .05/(1-.20))
+```
+:::
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 24px">  `u` is going to be $1$ because we only have 1 additional predictor, $X_4$: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+pwr::pwr.f2.test(u = 1,  f2 = f2, 
+                 sig.level = 0.05, power = 0.8)
+```
+:::
+
+:::
+::: {.column width="50%"}
+
+
+::: {.fragment fragment-index=3}
+So, if we want to have $80\%$ power for $\Delta R^2 = .05$, we now need at least $128$ participants. We know this because 
+
+$$
+n = 125.5 + 1 + 1 = 127.5
+$$ 
+
+
+I already linked this in the first slide, but [this page](https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html){target="_blank"} has very detailed explanations on how to use all the functions from the `pwr` package.
+:::
+
+:::
+::::
+
+
+## What about power for Slopes?
+
+<div style="font-size: 24px"> Calculating power for regression slopes is very tricky. This is because power for a single regression slope depends on its standard error. The standard error formula for a slope in a regression with two predictors is: </div>
+
+::: {.fragment fragment-index=1}
+$$
+\mathrm{SE}_{b_1} = \frac{S_Y}{S_{X_1}}\sqrt{\frac{1 - r_{Y\hat{Y}}}{n - p - 1}}\times\sqrt{\frac{1}{1 - r^2_{12}}}
+$$
+<div style="font-size: 24px; padding-bottom: 18px;"> The equation itself is not super important to know. But there are some useful things to know: </div>
+:::
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 24px; padding-bottom: 18px;"> The one thing to keep in mind is that the smaller $\mathrm{SE}_{b_1}$, the higher your power. $n$, the sample size, is in the denominator, meaning that larger sample size decreases $\mathrm{SE}_{b_1}$...everything in order so far more $n$, more power 😀. </div>
+:::
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=3}
+<div style="font-size: 23px"> The part that makes it tricky is the $\sqrt{\frac{1}{1 - r^2_{12}}}$. *This is the VIF that we saw a few slides back*. Since the VIF multiplies the rest of the equation, larger VIF increases $\mathrm{SE}_{b_1}$, thus reducing power. The VIF depends on the correlation of a predictor with *all the other predictors*. </div>
+:::
+
+:::
+
+
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=4}
+<div style="font-size: 23px"> **The Problem:** Since we know that partial slopes depend on all other variables in the model, to do accurate power analysis for regression coefficients in multiple regression, you also need to to specify the correct correlation among your slope of interest and *all other predictors* 😱. This is a bit impractical. </div>
+:::
+
+:::
+::::
+
+
+## Low Power is bad Because...
+
+Low power *is not* bad because it will be hard to get $p < .05$. Low power is bad because when you do get $p < .05$ with low power, it is likely that:
+
+
+::: {.fragment fragment-index=1}
+<ol style="font-size: 22px">  
+
+<li> The regression coefficients will be largely overestimated! (Type *M* error). </li>
+
+<li> The sign of some regression coefficients will be in the wrong direction! (Type *S* error). </li>
+
+ 
+</ol>
+:::
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 24px; padding-bottom: 18px;"> You may have been "lucky" in the sense that your result was significant, but it will likely not replicate in future research. Your "lucky" result is ultimately a bad thing for the field (**!!**). And you will not see the results of many other people who ran the same analysis but did not get a significant *p*-value (publication bias!). </div>
+:::
+
+
+::: {.fragment fragment-index=3}
+:::: {.columns}
+::: {.column width="50%"}
+
+
+<div style="font-size: 24px"> So, I think people care about power for the wrong reasons 🤷 Some related blog posts/manuscripts from Andrew Gelman:
+
+<ul style="font-size: 22px">  
+
+<li>  [80% power is a lie and NIH grants](https://statmodeling.stat.columbia.edu/2017/12/04/80-power-lie/){target="_blank"} </li>
+
+<li>  [You don't have 80% Power](https://statmodeling.stat.columbia.edu/2018/08/24/anyone-claims-80-power-im-skeptical/){target="_blank"} </li>
+
+<li>  [You calculate power based on biased literature](https://sites.stat.columbia.edu/gelman/research/unpublished/illusion_power.pdf){target="_blank"} </li>
+
+<li>  [Type I and Type II error rates do not exist](https://statmodeling.stat.columbia.edu/2004/12/29/type_1_type_2_t/){target="_blank"} </li> 
+
+</ul>
+
+
+
+</div>
+
+
+:::
+::: {.column width="50%"}
+
+
+<center>
+<figure>
+  <img src="Images/Gelman.png" style="width:30%">
+  <figcaption style="font-size: 16px">  [Andrew Gelman](https://sites.stat.columbia.edu/gelman/){target="_blank"}, Columbia professor and very opinionated man. I like his opinions.</figcaption>
+</figure>
+</center>
+
+:::
+::::
 :::
 
 ## References 
@@ -560,85 +909,150 @@ This column shows the proportion of bootstrap samples where the dominance patter
 <div id="refs"> </div>
 
 
-# Power Analysis in Multiple Regression
+# Appendix: Why $f^2$? The non-central $F$-distribution {#appendix}
 
 
-## What is Power⚡?
 
-**Power:** Statistical power is defined as *the probability of correctly rejecting the null hypothesis if $H_0$ is false*. Power is also known as 1 - Type II error rate. Type II error rate is denoted with $\beta$, and is the probability of failing to reject a false $H_0$. 
+## $f^2$ and non-central $F$-distribution
 
-In practice, power is used is mostly to answer the question: "how big of a sample size do I need to get a *p*-value lower than .05 given a certain effect size?" 
+When know that $R^2$ is itself a measure of effect size; so why do we calculate $f^2$ to compute power? Chapter 9 of good old @Cohen_1988 goes in more detail, but $f^2$ is more general and convenient than $R^2$. 
+
+::: {.fragment fragment-index=1}
+Power for $F$-tests is calculated by comparing two things:
+:::
+
+<ol style="font-size: 22px">  
+
+::: {.fragment fragment-index=2}
+<li>  The null $F$-distribution if $R^2 = 0$. This is a normal $F$-distribution with  $\mathrm{df_1} = k$ and $\mathrm{df_2} = n - k-1$.</li>
+:::
+
+::: {.fragment fragment-index=3}
+<li>  The $F$-distribution if $R^2 \neq 0$. This is an $F$-distribution with $\mathrm{df_1} = k$, $\mathrm{df_2} = n - k-1$, and a *non-centrality parameter* that we will call $L$ (in @Cohen_1988, this is referred to as $\lambda$).</li>
+:::
+
+</ol>
+
+::: {.fragment fragment-index=4}
+The formula to calculate $L$ is very straightforward once we have $f^2$:
+
+$$
+L = f^2\times(\mathrm{df_1} + \mathrm{df_2} + 1) = f^2 \times n
+$$
+
+Note that the sample size, $n$, is included in this formula, and we can solve for it such that $n = \frac{L}{f^2}$ (neat).
+:::
+
+## The Non-central F-distribution
+
+:::: {.columns}
+::: {.column width="30%"}
+
+
+<div style="font-size: 22px"> If $L = f^2 \times n$, then larger $L$ values imply either larger $f^2$ values, larger $n$ values, or both. </div>
+
+<div style="font-size: 22px; padding-top:20px;"> but if $f^2 = 0$ (meaning that $R^2 = 0$), then $L = 0$. When $L = 0$, we have a normal $F$-distribution. </div>
+
+<div style="font-size: 22px; padding-top:20px;"> You will see that increasing $L$ will shift the distribution to the right, making higher $F$-values more likely. </div>
+
+<div style="font-size: 24px; padding-top:20px; text-align: center;"> Power analysis for $F$-test finds the critical $F$-value when $L = 0$, and checks how likely it is to get a higher $F$-value when $L = f^2 \times n$. </div>
+
+:::
+::: {.column width="70%"}
+
+<iframe width="90%" height="550px" src="https://fabiosetti.shinyapps.io/non_central_F_distribution/"> </iframe>
+
+:::
+::::
+
+## Power by hand
+
+<div style="font-size: 24px; padding-bottom: 16px;"> Let's go back to the example from some slides ago, but let's pretend that we already ran the study with $n = 100$, 3 predictors ($k = 3$), and we found a significant $R^2 = .15$ at $\alpha = .05$. How much power did we have? </div>
 
 
 :::: {.columns}
 ::: {.column width="50%"}
 
-</br>
+::: {.fragment fragment-index=1}
+<div style="font-size: 22px"> First, we need to find the $F$-value from the null distribution after which everything is significant at $\alpha = .05$. We have $\mathrm{df_1} = 3$ and $\mathrm{df_2} = 100 - 3 -1 = 96$: </div>
 
-<div style="font-size: 24px"> The probability of making a Type I error is always the level of significance, $\alpha$. As you know, the level of significance is almost unilaterally $.05$. So, unless specified otherwise,  $\alpha = .05$. </div>
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
-
-<div style="font-size: 24px"> On the other hand, it is common to generally look for a sample size that gives a power of $\beta = .8$. This would mean that if $H_0$ is false, you would reject it $80\%$ of the times. </div>
+(crit_val <- qf(.95, df1 = 3, df2 = 96))
+```
+<div style="font-size: 22px"> Any $F$-value larger than this is going to be significant </div>
+:::
 
 
 :::
+
 ::: {.column width="50%"}
 
-![](Images/type-i-and-ii-error-2.png)
+::: {.fragment fragment-index=2}
+<div style="font-size: 22px"> Now, we can check how likely it is to get an $F$-value greater than our critical value from a non-central $F$-distribution where $f^2 = \frac{.15}{1 - .15} \approx .176$. The non-centrality parameter will be $L = .176 \times 100 \approx 17.6$  </div>
 
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+f2 <- .15/(1-.15)
+L_par <- f2*100
+# ncp = is the non-centrality parameter argument. It defaults to 0
+pf(crit_val, df1 = 3, df2 = 96, ncp = L_par, 
+   lower.tail = FALSE)
+```
+
+:::
 
 :::
 ::::
 
 
-## Power in Regresison
+::: {.fragment fragment-index=3}
+<div style="font-size: 22px"> So, in retrospect, we had roughly a $.95$ power. That is, we had a $95\%$ chance of getting $p < .05$ given our sample size, number of variables, and observed $R^2$. </div>
+:::
 
-In regression, power is 
+::: {.fragment fragment-index=4}
+oh, and because $n = \mathrm{df_1} + \mathrm{df_2} + 1$, you can do some algebra on the $L = f^2 \times n$ equation to find any of the other terms if you want. 
+:::
 
+## Checking with the `pwr.f2.test()` function
 
-## Personal opinions and Rant 
-
-Feel free to ignore this slide, but...I personally *really, strongly, dislike* the idea of power and how it is used. In no particular order:
-
+As always, I want to check that the result I got is also what you would get with another function. Let's use the `pwr.f2.test()`:
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="60%"}
 
-<center> **Theoretical Reasons:** </center>
+::: {.fragment fragment-index=1}
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
-- The answer is always get as high of a sample size as you can.
 
-- Type I and type II error rates are not real. We should focus on other things (see [here](https://statmodeling.stat.columbia.edu/2004/12/29/type_1_type_2_t/){target="_blank"}).
-
-- Why do I care how many people I need to get $p < .05$? (no seriously, think about it)
-
-
+pwr::pwr.f2.test(u = 3, v = 96, f2 = f2)
+```
+`power = 0.9471734`, yup, Same result! 
+:::
 
 :::
-::: {.column width="50%"}
+::: {.column width="40%"}
 
-<center> **Practical Reasons:** </center>
+::: {.fragment fragment-index=2}
+<div style="font-size: 24px"> What I just did is a general good practice. If you think you understand something but you are not $100\%$ sure and you can use *R* to run the math by hand, try it! You will gain insight in the process and solidify your knowledge. </div>
 
-- people who will ask you to do power analysis, will do it becasue:
-
-
+Now I know with really high certainty that my understanding of the process is accurate.
+:::
 
 :::
 ::::
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
