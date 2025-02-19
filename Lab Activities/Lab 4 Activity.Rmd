@@ -16,9 +16,9 @@ knitr::opts_chunk$set(include = FALSE)
 library(tidyverse)
 ```
 
-Let's look at the `attitude` dataset, which we used in the activity for Lab 2. This dataset always loaded into R.
+Let's look at the `attitude` dataset, which we used in the activity for Lab 2. This dataset is always loaded into R.
 
-**1.** Run `help("attitude")` to get some info on the data and the meaning of each variable. You can also run `View(attitude)` to open the data in the data viewer window. Then create a dataset called `dat` that only includes the `rating`, `privileges`, and `complaints` variables. 
+**1.** Run `help("attitude")` to get some info on the data and the meaning of each variable. You can also run `View(attitude)` to open the data in the data viewer window. Then, create a dataset called `dat` that only includes the `rating`, `privileges`, and `complaints` variables.
 
 ```{r include=FALSE}
 help("attitude")
@@ -34,8 +34,7 @@ GGally::ggpairs(dat)
 # yes very related
 ```
 
-**4.** Run two individual regressions, with one regression having the variable `privileges` predicting `rating` and the other having the `complaints` variable predicting `rating`. What are the values of the two regression slopes? do they match your expectations? Are the values of the slopes significant?
-
+**4.** Run two individual regressions, with one regression having the variable `privileges` predicting `rating` and the other having the `complaints` variable predicting `rating`. What are the values of the two regression slopes? Do they match your expectations? Are the values of the slopes significant?
 
 ```{r}
 reg_priv  <- lm(rating ~ privileges, data = dat) 
@@ -49,8 +48,7 @@ car::S(reg_compl)
 # both slopes are positive and significant. This is in line with expectations given that the previous plots both showed postive relations among the variables. 
 ```
 
-**5.** Run a multiple linear regression where both `privileges` and `complaints` predict `rating`. What are the values of the slopes now? Is there anything that you find surprising? 
-
+**5.** Run a multiple linear regression where both `privileges` and `complaints` predict `rating`. What are the values of the slopes now? Is there anything that you find surprising?
 
 ```{r}
 reg_full <- lm(rating ~ complaints + privileges, data = dat)
@@ -60,8 +58,7 @@ car::S(reg_full)
 # only the slope of complaints is significant now. Further, the slope of privileges is now negative (!). This happens because complaints is positively correlated with privileges. 
 ```
 
-
-**6.** Visualize your regression model with an interactive 3D plot that includes a regression plane. Note that this plot will not be visible in a PDF once you knit (why? PDFs are not interactive). If you are wondering why the slope of `privileges` is now negative, looking at the plot from a specific angle may give you some insight. 
+**6.** Visualize your regression model with an interactive 3D plot that includes a regression plane. Note that this plot will not be visible in a PDF once you knit (why? PDFs are not interactive). If you are wondering why the slope of `privileges` is now negative, looking at the plot from a specific angle may give you some insight.
 
 ```{r}
 library(FabioFun)
@@ -72,15 +69,11 @@ library(FabioFun)
 #              axis_names = c("Rating", 
 #                             "Complaints", 
 #                             "Privileges"),
-#              reg_plane = TRUE,
-#              plane_res = 500)
+#              reg_plane = TRUE)
 ```
 
-
-- What are some of the points with the highest residuals? Try finding them in the interactive plot by hovering over the dots (HINT: if the residuals are large, they should be far away from the plane, and the sign indicates whether they will be above or below the plane!)
+-   What are some of the points with the highest residuals? Try finding them in the interactive plot by hovering over the dots (HINT: if the residuals are large, they should be far away from the plane, and the sign indicates whether they will be above or below the plane!)
 
 ```{r}
 sort(resid(reg_full))
 ```
-
-

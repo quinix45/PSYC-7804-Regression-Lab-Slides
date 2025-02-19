@@ -152,7 +152,7 @@ The catch is that the model that includes both predictors calculates **partial r
 
 ## Calculate partial regression coefficients "By Hand"
 
-Personally, the concept of **partial regression coefficients** starts making sense once I "computed" them myself and see what is going on behind the scenes. 
+Personally, the concept of **partial regression coefficients** starts making sense once I "compute" them myself and see what is going on behind the scenes. 
 
 :::: {.columns}
 ::: {.column width="50%"}
