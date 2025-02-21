@@ -149,6 +149,24 @@ summary(DA_boot)
 ```
 
 
+## Power for Correlation
+
+```{r}
+# we'll need 85 participants (you round up n)
+pwr::pwr.r.test(r = .3,
+                sig.level = .05,
+                power = .8)
+```
+
+
+```{r}
+# around .41 (41%) power
+pwr::pwr.r.test(r = .2,
+                sig.level = .05,
+                n = 75)
+```
+
+
 
 ## Power For $R^2$
 

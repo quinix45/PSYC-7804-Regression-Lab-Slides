@@ -621,6 +621,7 @@ This column shows the proportion of bootstrap samples where the dominance patter
 
 ::: {.fragment fragment-index=3}
 ::: {.callout-note}
+
 ## DA and Multicollinearity
 
 <div style="font-size: 18px"> If you remember $R^2$ is unaffected by multicollinearity. By extension, DA is unaffected too, as it only deals with $R^2$. Thus, DA can be a good way of making inferences about your variables when your regression coefficients are not interpretable due to high multicollinearity (which is why it came up in my case!) </div>
@@ -658,6 +659,78 @@ This column shows the proportion of bootstrap samples where the dominance patter
 ::::
 
 
+## Power for Correlation
+
+Calculating power for correlation, $r$, is fairly straightforward. In general calculating power involves these pieces of information:
+
+::: {.fragment fragment-index=1}
+:::: {.columns}
+::: {.column width="37%"}
+The *effect size*. Could be $r$, $d$, $f^2$, ...
+:::
+::: {.column width="23%"}
+The *significance level*, $\alpha$
+:::
+
+::: {.column width="20%"}
+The *power*, $1 - \beta$
+:::
+
+::: {.column width="20%"}
+The *sample size*, $N$ 
+:::
+::::
+:::
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 22px; padding-bottom =14px;" > Most power software will provide any of these elements given the remaining ones. the `pwr` package works in the same way. </div>
+:::
+
+:::: {.columns}
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=3}
+- <div style="font-size: 24px"> If we expect to see $r =.3$, what sample size do we need to have $80\%$ power at $\alpha = .05$? </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# we'll need 85 participants (you round up n)
+pwr::pwr.r.test(r = .3,
+                sig.level = .05,
+                power = .8)
+
+```
+:::
+
+:::
+::: {.column width="50%"}
+
+
+::: {.fragment fragment-index=4}
+- <div style="font-size: 24px"> How much power do we have if $r =.2$, and $N = 75$ at $\alpha = .05$? </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# around .41 (41%) power
+pwr::pwr.r.test(r = .2,
+                sig.level = .05,
+                n = 75)
+```
+:::
+:::
+::::
+
+
+
+
 ## Power in Regression
 
 In regression, We calculate power based on $R^2$. More specifically, we use Cohen's $f^2$. there are two slight variations on $f^2$:
@@ -679,7 +752,7 @@ $$
 ::: {.column width="50%"}
 
 ::: {.fragment fragment-index=2}
-When you want to calculate power for $\Delta R^2$ (see [Lab 6](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%206.html#/testing-gain-in-prediction-delta-r2){target="_blank"}), whether a set of predictors *B* provide a significant improvement over an original set of predictors *A*,
+When you want to calculate power for $\Delta R^2$ (see [Lab 6](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%206.html#/testing-gain-in-prediction-delta-r2){target="_blank"}), whether a set of predictors *B* provides a significant improvement over an original set of predictors *A*,
 
 $$
 f^2 = \frac{R^2_{AB} - R^2_{A}}{1 - R^2_{AB}}
@@ -717,7 +790,7 @@ Larger $R^2$ value imply larger $f^2$ values. Some guidelines are that $f^2$ of 
 
 
 ::: {.fragment fragment-index=2}
-<div style="font-size: 24px"> Then, we can use the `pwr.f2.test` function from the `pwr` package </div>
+<div style="font-size: 24px"> Then, we can use the `pwr.f2.test()` function from the `pwr` package </div>
 
 ```{r}
 #| eval: true
@@ -733,10 +806,6 @@ pwr::pwr.f2.test(u = 3,  f2 = f2,
 :::
 ::: {.column width="50%"}
 
-
-::: {.fragment fragment-index=3}
-<div style="font-size: 24px; padding-bottom: 15px;"> Notice that the `pwr` function will give you the missing function argument. We did not specify `v`, and `pwr` returns it as `61.8227`. </div>
-:::
 
 ::: {.fragment fragment-index=4}
 <div style="font-size: 24px"> `u` stands for $\mathrm{df_1}$ and `v` stands for the $\mathrm{df_2}$ of the $F$-distribution. We know from Lab 4 that $\mathrm{df_2} = n - \mathrm{df_1} - 1$. Thus, </div>
@@ -828,7 +897,7 @@ $$
 ::: {.column width="50%"}
 
 ::: {.fragment fragment-index=3}
-<div style="font-size: 23px"> The part that makes it tricky is the $\sqrt{\frac{1}{1 - r^2_{12}}}$. *This is the VIF that we saw a few slides back*. Since the VIF multiplies the rest of the equation, larger VIF increases $\mathrm{SE}_{b_1}$, thus reducing power. The VIF depends on the correlation of a predictor with *all the other predictors*. </div>
+<div style="font-size: 23px"> The part that makes it tricky is the $\sqrt{\frac{1}{1 - r^2_{12}}}$. *This is the VIF that we saw a few slides back*. Since the VIF multiplies the rest of the equation, larger VIF increases $\mathrm{SE}_{b_1}$, thus reducing power. The VIF depends on the correlation of a predictor with *all the other predictors*, which is *really* hard to guess. </div>
 :::
 
 :::
@@ -837,7 +906,7 @@ $$
 ::: {.column width="50%"}
 
 ::: {.fragment fragment-index=4}
-<div style="font-size: 23px"> **The Problem:** Since we know that partial slopes depend on all other variables in the model, to do accurate power analysis for regression coefficients in multiple regression, you also need to to specify the correct correlation among your slope of interest and *all other predictors* 😱. This is a bit impractical. </div>
+<div style="font-size: 23px"> **Suggestion:** If you want to do power analysis for a single regression coefficient, you should frame it in terms of how much $\Delta R^2$ you think that coefficient will produce once you add it to the regression. This is equivalent to what we did on the previous slide actually! </div>
 :::
 
 :::
