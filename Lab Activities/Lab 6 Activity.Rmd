@@ -1,0 +1,97 @@
+---
+title: "Lab 6 Activity"
+output: pdf_document
+header-includes:
+    - \usepackage{setspace}
+urlcolor: blue
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = FALSE)
+```
+
+\onehalfspacing
+
+We will be using the same data from Lab 6. Click [here](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%206.html#/todays-packages-and-data){target="_blank"} and copy the code from the chunk on the right and run it to load the data.
+ 
+
+```{r include=TRUE, size = 'tiny'}
+library(rio)
+dat <- import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Hierarc_data.csv")
+```
+
+
+Our variables of interest are once again `y = happiness`, `x = age`, and `z = friends`. 
+
+**1.** In Lab 6 we observed that the partial correlation between two variables accounting for a third variable is the correlation of the residuals from `x ~ z` and `y ~ z`: 
+
+```{r include=TRUE}
+resid_y_z <- residuals(lm(happiness ~ friends, dat))
+resid_x_z <- residuals(lm(age ~ friends, dat))
+
+cor(resid_x_z, resid_y_z)
+```
+
+- What is the resulting regression coefficient if we run a regression predicting the residuals of `y` with the residuals of `x`? How is this type of regression coefficient called? (This was discussed in Lab 5)
+
+```{r}
+# partial regression coefficient between y and x accounting for z
+
+reg_resYX <- lm(resid_y_z ~ resid_x_z)
+
+round(coef(reg_resYX), 3)
+```
+
+- can you transform the residuals of `y` and the residuals of `x` such that running a regression between the two will result in the partial correlation? 
+
+```{r}
+# if you standardize both residuals, the slope will be equal to the partial correlation.
+
+reg_resYX_std <- lm(scale(resid_y_z) ~ scale(resid_x_z))
+
+round(coef(reg_resYX_std), 3)
+```
+
+
+**2.** Run a regression model with `friends` predicting `happiness`. Then, run an additional model that also includes `age` as a predictor. Is the improvement in $R^2$ significant when adding `age` to the model?
+
+```{r}
+reg_fr <- lm(happiness ~ friends, dat)
+reg_age_fr <- lm(happiness ~ friends + age, dat)
+
+# R^2 change is not significant
+anova(reg_fr, reg_age_fr)
+```
+
+- Calculate $\Delta R^2$.
+
+```{r}
+summary(reg_age_fr)$r.squared - summary(reg_fr)$r.squared
+```
+
+**3.** Compare the two models from the previous question with both AIC and BIC. What model should you select according to each? Do they "agree" with each other? 
+
+```{r}
+AIC(reg_fr, reg_age_fr)
+
+# model with both variables
+```
+
+
+```{r}
+BIC(reg_fr, reg_age_fr)
+
+# simpler model with only friends
+```
+
+
+- Do either the BIC or the AIC "agree" with the $\Delta R^2$ significance test from the previous question?
+
+```{r}
+# The BIC agrees with it, the AIC doesn't.
+```
+
+
+
+

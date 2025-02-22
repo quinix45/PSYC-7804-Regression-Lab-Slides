@@ -505,7 +505,6 @@ We want to apply the principle of  [Occam's razor](https://www.britannica.com/to
 
 ## Testing gain in prediction: $\Delta R^2$
 
-
 In hierarchical regression we check whether adding variables to a model yields a significant $R^2$ improvement ($\Delta R^2$). We can use the `anova()` function to compare nested regression models. The *F*-test tells us whether the $R^2$ improvement is significant.
 
 :::: {.columns}
@@ -538,8 +537,7 @@ anova(reg_age, reg_age_fr)
 anova(reg_age_fr, reg_age_fr_rand)
 ```
 
-<div style="font-size: 23px"> Unsurprisingly, adding adding a random variable does not 
-provide a significant improvement in variance explained, $\Delta R^2 = .003, F(1, 96) = 0.81, p = .37$. </div>
+<div style="font-size: 23px"> Unsurprisingly, adding adding a random variable does not provide a significant improvement in variance explained, $\Delta R^2 = .01, F(1, 96) = 0.81, p = .37$. </div>
 :::
 
 :::
