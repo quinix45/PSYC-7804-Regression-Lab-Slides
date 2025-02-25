@@ -407,6 +407,20 @@
       margin-right: 0; 
     }
   </style>
+  <script src="Lab 6_files/libs/core-js-2.5.3/shim.min.js"></script>
+
+  <script src="Lab 6_files/libs/react-18.2.0/react.min.js"></script>
+
+  <script src="Lab 6_files/libs/react-18.2.0/react-dom.min.js"></script>
+
+  <script src="Lab 6_files/libs/reactwidget-2.0.0/react-tools.js"></script>
+
+  <script src="Lab 6_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+  <link href="Lab 6_files/libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+
+  <script src="Lab 6_files/libs/reactable-binding-0.4.4/reactable.js"></script>
+
   <script src="Fabio_theme/Fabio_theme.js"></script>
 </head>
 <body class="quarto-light">
@@ -464,17 +478,12 @@ Fabio Setti
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Data from https://library.virginia.edu/data/articles/hierarchical-linear-regression</span></span>
 <span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Hierarc_data.csv"</span>)</span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># let's peak at our variables</span></span>
-<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dat, <span class="at">vec.len =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>'data.frame':   100 obs. of  5 variables:
- $ happiness: int  5 5 6 4 3 ...
- $ age      : int  24 28 25 26 20 ...
- $ friends  : int  12 8 6 4 8 ...
- $ pets     : int  3 1 0 2 0 ...
- $ gender   : chr  "Male" "Male" ...</code></pre>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Hierarc_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="htmlwidget-e9629ef37142a4e2f253" class="reactable html-widget" style="width:auto;height:350px;"></div>
+<script type="application/json" data-for="htmlwidget-e9629ef37142a4e2f253">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"happiness":[5,5,6,4,3,5,5,5,4,4,7,3,2,7,6,7,9,3,4,6,4,4,4,5,5,7,5,3,3,4,4,1,5,5,1,4,4,3,6,6,5,5,2,5,5,7,1,2,2,5,4,4,5,7,4,4,6,4,5,2,7,5,7,3,3,7,7,6,4,3,6,4,3,3,4,4,4,2,3,6,5,5,5,5,6,4,3,2,3,4,3,4,5,4,4,4,6,5,7,4],"age":[24,28,25,26,20,25,24,24,26,26,25,25,28,24,29,26,24,28,24,24,25,24,25,27,26,24,24,28,28,23,24,25,28,23,26,28,24,24,25,23,25,27,25,24,27,25,23,30,27,22,25,24,21,23,26,22,29,23,25,25,27,27,24,24,27,28,25,23,25,27,28,26,22,26,26,27,26,27,26,25,27,27,27,24,23,30,24,27,25,26,28,27,23,27,25,24,26,25,21,28],"friends":[12,8,6,4,8,9,5,6,8,6,4,9,4,5,14,8,10,6,13,7,4,11,2,7,9,10,10,7,4,9,7,7,9,8,5,10,3,1,7,8,8,6,8,6,8,7,4,4,5,12,6,4,4,8,9,8,8,12,5,2,10,5,6,10,6,11,10,3,3,6,8,8,6,5,7,6,10,1,8,7,7,11,7,10,4,5,10,5,5,8,8,6,5,5,5,4,10,7,7,5],"pets":[3,1,0,2,0,0,5,2,1,4,1,0,1,4,1,2,2,1,4,3,3,1,2,2,3,2,4,3,1,1,0,0,3,1,1,1,1,0,0,1,0,1,0,2,0,2,0,1,1,0,0,0,0,1,0,0,2,1,1,0,1,0,0,1,1,2,1,2,0,0,0,2,1,0,0,0,0,0,0,0,1,1,2,2,1,0,0,0,0,0,1,2,2,0,2,1,0,0,3,2],"gender":["Male","Male","Female","Male","Female","Male","Male","Male","Male","Male","Male","Female","Male","Male","Male","Female","Male","Male","Male","Male","Male","Female","Male","Male","Female","Female","Male","Male","Male","Female","Female","Male","Male","Male","Male","Female","Male","Male","Female","Female","Male","Male","Male","Male","Male","Male","Female","Female","Male","Male","Female","Female","Female","Male","Male","Male","Male","Female","Male","Female","Female","Female","Female","Male","Female","Female","Male","Male","Male","Male","Male","Female","Male","Female","Female","Female","Female","Male","Female","Female","Female","Male","Male","Male","Female","Male","Male","Female","Female","Male","Male","Male","Male","Female","Female","Female","Male","Female","Male","Male"]},"columns":[{"id":"happiness","name":"happiness","type":"numeric"},{"id":"age","name":"age","type":"numeric"},{"id":"friends","name":"friends","type":"numeric"},{"id":"pets","name":"pets","type":"numeric"},{"id":"gender","name":"gender","type":"character"}],"pagination":false,"highlight":true,"style":{"fontFamily":"Work Sans, sans-serif","fontSize":"1.175rem"},"height":"350px","dataKey":"6b243c2697c2bf137172da943f57a121"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div></div>
@@ -486,7 +495,7 @@ Fabio Setti
 <div class="column" style="width:60%;">
 <p>We can calculate the correlation among our predictors</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           happiness         age     friends
 happiness  1.0000000 -0.16091772  0.32424344
@@ -560,15 +569,15 @@ friends    0.3242434 -0.02097324  1.00000000</code></pre>
 <div class="fragment" data-fragment-index="1">
 <p>Let’s first get our vanilla correlations</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>r_xy <span class="ot">&lt;-</span> <span class="fu">cor</span>(dat<span class="sc">$</span>age, dat<span class="sc">$</span>happiness)</span>
-<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>r_xz <span class="ot">&lt;-</span> <span class="fu">cor</span>(dat<span class="sc">$</span>age, dat<span class="sc">$</span>friends)</span>
-<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a>r_yz <span class="ot">&lt;-</span> <span class="fu">cor</span>(dat<span class="sc">$</span>happiness, dat<span class="sc">$</span>friends)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>r_xy <span class="ot">&lt;-</span> <span class="fu">cor</span>(dat<span class="sc">$</span>age, dat<span class="sc">$</span>happiness)</span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>r_xz <span class="ot">&lt;-</span> <span class="fu">cor</span>(dat<span class="sc">$</span>age, dat<span class="sc">$</span>friends)</span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>r_yz <span class="ot">&lt;-</span> <span class="fu">cor</span>(dat<span class="sc">$</span>happiness, dat<span class="sc">$</span>friends)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="fragment" data-fragment-index="2">
 <p>Then, the partial correlation between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, accounting for <span class="math inline">\(z\)</span> is</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a>(r_xy <span class="sc">-</span> r_xz<span class="sc">*</span>r_yz)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r_xz<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r_yz<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>(r_xy <span class="sc">-</span> r_xz<span class="sc">*</span>r_yz)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r_xz<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r_yz<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.162955</code></pre>
 </div>
@@ -578,10 +587,10 @@ friends    0.3242434 -0.02097324  1.00000000</code></pre>
 <div class="fragment" data-fragment-index="3">
 <p>Note that this is also equivalent to calculating the correlation between the residuals of <span class="math inline">\(y\)</span> and <span class="math inline">\(x\)</span> after a regression with <span class="math inline">\(z\)</span> as a predictor</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a>resid_y_z <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(happiness <span class="sc">~</span> friends, dat))</span>
-<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>resid_x_z <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(age <span class="sc">~</span> friends, dat))</span>
-<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(resid_x_z, resid_y_z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a>resid_y_z <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(happiness <span class="sc">~</span> friends, dat))</span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>resid_x_z <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(age <span class="sc">~</span> friends, dat))</span>
+<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(resid_x_z, resid_y_z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.162955</code></pre>
 </div>
@@ -600,14 +609,14 @@ friends    0.3242434 -0.02097324  1.00000000</code></pre>
 <div class="fragment" data-fragment-index="1">
 <p>With the formulas from the previous slides:</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a>(r_xy <span class="sc">-</span> r_xz<span class="sc">*</span>r_yz)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r_xz<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>(r_xy <span class="sc">-</span> r_xz<span class="sc">*</span>r_yz)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r_xz<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.1541512</code></pre>
 </div>
 </div>
 <p>or</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a>(r_xy <span class="sc">-</span> r_xz<span class="sc">*</span>r_yz)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r_yz<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a>(r_xy <span class="sc">-</span> r_xz<span class="sc">*</span>r_yz)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r_yz<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.1629192</code></pre>
 </div>
@@ -617,14 +626,14 @@ friends    0.3242434 -0.02097324  1.00000000</code></pre>
 <div class="fragment" data-fragment-index="2">
 <p>Similarly, we can get this by using regression residuals:</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dat<span class="sc">$</span>happiness, resid_x_z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dat<span class="sc">$</span>happiness, resid_x_z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.1541512</code></pre>
 </div>
 </div>
 <p>and</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dat<span class="sc">$</span>age, resid_y_z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(dat<span class="sc">$</span>age, resid_y_z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.1629192</code></pre>
 </div>
@@ -649,10 +658,10 @@ Which type of correlation to use? <strong>it depends on your research question</
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># partial correlation</span></span>
-<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a>partial_cor <span class="ot">&lt;-</span> <span class="fu">pcor</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
-<span id="cb20-4"><a href="" aria-hidden="true" tabindex="-1"></a>partial_cor<span class="sc">$</span>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># partial correlation</span></span>
+<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a>partial_cor <span class="ot">&lt;-</span> <span class="fu">pcor</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb19-4"><a href="" aria-hidden="true" tabindex="-1"></a>partial_cor<span class="sc">$</span>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           happiness        age   friends
 happiness  1.0000000 -0.1629550 0.3251768
@@ -662,10 +671,10 @@ friends    0.3251768  0.0334209 1.0000000</code></pre>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># semi-partial correlation</span></span>
-<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="" aria-hidden="true" tabindex="-1"></a>semipartial_cor <span class="ot">&lt;-</span> <span class="fu">spcor</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
-<span id="cb22-4"><a href="" aria-hidden="true" tabindex="-1"></a>semipartial_cor<span class="sc">$</span>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># semi-partial correlation</span></span>
+<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="" aria-hidden="true" tabindex="-1"></a>semipartial_cor <span class="ot">&lt;-</span> <span class="fu">spcor</span>(dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb21-4"><a href="" aria-hidden="true" tabindex="-1"></a>semipartial_cor<span class="sc">$</span>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           happiness         age    friends
 happiness  1.0000000 -0.15415119 0.32093907
@@ -682,7 +691,7 @@ Careful! in the semi-partial correlation output, the variable in the row is the 
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a>partial_cor<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a>partial_cor<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           happiness       age    friends
 happiness 0.00000000 0.1070529 0.00102305
@@ -692,7 +701,7 @@ friends   0.00102305 0.7426075 0.00000000</code></pre>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a>semipartial_cor<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a>semipartial_cor<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            happiness       age     friends
 happiness 0.000000000 0.1276520 0.001200009
@@ -713,9 +722,9 @@ friends   0.001025828 0.7560662 0.000000000</code></pre>
 <div class="column" style="width:50%;">
 <div class="fragment" data-fragment-index="2">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_age <span class="ot">&lt;-</span> <span class="fu">lm</span>(happiness <span class="sc">~</span> age, dat)</span>
-<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_age)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_age <span class="ot">&lt;-</span> <span class="fu">lm</span>(happiness <span class="sc">~</span> age, dat)</span>
+<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_age)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.02589451</code></pre>
 </div>
@@ -725,9 +734,9 @@ friends   0.001025828 0.7560662 0.000000000</code></pre>
 </div><div class="column" style="width:50%;">
 <div class="fragment" data-fragment-index="3">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_age_fr <span class="ot">&lt;-</span> <span class="fu">lm</span>(happiness <span class="sc">~</span> age <span class="sc">+</span> friends, dat)</span>
-<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_age_fr)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_age_fr <span class="ot">&lt;-</span> <span class="fu">lm</span>(happiness <span class="sc">~</span> age <span class="sc">+</span> friends, dat)</span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_age_fr)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1288964</code></pre>
 </div>
@@ -746,19 +755,19 @@ friends   0.001025828 0.7560662 0.000000000</code></pre>
 <div class="column" style="width:70%;">
 <div class="fragment" data-fragment-index="1">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate random variable</span></span>
-<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8879</span>)</span>
-<span id="cb32-3"><a href="" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>random_var <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(dat))</span>
-<span id="cb32-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-5"><a href="" aria-hidden="true" tabindex="-1"></a>reg_age_fr_rand <span class="ot">&lt;-</span> <span class="fu">lm</span>(happiness <span class="sc">~</span> age <span class="sc">+</span> friends <span class="sc">+</span> random_var, dat)</span>
-<span id="cb32-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># before</span></span>
-<span id="cb32-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_age_fr)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate random variable</span></span>
+<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8879</span>)</span>
+<span id="cb31-3"><a href="" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>random_var <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(dat))</span>
+<span id="cb31-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="" aria-hidden="true" tabindex="-1"></a>reg_age_fr_rand <span class="ot">&lt;-</span> <span class="fu">lm</span>(happiness <span class="sc">~</span> age <span class="sc">+</span> friends <span class="sc">+</span> random_var, dat)</span>
+<span id="cb31-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># before</span></span>
+<span id="cb31-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_age_fr)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1288964</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># after </span></span>
-<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_age_fr_rand)<span class="sc">$</span>r.squared </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># after </span></span>
+<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_age_fr_rand)<span class="sc">$</span>r.squared </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1361937</code></pre>
 </div>
@@ -783,7 +792,7 @@ friends   0.001025828 0.7560662 0.000000000</code></pre>
 <div class="column" style="width:50%;">
 <div class="fragment" data-fragment-index="1">
 <div class="cell code-115">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(reg_age, reg_age_fr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(reg_age, reg_age_fr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -803,7 +812,7 @@ Here, adding <code>friends</code> provides a significant improvement in variance
 </div><div class="column" style="width:50%;">
 <div class="fragment" data-fragment-index="2">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(reg_age_fr, reg_age_fr_rand)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(reg_age_fr, reg_age_fr_rand)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -856,7 +865,7 @@ Unsurprisingly, adding adding a random variable does not provide a significant i
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(reg_age, reg_age_fr, reg_age_fr_rand)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(reg_age, reg_age_fr, reg_age_fr_rand)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                df      AIC
 reg_age          3 375.0604
@@ -867,7 +876,7 @@ reg_age_fr_rand  5 367.0433</code></pre>
 <p>The second model fits best.</p>
 </div><div class="column" style="width:50%;">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">BIC</span>(reg_age,reg_age_fr, reg_age_fr_rand)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">BIC</span>(reg_age,reg_age_fr, reg_age_fr_rand)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                df      BIC
 reg_age          3 382.8759
@@ -895,11 +904,11 @@ reg_age_fr_rand  5 380.0691</code></pre>
 <li>
 <p>Different functions/software will calculate AIC and BIC differently (I was confused for a bit myself before finding <a href="https://robjhyndman.com/hyndsight/lm_aic.html" target="_blank">this</a> and <a href="https://stackoverflow.com/questions/64531074/why-do-statsmodels-and-r-disagree-on-aic-computation" target="_blank">this</a>). You should not compare AIC and BIC if they come from different functions/software (or, if you need to, be <em>very</em> careful).</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(reg_age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(reg_age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 375.0604</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">extractAIC</span>(reg_age)[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">extractAIC</span>(reg_age)[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 89.2727</code></pre>
 </div>

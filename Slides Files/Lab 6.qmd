@@ -87,10 +87,14 @@ The `ppcor` package [@Kim_2015] contains functions to calculate partial and semi
 # Data from https://library.virginia.edu/data/articles/hierarchical-linear-regression
 
 dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/Hierarc_data.csv")
-
-# let's peak at our variables
-str(dat, vec.len = 2)
 ```
+
+```{r}
+reactable::reactable(dat,
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "1.175rem"),
+                     pagination = FALSE, highlight = TRUE, height = 350)
+```
+
 
 :::
 ::::
