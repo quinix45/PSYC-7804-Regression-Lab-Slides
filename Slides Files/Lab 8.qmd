@@ -1110,12 +1110,372 @@ geom_smooth(method = "lm",
 :::
 ::::
 
+## Piecewise Regression
+
+<div style="font-size: 24px">  In piecewise regression we effectively divide our data into sections that we run separate regression on. You can divide your data in however many sections you want, but usually you should not need more than 2 separate segments. </div>
+
+
+:::: {.columns}
+::: {.column width="30%"}
+
+<div style="font-size: 24px; padding-top: 16px;">  But how do we divide the data? *You* have to decide it based on what *you* know about your data/theory 😀 </div>
+
+<div style="font-size: 22px; padding-top: 16px;"> In the case of this data, I think that a good cut-point is the top of the quadratic regression from before! </div>
+
+
+<ul style="font-size: 22px">  
+
+<li>Why? Because we know that the top is the turning point of the quadratic line. If I need to fit two lines to the data, that is probably my best option given what I know. </li>
+
+</ul>
+
+<div style="font-size: 20px;">  The plot on the right shows the segments if we divide the data in this way. </div>
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+# split data with cut-point (cleaner code in 2 slides, can't be bothered to change it)
+
+Temp_avg_2021$D1 <- ifelse(Temp_avg_2021$time_cent >= 20.34353, 0*Temp_avg_2021$time_cent, 1*Temp_avg_2021$time_cent)
+Temp_avg_2021$D2 <- ifelse(Temp_avg_2021$time_cent < 20.34353, 0*Temp_avg_2021$time_cent, 1*Temp_avg_2021$time_cent)
+
+
+
+reg_piece <- lm(Temp_F ~ D1 + D2, data = Temp_avg_2021)
+
+intercept <- coef(reg_piece)[1]
+D1 <- coef(reg_piece)[2]
+D2 <- coef(reg_piece)[3]
+
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point() +
+geom_segment(x = min(Temp_avg_2021$time_cent) + mean(Temp_avg_2021$time), 
+             xend = 20.34353 + mean(Temp_avg_2021$time), 
+             y = intercept + min(Temp_avg_2021$time_cent)*D1 ,
+             yend = intercept,
+             linetype = 1,
+             linewidth = .7,
+             col = "red") +
+geom_segment(xend = max(Temp_avg_2021$time_cent) + mean(Temp_avg_2021$time), 
+             x = 20.34353 + mean(Temp_avg_2021$time), 
+             yend = intercept + max(Temp_avg_2021$time_cent)*D2 ,
+             y = intercept,
+             linetype = 1,
+             linewidth = .7,
+             col = "red") +  
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+
+```
+
+:::
+::::
+
+
+
+## Setting up Piecewise 
+
+There are multiple ways to set up piecewise regression in `R`. I find the following method the most intuitive:
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+$$
+\hat{Y} = b_0 + b_1\times D_1 + b_2 \times D_2
+$$
+
+
+:::
+::: {.column width="50%"}
+
+<div style="font-size: 24px"> Where $b_1$ represent the slope of the *first segment* and $b_2$ represents the slope of the *second segment*. </div>
+
+:::
+::::
+
+We need to create $D_1$ and $D_2$. The trick is to get the original predictor, `Temp_cent` in our case, and *split* its value across the segments.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+So, if we choose our cut-point to be roughly around the top or the quadratic curve, roughly $20.34$:
+
+<ul style="font-size: 22px">  
+
+<li> $D_1:$ Make all values *after* $20.34$ become $0$. </li>
+<li> $D_2:$ Make all values *before* $20.34$ become $0$. </li>
+
+</ul>
+
+We will use the `ifelse()` function to make our life easier. 
+
+:::
+::: {.column width="50%"}
+
+`ifelse()` syntax: `ifelse(CONDITION, if CONDITION TRUE do something, if CONDITION FALSE do something)`
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# an example
+ifelse(c(2,3) > 2.5, "bigger", "smaller")
+```
+:::
+::::
+
+## Creating $D_1$ and $D_2$
+
+:::: {.columns}
+::: {.column width="55%"}
+
+- Creating $D_1$:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+Temp_avg_2021$D1 <- ifelse(Temp_avg_2021$time_cent >= 20.34353, 
+                           0, Temp_avg_2021$time_cent)
+```
+
+- Creating $D_2$:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+Temp_avg_2021$D2 <- ifelse(Temp_avg_2021$time_cent < 20.34353, 
+                           0, Temp_avg_2021$time_cent)
+```
+
+
+<div style="font-size: 24px; padding-top: 16px;"> If you look at our variables on the left and scroll until July 22<sup>nd</sup>, you should see how the `temp_cent` variable has been split between $D_1$ and $D_2$.
+ </div>
+
+
+
+:::
+::: {.column width="45%"}
+
+
+```{r}
+reactable::reactable(Temp_avg_2021[, c("time", "time_cent", "D1", "D2")],
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "0.875rem"),
+                     pagination = FALSE, highlight = TRUE, height = 500)
+```
+
+
+:::
+::::
+
+## Running The Piecewise Regression
+
+Now we can simply run our piecewise regression by using $D_1$ and $D_2$ as predictors:
+
+:::: {.columns}
+::: {.column width="70%"}
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+piece_reg <- lm(Temp_F ~ D1 + D2, data = Temp_avg_2021)
+summary(piece_reg)
+```
+:::
+::: {.column width="30%"}
+
+As we saw from the plot some slides ago, the slope of the first segment, $D_1$ is positive, and that slope of the second segment, $D_2$ is negative. $R^2$ is also quite good at $81\%$. 
+
+
+The piecewise regression actually does better than the quadratic regression in terms of model fit!
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+BIC(reg_piece, quad_reg)
+```
+
+
+:::
+::::
+
+
+## 3D visualization? Out of Curiousity...
+
+:::: {.columns}
+::: {.column width="40%"}
+
+The 3D visualization of a piecewise regression is actually kinda funny:
+
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+library(FabioFun)
+
+nice_3D_plot(y = Temp_avg_2021$Temp_F,
+             x1 = Temp_avg_2021$D1,
+             x2 = Temp_avg_2021$D2,
+             axis_names = c("Temperature", 
+                            "D1", 
+                            "D2"),
+             reg_plane = TRUE)
+```
+
+
+<div style="font-size: 24px"> You can tell that there actually is no "depth" to this figure, and all the dots are on the side of the box. The 3D representation just "folds" the 2D plot from some slides ago at the cut-off point! </div>
+
+:::
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+
+library(FabioFun)
+
+nice_3D_plot(y = Temp_avg_2021$Temp_F,
+             x1 = Temp_avg_2021$D1,
+             x2 = Temp_avg_2021$D2,
+             axis_names = c("Temperature", 
+                            "D1", 
+                            "D2"),
+             reg_plane = TRUE)%>%  
+                    bslib::card(full_screen = TRUE)
+
+
+
+```
+
+
+:::
+::::
+
+<div style="font-size: 18px; padding-top: 16px;"> The 2D visualization is clearly better, but just thought I would show this 🤷 </div>
+
+## Spline Regression
+
+Spline regression is quite similar to loess regression. Spline regression is a piecewise regression with many segments, and is very similar to loess regression.
+
+:::: {.columns}
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+library(splines)
+spline_fit <- lm(Temp_F ~ bs(Temp_avg_2021$time_cent, df = 5), 
+                 data = Temp_avg_2021)
+summary(spline_fit)
+```
+
+
+:::
+::: {.column width="30%"}
+
+We can use the `bs()` function form the `splines` package to define our spline regression. the `df =` arguments sets the number of independent segments. here I choose 5 segments. 
+
+
+The coefficients are not that helpful. Let's look at the visualization.
+
+:::
+::::
+
+
+## Visulizing Spline Regression
+
+The visualization for spline regression requires you calculate the predictions from the regression model (unless I decide to make a function at some point):
+
+:::: {.columns}
+::: {.column width="40%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+pred_data <- seq(min(Temp_avg_2021$time_cent),
+                 max(Temp_avg_2021$time_cent))
+
+pred <- predict(spline_fit, 
+                newdata = list(time_cent = pred_data))
+
+# The code to generate the plot is in the drop down menu
+```
+
+<div style="font-size: 22px"> You can see that the spline regression line (red) is very similar to the loess regression line (blue). The two methods are quite similar. </div>
+
+<div style="font-size: 22px; padding-top: 16px;"> Also note that the spline regression line is smooth. This is because by default the `slpine` package uses 3<sup>rd</sup> degree polynomial segments. (see `help(bs)`) </div>
+ 
+ 
+:::
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: plot-code
+
+ggplot(Temp_avg_2021,
+       aes(x = time_cent, y = Temp_F)) +
+        geom_point() +
+  geom_smooth(method = "loess", 
+              formula = y ~ x,
+              se = FALSE) +
+  geom_line(aes(x = pred_data,
+                y = pred),
+            col = "red",
+            size = 1) 
+
+```
+
+
+:::
+::::
+
+
+
 
 ## References 
 
 <div id="refs"> </div>
 
-# Appendix: Piece-wise Regression and Splines
+
 
 
 
