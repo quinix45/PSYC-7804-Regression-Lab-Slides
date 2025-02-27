@@ -1324,7 +1324,7 @@ BIC(reg_piece, quad_reg)
 ::::
 
 
-## 3D visualization? Out of Curiousity...
+## 3D visualization? Out of Curiosity...
 
 :::: {.columns}
 ::: {.column width="40%"}

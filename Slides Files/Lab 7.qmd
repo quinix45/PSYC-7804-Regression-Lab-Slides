@@ -764,7 +764,7 @@ Where $R^2_{AB} - R^2_{A} = \Delta R^2$, the improvement of adding the set of pr
 ::::
 
 ::: {.fragment fragment-index=3}
-Larger $R^2$ value imply larger $f^2$ values. Some guidelines are that $f^2$ of .02, .15, and .35 can be interpreted as small, medium, and large effect sizes respectively. Why do we use $f^2$? Check out the [appendix](#appendix) if you are curious!
+Larger $R^2$ value imply larger $f^2$ values. Some guidelines are that $f^2$ of .02, .15, and .35 can be interpreted as small, medium, and large effect sizes respectively. Why do we use $f^2$? Check out the [appendix](#appendix) if you are curios!
 :::
 
 
