@@ -94,8 +94,8 @@ The `splines2` package [@Wang_etal_2024] can be used to calculate splines.
 
 <center style="padding-bottom: 41px;"> [Data]{.data-title} </center>
 
+<div style="font-size: 24px"> This data come from a random sample of 200 students from the 1982 [high-school and beyond longitudinal study.](https://nces.ed.gov/surveys/hsb/){target="_blank"} </div>
 
-This data come from a random sample of 200 students from the 1982 [high-school and beyond longitudinal study.](https://nces.ed.gov/surveys/hsb/){target="_blank"}
 
 
 ```{r}
@@ -108,6 +108,13 @@ This data come from a random sample of 200 students from the 1982 [high-school a
 hsb2 <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/hsb2.csv")
 
 ```
+```{r}
+reactable::reactable(hsb2,
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "1.175rem"),
+                     pagination = FALSE, highlight = TRUE, height = 350)
+```
+
+
 
 :::
 ::::
