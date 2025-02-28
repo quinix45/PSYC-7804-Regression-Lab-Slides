@@ -1241,13 +1241,14 @@ geom_smooth(method = "lm",
 
 ::: {.fragment fragment-index=2}
 <div style="font-size: 22px; padding-top: 16px;"> In the case of this data, I think that a good cut-point is the top of the quadratic regression from before! </div>
-:::
+
 
 <ul style="font-size: 22px">  
 
 <li>Why? Because we know that the top is the turning point of the quadratic line. If I need to fit two lines to the data, that is probably my best option given what I know. </li>
 
 </ul>
+:::
 
 ::: {.fragment fragment-index=3}
 <div style="font-size: 20px;">  The plot on the right shows the segments if we divide the data in this way. </div>
@@ -1533,7 +1534,7 @@ summary(spline_fit)
 :::
 ::: {.column width="30%"}
 
-We can use the `bs()` function form the `splines` package to define our spline regression. the `df =` arguments sets the number of independent segments. here I choose 5 segments. 
+We can use the `bsp()` function form the `splines2` package to define our spline regression. the `df =` arguments sets the number of independent segments. here I choose 5 segments. 
 
 
 The coefficients are not that helpful. Let's look at the visualization.
@@ -1566,7 +1567,7 @@ pred <- predict(spline_fit,
 
 <div style="font-size: 22px"> You can see that the spline regression line (red) is very similar to the loess regression line (blue). The two methods are quite similar. </div>
 
-<div style="font-size: 22px; padding-top: 16px;"> Also note that the spline regression line is smooth. This is because by default the `slpine` package uses 3<sup>rd</sup> degree polynomial segments. (see `help(bsp)`) </div>
+<div style="font-size: 22px; padding-top: 16px;"> Also note that the spline regression line is smooth. This is because by default the `slpine2` package uses 3<sup>rd</sup> degree polynomial segments. (see `help(bsp)`) </div>
  
  
 :::

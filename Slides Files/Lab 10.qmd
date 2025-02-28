@@ -4,6 +4,8 @@ author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
 csl: Additional files/apa.csl
+notice: |
+  @Wickham_RStudio_2023
 title-slide-attributes:
   data-transition: "zoom"
   data-visibility: "uncounted"
@@ -23,3 +25,91 @@ format:
 
 editor: source
 ---
+
+
+## Today's Packages and Data 🤗
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| code-fold: true
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| code-summary: "Install Packages Code"
+#| classes: code-150
+
+# install.packages("tidyverse")
+install.packages("lubridate")
+install.packages("splines2")
+```
+
+```{r}
+#| eval: true
+#| echo: true
+#| code-line-numbers: false
+#| warning: false
+#| classes: code-150
+
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+library(lubridate)
+library(splines2)
+
+
+
+# write.csv(politeness_df, 'Data/hsb2.csv')
+
+
+
+```
+
+
+</br>
+
+<div style="font-size: 26px">
+
+::: {.panel-tabset}
+### `lubridate`
+
+The `lubridate` package [@Spinu_etal_2024] provides many functions to help you work with date and times.
+
+### `splines2`
+
+The `splines2` package [@Wang_etal_2024] can be used to calculate splines. 
+
+:::
+
+</div>
+
+
+:::
+
+
+::: {.column width="50%"}
+
+<center style="padding-bottom: 41px;"> [Data]{.data-title} </center>
+
+
+```{r}
+#| warning: false
+#| classes: code-125
+#| echo: true
+#| code-line-numbers: false
+#| output: true
+
+NY_waeth <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/NYC_Weather_2016_2022.csv")
+
+str(NY_waeth, vec.len = 2)
+```
+
+:::
+::::
+
+
+
+## References 
+
+<div id="refs"> </div>
