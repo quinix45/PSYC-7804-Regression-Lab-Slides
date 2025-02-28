@@ -192,7 +192,7 @@ FabioFun::nice_3D_plot(y = grade_fin$final,
                                       "Attendance"),
                        reg_plane = TRUE, 
                        interaction = TRUE,
-             opacity = 0.1)%>% 
+             opacity = 0.2)%>% 
   layout(title = 'Uncentered')
 ```
 
@@ -206,7 +206,7 @@ FabioFun::nice_3D_plot(y = grade_fin$final,
                                       "Attendance"),
                        reg_plane = TRUE, 
                        interaction = TRUE,
-             opacity = 0.1)%>% 
+             opacity = 0.2)%>% 
   layout(title = 'Centered')
 ```
 

@@ -104,39 +104,54 @@ str(grade_fin, give.attr = FALSE)
 
 The idea of interaction is that the effect two predictors $X_1$ and $X_2$ have on an outcome $Y$ is fundamentally tied together. 
 
+
+::: {.fragment fragment-index=1}
 - More specifically, the effect that $X_1$ has on $Y$ depends on the value of $X_2$, and the effect that $X_2$ has on $Y$ depends on the value of $X_1$.
+:::
 
+::: {.fragment fragment-index=2}
 A very clear example of an interaction effect is how an individual's gender and race jointly affect number of experienced daily microagressions. Looking at gender and race separately would miss much of the picture (intersectionality!)
+:::
 
+::: {.fragment fragment-index=3}
 If we believe that two variables should interact in how they influence $Y$, we can express that with the regression model:
 
 $$
 \hat{Y} = b_0 + b_1X_1 + b_2X_2 + b_3(X_1 \times X_2) 
 $$
+:::
+
 
 ## By the way, Interaction or Moderation? 
 
 <div style="text-align:center; font-size:35px; padding-bottom:14px;">  Interaction and moderation are the same exact thing.</div>
 
+::: {.fragment fragment-index=1}
 I prefer the term *interaction* to avoid confusion with the term *mediation*, which has absolutely nothing to do with anything discussed in this Lab. That being said ...
+:::
 
 
 :::: {.columns}
 ::: {.column width="45%"}
 
-
+::: {.fragment fragment-index=2}
 When hypothesizing interaction effects, it is useful to make a distinction between a **focal predictor** and a **moderator**. 
+:::
 
-
+::: {.fragment fragment-index=3}
 <div style="font-size: 24px"> Interactions are usually represented with the diagrams on the right. the variable pointing directly to $Y$ is considered the focal predictor, while the variable pointing to the line is considered the moderator. </div>
+:::
 
+::: {.fragment fragment-index=4}
 <div style="font-size: 22px"> The two representation on the right are equivalent. However, depending on your hypotheses it may make more practical sense to conceptualize one variables as the focal predictor and the other as the moderator. </div>
+:::
 
 :::
 ::: {.column width="55%"}
 
-
+::: {.fragment fragment-index=3}
 <center> <img src="Images/moderation.png" style="width:60%;"> </center>
+:::
 
 :::
 ::::
@@ -151,7 +166,7 @@ When hypothesizing interaction effects, it is useful to make a distinction betwe
 :::: {.columns}
 ::: {.column width="50%"}
 
-
+::: {.fragment fragment-index=1}
 
 ```{r}
 #| eval: true
@@ -164,23 +179,31 @@ reg_int <- lm(final ~ attend*priGPA, data = grade_fin)
 summary(reg_int)
 ```
 
-
+:::
 
 :::
 ::: {.column width="50%"}
 
+
+::: {.fragment fragment-index=1}
 our regression equation is:
 
 $$
 \hat{Y} = 30. 14 - 0.48X_1 - 2.21X_2 + 0.20 X_1 X_2
 $$
 
+:::
+
+
+::: {.fragment fragment-index=2}
+
 <div style="font-size: 24px"> Crucially, our interaction term is significantly different from 0. The intercept, $30.14$, is still the expected value of $Y$ when $X_1 = 0$ and $X_2 = 0$... </div>
+:::
 
 </br>
-
+::: {.fragment fragment-index=3}
 <div style="font-size: 24px; text-align:center;">  However, now that we are dealing with a significant interaction effect, $0.20 X_1 X_2$, things are not so simple! The slopes now have very specific meanings 🧐 </div>
-
+:::
 
 
 
@@ -258,16 +281,23 @@ So what does it mean for a regression plane to bend or not? We can start by thin
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
 if we say:
 
 $$
 \hat{Y} = b_0 + b_1X_1 + b_2X_2 
 $$
 You can see that the *slopes* of $b_1$ and $b_2$ are always constant, no matter what values you plug in the equation. 
+:::
 
+::: {.fragment fragment-index=2}
 This means that we believe that the relation that $X_1$ and $X_2$ have on $Y$ is independent. 
+:::
 
+::: {.fragment fragment-index=3}
 A regression plane is flat on the surface only when the slopes are always constant (i.e. no interaction is assumed).
+:::
 
 
 :::
@@ -302,12 +332,18 @@ FabioFun::nice_3D_plot(y = grade_fin$final,
 :::: {.columns}
 ::: {.column width="50%"}
 
+
+::: {.fragment fragment-index=1}
 Instead, if we say:
 
 $$
 \hat{Y} = b_0 + b_1X_1 + b_2X_2 + b_3X_1 X_2  
 $$
 You can see that the *slopes* of $X_1$ and $X_2$ will respectively change depending on what values you give to $X_1$ or $X_2$. Let's say that $X_2 = 2$. Then:
+:::
+
+
+::: {.fragment fragment-index=2}
 
 <center>
 
@@ -318,11 +354,15 @@ $\hat{Y} = b_0 + b_1X_1 + 2b_2 + 2b_3X_1$
 $\hat{Y} = (b_0 + 2b_2) + (b_1 + 2b_3)X_1$ 
 
 </center>
+:::
 
+::: {.fragment fragment-index=3}
 <div style="font-size: 24px"> If a slope is the relation between $X$ and $Y$, an interaction implies that the relation *changes* depending on the value of another variable. This is represented by the plane bending, reflecting the change in slope.
  </div>
+:::
 
 :::
+
 ::: {.column width="50%"}
 
 ```{r}
@@ -362,9 +402,14 @@ $$
 ::: {.column width="50%"}
 
 
-<div style="font-size: 24px"> If you look at the regression coefficients for $X_1$ and $X_2$, you will see that they are negative, meaning that...as GPA prior to taking the class and attendance increase, the final grade...decreases?!🤨  </div>
+::: {.fragment fragment-index=1}
 
-<div style="font-size: 24px"> The regression coefficients of $X_1$ and $X_2$ shown here are the slopes on the plane, when either $X_1 = 0$ or $X_2 = 0$. The minimum value of our predictors is respectively: </div>
+<div style="font-size: 24px"> If you look at the regression coefficients for $X_1$ and $X_2$, you will see that they are negative, meaning that...as GPA prior to taking the class and attendance increase, the final grade...decreases?!🤨  </div>
+:::
+
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 24px; padding-top: 14px;"> The regression coefficients of $X_1$ and $X_2$ shown here are the slopes on the plane, when either $X_1 = 0$ or $X_2 = 0$. The minimum value of our predictors is respectively: </div>
 
 ```{r}
 #| eval: true
@@ -375,17 +420,25 @@ $$
 min(grade_fin$attend)
 min(grade_fin$priGPA)
 ```
+:::
 
 
 :::
 ::: {.column width="50%"}
-<div style="font-size: 24px"> So we are looking at the slopes at a single point of the plane that does not have any data...that's not very useful 😧 </div>
 
+::: {.fragment fragment-index=3}
+<div style="font-size: 24px"> So we are looking at the slopes at a single point of the plane that does not have any data...that's not very useful 😧 </div>
+:::
+
+
+::: {.fragment fragment-index=4}
 <div style="font-size: 24px"> This is also why you do not interpret slopes individually with a significant interaction effect. They only capture a small fraction of the regression plane. </div>
+:::
 
 </br>
-
+::: {.fragment fragment-index=5}
 <div style="font-size: 24px"> Still, we can pull some shenanigans to make the meaning of $X_1 = 0$ or $X_2 = 0$ more informative 😀 Any ideas? </div>
+:::
 
 :::
 ::::
@@ -395,6 +448,8 @@ min(grade_fin$priGPA)
 
 Turns out that we can transform our variables such that we can decide the meaning of $0$! Transforming our dependent variables such that *$0$ represents the mean* is generally a good choice.
 
+
+::: {.fragment fragment-index=1}
 We can use the `scale()` function to center our predictors:
 
 ```{r}
@@ -411,6 +466,9 @@ grade_fin$priGPA_cnt <- scale(grade_fin$priGPA, scale = FALSE)[,1]
 ```
 
 Centering changes the means of the variables to 0, but does not change the standard deviations:
+:::
+
+::: {.fragment fragment-index=2}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -448,6 +506,8 @@ round(rbind(apply(grade_fin[, 4:5], 2, mean),
 :::
 ::::
 
+:::
+
 ## Mean Centering Graphically
 
 Changing the mean of a variable simply means shifting it along the *x*-axis. For example, if we plot the density of the uncentered and centered `attend` variable:
@@ -479,6 +539,7 @@ grade_fin %>%
 - The red distribution is the original uncentered variable.
 - the blue distribution is the mean centered variable. 
 
+::: {.fragment fragment-index=1}
 
 :::{.callout-note}
 ### Linear Transformations
@@ -486,6 +547,8 @@ grade_fin %>%
 Centering and standardizing are known as *linear transformations*. The "linear" comes from the fact that all these transformations do is shift all the data along a line. You can see that from the graph on the left. These transformations have no effect on the results of statistical analyses, but can make interpretation easier. 
 
 :::
+:::
+
 
 :::
 ::::
@@ -553,17 +616,21 @@ $$
 :::
 ::::
 
+::: {.fragment fragment-index=1}
 In the centered result, where $0$ represents the mean of $X_1$ and $X_2$, both slopes are positive, and indicate that as GPA prior to taking the class and attendance increase, the final grade...increases!
+:::
 
+::: {.fragment fragment-index=2}
 Nothing changed about our analysis, but in the centered solution, we are looking a the slopes at a **different point of the regression plane**. This point is not out of range, so it makes sense to choose it as a reference point. 
+:::
 
-
+::: {.fragment fragment-index=3}
 :::{.callout-note}
-### Regression Coefficients Flipping? 🤔
+### Regression Coefficients Flipping When Centering? 🤔
 
 The regression coefficients flipping signs is reflected by the direction of the plane flipping. Look for that on the plot on the next slide. You should see that the plane changes direction as some point as the values of the predictors change. 
 :::
-
+:::
 
 
 
@@ -595,7 +662,7 @@ FabioFun::nice_3D_plot(y = grade_fin$final,
                                       "Attendance"),
                        reg_plane = TRUE, 
                        interaction = TRUE,
-             opacity = 0.1)%>% 
+             opacity = 0.2)%>% 
   layout(title = 'Uncentered')%>%  
   bslib::card(full_screen = TRUE)
 
@@ -624,7 +691,7 @@ FabioFun::nice_3D_plot(y = grade_fin$final,
                                       "Attendance"),
                        reg_plane = TRUE, 
                        interaction = TRUE,
-             opacity = 0.1)%>% 
+             opacity = 0.2)%>% 
   layout(title = 'Centered')%>%  
   bslib::card(full_screen = TRUE)
 
@@ -638,13 +705,19 @@ FabioFun::nice_3D_plot(y = grade_fin$final,
 
 So far we have discussed why we should not interpret slopes in isolation, but what does the interaction effect, $0.20$, mean in our case? 
 
+::: {.fragment fragment-index=1}
 <center> $0.20$ is the *expected change in slope* of one predictor per 1-unit change in the other predictor. </center>
+:::
 
+::: {.fragment fragment-index=2}
 so, if our equation is $\hat{Y} = 25. 63 + 0.47X_1 + 3.08X_2 + 0.20 X_1 X_2$
+:::
+
 
 :::: {.columns}
 ::: {.column width="60%"}
 
+::: {.fragment fragment-index=3}
 For a prior GPA of $X_2 = 3.5$  we get:
 
 $\hat{Y} = 25.63 + 0.47X_1 + 3.08 \times 3.5 + 0.20 X_1\times 3.5$
@@ -652,22 +725,26 @@ $\hat{Y} = 25.63 + 0.47X_1 + 3.08 \times 3.5 + 0.20 X_1\times 3.5$
 $\hat{Y} = (25.63 + 10.78) + 0.47X_1 + 0.7X_1$
 
 $\hat{Y} = 36.41 + 1.17X_1$
+:::
 
-
+::: {.fragment fragment-index=5}
 <div style="font-size: 16px; padding-top:24px;"> **NOTE:** If you paid attention, now that $X_2$ is centered, $3.5$ does not actually mean a GPA of $3.5$. Here, for the sake of the interpretation and plugging in some numbers, I assume it means a GPA of $3.5$, although that is incorrect. </div>
-
+:::
 
 :::
 ::: {.column width="40%"}
 
+::: {.fragment fragment-index=4}
 So, when someone starts the class with a prior GPA of $3.5$, the relation between attendance and final grade strengthens: the slope of $X_1$ goes from $0.47$ to $1.17$.  
+:::
 
+::: {.fragment fragment-index=5}
 :::{.callout-note}
 ### Sounds Familiar? 
 
 If you remember, the interpretation of the quadratic term in [Lab 8](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%208.html#/b_2-in-quadratic-regression){target="_blank"} is *suspiciously* similar to an interaction effect 🧐 Could it be that the quadratic term is also an interaction effect? Give it some thought 🤔 
 :::
-
+:::
 
 :::
 ::::
@@ -677,18 +754,21 @@ If you remember, the interpretation of the quadratic term in [Lab 8](https://qui
 
 On the previous slide, we plugged in some value for $X_2$ and looked at the resulting value of the slope for $X_1$. The resulting $1.17$ value for the slope of $X_1$ is generally referred to as a *simple slope*.
 
+::: {.fragment fragment-index=1}
 <div style="font-size: 24px"> When testing specific hypotheses, you plug in values for your *moderator* variable, and look the resulting slopes of the *focal predictor*. Generally, we choose to look at the simple slopes of the focal predictor at the mean of the *moderator* and at 1 SD below/above the mean of the moderator.  </div>
+:::
 
 :::: {.columns}
 ::: {.column width="60%"}
 
+::: {.fragment fragment-index=2}
 ```{r}
 #| eval: true
 #| echo: true 
 #| code-line-numbers: false
 #| classes: code-125
 
-# you need to provide specify which variable is the focal predictor and which is the moderator!
+# you need to specify which variable is the focal predictor (`pred =`) and which is the moderator (`modx =`)!
 
 sim_slopes <- interactions::sim_slopes(reg_int_cnt, 
                                        modx = "priGPA_cnt",
@@ -699,16 +779,19 @@ round(sim_slopes$slopes,3)
 ```
 
 The simple slopes are under the *Est.* column. Any questions about the other columns?
-
+:::
 
 :::
 ::: {.column width="40%"}
 
+::: {.fragment fragment-index=3}
 <div style="font-size: 23px; padding-bottom: 24px;"> Notice that only once `priGPA` is 1 SD above the mean is the slope of `attend_cnt` positive and significant. That suggests that attendance helps with the final grade only if you prior GPA is 1 SD above average.
  </div>
+:::
 
-
+::: {.fragment fragment-index=4}
 <center> Practical implication? Only students who are already good benefit from going to class. The teacher in this class is not the best 😱 </center>
+:::
 
 :::
 ::::
@@ -811,6 +894,7 @@ johnson_neyman(reg_int_cnt,
               pred = "attend_cnt")
 ```
 
+::: {.fragment fragment-index=1}
 <ul style="font-size: 22px">  
 
 <li> **x-axis:** the value of the moderator.  </li>
@@ -819,7 +903,10 @@ johnson_neyman(reg_int_cnt,
 
 </ul>
 
+
+
 <div style="font-size: 24px"> The blue band means that the slope of the focal predictor is significant at the value of the moderator. </div>
+:::
 
 :::
 ::: {.column width="70%"}
@@ -834,7 +921,10 @@ johnson_neyman(reg_int_cnt,
               modx = "priGPA_cnt",
               pred = "attend_cnt")$plot
 ```
+
+::: {.fragment fragment-index=2}
 <div style="font-size: 24px"> **Advice:** If you are presenting your research and interactions are involved...I would use simple slopes instead of a Johnson-Neyman plot. Why? It's an absolute truth about the universe that Johnson-Neyman plots are confusing 🤷 keep it simple (slopes 🫣). </div>
+:::
 
 :::
 ::::

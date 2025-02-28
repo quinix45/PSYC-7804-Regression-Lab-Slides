@@ -14,6 +14,7 @@ output: html_document
 
 # install.packages("tidyverse")
 install.packages("lubridate")
+install.packages("splines2")
 ```
 
 
@@ -22,6 +23,7 @@ library(tidyverse)
 theme_set(theme_classic(base_size = 14, 
                         base_family = 'serif'))
 library(lubridate)
+library(splines2)
 ```
 
 ```{r}
@@ -397,5 +399,135 @@ geom_smooth(method = "lm",
   ggtitle("Fifth Degree Polynomial") +
   theme(plot.title = element_text(hjust = 0.5, face = "bold"))
 ```
+
+
+
+## Piecewise Regression
+
+
+
+```{r}
+# split data with cut-point (cleaner code in 2 slides, can't be bothered to change it)
+
+Temp_avg_2021$D1 <- ifelse(Temp_avg_2021$time_cent >= 20.34353, 0*Temp_avg_2021$time_cent, 1*Temp_avg_2021$time_cent)
+Temp_avg_2021$D2 <- ifelse(Temp_avg_2021$time_cent < 20.34353, 0*Temp_avg_2021$time_cent, 1*Temp_avg_2021$time_cent)
+
+reg_piece <- lm(Temp_F ~ D1 + D2, data = Temp_avg_2021)
+
+intercept <- coef(reg_piece)[1]
+D1 <- coef(reg_piece)[2]
+D2 <- coef(reg_piece)[3]
+
+
+ggplot(Temp_avg_2021,
+       aes(x = time, y = Temp_F)) +
+        geom_point() +
+geom_segment(x = min(Temp_avg_2021$time_cent) + mean(Temp_avg_2021$time), 
+             xend = 20.34353 + mean(Temp_avg_2021$time), 
+             y = intercept + min(Temp_avg_2021$time_cent)*D1 ,
+             yend = intercept,
+             linetype = 1,
+             linewidth = .7,
+             col = "red") +
+geom_segment(xend = max(Temp_avg_2021$time_cent) + mean(Temp_avg_2021$time), 
+             x = 20.34353 + mean(Temp_avg_2021$time), 
+             yend = intercept + max(Temp_avg_2021$time_cent)*D2 ,
+             y = intercept,
+             linetype = 1,
+             linewidth = .7,
+             col = "red") +  
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+```
+
+
+
+
+## Setting up Piecewise 
+
+```{r}
+# an example of of ifelse() works
+
+ifelse(c(2,3) > 2.5, "bigger", "smaller")
+```
+
+
+
+## Creating $D_1$ and $D_2$
+
+
+```{r}
+Temp_avg_2021$D1 <- ifelse(Temp_avg_2021$time_cent >= 20.34353, 
+                           0, Temp_avg_2021$time_cent)
+```
+
+
+
+```{r}
+Temp_avg_2021$D2 <- ifelse(Temp_avg_2021$time_cent < 20.34353, 
+                           0, Temp_avg_2021$time_cent)
+```
+
+## Running The Piecewise Regression
+
+```{r}
+piece_reg <- lm(Temp_F ~ D1 + D2, data = Temp_avg_2021)
+summary(piece_reg)
+```
+
+
+## 3D visualization? Out of Curiosity...
+
+
+```{r}
+library(FabioFun)
+
+nice_3D_plot(y = Temp_avg_2021$Temp_F,
+             x1 = Temp_avg_2021$D1,
+             x2 = Temp_avg_2021$D2,
+             axis_names = c("Temperature", 
+                            "D1", 
+                            "D2"),
+             reg_plane = TRUE)
+```
+
+
+
+## Spline Regression
+
+
+```{r}
+spline_fit <- lm(Temp_F ~ splines2::bsp(Temp_avg_2021$time_cent, df = 5), 
+                 data = Temp_avg_2021)
+summary(spline_fit)
+```
+
+
+## Visulizing Spline Regression
+
+```{r}
+
+pred_data <- seq(min(Temp_avg_2021$time_cent),
+                 max(Temp_avg_2021$time_cent))
+
+pred <- predict(spline_fit, 
+                newdata = list(time_cent = pred_data))
+
+```
+
+
+
+```{r}
+ggplot(Temp_avg_2021,
+       aes(x = time_cent, y = Temp_F)) +
+        geom_point() +
+  geom_smooth(method = "loess", 
+              formula = y ~ x,
+              se = FALSE) +
+  geom_line(aes(x = pred_data,
+                y = pred),
+            col = "red",
+            size = 1) 
+```
+
 
 

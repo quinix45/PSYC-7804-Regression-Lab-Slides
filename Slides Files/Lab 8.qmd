@@ -43,6 +43,7 @@ editor: source
 
 # install.packages("tidyverse")
 install.packages("lubridate")
+install.packages("splines2")
 ```
 
 ```{r}
@@ -56,6 +57,7 @@ library(tidyverse)
 theme_set(theme_classic(base_size = 14, 
                         base_family = 'serif'))
 library(lubridate)
+library(splines2)
 ```
 
 
@@ -67,6 +69,11 @@ library(lubridate)
 ### `lubridate`
 
 The `lubridate` package [@Spinu_etal_2024] provides many functions to help you work with date and times.
+
+### `splines2`
+
+The `splines2` package [@Wang_etal_2024] can be used to calculate splines. 
+
 :::
 
 </div>
@@ -95,7 +102,11 @@ str(NY_waeth, vec.len = 2)
 :::
 ::::
 
+
+::: {.fragment fragment-index=1}
 The data includes weather recordings in NY for every hour of the day over a period of roughly 7 years (lots of data 😱). This is a bit too granular for what we need to do, so let's do some data cleaning!
+:::
+
 
 ## Working with Dates
 
@@ -104,6 +115,8 @@ This Data provides a good opportunity to show how you can work with dates in R! 
 :::: {.columns}
 ::: {.column width="50%"}
 
+
+::: {.fragment fragment-index=1}
 <div style="font-size: 22px"> We want to turn the `time` variable into a date in days that R recognizes. we would use the `ymd()` function normally, but the correct format should be *YYYY-MM-DD*. Instead we also have the time here, which we do not need: </div>
 
 ```{r}
@@ -114,7 +127,11 @@ This Data provides a good opportunity to show how you can work with dates in R! 
 
 NY_waeth$time[1:3]
 ```
-<div style="font-size: 22px"> We can do some [string manipulation](https://www.geeksforgeeks.org/string-manipulation-in-r/){target="_blank"} to remove the last 6 characters! </div>
+:::
+
+::: {.fragment fragment-index=2}
+
+<div style="font-size: 22px; padding-top: 12px;"> We can do some [string manipulation](https://www.geeksforgeeks.org/string-manipulation-in-r/){target="_blank"} to remove the last 6 characters! </div>
 
 ```{r}
 #| eval: true
@@ -127,10 +144,14 @@ NY_waeth$time[1:3]
 NY_waeth$time <- substr(NY_waeth$time, 1, 10)
 NY_waeth$time[1:3]
 ```
+:::
 
 
 :::
 ::: {.column width="50%"}
+
+
+::: {.fragment fragment-index=3}
 
 <div style="font-size: 22px"> Now we can turn the `time` variable into a date: </div>
 
@@ -144,8 +165,10 @@ NY_waeth$time[1:3]
 NY_waeth$time <- lubridate::ymd(NY_waeth$time)
 class(NY_waeth$time)
 ```
+:::
 
 
+::: {.fragment fragment-index=4}
 <div style="font-size: 22px; padding-top: 12px;"> It is interesting to note that dates in R are interpreted as the time that has passed since the [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time){target="_blank"}, January 1<sup>st</sup>, 1970. This is how most software/computers keep track of time 🤓
   </div>
 
@@ -163,6 +186,9 @@ as.numeric(NY_waeth$time[1])/365
 <div style="font-size: 24px; padding-top: 12px;"> So "2016-01-01" is 46 years after January 1<sup>st</sup>, 1970. </div>
 
 :::
+
+
+:::
 ::::
 
 ## Summarizing and Filtering the Data
@@ -171,6 +197,8 @@ as.numeric(NY_waeth$time[1])/365
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
 
 <div style="font-size: 22px"> We will be using some functions from the `dplyr` package, which is always loaded by `tidyverse`. Let's get the average for each day: </div>
 
@@ -188,6 +216,11 @@ Temp_avg <- NY_waeth %>%
 
 str(Temp_avg)
 ```
+:::
+
+
+::: {.fragment fragment-index=2}
+
 ::: {.callout-note}
 
 ## The `tidyverse` Pipe Operator %>% 
@@ -195,9 +228,13 @@ str(Temp_avg)
 The `%>%` operator, AKA the *pipe operator*, passes the element on its left to the function to its right. It is helpful to do multiple operations without needing to redefine an object on every line. 
 
 ::: 
-
 :::
+:::
+
+
 ::: {.column width="50%"}
+
+::: {.fragment fragment-index=3}
 
 <div style="font-size: 22px"> For the Americans 🦅, let's also transform temperature to Fahrenheit (The inferior way of measuring temperature 😤) </div>
 
@@ -211,7 +248,10 @@ The `%>%` operator, AKA the *pipe operator*, passes the element on its left to t
 Temp_avg$Temp_F <- (Temp_avg$Temp_C * 9/5) + 32 
 ```
 
+:::
 
+
+::: {.fragment fragment-index=4}
 <div style="font-size: 22px; padding-top: 14px;"> Now let's filter the data fo the year 2021. We can take advantage of the fact that Dates in R are treated as numbers: </div>
 
 ```{r}
@@ -230,6 +270,8 @@ str(Temp_avg_2021)
 </br>
 
 <center> ✨ clean data ✨</center>
+:::
+
 
 :::
 ::::
@@ -370,10 +412,13 @@ geom_smooth(method = "loess",
 
 ## Quadratic Regression: Centering Variables
 
-<div style="font-size: 24px; padding-bottom: 12px;"> I will first show the "manual" way of running a quadratic regression, and I will show the slightly more practical way later. </div>
+<div style="font-size: 24px; padding-bottom: 12px;"> I will first show the "manual" way of running a quadratic regression, and I will show the slightly more practical way later (if you are not interested in interpreting coefficients). </div>
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+
+::: {.fragment fragment-index=1}
 
 <div style="font-size: 24px"> First, let's create the quadratic version of the `time` variable </div>
 
@@ -388,8 +433,12 @@ geom_smooth(method = "loess",
 Temp_avg_2021$time2 <- as.numeric(Temp_avg_2021$time)^2
 
 ```
+:::
+
+
 </br>
 
+::: {.fragment fragment-index=2}
 <div style="font-size: 24px"> Oh wait...this does not work too well 🫤 </div>
 
 ```{r}
@@ -402,17 +451,26 @@ Temp_avg_2021$time2 <- as.numeric(Temp_avg_2021$time)^2
 cor(Temp_avg_2021$time2, as.numeric(Temp_avg_2021$time))
 ```
 
+
  We will not be able to interpret our regression coefficients (the linear term specifically) with such multicollinearity, as discussed in [Lab 7](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%207.html#/another-perspective-residuals){target="_blank"}
+:::
 
-
-We need to center our variables first!
+::: {.fragment fragment-index=3}
+<center> 💡 We need to center our variables first 💡 </center>
+:::
 
 :::
 ::: {.column width="50%"}
 
+
+::: {.fragment fragment-index=4}
 To center a variable we just subtract the mean
 
 $$X_{\mathrm{centered}} = X - \bar{X}$$
+:::
+
+
+::: {.fragment fragment-index=5}
 
 ```{r}
 #| eval: true
@@ -442,6 +500,8 @@ cor(Temp_avg_2021$time_cent2,
 <center> Now we are good to proceed with our quadratic regression. </center>
 
 :::
+
+:::
 ::::
 
 
@@ -469,23 +529,36 @@ summary(quad_reg)
 :::
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=1}
+
 $\widehat{\mathrm{F_{temp}}} = b_0 + b_1 \times \mathrm{time} + b_2 \times \mathrm{time}^2$
 
 <center> &darr; </center>
 
 $\widehat{\mathrm{F_{temp}}} = 71.16 + 0.06 \times \mathrm{time} - 0.001 \times \mathrm{time}^2$
 
+:::
 
 <ul style="font-size: 22px">  
 
+
+::: {.fragment fragment-index=1}
 <li> 71.16 is the expected temperature in Fahrenheit when `time` is 0. Our variable is centered, so 0 represent the middle of the year, roughly July 2<sup>nd</sup> </li>
+:::
 
+::: {.fragment fragment-index=2}
 <li>  0.06 is the expected slope of the tangent line when `time` is 0 (confusing 😕)  </li>
+:::
 
+::: {.fragment fragment-index=3}
 <li>  -0.001 is the expected change in the slope of the tangent line per unit-change in `time` (even more confusing 😕😕) </li>
+:::
 
 
-We need some graphical help because some of this stuff honestly makes not sense in words 🤷
+::: {.fragment fragment-index=4}
+We need some graphical help because some of this stuff honestly makes no sense in words 🤷
+:::
+
 
 </ul>
 
@@ -536,11 +609,9 @@ $$b_0 = 71.16$$
 
 <div style="font-size: 24px"> Given that the `time` variable was centered, 0 corresponds to the middle of the year, July 2<sup>nd</sup>. 
 
+
+
 The expected temperature on July 2<sup>nd</sup> (when `time` = 0) given the quadratic regression equation is indeed 71.16 degrees Fahrenheit. </div>
-
-
-
-
 
 :::
 ::: {.column width="70%"}
@@ -611,8 +682,11 @@ $$b_1 = 0.06$$
 
 <div style="font-size: 24px"> The slope of the tangent line when `time` is at 0. The tangent line is the red line in the plot on the right. 
 
+
+
 For this to make a bit more sense, we also need to look at $b_2$. </div>
 
+::: {.fragment fragment-index=1}
 
 ::: {.callout-note}
 
@@ -621,6 +695,7 @@ For this to make a bit more sense, we also need to look at $b_2$. </div>
 If you think about it, in linear regression, the slope, $b_1$, is also the slope of the tangent line to the regression line. 
 
 ::: 
+:::
 
 :::
 ::: {.column width="70%"}
@@ -691,8 +766,9 @@ $$b_2 = - 0.001$$
 
 $$b_{\mathrm{tang}} = b_1 + 2b_2 X$$ </div>
 
-
+::: {.fragment fragment-index=1}
 <div style="font-size: 22px"> For example, if `time` = 100, then the slope of the tangent line is given by $b_{\mathrm{tang}} = .06 + 2\times -.001 \times100 = -.14$. Indeed, the tangent line goes downwards, as its slope suggests. </div>
+:::
 
 :::
 ::: {.column width="70%"}
@@ -731,39 +807,52 @@ geom_segment(x = (mean(Temp_avg_2021$time) + x_val) - 130,
 
 So why do we care about slopes of tangent lines? Well, generally, we don't. The thing that we care about is that the slope of tangent lines *changes* at all. This is what a non-zero $b_2$ value tells us.  
 
+::: {.fragment fragment-index=1}
 What would it mean for the slope of the tangent line to be *constant across every $X$ value*? What happens if $b_2 = 0$?
+:::
 
-
+::: {.fragment fragment-index=2}
 We can check our quadratic regression equation, so $\hat{Y} = b_0 + b_1X +  0X^2$ &rarr; $\hat{Y} = b_0 + b_1X$
+:::
 
+
+::: {.fragment fragment-index=3}
 Oh, we are back to the linear regression formula 🙃 If the slope of the tangent line is always constant, we have a *line*.
+:::
 
+::: {.fragment fragment-index=4}
 So, $b_2$ informs us about 3 things:
-
+:::
 
 :::: {.columns}
 
 ::: {.column width="33%"}
 
+::: {.fragment fragment-index=5}
 **1.** Whether the line bends at all (i.e., is $b_2 \neq 0$) 
+:::
 
 :::
 
 ::: {.column width="33%"}
 
+::: {.fragment fragment-index=6}
 **2.** How much the line bends, which it depends on the *magnitude* of $b_2$ (more extreme $b_2$ values imply steeper curves)
+:::
 
 :::
 
 
 ::: {.column width="33%"}
 
+::: {.fragment fragment-index=7}
 **3.** The direction of the bend. If the sign of $b_2$ is positive, the curve will be a bell, if the sign is negative, it will be a U, as in our case.
+:::
 
 :::
 ::::
 
-## Climbing to the top (or bottom)
+## Climbing to the top ☝️ (or bottom 👇)
 
 :::: {.columns}
 ::: {.column width="40%"}
@@ -816,9 +905,11 @@ geom_segment(x = mean(Temp_avg_2021$time) -130,
 ```
 
 
-<div style="font-size: 24px"> Last but not least, we can find the top (or bottom if $b_2 > 0$) of our curve (which is also the turning point). The formula is $\mathrm{top} = -\frac{b_1}{2b_2}$. 
+<div style="font-size: 24px"> Last but not least, we can find the top (or bottom if $b_2 > 0$) of our curve (which is also the turning point). The formula is $\mathrm{top} = -\frac{b_1}{2b_2}$. </div>
 
-For us that would mean that the predicted highest average temperature is around:
+
+::: {.fragment fragment-index=1}
+<div style="font-size: 24px"> For us that would mean that the predicted highest average temperature is around:
 
 ```{r}
 #| eval: true
@@ -830,9 +921,9 @@ For us that would mean that the predicted highest average temperature is around:
 -1*(coef(quad_reg)[2]/(2*coef(quad_reg)[3]))
 ```
 
-July 22<sup>nd</sup>
+July 22<sup>nd</sup> </div>
+:::
 
-</div>
 
 :::
 ::: {.column width="60%"}
@@ -885,9 +976,15 @@ geom_segment(x = mean(Temp_avg_2021$time) -130,
 :::
 ::::
 
-<div style="font-size: 22px"> Why does $-\frac{b_1}{2b_2}$ always finds the top/bottom? Turns out that $-\frac{b_1}{2b_2}$ finds the $X$ point where the slopes of the tangent line is *exactly 0*. That means that the tangent line is *perfectly flat*, which happens only at the top/bottom of a quadratic function. </div>
 
-This concept of ["finding the top (or bottom)"](https://en.wikipedia.org/wiki/Mathematical_optimization){target="_blank"} happens to be the foundation of almost all estimation algorithms in statistics. 
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 24px"> Why does $-\frac{b_1}{2b_2}$ always finds the top/bottom? Turns out that $-\frac{b_1}{2b_2}$ finds the $X$ point where the slopes of the tangent line is *exactly 0*. That means that the tangent line is *perfectly flat*, which happens only at the top/bottom of a quadratic function. </div>
+:::
+
+::: {.fragment fragment-index=3}
+<div style="font-size: 22px; padding-top: 12px;"> This concept of ["finding the top (or bottom)"](https://en.wikipedia.org/wiki/Mathematical_optimization){target="_blank"} happens to be the foundation of almost all estimation algorithms in statistics. </div>
+:::
 
 ## Bootsrap CI for Maximum/Minimum point
 
@@ -895,6 +992,9 @@ We can create a 95% CI for the `time` value at which we expect the maximum tempe
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+
+::: {.fragment fragment-index=1}
 
 <div style="font-size: 24px"> First we create the bootstrapped regression: </div>
 
@@ -920,9 +1020,13 @@ boot_quad <- car::Boot(quad_reg, R = 1000)
 top_boot <- -boot_quad$t[,2]/(2*boot_quad$t[,3])
 ```
 
+:::
 
 :::
 ::: {.column width="50%"}
+
+
+::: {.fragment fragment-index=2}
 
 <div style="font-size: 24px; padding-top: 12px;"> The 95% CI for the `time` value at which we expect the highest temperatures is: </div>
 
@@ -946,6 +1050,8 @@ quantile(top_boot, c(.025, .975))
 plot(density(top_boot))
 ```
 :::
+
+:::
 ::::
 
 
@@ -953,13 +1059,20 @@ plot(density(top_boot))
 
 It is my opinion that will almost never need more than a quadratic term if you are doing research in Psychology. In our case, we are dealing with a physical phenomenon (temperature), so higher polynomials may not be as far fetched. 
 
+
+::: {.fragment fragment-index=1}
 <div style="font-size: 24px">  How do we find out how many polynomials we need? Since we are just adding additional variables to the regression model, we can use in  $\Delta R^2$ just as we did in [Lab 6](https://raw.githack.com/quinix45/PSYC-7804-Regression-Lab-Slides/main/Slides%20Files/Lab%206.html#/testing-gain-in-prediction-delta-r2){target="_blank"}. </div>
+:::
+
 
 :::: {.columns}
 ::: {.column width="60%"}
 
 
 </br>
+
+
+::: {.fragment fragment-index=2}
 
 <div style="font-size: 24px"> We can easily add polynomials to regressions thanks to the `poly()` function: </div>
 
@@ -976,12 +1089,14 @@ reg_cube <- lm(Temp_F ~ poly(time, 3), data = Temp_avg_2021)
 reg_fourth <- lm(Temp_F ~ poly(time, 4), data = Temp_avg_2021) 
 reg_fifth <- lm(Temp_F ~ poly(time, 5), data = Temp_avg_2021) 
 ```
-
+:::
 
 :::
 ::: {.column width="40%"}
 
 </br>
+
+::: {.fragment fragment-index=2}
 
 ::: {.callout-warning}
 
@@ -989,7 +1104,7 @@ reg_fifth <- lm(Temp_F ~ poly(time, 5), data = Temp_avg_2021)
 
 Be careful! It may seem that the `poly()` function saves us a lot of time, but it calculates **orthogonal polynomials**. Do not interpret the regression coefficients of regressions that use `poly()` functions! For more, see [this link](https://online.stat.psu.edu/stat502/lesson/10/10.2){target="_blank"}.
 ::: 
-
+:::
 
 :::
 ::::
@@ -1037,7 +1152,9 @@ anova(reg_lin, reg_quad, reg_cube, reg_fourth, reg_fifth)
 
 <center>
 
+::: {.fragment fragment-index=1}
 Let's quickly look at what the polynomial regression lines look like.
+:::
 
 </center>
 
@@ -1118,10 +1235,13 @@ geom_smooth(method = "lm",
 :::: {.columns}
 ::: {.column width="30%"}
 
+::: {.fragment fragment-index=1}
 <div style="font-size: 24px; padding-top: 16px;">  But how do we divide the data? *You* have to decide it based on what *you* know about your data/theory 😀 </div>
+:::
 
+::: {.fragment fragment-index=2}
 <div style="font-size: 22px; padding-top: 16px;"> In the case of this data, I think that a good cut-point is the top of the quadratic regression from before! </div>
-
+:::
 
 <ul style="font-size: 22px">  
 
@@ -1129,10 +1249,15 @@ geom_smooth(method = "lm",
 
 </ul>
 
+::: {.fragment fragment-index=3}
 <div style="font-size: 20px;">  The plot on the right shows the segments if we divide the data in this way. </div>
+:::
+
 
 :::
 ::: {.column width="70%"}
+
+::: {.fragment fragment-index=3}
 
 ```{r}
 #| eval: true
@@ -1176,7 +1301,7 @@ geom_segment(xend = max(Temp_avg_2021$time_cent) + mean(Temp_avg_2021$time),
   theme(plot.title = element_text(hjust = 0.5, face = "bold"))
 
 ```
-
+:::
 :::
 ::::
 
@@ -1203,12 +1328,16 @@ $$
 :::
 ::::
 
+::: {.fragment fragment-index=1}
 We need to create $D_1$ and $D_2$. The trick is to get the original predictor, `Temp_cent` in our case, and *split* its value across the segments.
+:::
 
 :::: {.columns}
 ::: {.column width="50%"}
 
-So, if we choose our cut-point to be roughly around the top or the quadratic curve, roughly $20.34$:
+::: {.fragment fragment-index=2}
+So, if we choose our cut-point to be around the top or the quadratic curve, roughly $20.34$:
+
 
 <ul style="font-size: 22px">  
 
@@ -1216,12 +1345,16 @@ So, if we choose our cut-point to be roughly around the top or the quadratic cur
 <li> $D_2:$ Make all values *before* $20.34$ become $0$. </li>
 
 </ul>
+:::
 
+::: {.fragment fragment-index=3}
 We will use the `ifelse()` function to make our life easier. 
+:::
 
 :::
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=3}
 `ifelse()` syntax: `ifelse(CONDITION, if CONDITION TRUE do something, if CONDITION FALSE do something)`
 
 ```{r}
@@ -1233,6 +1366,8 @@ We will use the `ifelse()` function to make our life easier.
 # an example
 ifelse(c(2,3) > 2.5, "bigger", "smaller")
 ```
+:::
+
 :::
 ::::
 
@@ -1266,21 +1401,22 @@ Temp_avg_2021$D2 <- ifelse(Temp_avg_2021$time_cent < 20.34353,
 ```
 
 
+::: {.fragment fragment-index=1}
 <div style="font-size: 24px; padding-top: 16px;"> If you look at our variables on the left and scroll until July 22<sup>nd</sup>, you should see how the `temp_cent` variable has been split between $D_1$ and $D_2$.
  </div>
-
+:::
 
 
 :::
 ::: {.column width="45%"}
 
-
+::: {.fragment fragment-index=1}
 ```{r}
 reactable::reactable(Temp_avg_2021[, c("time", "time_cent", "D1", "D2")],
                      style = list(fontFamily = "Work Sans, sans-serif", fontSize = "0.875rem"),
                      pagination = FALSE, highlight = TRUE, height = 500)
 ```
-
+:::
 
 :::
 ::::
@@ -1305,19 +1441,12 @@ summary(piece_reg)
 :::
 ::: {.column width="30%"}
 
-As we saw from the plot some slides ago, the slope of the first segment, $D_1$ is positive, and that slope of the second segment, $D_2$ is negative. $R^2$ is also quite good at $81\%$. 
+<div style="font-size: 24px">  
+ As we saw from the plot some slides ago, the slope of the first segment, $D_1$ is positive, and that slope of the second segment, $D_2$ is negative. $R^2$ is also quite good at $81\%$.</div>
 
 
-The piecewise regression actually does better than the quadratic regression in terms of model fit!
+ <div style="font-size: 24px; padding-top: 12px;"> You can interpret these slopes as you would normal regression slopes. Just remember where $D_1$ ends and $D_2$ begins when you interpret the slopes.  </div>
 
-```{r}
-#| eval: true
-#| echo: true 
-#| code-line-numbers: false
-#| classes: code-125
-
-BIC(reg_piece, quad_reg)
-```
 
 
 :::
@@ -1394,8 +1523,8 @@ Spline regression is quite similar to loess regression. Spline regression is a p
 #| code-line-numbers: false
 #| classes: code-125
 
-library(splines)
-spline_fit <- lm(Temp_F ~ bs(Temp_avg_2021$time_cent, df = 5), 
+
+spline_fit <- lm(Temp_F ~ splines2::bsp(Temp_avg_2021$time_cent, df = 5), 
                  data = Temp_avg_2021)
 summary(spline_fit)
 ```
@@ -1437,7 +1566,7 @@ pred <- predict(spline_fit,
 
 <div style="font-size: 22px"> You can see that the spline regression line (red) is very similar to the loess regression line (blue). The two methods are quite similar. </div>
 
-<div style="font-size: 22px; padding-top: 16px;"> Also note that the spline regression line is smooth. This is because by default the `slpine` package uses 3<sup>rd</sup> degree polynomial segments. (see `help(bs)`) </div>
+<div style="font-size: 22px; padding-top: 16px;"> Also note that the spline regression line is smooth. This is because by default the `slpine` package uses 3<sup>rd</sup> degree polynomial segments. (see `help(bsp)`) </div>
  
  
 :::

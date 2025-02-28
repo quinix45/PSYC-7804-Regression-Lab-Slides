@@ -105,7 +105,7 @@ str(music,
 
 ## Background About the data
 
-I am using some of the data from @Setti_Kahn_2024, where<span style="font-size: 12px"> (yes I am citing myself, but it makes sense for this lab, I promise 😶🫣) </span> we looked at how facets of openness to experience (both from the  [big five](https://ipip.ori.org/newNEO_FacetsTable.htm){target="_blank"} and the [HEXACO](https://ipip.ori.org/newHEXACO_PI_key.htm){target="_blank"}) predict music preference.  
+I am using some of the data from @Setti_Kahn_2024, where <span style="font-size: 12px"> (yes I am citing myself, but it makes sense for this lab, I promise 😶🫣) </span> we looked at how facets of openness to experience (both from the  [big five](https://ipip.ori.org/newNEO_FacetsTable.htm){target="_blank"} and the [HEXACO](https://ipip.ori.org/newHEXACO_PI_key.htm){target="_blank"}) predict music preference.  
 
 
 :::: {.columns}
