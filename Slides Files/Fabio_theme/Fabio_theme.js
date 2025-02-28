@@ -367,6 +367,47 @@ function disableAllFragments(fragments)
 }
 
 
+document.addEventListener('DOMContentLoaded', function () {
+  // Create the span and icon elements
+  const span = document.createElement('span');
+  span.title = 'search ( ctrl + shift + F)';  // Set the title attribute
+  
+  const icon = document.createElement('i');
+  icon.classList.add("fa-solid", "fa-search", "search");  // Add classes for Font Awesome icon
+  
+  //icon.style.fontSize = '26px';  // Set the font size to 20px (adjust as needed)
+  icon.style.paddingBottom = "0px";
+  icon.style.verticalAlign = 'top';
+  
+  
+  icon.addEventListener('click', function() {
+    // Simulate the CTRL + SHIFT + F behavior
+    const event = new KeyboardEvent('keydown', {
+      key: 'F',
+      code: 'KeyF',
+      ctrlKey: true,
+      shiftKey: true,
+      bubbles: true
+    });
+    
+    // Dispatch the event on the document to simulate the shortcut
+    document.dispatchEvent(event);
+    
+    console.log('CTRL + SHIFT + F triggered');
+  });
+  
+  // Append the icon to the span
+  span.appendChild(icon);
+  
+  // Find the element with the class 'slide-menu-offset'
+  const slideMenu = document.querySelector('.slide-menu-offset');
+  
+  // Check if the element exists to avoid errors
+  if (slideMenu) {
+    // Append the span (with the icon) to the element
+    slideMenu.appendChild(span);
+  }
+});
 
 
 
@@ -385,3 +426,10 @@ Reveal.addEventListener('slidechanged', (event) => {
           });
           
           
+// search icon next to menu attempt  slide-menu-offset
+
+
+
+
+
+

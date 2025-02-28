@@ -178,6 +178,14 @@ ol li::marker {
   background-color: lighten($theme-color, 15%);
 }
 
+.search{
+  fill: $theme-color;
+  color: $theme-color;
+  // display: inline-block;
+  // border-width: .3;
+  //padding-bottom: 13px;
+}
+
 .title-separator{
   fill: $theme-color;
   stroke: $theme-color;

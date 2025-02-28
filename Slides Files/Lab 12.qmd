@@ -23,3 +23,9 @@ format:
 
 editor: source
 ---
+
+## Font-awesome slide{visibility="hidden"}
+
+uncounted and not visible slide to trigger the fontawesome extension
+
+{{< fa thumbs-up >}} 
