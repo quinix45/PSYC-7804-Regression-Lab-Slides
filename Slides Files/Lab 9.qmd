@@ -208,8 +208,11 @@ $$
 :::
 
 </br>
+
 ::: {.fragment fragment-index=3}
+
 <div style="font-size: 24px; text-align:center;">  However, now that we are dealing with a significant interaction effect, $0.20 X_1 X_2$, things are not so simple! The slopes now have very specific meanings 🧐 </div>
+
 :::
 
 
@@ -443,8 +446,11 @@ min(grade_fin$priGPA)
 :::
 
 </br>
+
 ::: {.fragment fragment-index=5}
+
 <div style="font-size: 24px"> Still, we can pull some shenanigans to make the meaning of $X_1 = 0$ or $X_2 = 0$ more informative 😀 Any ideas? </div>
+
 :::
 
 :::

@@ -94,7 +94,8 @@ The `splines2` package [@Wang_etal_2024] can be used to calculate splines.
 
 <center style="padding-bottom: 41px;"> [Data]{.data-title} </center>
 
-<div style="font-size: 24px"> This data come from a random sample of 200 students from the 1982 [high-school and beyond longitudinal study.](https://nces.ed.gov/surveys/hsb/){target="_blank"} </div>
+<div style="font-size: 22px"> This data come from a random sample of 200 students from the 1982 [high-school and beyond longitudinal study](https://nces.ed.gov/surveys/hsb/){target="_blank"}. See [here](https://www.openintro.org/data/index.php?data=hsb2){target="_blank"} to find out more about the variables. 
+ </div>
 
 
 
@@ -106,18 +107,267 @@ The `splines2` package [@Wang_etal_2024] can be used to calculate splines.
 #| output: true
 
 hsb2 <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/hsb2.csv")
-
 ```
+
+<center style="padding-bottom: 11px;"> </center>
+
 ```{r}
 reactable::reactable(hsb2,
-                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "1.175rem"),
-                     pagination = FALSE, highlight = TRUE, height = 350)
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "1.105rem"),
+                     pagination = FALSE, highlight = TRUE, height = 300)
 ```
+
+
+:::
+::::
+
+
+## Categorical Variables in Regression
+
+So far we have only dealt with continuous variables. Namely, we have interpreted slopes as "the change in $Y$ per unit change in $X$". 
+
+<div style="font-size: 24px"> This interpretation only makes sense if both $Y$ and $X$ are continuous. But if we want to say that in this data `gender` should predict `write` score, the "unit-change" notion does not make as much sense. </div>
+
+
+
+
+:::: {.columns}
+::: {.column width="40%"}
+
+<div style="font-size: 24px; padding-top: 12px;"> If we try to plot the `write` score on the $y$-axis and `gender` on the $x$-axis we can visualize observations in each group. But there are no "units" on the $x$-axis 🤔 </div>
+
+
+<div style="font-size: 26px; padding-top: 22px;"> However, it turns out that there are ways to trick regression into treating categorical variables as continuous! </div>
+
+
+<div style="font-size: 26px; padding-top: 12px;"> But first, I would like to point something out... </div>
+
+
+:::
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+ggplot(hsb2, aes(x = gender, y = write)) +
+  geom_point()
+```
+
 
 
 
 :::
 ::::
+
+## Intercept only Regression
+
+You can use the `lm()` function with only one variable. Meaning, you can run a regression without any predictors (**!?**). for example, for the `write` variable:
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+car::S(lm(write ~ 1, data = hsb2))
+```
+
+:::
+::: {.column width="50%"}
+
+I would like to draw attention to the intercept, $52.78$ and the residual *SD*, $9.47$. These values are the **mean** and ***SD*** of the `write` variable. 
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+mean(hsb2$write)
+sd(hsb2$write)
+
+```
+
+<div style="font-size: 20px"> This is consistent with the representation of regression shown in the [appendix of Lab 2](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%202.html#/the-true-regression-model){target="_blank"}, Here $Y \sim N(\mu = 52.78, \sigma = 9.47)$
+ </div>
+
+
+:::
+::::
+
+<div style="font-size: 24px; padding-top: 14px"> So regression with only the intercept estimates the mean and *SD* of $Y$. But what now? Let's look at the graphical representation of the intercept only model. </div>
+
+
+## Intercept only model
+
+If we only use the intercept in out model, the "regression line" will be flat and intercept the $y$-axis at the mean of $Y$.
+
+:::: {.columns}
+::: {.column width="30%"}
+
+...but wait a moment, we have two groups, `female` and `male`. How about we give each group their own intercept? 
+
+- this simply implies that we believe that the mean of the $Y$ variable, `write`, should differ based on `gender`. 
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+ggplot(hsb2, aes(x = gender, y = write)) +
+  geom_point() +
+  geom_hline(yintercept = mean(hsb2$write))
+```
+
+:::
+::::
+
+## Group Means
+
+In the previous plot we were using the "grand mean" of `write`. If we use the two means instead...
+
+:::: {.columns}
+::: {.column width="30%"}
+
+We see that the means of the two groups are different.
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+hsb2 %>% 
+  group_by(gender) %>% 
+   summarise(Group_means = mean(write))
+```
+
+We can run a regression model that is the representation of the graph on the right
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+
+mean_female <- mean(hsb2$write[hsb2$gender == "female"])
+mean_male <- mean(hsb2$write[hsb2$gender == "male"])
+
+ggplot(hsb2, aes(x = gender, y = write)) +
+  geom_point() +
+  geom_hline(aes(yintercept = mean(mean_female), color = "Female"), 
+             linetype = "dashed") +
+  geom_hline(aes(yintercept = mean(mean_male), color = "Male"), 
+             linetype = "dashed") +
+    geom_hline(aes(yintercept = mean(hsb2$write), color = "Grand Mean")) +
+  scale_color_manual(values = c("Female" = "blue", "Male" = "red", "Grand Mean" = "black")) +
+  labs(color = "Means")
+```
+
+:::
+::::
+
+## Coding Categorical Variables
+
+We can code our categorical variables such that they are treated as continuous variables. Usually, we treat one group as "0", and the other group as "1". Let's say that `male` is $0$ and `female` is $1$:
+
+:::: {.columns}
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+hsb2$gender_binary <- ifelse(hsb2$gender == "female", 1, 0)
+
+reg_gender_bin <- lm(write ~ gender_binary, data = hsb2)
+summary(reg_gender_bin)
+```
+
+
+:::
+::: {.column width="40%"}
+
+$\mathrm{write} = 50.12 + 4.87 \times \mathrm{gender}$
+
+
+<div style="font-size: 22px"> Remember that in regression, the intercept is *expected mean value* of $Y$ when $X = 0$, and the slope is the *expected mean value increase* per unit increase in $X$. </div>
+
+
+<ul style="font-size: 22px">  
+
+<li> Then, since we coded $0$ to represent `male`, the intercept *is the mean of* the `male` group in `write` score.    </li>
+
+<li> And, since we coded $1$ to represent `female`, the slope *is the difference in means* between the `male` and `female` group in `write` score ($50.12 + 4.87 = 54.99$).    </li>
+
+</ul>
+
+
+
+
+
+:::
+::::
+
+
+## Mean differences? Sounds familiar?
+
+We just tested whether `male` and `female` are significantly different in mean `write` score. This is what you should know as an independent-samples *t*-test (**!**).
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+t.test(hsb2$write ~ hsb2$gender,
+       var.equal = TRUE)
+
+```
+
+:::
+::: {.column width="50%"}
+
+You should see that *t*-values, degrees of freedom, and *p*-values are the same as those for the slope on the previous slide. 
+
+
+::: {.callout-note}
+## No Coincidences in Statistics
+
+There are no coincidences in statistics. If two methods give some of the same results, they must be related in some way. When you see such patterns, ask yourself *why* two methods produce the same results. Once you answer that question, you will have gained tremendous insight.
+
+:::
+
+:::
+::::
+
+*t*-tests don't exist really. For some reason everyone decides to teach *t*-tests separately from regression, but they are simply a specific case of a regression.
+
 
 
 
@@ -126,3 +376,11 @@ reactable::reactable(hsb2,
 ## References 
 
 <div id="refs"> </div>
+
+
+# Apendix: Alternative Cohen's d caluclatations
+
+
+
+
+
