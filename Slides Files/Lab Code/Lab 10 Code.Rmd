@@ -4,3 +4,269 @@ author: "Fabio Setti"
 date: "Spring-2025"
 output: html_document
 ---
+
+
+
+## Today's Packages and Data 🤗
+
+
+```{r}
+# install.packages("tidyverse")
+ install.packages("fastDummies")
+```
+
+
+```{r}
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+library(fastDummies)
+```
+
+```{r}
+hsb2 <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/hsb2.csv")
+```
+
+
+## Categorical Variables in Regression
+
+```{r}
+ggplot(hsb2, aes(x = gender, y = write)) +
+  geom_point()
+```
+
+
+
+## Intercept only Regression
+
+
+
+```{r}
+car::S(lm(write ~ 1, data = hsb2))
+```
+
+
+```{r}
+
+mean(hsb2$write)
+sd(hsb2$write)
+
+```
+
+## Intercept only model Visualized
+
+```{r}
+ggplot(hsb2, aes(x = gender, y = write)) +
+  geom_point() +
+  geom_hline(yintercept = mean(hsb2$write))
+```
+
+
+
+## Group Means
+
+
+```{r}
+hsb2 %>% 
+  group_by(gender) %>% 
+   summarise(Group_means = mean(write))
+```
+
+
+
+```{r}
+
+mean_female <- mean(hsb2$write[hsb2$gender == "female"])
+mean_male <- mean(hsb2$write[hsb2$gender == "male"])
+
+ggplot(hsb2, aes(x = gender, y = write)) +
+  geom_point() +
+  geom_hline(aes(yintercept = mean(mean_female), color = "Female"), 
+             linetype = "dashed") +
+  geom_hline(aes(yintercept = mean(mean_male), color = "Male"), 
+             linetype = "dashed") +
+    geom_hline(aes(yintercept = mean(hsb2$write), color = "Grand Mean")) +
+  scale_color_manual(values = c("Female" = "blue", "Male" = "red", "Grand Mean" = "black")) +
+  labs(color = "Means")
+```
+
+
+## Coding Categorical Variables
+
+
+```{r}
+hsb2$gender_binary <- ifelse(hsb2$gender == "female", 1, 0)
+
+reg_gender_bin <- lm(write ~ gender_binary, data = hsb2)
+summary(reg_gender_bin)
+```
+
+
+## Mean differences? Sounds familiar?
+
+
+```{r}
+t.test(hsb2$write ~ hsb2$gender,
+       var.equal = TRUE)
+```
+
+
+## The Values "Do not Matter"
+
+
+```{r}
+hsb2$gender2 <- ifelse(hsb2$gender == "female", -314, -140)
+
+reg_gender2 <- lm(write ~ gender2, data = hsb2)
+summary(reg_gender2)
+```
+
+## Dummy Coding
+
+```{r}
+unique(hsb2$race)
+```
+
+## Creating Dummy coded Columns
+
+```{r}
+dummy_dat <- dummy_columns(hsb2,
+                          select_columns = "race",
+                          remove_most_frequent_dummy = TRUE)
+```
+
+
+## Regression with Dummy coded Variables
+
+
+```{r}
+reg_race <- lm(read ~ `race_african american` + race_asian + race_hispanic, 
+               dummy_dat)
+summary(reg_race)
+```
+
+
+## Dummy coding and Residuals
+
+
+```{r}
+hsb2 %>% 
+  group_by(race) %>% 
+   summarise(`Group means` = mean(read))
+```
+
+
+```{r}
+means <- hsb2 %>% 
+  group_by(race) %>% 
+   summarise(Group_means = mean(read)) %>% 
+  as.data.frame
+
+ggplot(hsb2, aes(x = race, y = read)) +
+  geom_point() +
+  geom_hline(aes(yintercept = means[1,2], color = "African American"), 
+             linetype = "dashed") +
+  geom_hline(aes(yintercept = means[2,2], color = "Asian"), 
+             linetype = "dashed") +
+  geom_hline(aes(yintercept = means[3,2], color = "Hispanic")) +
+    geom_hline(aes(yintercept = means[4,2], color = "White")) +
+  scale_color_manual(values = c("African American" = "blue", "Asian" = "red", "Hispanic" = "black",
+                                "White" = "cyan"))  + 
+  labs(color = "Means")
+```
+
+
+```{r}
+aov <- aov(read ~ factor(race), data = hsb2)
+summary(aov)
+```
+
+
+```{r}
+summary(reg_race)$fstatistic
+```
+
+
+## Factor Variables in R
+
+```{r}
+hsb2$race <- factor(hsb2$race, 
+                    levels = c("white", "african american", "asian", "hispanic"),
+                    labels = c("W", "AA", "A", "H"))
+
+str(hsb2$race)
+```
+
+
+```{r}
+contrasts(hsb2$race)
+```
+
+
+
+## Regression with Factor variable
+
+
+```{r}
+reg_race_fct <- lm(read ~ race, hsb2)
+summary(reg_race_fct)
+```
+
+
+
+## Other coding schemes
+
+```{r}
+contrasts(hsb2$race)
+```
+
+
+```{r}
+# `4` stands for number of groups
+contr.sum(4)
+```
+
+
+```{r}
+contrasts(hsb2$race) <- contr.sum(4)
+# the contrast matrix has been updated
+contrasts(hsb2$race)
+```
+
+## Regression With Unweighted Effects Coding
+
+
+```{r}
+reg_race_UEC <- lm(read ~ race, hsb2)
+summary(reg_race_UEC)
+```
+
+```{r}
+contrasts(hsb2$race)
+```
+
+```{r}
+table(hsb2$race)
+```
+
+```{r}
+contrasts(hsb2$race)[4,] <- c(-145/24, -20/24, - 11/24)
+```
+
+```{r}
+contrasts(hsb2$race)
+```
+
+
+## Regression With weighted Effects Coding
+
+
+```{r}
+reg_race_WEC <- lm(read ~ race, hsb2)
+summary(reg_race_WEC)
+```
+
+```{r}
+mean(hsb2$read)
+```
+

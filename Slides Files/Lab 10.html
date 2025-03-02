@@ -254,27 +254,24 @@ Fabio Setti
 <details class="code-fold">
 <summary>Install Packages Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("tidyverse")</span></span>
-<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"lubridate"</span>)</span>
-<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"splines2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"fastDummies"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell code-150">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">14</span>, </span>
 <span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">base_family =</span> <span class="st">'serif'</span>))</span>
-<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(splines2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fastDummies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br></p>
 <div style="font-size: 26px">
 <div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>lubridate</code></a></li><li><a href="#tabset-1-2"><code>splines2</code></a></li></ul>
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>fastDummies</code></a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
-<p>The <code>lubridate</code> package <span class="citation" data-cites="Spinu_etal_2024">(<a href="#/references" role="doc-biblioref" onclick="">Spinu et al., 2024</a>)</span> provides many functions to help you work with date and times.</p>
+<div style="font-size: 22px">
+The <code>fastDummies</code> package <span class="citation" data-cites="Kaplan_Schlegel_2025">(<a href="#/references" role="doc-biblioref" onclick="">Kaplan &amp; Schlegel, 2025</a>)</span> provides some functions to help with dummy coding. Later, I show a better way of achieving dummy coding in <code>R</code>, but this package offers the “more standard” procedure.
 </div>
-<div id="tabset-1-2">
-<p>The <code>splines2</code> package <span class="citation" data-cites="Wang_etal_2024">(<a href="#/references" role="doc-biblioref" onclick="">Wang et al., 2024</a>)</span> can be used to calculate splines.</p>
 </div>
 </div>
 </div>
@@ -293,8 +290,8 @@ This data come from a random sample of 200 students from the 1982 <a href="https
 </center>
 <div class="cell">
 <div class="cell-output-display">
-<div id="htmlwidget-5b320f79e2d026d98bc6" class="reactable html-widget" style="width:auto;height:300px;"></div>
-<script type="application/json" data-for="htmlwidget-5b320f79e2d026d98bc6">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"id":[70,121,86,141,172,113,50,11,84,48,75,60,95,104,38,115,76,195,114,85,167,143,41,20,12,53,154,178,196,29,126,103,192,150,199,144,200,80,16,153,176,177,168,40,62,169,49,136,189,7,27,128,21,183,132,15,67,22,185,9,181,170,134,108,197,140,171,107,81,18,155,97,68,157,56,5,159,123,164,14,127,165,174,3,58,146,102,117,133,94,24,149,82,8,129,173,57,100,1,194,88,99,47,120,166,65,101,89,54,180,162,4,131,125,34,106,130,93,163,37,35,87,73,151,44,152,105,28,91,45,116,33,66,72,77,61,190,42,2,55,19,90,142,17,122,191,83,182,6,46,43,96,138,10,71,139,110,148,109,39,147,74,198,161,112,69,156,111,186,98,119,13,51,26,36,135,59,78,64,63,79,193,92,160,32,23,158,25,188,52,124,175,184,30,179,31,145,187,118,137],"gender":["male","female","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female"],"race":["white","white","white","white","white","white","african american","hispanic","white","african american","white","white","white","white","african american","white","white","white","white","white","white","white","african american","hispanic","hispanic","african american","white","white","white","asian","white","white","white","white","white","white","white","white","hispanic","white","white","white","white","african american","white","white","african american","white","white","hispanic","asian","white","hispanic","white","white","hispanic","white","hispanic","white","hispanic","white","white","white","white","white","white","white","white","white","hispanic","white","white","white","white","white","hispanic","white","white","white","hispanic","white","white","white","hispanic","white","white","white","white","white","white","asian","white","white","hispanic","white","white","white","white","hispanic","white","white","white","african american","white","white","white","white","white","african american","white","white","hispanic","white","white","hispanic","white","white","white","white","african american","hispanic","white","white","white","african american","white","white","asian","white","african american","white","asian","white","white","white","white","white","african american","hispanic","african american","hispanic","white","white","hispanic","white","white","white","white","hispanic","african american","african american","white","white","hispanic","white","white","white","white","white","african american","white","white","white","white","white","white","white","white","white","white","white","hispanic","african american","asian","african american","white","white","white","white","white","white","white","white","white","asian","asian","white","asian","white","african american","white","white","white","asian","white","asian","white","white","white","white"],"ses":["low","middle","high","high","middle","middle","middle","middle","middle","middle","middle","middle","high","high","low","low","high","middle","high","middle","middle","middle","middle","high","middle","middle","high","middle","high","low","middle","high","high","middle","high","high","middle","high","low","middle","middle","middle","middle","low","high","low","high","middle","middle","middle","middle","high","middle","middle","middle","high","low","middle","middle","middle","middle","high","low","middle","high","middle","middle","low","low","middle","middle","high","middle","middle","middle","low","high","high","middle","high","high","low","middle","low","middle","high","high","high","middle","high","middle","low","high","low","low","low","middle","high","low","high","high","high","low","high","middle","middle","high","low","low","high","middle","low","high","low","high","middle","high","high","low","low","low","middle","middle","middle","low","high","middle","middle","high","low","middle","low","middle","middle","low","high","middle","middle","middle","middle","low","high","middle","middle","middle","high","middle","middle","low","low","low","high","middle","middle","middle","middle","middle","middle","middle","high","low","middle","high","low","middle","low","middle","low","middle","low","low","middle","high","high","low","low","middle","middle","high","low","middle","middle","high","middle","high","low","middle","middle","high","low","low","high","middle","high","middle","middle","middle","middle","middle","high"],"schtyp":["public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","public","public","public","public","public","public","public","private","private","public","public","public","private","public","private","public","private","public","public","public","private","private","public","public","public","public","public","public","private","public","public","public","public","private","public","public","public","public","private","public","private","public","public","public","private","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","public","public","public","public","public","public","private","private","public","public","public","public","private","public","public","public","public","public","private","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","private","public","public","public","public","public","private","public","private","public","public","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","public","public","public","private","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","public","public","public","public","private","public","public","private","private","public","private","private","public","private","public","public"],"prog":["general","vocational","general","vocational","academic","academic","general","academic","general","academic","vocational","academic","academic","academic","academic","general","academic","general","academic","general","general","vocational","academic","academic","vocational","vocational","academic","vocational","academic","general","general","academic","academic","vocational","academic","general","academic","academic","vocational","vocational","academic","academic","academic","general","general","general","vocational","academic","academic","academic","academic","academic","general","academic","academic","vocational","vocational","vocational","academic","vocational","academic","academic","general","general","academic","vocational","academic","vocational","academic","vocational","general","academic","academic","general","vocational","academic","academic","general","vocational","academic","academic","vocational","academic","academic","vocational","academic","academic","vocational","vocational","academic","academic","general","academic","academic","general","general","academic","academic","vocational","academic","academic","general","academic","academic","academic","academic","academic","vocational","general","academic","vocational","academic","academic","academic","academic","vocational","general","academic","academic","vocational","general","general","academic","vocational","vocational","academic","academic","general","vocational","vocational","academic","academic","vocational","vocational","academic","academic","academic","vocational","vocational","academic","general","academic","vocational","academic","academic","academic","vocational","academic","academic","academic","academic","academic","vocational","general","general","academic","vocational","vocational","general","academic","academic","academic","academic","academic","academic","vocational","academic","general","academic","vocational","general","vocational","general","academic","general","academic","academic","academic","vocational","general","academic","academic","general","academic","vocational","academic","general","general","academic","academic","vocational","general","vocational","academic","academic","general","vocational","general","general","academic"],"read":[57,68,44,63,47,44,50,34,63,57,60,57,73,54,45,42,47,57,68,55,63,63,50,60,37,34,65,47,44,52,42,76,65,42,52,60,68,65,47,39,47,55,52,42,65,55,50,65,47,57,53,39,44,63,73,39,37,42,63,48,50,47,44,34,50,44,60,47,63,50,44,60,73,68,55,47,55,68,31,47,63,36,68,63,55,55,52,34,50,55,52,63,68,39,44,50,71,63,34,63,68,47,47,63,52,55,60,35,47,71,57,44,65,68,73,36,43,73,52,41,60,50,50,47,47,55,50,39,50,34,57,57,68,42,61,76,47,46,39,52,28,42,47,47,52,47,50,44,47,45,47,65,43,47,57,68,52,42,42,66,47,57,47,57,52,44,50,39,57,57,42,47,42,60,44,63,65,39,50,52,60,44,52,55,50,65,52,47,63,50,42,36,50,41,47,55,42,57,55,63],"write":[52,59,33,44,52,52,59,46,57,55,46,65,60,63,57,49,52,57,65,39,49,63,40,52,44,37,65,57,38,44,31,52,67,41,59,65,54,62,31,31,47,59,54,41,65,59,40,59,59,54,61,33,44,59,62,39,37,39,57,49,46,62,44,33,42,41,54,39,43,33,44,54,67,59,45,40,61,59,36,41,59,49,59,65,41,62,41,49,31,49,62,49,62,44,44,62,65,65,44,63,60,59,46,52,59,54,62,35,54,65,52,50,59,65,61,44,54,67,57,47,54,52,52,46,62,57,41,53,49,35,59,65,62,54,59,63,59,52,41,49,46,54,42,57,59,52,62,52,41,55,37,54,57,54,62,59,55,57,39,67,62,50,61,62,59,44,59,54,62,60,57,46,36,59,49,60,67,54,52,65,62,49,67,65,67,65,54,44,62,46,54,57,52,59,65,59,46,41,62,65],"math":[41,53,54,47,57,51,42,45,54,52,51,51,71,57,50,43,51,60,62,57,35,75,45,57,45,46,66,57,49,49,57,64,63,57,50,58,75,68,44,40,41,62,57,43,48,63,39,70,63,59,61,38,61,49,73,44,42,39,55,52,45,61,39,41,50,40,60,47,59,49,46,58,71,58,46,43,54,56,46,54,57,54,71,48,40,64,51,39,40,61,66,49,65,52,46,61,72,71,40,69,64,56,49,54,53,66,67,40,46,69,40,41,57,58,57,37,55,62,64,40,50,46,53,52,45,56,45,54,56,41,54,72,56,47,49,60,54,55,33,49,43,50,52,48,58,43,41,43,46,44,43,61,40,49,56,61,50,51,42,67,53,50,51,72,48,40,53,39,63,51,45,39,42,62,44,65,63,54,45,60,49,48,57,55,66,64,55,42,56,53,41,42,53,42,60,52,38,57,58,65],"science":[47,63,58,53,53,63,53,39,58,50,53,63,61,55,31,50,50,58,55,53,66,72,55,61,39,39,61,58,39,55,47,64,66,72,61,61,66,66,36,39,42,58,55,50,63,69,49,63,53,47,57,47,50,55,69,26,33,56,58,44,58,69,34,36,36,50,55,42,65,44,39,58,63,74,58,45,49,63,39,42,55,61,66,63,44,63,53,42,34,61,47,66,69,44,47,63,66,69,39,61,69,66,33,50,61,42,50,51,50,58,61,39,46,59,55,42,55,58,58,39,50,50,39,48,34,58,44,50,47,29,50,54,50,47,44,67,58,44,42,44,44,50,39,44,53,48,55,44,40,34,42,58,50,53,58,55,54,47,42,61,53,51,63,61,55,40,61,47,55,53,50,47,31,61,35,54,55,53,58,56,50,39,63,50,66,58,53,42,55,53,42,50,55,34,50,42,36,55,58,53],"socst":[57,61,31,56,61,61,61,36,51,51,61,61,71,46,56,56,56,56,61,46,41,66,56,61,46,31,66,46,46,41,51,61,71,31,61,66,66,66,36,51,51,51,51,41,66,46,47,51,46,51,56,41,46,71,66,42,32,46,41,51,61,66,46,36,61,26,66,26,44,36,51,61,66,66,51,31,61,66,46,56,56,36,56,56,41,66,56,56,31,56,46,46,61,48,51,51,56,71,41,61,66,61,41,51,51,56,56,33,56,71,56,51,66,56,66,41,46,66,56,51,51,56,56,46,46,61,56,41,46,26,56,56,51,46,66,66,46,56,41,61,51,52,51,41,66,61,31,51,41,41,46,56,51,61,66,71,61,61,41,66,61,58,31,61,61,31,61,36,41,37,43,61,39,51,51,66,71,41,36,51,51,51,61,61,56,71,51,36,61,66,41,41,56,51,56,56,46,52,61,61]},"columns":[{"id":"id","name":"id","type":"numeric"},{"id":"gender","name":"gender","type":"character"},{"id":"race","name":"race","type":"character"},{"id":"ses","name":"ses","type":"character"},{"id":"schtyp","name":"schtyp","type":"character"},{"id":"prog","name":"prog","type":"character"},{"id":"read","name":"read","type":"numeric"},{"id":"write","name":"write","type":"numeric"},{"id":"math","name":"math","type":"numeric"},{"id":"science","name":"science","type":"numeric"},{"id":"socst","name":"socst","type":"numeric"}],"pagination":false,"highlight":true,"style":{"fontFamily":"Work Sans, sans-serif","fontSize":"1.105rem"},"height":"300px","dataKey":"ffc9df051513c120b6f59b378ce8bd43"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2d90c95391927925a5bc" class="reactable html-widget" style="width:auto;height:300px;"></div>
+<script type="application/json" data-for="htmlwidget-2d90c95391927925a5bc">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"id":[70,121,86,141,172,113,50,11,84,48,75,60,95,104,38,115,76,195,114,85,167,143,41,20,12,53,154,178,196,29,126,103,192,150,199,144,200,80,16,153,176,177,168,40,62,169,49,136,189,7,27,128,21,183,132,15,67,22,185,9,181,170,134,108,197,140,171,107,81,18,155,97,68,157,56,5,159,123,164,14,127,165,174,3,58,146,102,117,133,94,24,149,82,8,129,173,57,100,1,194,88,99,47,120,166,65,101,89,54,180,162,4,131,125,34,106,130,93,163,37,35,87,73,151,44,152,105,28,91,45,116,33,66,72,77,61,190,42,2,55,19,90,142,17,122,191,83,182,6,46,43,96,138,10,71,139,110,148,109,39,147,74,198,161,112,69,156,111,186,98,119,13,51,26,36,135,59,78,64,63,79,193,92,160,32,23,158,25,188,52,124,175,184,30,179,31,145,187,118,137],"gender":["male","female","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","male","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female","female"],"race":["white","white","white","white","white","white","african american","hispanic","white","african american","white","white","white","white","african american","white","white","white","white","white","white","white","african american","hispanic","hispanic","african american","white","white","white","asian","white","white","white","white","white","white","white","white","hispanic","white","white","white","white","african american","white","white","african american","white","white","hispanic","asian","white","hispanic","white","white","hispanic","white","hispanic","white","hispanic","white","white","white","white","white","white","white","white","white","hispanic","white","white","white","white","white","hispanic","white","white","white","hispanic","white","white","white","hispanic","white","white","white","white","white","white","asian","white","white","hispanic","white","white","white","white","hispanic","white","white","white","african american","white","white","white","white","white","african american","white","white","hispanic","white","white","hispanic","white","white","white","white","african american","hispanic","white","white","white","african american","white","white","asian","white","african american","white","asian","white","white","white","white","white","african american","hispanic","african american","hispanic","white","white","hispanic","white","white","white","white","hispanic","african american","african american","white","white","hispanic","white","white","white","white","white","african american","white","white","white","white","white","white","white","white","white","white","white","hispanic","african american","asian","african american","white","white","white","white","white","white","white","white","white","asian","asian","white","asian","white","african american","white","white","white","asian","white","asian","white","white","white","white"],"ses":["low","middle","high","high","middle","middle","middle","middle","middle","middle","middle","middle","high","high","low","low","high","middle","high","middle","middle","middle","middle","high","middle","middle","high","middle","high","low","middle","high","high","middle","high","high","middle","high","low","middle","middle","middle","middle","low","high","low","high","middle","middle","middle","middle","high","middle","middle","middle","high","low","middle","middle","middle","middle","high","low","middle","high","middle","middle","low","low","middle","middle","high","middle","middle","middle","low","high","high","middle","high","high","low","middle","low","middle","high","high","high","middle","high","middle","low","high","low","low","low","middle","high","low","high","high","high","low","high","middle","middle","high","low","low","high","middle","low","high","low","high","middle","high","high","low","low","low","middle","middle","middle","low","high","middle","middle","high","low","middle","low","middle","middle","low","high","middle","middle","middle","middle","low","high","middle","middle","middle","high","middle","middle","low","low","low","high","middle","middle","middle","middle","middle","middle","middle","high","low","middle","high","low","middle","low","middle","low","middle","low","low","middle","high","high","low","low","middle","middle","high","low","middle","middle","high","middle","high","low","middle","middle","high","low","low","high","middle","high","middle","middle","middle","middle","middle","high"],"schtyp":["public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","public","public","public","public","public","public","public","private","private","public","public","public","private","public","private","public","private","public","public","public","private","private","public","public","public","public","public","public","private","public","public","public","public","private","public","public","public","public","private","public","private","public","public","public","private","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","public","public","public","public","public","public","private","private","public","public","public","public","private","public","public","public","public","public","private","public","public","public","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","private","public","public","public","public","public","private","public","private","public","public","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","public","public","public","private","public","public","public","public","public","public","public","public","public","public","public","public","private","public","public","public","public","public","public","private","public","public","private","private","public","private","private","public","private","public","public"],"prog":["general","vocational","general","vocational","academic","academic","general","academic","general","academic","vocational","academic","academic","academic","academic","general","academic","general","academic","general","general","vocational","academic","academic","vocational","vocational","academic","vocational","academic","general","general","academic","academic","vocational","academic","general","academic","academic","vocational","vocational","academic","academic","academic","general","general","general","vocational","academic","academic","academic","academic","academic","general","academic","academic","vocational","vocational","vocational","academic","vocational","academic","academic","general","general","academic","vocational","academic","vocational","academic","vocational","general","academic","academic","general","vocational","academic","academic","general","vocational","academic","academic","vocational","academic","academic","vocational","academic","academic","vocational","vocational","academic","academic","general","academic","academic","general","general","academic","academic","vocational","academic","academic","general","academic","academic","academic","academic","academic","vocational","general","academic","vocational","academic","academic","academic","academic","vocational","general","academic","academic","vocational","general","general","academic","vocational","vocational","academic","academic","general","vocational","vocational","academic","academic","vocational","vocational","academic","academic","academic","vocational","vocational","academic","general","academic","vocational","academic","academic","academic","vocational","academic","academic","academic","academic","academic","vocational","general","general","academic","vocational","vocational","general","academic","academic","academic","academic","academic","academic","vocational","academic","general","academic","vocational","general","vocational","general","academic","general","academic","academic","academic","vocational","general","academic","academic","general","academic","vocational","academic","general","general","academic","academic","vocational","general","vocational","academic","academic","general","vocational","general","general","academic"],"read":[57,68,44,63,47,44,50,34,63,57,60,57,73,54,45,42,47,57,68,55,63,63,50,60,37,34,65,47,44,52,42,76,65,42,52,60,68,65,47,39,47,55,52,42,65,55,50,65,47,57,53,39,44,63,73,39,37,42,63,48,50,47,44,34,50,44,60,47,63,50,44,60,73,68,55,47,55,68,31,47,63,36,68,63,55,55,52,34,50,55,52,63,68,39,44,50,71,63,34,63,68,47,47,63,52,55,60,35,47,71,57,44,65,68,73,36,43,73,52,41,60,50,50,47,47,55,50,39,50,34,57,57,68,42,61,76,47,46,39,52,28,42,47,47,52,47,50,44,47,45,47,65,43,47,57,68,52,42,42,66,47,57,47,57,52,44,50,39,57,57,42,47,42,60,44,63,65,39,50,52,60,44,52,55,50,65,52,47,63,50,42,36,50,41,47,55,42,57,55,63],"write":[52,59,33,44,52,52,59,46,57,55,46,65,60,63,57,49,52,57,65,39,49,63,40,52,44,37,65,57,38,44,31,52,67,41,59,65,54,62,31,31,47,59,54,41,65,59,40,59,59,54,61,33,44,59,62,39,37,39,57,49,46,62,44,33,42,41,54,39,43,33,44,54,67,59,45,40,61,59,36,41,59,49,59,65,41,62,41,49,31,49,62,49,62,44,44,62,65,65,44,63,60,59,46,52,59,54,62,35,54,65,52,50,59,65,61,44,54,67,57,47,54,52,52,46,62,57,41,53,49,35,59,65,62,54,59,63,59,52,41,49,46,54,42,57,59,52,62,52,41,55,37,54,57,54,62,59,55,57,39,67,62,50,61,62,59,44,59,54,62,60,57,46,36,59,49,60,67,54,52,65,62,49,67,65,67,65,54,44,62,46,54,57,52,59,65,59,46,41,62,65],"math":[41,53,54,47,57,51,42,45,54,52,51,51,71,57,50,43,51,60,62,57,35,75,45,57,45,46,66,57,49,49,57,64,63,57,50,58,75,68,44,40,41,62,57,43,48,63,39,70,63,59,61,38,61,49,73,44,42,39,55,52,45,61,39,41,50,40,60,47,59,49,46,58,71,58,46,43,54,56,46,54,57,54,71,48,40,64,51,39,40,61,66,49,65,52,46,61,72,71,40,69,64,56,49,54,53,66,67,40,46,69,40,41,57,58,57,37,55,62,64,40,50,46,53,52,45,56,45,54,56,41,54,72,56,47,49,60,54,55,33,49,43,50,52,48,58,43,41,43,46,44,43,61,40,49,56,61,50,51,42,67,53,50,51,72,48,40,53,39,63,51,45,39,42,62,44,65,63,54,45,60,49,48,57,55,66,64,55,42,56,53,41,42,53,42,60,52,38,57,58,65],"science":[47,63,58,53,53,63,53,39,58,50,53,63,61,55,31,50,50,58,55,53,66,72,55,61,39,39,61,58,39,55,47,64,66,72,61,61,66,66,36,39,42,58,55,50,63,69,49,63,53,47,57,47,50,55,69,26,33,56,58,44,58,69,34,36,36,50,55,42,65,44,39,58,63,74,58,45,49,63,39,42,55,61,66,63,44,63,53,42,34,61,47,66,69,44,47,63,66,69,39,61,69,66,33,50,61,42,50,51,50,58,61,39,46,59,55,42,55,58,58,39,50,50,39,48,34,58,44,50,47,29,50,54,50,47,44,67,58,44,42,44,44,50,39,44,53,48,55,44,40,34,42,58,50,53,58,55,54,47,42,61,53,51,63,61,55,40,61,47,55,53,50,47,31,61,35,54,55,53,58,56,50,39,63,50,66,58,53,42,55,53,42,50,55,34,50,42,36,55,58,53],"socst":[57,61,31,56,61,61,61,36,51,51,61,61,71,46,56,56,56,56,61,46,41,66,56,61,46,31,66,46,46,41,51,61,71,31,61,66,66,66,36,51,51,51,51,41,66,46,47,51,46,51,56,41,46,71,66,42,32,46,41,51,61,66,46,36,61,26,66,26,44,36,51,61,66,66,51,31,61,66,46,56,56,36,56,56,41,66,56,56,31,56,46,46,61,48,51,51,56,71,41,61,66,61,41,51,51,56,56,33,56,71,56,51,66,56,66,41,46,66,56,51,51,56,56,46,46,61,56,41,46,26,56,56,51,46,66,66,46,56,41,61,51,52,51,41,66,61,31,51,41,41,46,56,51,61,66,71,61,61,41,66,61,58,31,61,61,31,61,36,41,37,43,61,39,51,51,66,71,41,36,51,51,51,61,61,56,71,51,36,61,66,41,41,56,51,56,56,46,52,61,61]},"columns":[{"id":"id","name":"id","type":"numeric"},{"id":"gender","name":"gender","type":"character"},{"id":"race","name":"race","type":"character"},{"id":"ses","name":"ses","type":"character"},{"id":"schtyp","name":"schtyp","type":"character"},{"id":"prog","name":"prog","type":"character"},{"id":"read","name":"read","type":"numeric"},{"id":"write","name":"write","type":"numeric"},{"id":"math","name":"math","type":"numeric"},{"id":"science","name":"science","type":"numeric"},{"id":"socst","name":"socst","type":"numeric"}],"pagination":false,"highlight":true,"style":{"fontFamily":"Work Sans, sans-serif","fontSize":"1.105rem"},"height":"300px","dataKey":"ffc9df051513c120b6f59b378ce8bd43"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div></div>
@@ -302,21 +299,30 @@ This data come from a random sample of 200 students from the 1982 <a href="https
 <section id="categorical-variables-in-regression" class="slide level2">
 <h2>Categorical Variables in Regression</h2>
 <p>So far we have only dealt with continuous variables. Namely, we have interpreted slopes as “the change in <span class="math inline">\(Y\)</span> per unit change in <span class="math inline">\(X\)</span>”.</p>
+<div class="fragment" data-fragment-index="1">
 <div style="font-size: 24px">
 This interpretation only makes sense if both <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span> are continuous. But if we want to say that in this data <code>gender</code> should predict <code>write</code> score, the “unit-change” notion does not make as much sense.
 </div>
+</div>
 <div class="columns">
 <div class="column" style="width:40%;">
+<div class="fragment" data-fragment-index="2">
 <div style="font-size: 24px; padding-top: 12px;">
 If we try to plot the <code>write</code> score on the <span class="math inline">\(y\)</span>-axis and <code>gender</code> on the <span class="math inline">\(x\)</span>-axis we can visualize observations in each group. But there are no “units” on the <span class="math inline">\(x\)</span>-axis 🤔
 </div>
+</div>
+<div class="fragment" data-fragment-index="3">
 <div style="font-size: 26px; padding-top: 22px;">
 However, it turns out that there are ways to trick regression into treating categorical variables as continuous!
 </div>
+</div>
+<div class="fragment" data-fragment-index="4">
 <div style="font-size: 26px; padding-top: 12px;">
 But first, I would like to point something out…
 </div>
+</div>
 </div><div class="column" style="width:60%;">
+<div class="fragment" data-fragment-index="2">
 <div class="cell code-125">
 <details class="code-fold">
 <summary>Plot code</summary>
@@ -331,6 +337,7 @@ But first, I would like to point something out…
 </div>
 </div>
 </div>
+</div>
 </div></div>
 </section>
 <section id="intercept-only-regression" class="slide level2">
@@ -338,6 +345,7 @@ But first, I would like to point something out…
 <p>You can use the <code>lm()</code> function with only one variable. Meaning, you can run a regression without any predictors (<strong>!?</strong>). for example, for the <code>write</code> variable:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">S</span>(<span class="fu">lm</span>(write <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> hsb2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -354,8 +362,10 @@ Residual standard deviation: 9.479 on 199 degrees of freedom
 1470.19 1476.78 </code></pre>
 </div>
 </div>
+</div>
 </div><div class="column" style="width:50%;">
-<p>I would like to draw attention to the intercept, <span class="math inline">\(52.78\)</span> and the residual <em>SD</em>, <span class="math inline">\(9.47\)</span>. These values are the <strong>mean</strong> and <strong><em>SD</em></strong> of the <code>write</code> variable.</p>
+<div class="fragment" data-fragment-index="2">
+<p>The intercept, <span class="math inline">\(52.78\)</span> and the residual <em>SD</em>, <span class="math inline">\(9.47\)</span>. These values are the <strong>mean</strong> and <strong><em>SD</em></strong> of the <code>write</code> variable.</p>
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(hsb2<span class="sc">$</span>write)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -369,20 +379,28 @@ Residual standard deviation: 9.479 on 199 degrees of freedom
 <div style="font-size: 20px">
 This is consistent with the representation of regression shown in the <a href="https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%202.html#/the-true-regression-model" target="_blank">appendix of Lab 2</a>, Here <span class="math inline">\(Y \sim N(\mu = 52.78, \sigma = 9.47)\)</span>
 </div>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="3">
 <div style="font-size: 24px; padding-top: 14px">
 So regression with only the intercept estimates the mean and <em>SD</em> of <span class="math inline">\(Y\)</span>. But what now? Let’s look at the graphical representation of the intercept only model.
 </div>
+</div>
 </section>
-<section id="intercept-only-model" class="slide level2">
-<h2>Intercept only model</h2>
+<section id="intercept-only-model-visualized" class="slide level2">
+<h2>Intercept only model Visualized</h2>
 <p>If we only use the intercept in out model, the “regression line” will be flat and intercept the <span class="math inline">\(y\)</span>-axis at the mean of <span class="math inline">\(Y\)</span>.</p>
 <div class="columns">
 <div class="column" style="width:30%;">
+<div class="fragment" data-fragment-index="1">
 <p>…but wait a moment, we have two groups, <code>female</code> and <code>male</code>. How about we give each group their own intercept?</p>
+</div>
+<p><br></p>
+<div class="fragment" data-fragment-index="2">
 <ul>
 <li>this simply implies that we believe that the mean of the <span class="math inline">\(Y\)</span> variable, <code>write</code>, should differ based on <code>gender</code>.</li>
 </ul>
+</div>
 </div><div class="column" style="width:70%;">
 <div class="cell code-125">
 <details class="code-fold">
@@ -406,6 +424,7 @@ So regression with only the intercept estimates the mean and <em>SD</em> of <spa
 <p>In the previous plot we were using the “grand mean” of <code>write</code>. If we use the two means instead…</p>
 <div class="columns">
 <div class="column" style="width:30%;">
+<div class="fragment" data-fragment-index="1">
 <p>We see that the means of the two groups are different.</p>
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a>hsb2 <span class="sc">%&gt;%</span> </span>
@@ -419,8 +438,12 @@ So regression with only the intercept estimates the mean and <em>SD</em> of <spa
 2 male          50.1</code></pre>
 </div>
 </div>
+</div>
+<div class="fragment" data-fragment-index="2">
 <p>We can run a regression model that is the representation of the graph on the right</p>
+</div>
 </div><div class="column" style="width:70%;">
+<div class="fragment" data-fragment-index="1">
 <div class="cell code-125">
 <details class="code-fold">
 <summary>Plot code</summary>
@@ -445,6 +468,7 @@ So regression with only the intercept estimates the mean and <em>SD</em> of <spa
 </div>
 </div>
 </div>
+</div>
 </div></div>
 </section>
 <section id="coding-categorical-variables" class="slide level2">
@@ -452,6 +476,7 @@ So regression with only the intercept estimates the mean and <em>SD</em> of <spa
 <p>We can code our categorical variables such that they are treated as continuous variables. Usually, we treat one group as “0”, and the other group as “1”. Let’s say that <code>male</code> is <span class="math inline">\(0\)</span> and <code>female</code> is <span class="math inline">\(1\)</span>:</p>
 <div class="columns">
 <div class="column" style="width:60%;">
+<div class="fragment" data-fragment-index="1">
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a>hsb2<span class="sc">$</span>gender_binary <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(hsb2<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">"female"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
 <span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -478,18 +503,27 @@ Multiple R-squared:  0.06579,   Adjusted R-squared:  0.06107
 F-statistic: 13.94 on 1 and 198 DF,  p-value: 0.0002463</code></pre>
 </div>
 </div>
+</div>
 </div><div class="column" style="width:40%;">
+<div class="fragment" data-fragment-index="2">
 <p><span class="math inline">\(\mathrm{write} = 50.12 + 4.87 \times \mathrm{gender}\)</span></p>
+</div>
+<div class="fragment" data-fragment-index="3">
 <div style="font-size: 22px">
-Remember that in regression, the intercept is <em>expected mean value</em> of <span class="math inline">\(Y\)</span> when <span class="math inline">\(X = 0\)</span>, and the slope is the <em>expected mean value increase</em> per unit increase in <span class="math inline">\(X\)</span>.
+Remember that in regression, the intercept is <em>expected mean value</em> of <span class="math inline">\(Y\)</span> when <span class="math inline">\(X = 0\)</span>, and the slope is the <em>expected mean change</em> in <span class="math inline">\(Y\)</span> per unit increase in <span class="math inline">\(X\)</span>.
+</div>
 </div>
 <ul style="font-size: 22px">
+<div class="fragment" data-fragment-index="4">
 <li>
 Then, since we coded <span class="math inline">\(0\)</span> to represent <code>male</code>, the intercept <em>is the mean of</em> the <code>male</code> group in <code>write</code> score.
 </li>
+</div>
+<div class="fragment" data-fragment-index="5">
 <li>
 And, since we coded <span class="math inline">\(1\)</span> to represent <code>female</code>, the slope <em>is the difference in means</em> between the <code>male</code> and <code>female</code> group in <code>write</code> score (<span class="math inline">\(50.12 + 4.87 = 54.99\)</span>).
 </li>
+</div>
 </ul>
 </div></div>
 </section>
@@ -498,6 +532,7 @@ And, since we coded <span class="math inline">\(1\)</span> to represent <code>fe
 <p>We just tested whether <code>male</code> and <code>female</code> are significantly different in mean <code>write</code> score. This is what you should know as an independent-samples <em>t</em>-test (<strong>!</strong>).</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(hsb2<span class="sc">$</span>write <span class="sc">~</span> hsb2<span class="sc">$</span>gender,</span>
 <span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -515,8 +550,12 @@ mean in group female   mean in group male
             54.99083             50.12088 </code></pre>
 </div>
 </div>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <p>You should see that <em>t</em>-values, degrees of freedom, and <em>p</em>-values are the same as those for the slope on the previous slide.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -530,25 +569,734 @@ mean in group female   mean in group male
 </div>
 </div>
 </div>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="3">
 <p><em>t</em>-tests don’t exist really. For some reason everyone decides to teach <em>t</em>-tests separately from regression, but they are simply a specific case of a regression.</p>
+</div>
+</section>
+<section id="the-values-do-not-matter" class="slide level2">
+<h2>The Values “Do not Matter”</h2>
+<p>Since <code>gender</code> is not really a continuous variable, so we can turn it into <em>any</em> numeric values and still run a regression. For example:</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="fragment" data-fragment-index="1">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a>hsb2<span class="sc">$</span>gender2 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(hsb2<span class="sc">$</span>gender <span class="sc">==</span> <span class="st">"female"</span>, <span class="sc">-</span><span class="dv">314</span>, <span class="sc">-</span><span class="dv">140</span>)</span>
+<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a>reg_gender2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(write <span class="sc">~</span> gender2, <span class="at">data =</span> hsb2)</span>
+<span id="cb19-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_gender2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = write ~ gender2, data = hsb2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-19.991  -6.371   1.879   7.009  16.879 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 46.202531   1.876128  24.627  &lt; 2e-16 ***
+gender2     -0.027988   0.007495  -3.734 0.000246 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 9.185 on 198 degrees of freedom
+Multiple R-squared:  0.06579,   Adjusted R-squared:  0.06107 
+F-statistic: 13.94 on 1 and 198 DF,  p-value: 0.0002463</code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 22px">
+The <span class="math inline">\(R^2\)</span> is the exact same as the regression from 2 slides ago; whether we code <code>male</code> and <code>female</code> as <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> or <span class="math inline">\(-314\)</span> and <span class="math inline">\(-140\)</span> (some random numbers I chose), <em>the models are equivalent</em>. However, the values of the intercept and slope are now meaningless.
+</div>
+</div>
+<div class="fragment" data-fragment-index="3">
+<div style="font-size: 26px; padding-top: 14px; text-align: center;">
+We can use this fact to our advantage! We can code our categorical variables in different ways to <em>test hypotheses</em> of mean differences between groups.
+</div>
+</div>
+<div class="fragment" data-fragment-index="4">
+<div style="font-size: 18px; padding-top: 24px;">
+<strong>Note:</strong> We will go over some popular coding schemes, but you may devise your own depending on your hypotheses.
+</div>
+</div>
+</div></div>
+</section>
+<section id="dummy-coding" class="slide level2">
+<h2>Dummy Coding</h2>
+<p>We have looked at the 2 groups case where we assigned <span class="math inline">\(0\)</span> to one group and <span class="math inline">\(1\)</span> to the other. However, what do we do when we have more than 2 groups?</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<p>The <code>race</code> variable, for example, has four groups:</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(hsb2<span class="sc">$</span>race)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "white"            "african american" "hispanic"         "asian"           </code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 24px;">
+We can’t assign different numbers to each group (e.g., <span class="math inline">\(0\)</span>, <span class="math inline">\(1\)</span>, <span class="math inline">\(2\)</span>, <span class="math inline">\(3\)</span>) because then the variable will actually be treated as continuous.
+</div>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="3">
+<div style="font-size: 26px; padding-top: 14px; text-align: center;">
+<strong>Dummy coding</strong> is a coding scheme to represent a categorical variable with more than 2 categories.
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="4">
+<div style="font-size: 24px; padding-top: 12px;">
+In dummy coding, we use a series of <span class="math inline">\(0\)</span>s and <span class="math inline">\(1\)</span>s to define category membership. For example, we could say that:
+</div>
+<ul style="font-size: 22px">
+<li>
+<code>c(1, 0, 0)</code>: African American
+</li>
+<li>
+<code>c(0, 1, 0)</code>: Hispanic
+</li>
+<li>
+<code>c(0, 0, 1)</code>: Asian
+</li>
+<li>
+<code>c(0, 0, 0)</code>: White
+</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="5">
+<div style="font-size: 24px; padding-top: 12px;">
+So, we will need <em>3 columns</em> in our data that define the category membership of each one of our participants.
+</div>
+<p><br></p>
+<div style="font-size: 24px">
+This is the most straightforward coding scheme. Let’s see what happens once we run a regression!
+</div>
+</div>
+</div></div>
+</section>
+<section id="creating-dummy-coded-columns" class="slide level2">
+<h2>Creating Dummy coded Columns</h2>
+<p><span style="padding-bottom: 12px;"> The manual way of dummy coding variables in <code>R</code> involves creating separate columns. Here I show the <code>dummy_columns()</code> function from the <code>fastDummies</code> package. </span></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a>dummy_dat <span class="ot">&lt;-</span> <span class="fu">dummy_columns</span>(hsb2,</span>
+<span id="cb23-2"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">select_columns =</span> <span class="st">"race"</span>,</span>
+<span id="cb23-3"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">remove_most_frequent_dummy =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div style="font-size: 24px; padding-top: 12px;">
+The <code>remove_most_frequent_dummy = TRUE</code> argument turns the most frequent category, <code>white</code> in our case, into the <code>c(0, 0, 0)</code> group.
+</div>
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px; padding-top: 12px;">
+With this coding scheme, the <code>c(0, 0, 0)</code> group is going to be the <strong>reference group</strong>. It will be clear why once we run the regression and look at the results.
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px">
+This function returns the same data, but with the added dummy coded columns. Here are the columns compared to the original variable:
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="htmlwidget-42a551f94a3d6506c390" class="reactable html-widget" style="width:auto;height:350px;"></div>
+<script type="application/json" data-for="htmlwidget-42a551f94a3d6506c390">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"race":["white","white","white","white","white","white","african american","hispanic","white","african american","white","white","white","white","african american","white","white","white","white","white","white","white","african american","hispanic","hispanic","african american","white","white","white","asian","white","white","white","white","white","white","white","white","hispanic","white","white","white","white","african american","white","white","african american","white","white","hispanic","asian","white","hispanic","white","white","hispanic","white","hispanic","white","hispanic","white","white","white","white","white","white","white","white","white","hispanic","white","white","white","white","white","hispanic","white","white","white","hispanic","white","white","white","hispanic","white","white","white","white","white","white","asian","white","white","hispanic","white","white","white","white","hispanic","white","white","white","african american","white","white","white","white","white","african american","white","white","hispanic","white","white","hispanic","white","white","white","white","african american","hispanic","white","white","white","african american","white","white","asian","white","african american","white","asian","white","white","white","white","white","african american","hispanic","african american","hispanic","white","white","hispanic","white","white","white","white","hispanic","african american","african american","white","white","hispanic","white","white","white","white","white","african american","white","white","white","white","white","white","white","white","white","white","white","hispanic","african american","asian","african american","white","white","white","white","white","white","white","white","white","asian","asian","white","asian","white","african american","white","white","white","asian","white","asian","white","white","white","white"],"race_african american":[0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0],"race_asian":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,1,0,1,0,0,0,0],"race_hispanic":[0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"columns":[{"id":"race","name":"race","type":"character"},{"id":"race_african american","name":"race_african american","type":"numeric"},{"id":"race_asian","name":"race_asian","type":"numeric"},{"id":"race_hispanic","name":"race_hispanic","type":"numeric"}],"pagination":false,"highlight":true,"style":{"fontFamily":"Work Sans, sans-serif","fontSize":"1.105rem"},"height":"350px","dataKey":"2af8565440671356c1a3b43d1680c167"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="regression-with-dummy-coded-variables" class="slide level2">
+<h2>Regression with Dummy coded Variables</h2>
+<p>We want to test group difference in <code>read</code> scores across the <code>race</code> variable.</p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_race <span class="ot">&lt;-</span> <span class="fu">lm</span>(read <span class="sc">~</span> <span class="st">`</span><span class="at">race_african american</span><span class="st">`</span> <span class="sc">+</span> race_asian <span class="sc">+</span> race_hispanic, </span>
+<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a>               dummy_dat)</span>
+<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_race)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = read ~ `race_african american` + race_asian + race_hispanic, 
+    data = dummy_dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-22.924  -6.924   0.200   8.337  26.333 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              53.9241     0.8213  65.658  &lt; 2e-16 ***
+`race_african american`  -7.1241     2.3590  -3.020  0.00286 ** 
+race_asian               -2.0150     3.0929  -0.652  0.51548    
+race_hispanic            -7.2575     2.1794  -3.330  0.00104 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 9.89 on 196 degrees of freedom
+Multiple R-squared:  0.08365,   Adjusted R-squared:  0.06962 
+F-statistic: 5.964 on 3 and 196 DF,  p-value: 0.0006539</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<div style="font-size: 16px; padding-bottom:12px;">
+<span class="math inline">\(\mathrm{read} = 53.92 - 7.12 \times \mathrm{African American} - 2.02 \times \mathrm{Asian} -7.26 \times \mathrm{Hispanic}\)</span>
+</div>
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 22px">
+When all the dummy coded variables are <span class="math inline">\(0\)</span>, we get the intercept, so:
+</div>
+</div>
+<ul style="font-size: 22px">
+<div class="fragment" data-fragment-index="1">
+<li>
+<span class="math inline">\(53.92 =\)</span> the expected mean <code>read</code> score for <code>white</code> individuals.
+</li>
+</div>
+<div class="fragment" data-fragment-index="2">
+<li>
+<span class="math inline">\(-7.12 =\)</span> the expected <em>difference</em> in mean <code>read</code> score for <code>african american</code> individuals compared to <code>white</code> individuals.
+</li>
+</div>
+<div class="fragment" data-fragment-index="3">
+<li>
+<span class="math inline">\(-2.02 =\)</span> the expected <em>difference</em> in mean <code>read</code> score for <code>asian</code> individuals compared to <code>white</code> individuals.
+</li>
+</div>
+<div class="fragment" data-fragment-index="4">
+<li>
+<span class="math inline">\(-7.26 =\)</span> the expected <em>difference</em> in mean <code>read</code> score for <code>hispanic</code> individuals compared to <code>white</code> individuals.
+</li>
+</div>
+</ul>
+<div class="fragment" data-fragment-index="5">
+<div style="font-size: 22px">
+All the differences are with respect to the <em>reference group</em>, <code>white</code>. Further, the <em>p</em>-values of the slopes tell us whether the mean difference in <code>read</code> score between <code>white</code> and a specific group is significant!
+</div>
+</div>
+</div></div>
+</section>
+<section id="dummy-coding-and-residuals" class="slide level2">
+<h2>Dummy coding and Residuals</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a>hsb2 <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(race) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise</span>(<span class="st">`</span><span class="at">Group means</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">mean</span>(read))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  race             `Group means`
+  &lt;chr&gt;                    &lt;dbl&gt;
+1 african american          46.8
+2 asian                     51.9
+3 hispanic                  46.7
+4 white                     53.9</code></pre>
+</div>
+</div>
+<div style="font-size: 24px">
+When calculating residuals, dummy coding tells the regression to <em>switch to using the mean of a specific group</em> when a member in that group is encountered.
+</div>
+</div><div class="column" style="width:70%;">
+<div class="cell code-125">
+<details class="code-fold">
+<summary>Plot code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a>means <span class="ot">&lt;-</span> hsb2 <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(race) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-3"><a href="" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise</span>(<span class="at">Group_means =</span> <span class="fu">mean</span>(read)) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-4"><a href="" aria-hidden="true" tabindex="-1"></a>  as.data.frame</span>
+<span id="cb28-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hsb2, <span class="fu">aes</span>(<span class="at">x =</span> race, <span class="at">y =</span> read)) <span class="sc">+</span></span>
+<span id="cb28-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb28-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> means[<span class="dv">1</span>,<span class="dv">2</span>], <span class="at">color =</span> <span class="st">"African American"</span>), </span>
+<span id="cb28-9"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb28-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> means[<span class="dv">2</span>,<span class="dv">2</span>], <span class="at">color =</span> <span class="st">"Asian"</span>), </span>
+<span id="cb28-11"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb28-12"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> means[<span class="dv">3</span>,<span class="dv">2</span>], <span class="at">color =</span> <span class="st">"Hispanic"</span>)) <span class="sc">+</span></span>
+<span id="cb28-13"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> means[<span class="dv">4</span>,<span class="dv">2</span>], <span class="at">color =</span> <span class="st">"White"</span>)) <span class="sc">+</span></span>
+<span id="cb28-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"African American"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"Asian"</span> <span class="ot">=</span> <span class="st">"red"</span>, <span class="st">"Hispanic"</span> <span class="ot">=</span> <span class="st">"black"</span>,</span>
+<span id="cb28-15"><a href="" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"White"</span> <span class="ot">=</span> <span class="st">"cyan"</span>))  <span class="sc">+</span> </span>
+<span id="cb28-16"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"Means"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-10_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<div style="font-size: 22px">
+So for <code>asian</code> individuals, the regression will use <span class="math inline">\(51.9\)</span> to calculate residuals, for <code>white</code> individuals, the regression will use <span class="math inline">\(53.9\)</span>, and so on…
+</div>
+</section>
+<section id="multiple-mean-differences-also-familiar" class="slide level2">
+<h2>Multiple Mean differences? Also Familiar</h2>
+<p>We just ran what you may know as one-way ANOVA. If you remember from intro stats, the calculation for the sum or squares error (<span class="math inline">\(SSE\)</span>, the <em>residuals</em>) in ANOVAs involves this equation:</p>
+<p><span class="math display">\[
+\sum(X_{ij} - \bar{X}_j)^2,
+\]</span></p>
+<p>where <span class="math inline">\(X_{ij}\)</span> is the observation of the <span class="math inline">\(i^{th}\)</span> of individual in the <span class="math inline">\(j^{th}\)</span> group, and <span class="math inline">\(\bar{X}_j\)</span> is the mean of the <span class="math inline">\(j^{th}\)</span> group. The <span class="math inline">\(\bar{X}_j\)</span> part represents the mean that the residuals are calculated against changing for each group.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px; padding-bottom:18px;">
+We can run a one-way ANOVA and see that we get the exact same <span class="math inline">\(F\)</span>-value and degrees of freedom:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a>aov <span class="ot">&lt;-</span> <span class="fu">aov</span>(read <span class="sc">~</span> <span class="fu">factor</span>(race), <span class="at">data =</span> hsb2)</span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(aov)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+factor(race)   3   1750   583.3   5.964 0.000654 ***
+Residuals    196  19170    97.8                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px">
+From the regression summary:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_race)<span class="sc">$</span>fstatistic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     value      numdf      dendf 
+  5.963662   3.000000 196.000000 </code></pre>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="factor-variables-in-r" class="slide level2">
+<h2>Factor Variables in R</h2>
+<p>Coding variables manually takes some effort on the user’s end. We can use <code>factor</code> variables to make the process smoother.</p>
+<div class="columns">
+<div class="column" style="width:70%;">
+<div class="fragment" data-fragment-index="1">
+<p>we use the <code>factor()</code> function to turn any variable into a <code>factor</code>. Let’s turn the <code>race</code> variable into a <code>factor</code>:</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a>hsb2<span class="sc">$</span>race <span class="ot">&lt;-</span> <span class="fu">factor</span>(hsb2<span class="sc">$</span>race, </span>
+<span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"white"</span>, <span class="st">"african american"</span>, <span class="st">"asian"</span>, <span class="st">"hispanic"</span>),</span>
+<span id="cb33-3"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"W"</span>, <span class="st">"AA"</span>, <span class="st">"A"</span>, <span class="st">"H"</span>))</span>
+<span id="cb33-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hsb2<span class="sc">$</span>race)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Factor w/ 4 levels "W","AA","A","H": 1 1 1 1 1 1 2 4 1 2 ...</code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:30%;">
+<div class="fragment" data-fragment-index="1">
+<ul style="font-size: 22px">
+<li>
+<code>levels =</code> this argument tells the function the levels of our <code>factor</code>. <code>R</code> will choose levels automatically if you don’t specify them.
+</li>
+<li>
+<code>labels =</code> this argument renames each level respectively. It’s optional; I use it to make labels shorter here.
+</li>
+</ul>
+</div>
+</div></div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 24px; padding-top: 12px;">
+What’s so good about <code>factor</code> variables? They do dummy coding for you behind the scenes!
+</div>
+<div class="cell code-125 columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># ouput on the right</span></span>
+<span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(hsb2<span class="sc">$</span>race)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code>   AA A H
+W   0 0 0
+AA  1 0 0
+A   0 1 0
+H   0 0 1</code></pre>
+</div>
+</div></div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 24px; padding-top: 12px;">
+If you run the <code>contrasts()</code> function on a dummy coded variable, <code>R</code> tells you how each variable is coded. The output is known as a <em>contrast matrix</em>.
+</div>
+<div style="font-size: 24px; padding-top: 12px;">
+By default, the first level of the factor, <code>W</code> in our case, is coded as the reference group.
+</div>
+</div>
+</div></div>
+</section>
+<section id="regression-with-factor-variable" class="slide level2">
+<h2>Regression with Factor variable</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_race_fct <span class="ot">&lt;-</span> <span class="fu">lm</span>(read <span class="sc">~</span> race, hsb2)</span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_race_fct)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = read ~ race, data = hsb2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-22.924  -6.924   0.200   8.337  26.333 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  53.9241     0.8213  65.658  &lt; 2e-16 ***
+raceAA       -7.1241     2.3590  -3.020  0.00286 ** 
+raceA        -2.0150     3.0929  -0.652  0.51548    
+raceH        -7.2575     2.1794  -3.330  0.00104 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 9.89 on 196 degrees of freedom
+Multiple R-squared:  0.08365,   Adjusted R-squared:  0.06962 
+F-statistic: 5.964 on 3 and 196 DF,  p-value: 0.0006539</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<p>This is the exact regression output from some slides ago, but we did not have to create all the dummy coded columns manually 😀</p>
+<div class="fragment" data-fragment-index="1">
+<p>If you are using <code>R</code>, I recommend using <code>factor</code> variables rather than manually creating dummy coded variables.</p>
+</div>
+<div class="fragment" data-fragment-index="1">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Factor Variables are <code>R</code> specific</strong></p>
+</div>
+<div class="callout-content">
+<p>Every programming language has some common variable types (e.g., double, integer, character,…), but, as far as I can tell, <code>factor</code> variables are unique to <code>R</code>. The <code>R</code> programming language was created with statistics in mind. The fact that <code>factor</code> variables automatically dummy code categorical variables is a reflection of that.</p>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="other-coding-schemes" class="slide level2">
+<h2>Other coding schemes</h2>
+<div style="font-size: 24px;  padding-bottom:12px;">
+So far we coded our <code>race</code> variable such that all the groups are compared to the <code>white</code> group. We can test different hypotheses if we change our coding scheme. Thanks to the way <code>factor</code> variables work, there is an elegant way of changing coding schemes!
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px">
+The contrast matrix that defines the coding scheme is a property stored in every <code>factor</code> variable.
+</div>
+<div class="cell code-125 columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(hsb2<span class="sc">$</span>race)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code>   AA A H
+W   0 0 0
+AA  1 0 0
+A   0 1 0
+H   0 0 1</code></pre>
+</div>
+</div></div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 24px;">
+We can directly edit contrast matrix of a <code>factor</code> variable to change coding schemes. <code>R</code> also provides a series of functions that generate commonly used contrast matrices. For example:
+</div>
+<div class="cell code-125 columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># `4` stands for number of groups</span></span>
+<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">contr.sum</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code>  [,1] [,2] [,3]
+1    1    0    0
+2    0    1    0
+3    0    0    1
+4   -1   -1   -1</code></pre>
+</div>
+</div></div>
+</div>
+</div></div>
+<div class="columns">
+<div class="column" style="width:70%;">
+<div class="fragment" data-fragment-index="3">
+<p>To edit the default contrast matrix inside a <code>factor</code> we use the assignment operator:</p>
+<div class="cell code-125 columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(hsb2<span class="sc">$</span>race) <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">4</span>)</span>
+<span id="cb43-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># the contrast matrix has been updated</span></span>
+<span id="cb43-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(hsb2<span class="sc">$</span>race)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code>   [,1] [,2] [,3]
+W     1    0    0
+AA    0    1    0
+A     0    0    1
+H    -1   -1   -1</code></pre>
+</div>
+</div></div>
+</div>
+</div><div class="column" style="width:30%;">
+<div class="fragment" data-fragment-index="4">
+<div style="font-size: 24px;padding-top: 18px;">
+This type of coding scheme is known as <em>unweighted effects coding</em>. The unweighted part comes from the fact that the grand mean is calculated by assuming that every groups has the same sample size.
+</div>
+</div>
+</div></div>
+</section>
+<section id="regression-with-unweighted-effects-coding" class="slide level2">
+<h2>Regression With Unweighted Effects Coding</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_race_UEC <span class="ot">&lt;-</span> <span class="fu">lm</span>(read <span class="sc">~</span> race, hsb2)</span>
+<span id="cb45-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_race_UEC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = read ~ race, data = hsb2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-22.924  -6.924   0.200   8.337  26.333 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   49.825      1.076  46.297  &lt; 2e-16 ***
+race1          4.099      1.223   3.352 0.000963 ***
+race2         -3.025      1.898  -1.594 0.112644    
+race3          2.084      2.367   0.880 0.379722    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 9.89 on 196 degrees of freedom
+Multiple R-squared:  0.08365,   Adjusted R-squared:  0.06962 
+F-statistic: 5.964 on 3 and 196 DF,  p-value: 0.0006539</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<div style="font-size: 24px">
+The intercept, <span class="math inline">\(49.82\)</span>, is the unweighted grand mean (it’s the mean of the group means).
+</div>
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px; padding-top:12px;">
+Given the way we coded our <code>factor</code>, the slopes test whether either <code>W</code>, <code>AA</code>, or <code>A</code> individuals are significantly different in mean <code>read</code> score from the unweighted grand mean.
+</div>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 24px; padding-top:12px;">
+The only significantly different group is the <code>W</code> group, which was coded as <code>c(1, 0, 0)</code>. We can get the mean by plugging the values into the regression:
+</div>
+<div style="font-size: 22px; padding-top:12px;">
+<span class="math inline">\(\bar{X}_{\mathrm{white}} = 49.825 +  4.1 \times 1 - 3.02 \times 0 + 2.08 \times 0 = 53.9\)</span>
+</div>
+</div>
+<div class="fragment" data-fragment-index="3">
+<div style="font-size: 18px; padding-top:12px;">
+You can do the same for all the the other rows of the matrix on the previous slide and you will see that you will get the means of every group.
+</div>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="4">
+<div style="font-size: 24px;">
+Also note that in this type of contrast, the row with <code>c(-1,-1,-1)</code>, <code>H</code> in our case, is always “left out”, as we don’t test any hypotheses about it directly.
+</div>
+</div>
+</section>
+<section id="weighted-effects-coding" class="slide level2">
+<h2>Weighted Effects Coding</h2>
+<p>The <code>contr.sum()</code> function creates contrasts assuming that all groups have the same number of participants. This is not true in out case:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px">
+This is our current contrast matrix for the <code>race</code> variable.
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(hsb2<span class="sc">$</span>race)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   [,1] [,2] [,3]
+W     1    0    0
+AA    0    1    0
+A     0    0    1
+H    -1   -1   -1</code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px">
+The groups definitely do not have the same sample size.
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(hsb2<span class="sc">$</span>race)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  W  AA   A   H 
+145  20  11  24 </code></pre>
+</div>
+</div>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 24px">
+if <span class="math inline">\(N_H\)</span> is the sample size for the <code>H</code> group, then we achieve weighted effects coding by substituting the last row with <span class="math inline">\(\mathrm{c}(-\frac{N_W}{N_H}, -\frac{N_{AA}}{N_H}, -\frac{N_A}{N_H})\)</span>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="3">
+<div style="font-size: 24px">
+we can edit the last row of the contrast matrix of <code>race</code> directly:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(hsb2<span class="sc">$</span>race)[<span class="dv">4</span>,] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">145</span><span class="sc">/</span><span class="dv">24</span>, <span class="sc">-</span><span class="dv">20</span><span class="sc">/</span><span class="dv">24</span>, <span class="sc">-</span> <span class="dv">11</span><span class="sc">/</span><span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="3">
+<div style="font-size: 24px">
+The new contrast matrix of <code>race</code>:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(hsb2<span class="sc">$</span>race)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        [,1]       [,2]       [,3]
+W   1.000000  0.0000000  0.0000000
+AA  0.000000  1.0000000  0.0000000
+A   0.000000  0.0000000  1.0000000
+H  -6.041667 -0.8333333 -0.4583333</code></pre>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="regression-with-weighted-effects-coding" class="slide level2">
+<h2>Regression With weighted Effects Coding</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_race_WEC <span class="ot">&lt;-</span> <span class="fu">lm</span>(read <span class="sc">~</span> race, hsb2)</span>
+<span id="cb54-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg_race_WEC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = read ~ race, data = hsb2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-22.924  -6.924   0.200   8.337  26.333 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  52.2300     0.6993  74.689  &lt; 2e-16 ***
+race1         1.6941     0.4307   3.934 0.000116 ***
+race2        -5.4300     2.0979  -2.588 0.010368 *  
+race3        -0.3209     2.8987  -0.111 0.911960    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 9.89 on 196 degrees of freedom
+Multiple R-squared:  0.08365,   Adjusted R-squared:  0.06962 
+F-statistic: 5.964 on 3 and 196 DF,  p-value: 0.0006539</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<div style="font-size: 24px">
+Now the intercept, <span class="math inline">\(52.32\)</span>, which is the grand mean of <code>read</code> score!
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(hsb2<span class="sc">$</span>read)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 52.23</code></pre>
+</div>
+</div>
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px">
+Thus, the coefficients represent the the deviation of the <code>W</code>, <code>AA</code>, and <code>A</code> group in <code>read</code> score compared to the average <code>read</code> score for the whole sample.
+</div>
+</div>
+<ul style="font-size: 22px">
+<div class="fragment" data-fragment-index="2">
+<li>
+The <code>W</code> group is <span class="math inline">\(1.69\)</span> points <em>higher</em> in <code>read</code> score points compared to the sample average. (significant)
+</li>
+</div>
+<div class="fragment" data-fragment-index="3">
+<li>
+The <code>AA</code> group is <span class="math inline">\(5.43\)</span> points <em>lower</em> in <code>read</code> score points compared to the sample average. (significant)
+</li>
+</div>
+<div class="fragment" data-fragment-index="4">
+<li>
+The <code>A</code> group is <span class="math inline">\(0.32\)</span> points <em>lower</em> in <code>read</code> score points compared to the sample average. (not significant)
+</li>
+</div>
+</ul>
+</div></div>
+<div class="fragment" data-fragment-index="5">
+<div style="font-size: 20px">
+On the previous slide, we just changed the last row of the contrast matrix. You can also change the contrast matrix in its entirety if your hypotheses involve different contrasts. You need to know how to set up the contrasts matrix such that the coefficients test the hypotheses you want. see <a href="https://bookdown.org/pingapang9/linear_models_bookdown/contrasts.html" target="_blank">Here</a> a detailed explanation of contrasts.
+</div>
+</div>
+</section>
+<section id="why-all-these-contrasts-a-summary" class="slide level2">
+<h2>Why all These Contrasts? 😕 A summary</h2>
+<div style="font-size: 24px">
+All of this contrast matrix talk may seem very confusing. You have the field of experimental psychology to thank for it 😅 I don’t run experiments myself, so I don’t think much about all of this.
+</div>
+<div class="fragment" data-fragment-index="1">
+<p>Jokes aside, contrasts are used to <em>test hypotheses</em>. You can test <em>any</em> type of mean comparison hypothesis by specifying the appropriate contrast.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p>Why are we “allowed” to mess with regression coefficients in this way? Well, if you think about it, categorical variables have no meaningful numerical scale (e.g., we don’t say “pasta 🍝 is greater than pizza 🍕”).</p>
+</div>
+<div class="fragment" data-fragment-index="3">
+<p>However, we can assign some numerical scale to categorical variables such that the regression coefficients are “forced” to test the hypotheses we are interested in.</p>
+</div>
+<div class="fragment" data-fragment-index="4">
+<p>Do you <em>need</em> contrast matrices when testing hypotheses? Nah 🤷 In practice, you can just compare group means one by one. However, contrast matrices are an elegant way of testing multiple hypotheses at once.</p>
+</div>
+<div class="fragment" data-fragment-index="5">
+<div style="font-size: 22px; padding-top: 20px;">
+<strong>Personal opinion:</strong> Experimental psychologists really like their elegant designs, maybe a bit too much. It is my sense that contrast matrices are mostly a product of computational limitation of the past. These days, especially if you do Bayesian statistics, contrast do not have many uses (at least for mean comparisons).
+</div>
+</div>
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-Spinu_etal_2024" class="csl-entry" role="listitem">
-Spinu, V., Grolemund, G., Wickham, H., Vaughan, D., Lyttle, I., Costigan, I., Law, J., Mitarotonda, D., Larmarange, J., Boiser, J., &amp; Lee, C. H. (2024). <em>Lubridate: <span>Make Dealing</span> with <span>Dates</span> a <span>Little Easier</span></em> (Version 1.9.4) [Computer software]. <a href="https://cran.r-project.org/web/packages/lubridate/index.html">https://cran.r-project.org/web/packages/lubridate/index.html</a>
-</div>
-<div id="ref-Wang_etal_2024" class="csl-entry" role="listitem">
-Wang, W., cre, &amp; Yan, J. (2024). <em>Splines2: <span>Regression Spline Functions</span> and <span>Classes</span></em> (Version 0.5.3) [Computer software]. <a href="https://cran.r-project.org/web/packages/splines2/index.html">https://cran.r-project.org/web/packages/splines2/index.html</a>
+<div id="ref-Kaplan_Schlegel_2025" class="csl-entry" role="listitem">
+Kaplan, J., &amp; Schlegel, B. (2025). <em><span class="nocase">fastDummies</span>: <span>Fast Creation</span> of <span>Dummy</span> (<span>Binary</span>) <span>Columns</span> and <span>Rows</span> from <span>Categorical Variables</span></em> (Version 1.7.5) [Computer software]. <a href="https://cran.r-project.org/web/packages/fastDummies/index.html">https://cran.r-project.org/web/packages/fastDummies/index.html</a>
 </div>
 <div id="ref-Wickham_RStudio_2023" class="csl-entry" role="listitem">
 Wickham, H., &amp; RStudio. (2023). <em>Tidyverse: <span>Easily Install</span> and <span>Load</span> the ’<span>Tidyverse</span>’</em> (Version 2.0.0) [Computer software]. <a href="https://cran.r-project.org/web/packages/tidyverse/index.html">https://cran.r-project.org/web/packages/tidyverse/index.html</a>
 </div>
 </div>
-</section>
-<section id="apendix-alternative-cohens-d-caluclatations" class="title-slide slide level1 center">
-<h1>Apendix: Alternative Cohen’s d caluclatations</h1>
 
 </section>
     </div>
