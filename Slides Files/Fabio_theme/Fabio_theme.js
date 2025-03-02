@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-
+// ANIMATIONS 
 
 // fragment on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -320,15 +320,22 @@ document.addEventListener('DOMContentLoaded', function() {
     fragment.classList.add('fragment-thingy');
   });
   
-  disableAllFragments(fragments);
+  disableAllFragments(fragments, false);
 })
 
 // fragment animation toggle
 document.addEventListener('DOMContentLoaded', function () {
-    // Add a key listener (e.g., press 'F' to toggle fragments)
+    // Add a key listener (e.g., press 'T' to toggle fragments)
     document.addEventListener('keydown', function (event) {
+  
+      
+      
         if (event.key === 't') {
             // Get "fragment-thingy"s
+          
+          // disables animations if search box is on scre
+            if (!document.querySelector('.searchinput') || window.getComputedStyle(document.querySelector('.searchbox'), null).display === "none" ) {
+            
             const fragments = document.querySelectorAll('.fragment-thingy');
             
             const fragmentsEnabled = areFragmentsEnabled(fragments);
@@ -339,33 +346,75 @@ document.addEventListener('DOMContentLoaded', function () {
               enableAllFragments(fragments);
 
             console.log(fragmentsEnabled ? 'Fragments disabled.' : 'Fragments enabled.');
+  
+            
+        } else{
+          
+          
+          console.log("Animation Function disabled because search box is visible");
+          //console.log(document.querySelector('.searchinput').style.display);
+          
+        }
+          
         }
     });
 });
+
 
 function areFragmentsEnabled(fragments) {
   return fragments.length > 0 && fragments[0].classList.contains('fragment');
 }
 
-function enableAllFragments(fragments)
-{
-  fragments.forEach(fragment => {
-    // Enable fragments by adding the class back
-    fragment.classList.add('fragment');
-    fragment.style.visibility = "none";
-    //fragment.style.opacity = '0';
-  });
-}
-function disableAllFragments(fragments)
-{
-  fragments.forEach(fragment => {
-      // Disable fragments by removing the class
-      fragment.classList.remove('fragment');
-      fragment.style.visibility = 'visible';
-      //fragment.style.opacity = '1';
-  });
+function showPopup(message) {
+    let popup = document.createElement('div');
+    popup.innerText = message;
+    popup.style.position = 'fixed';
+    popup.style.top = '50%';
+    popup.style.left = '50%';
+    popup.style.transform = 'translate(-50%, -50%)';
+    popup.style.padding = '20px';
+    popup.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    popup.style.color = 'white';
+    popup.style.fontSize = '26px';
+    popup.style.borderRadius = '20px';
+    popup.style.zIndex = '1000';
+    
+    document.body.appendChild(popup);
+    
+    setTimeout(() => {
+        popup.remove();
+    }, 500); 
 }
 
+function enableAllFragments(fragments) {
+    fragments.forEach(fragment => {
+        fragment.classList.add('fragment');
+        fragment.style.visibility = "none";
+    });
+
+    
+    showPopup("Animations ON");
+}
+
+function disableAllFragments(fragments, showPopupMessage = true) {
+    fragments.forEach(fragment => {
+        fragment.classList.remove('fragment');
+        fragment.style.visibility = 'visible';
+    });
+    if (showPopupMessage) {
+        showPopup("Animations OFF");
+    }
+}
+
+
+
+
+
+
+
+
+
+// pull up search menu when clicking on search icon
 
 document.addEventListener('DOMContentLoaded', function () {
   // Create the span and icon elements
@@ -373,7 +422,7 @@ document.addEventListener('DOMContentLoaded', function () {
   span.title = 'search ( ctrl + shift + F)';  // Set the title attribute
   
   const icon = document.createElement('i');
-  icon.classList.add("fa-solid", "fa-search", "search");  // Add classes for Font Awesome icon
+  icon.classList.add("fa-solid", "fa-search", "menu-icon");  // Add classes for Font Awesome icon
   
   //icon.style.fontSize = '26px';  // Set the font size to 20px (adjust as needed)
   icon.style.paddingBottom = "0px";
@@ -413,23 +462,110 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+// navigation arrows in bottom-left menu
 
+
+// ARROW-LEFT
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Create the span and icon elements
+  const span = document.createElement('span');
+  span.title = 'Previous Slide (<-)';  // Set the title attribute
+  
+  const icon = document.createElement('i');
+  icon.classList.add("fa-solid", "fa-arrow-left", "menu-icon");  // Add classes for Font Awesome icon
+  
+  //icon.style.fontSize = '26px';  // Set the font size to 20px (adjust as needed)
+  icon.style.paddingBottom = "0px";
+  icon.style.verticalAlign = 'top';
+  
+  
+  icon.addEventListener('click', function() {
+    // Simulate the <- behavior
+    const event = new KeyboardEvent('keydown', {
+      key: 'ArrowLeft',
+      code: 'ArrowLeft',
+      keyCode: 37,
+      which: 37
+    });
+    
+    // Dispatch the event on the document to simulate the shortcut
+    document.dispatchEvent(event);
+    
+    console.log('ArrowLeft triggered');
+  });
+  
+  // Append the icon to the span
+  span.appendChild(icon);
+  
+  // Find the element with the class 'slide-menu-offset'
+  const slideMenu = document.querySelector('.slide-menu-offset');
+  
+  // Check if the element exists to avoid errors
+  if (slideMenu) {
+    // Append the span (with the icon) to the element
+    slideMenu.appendChild(span);
+  }
+}); 
+
+
+// ARROW-RIGHT
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Create the span and icon elements
+  const span = document.createElement('span');
+  span.title = 'Next Slide (->)';  // Set the title attribute
+  
+  const icon = document.createElement('i');
+  icon.classList.add("fa-solid", "fa-arrow-right", "menu-icon");  // Add classes for Font Awesome icon
+  
+  //icon.style.fontSize = '26px';  // Set the font size to 20px (adjust as needed)
+  icon.style.paddingBottom = "0px";
+  icon.style.verticalAlign = 'top';
+  
+  
+  icon.addEventListener('click', function() {
+    // Simulate the <- behavior
+    const event = new KeyboardEvent('keydown', {
+      key: 'ArrowRight',
+      code: 'ArrowRight',
+      keyCode: 39,
+      which: 39
+    });
+    
+    // Dispatch the event on the document to simulate the shortcut
+    document.dispatchEvent(event);
+    
+    console.log('ArrowLeft triggered');
+  });
+  
+  // Append the icon to the span
+  span.appendChild(icon);
+  
+  // Find the element with the class 'slide-menu-offset'
+  const slideMenu = document.querySelector('.slide-menu-offset');
+  
+  // Check if the element exists to avoid errors
+  if (slideMenu) {
+    // Append the span (with the icon) to the element
+    slideMenu.appendChild(span);
+  }
+}); 
+
+
+// set zoom on load
+window.addEventListener('load', function() {
+    // Check if the browser is not Firefox
+    if (!navigator.userAgent.includes('Firefox')) {
+        document.body.style.zoom = '130%';
+    }
+});
 
 
 
 // hide slide Number (JS code seems to need to go before this)
 
-
-Reveal.addEventListener('slidechanged', (event) => {
-        const isSnOn = (event.currentSlide.dataset.hideSlideNumber !== 'true');
+  const isSnOn = (event.currentSlide.dataset.hideSlideNumber !== 'true');
             Reveal.configure({ slideNumber: isSnOn });
-          });
-          
-          
-// search icon next to menu attempt  slide-menu-offset
-
-
-
-
-
+      
 
