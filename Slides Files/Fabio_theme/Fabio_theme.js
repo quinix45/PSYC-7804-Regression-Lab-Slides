@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
   function appendSVGToTitleElements() {
     // Select all elements with the class "title"
     const titleElements = document.querySelectorAll('.quarto-title-block');
-      
     // Iterate through each element
     titleElements.forEach(function(element) {
       // Create a new div element to contain the SVG
@@ -417,20 +416,27 @@ function disableAllFragments(fragments, showPopupMessage = true) {
 // pull up search menu when clicking on search icon
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Create the span and icon elements
+  // Create the span element
   const span = document.createElement('span');
   span.title = 'search ( ctrl + shift + F)';  // Set the title attribute
-  
-  const icon = document.createElement('i');
-  icon.classList.add("fa-solid", "fa-search", "menu-icon");  // Add classes for Font Awesome icon
-  
-  //icon.style.fontSize = '26px';  // Set the font size to 20px (adjust as needed)
-  icon.style.paddingBottom = "0px";
-  icon.style.verticalAlign = 'top';
-  
-  
-  icon.addEventListener('click', function() {
-    // Simulate the CTRL + SHIFT + F behavior
+
+  // Create the SVG element
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  svg.setAttribute('width', '20');
+  svg.setAttribute('height', '24');
+  svg.setAttribute('viewBox', '0 0 20 24');
+  svg.innerHTML = `<path fill="currentColor" fill-rule="evenodd" d="M14.385 15.446a6.75 6.75 0 1 1 1.06-1.06l5.156 5.155a.75.75 0 1 1-1.06 1.06zm-7.926-1.562a5.25 5.25 0 1 1 7.43-.005l-.005.005l-.005.004a5.25 5.25 0 0 1-7.42-.004" clip-rule="evenodd"/>`;
+
+       svg.classList.add( "menu-icon");
+
+
+  // Apply styling to the SVG
+  svg.style.cursor = 'pointer';
+  svg.style.verticalAlign = 'top';
+
+  // Add click event to simulate CTRL + SHIFT + F behavior
+  svg.addEventListener('click', function () {
     const event = new KeyboardEvent('keydown', {
       key: 'F',
       code: 'KeyF',
@@ -438,128 +444,136 @@ document.addEventListener('DOMContentLoaded', function () {
       shiftKey: true,
       bubbles: true
     });
-    
+
     // Dispatch the event on the document to simulate the shortcut
     document.dispatchEvent(event);
     
     console.log('CTRL + SHIFT + F triggered');
   });
-  
-  // Append the icon to the span
-  span.appendChild(icon);
-  
+
+  // Append the SVG to the span
+  span.appendChild(svg);
+
   // Find the element with the class 'slide-menu-offset'
   const slideMenu = document.querySelector('.slide-menu-offset');
-  
+
   // Check if the element exists to avoid errors
   if (slideMenu) {
-    // Append the span (with the icon) to the element
+    // Append the span (with the SVG) to the element
     slideMenu.appendChild(span);
   }
 });
 
 
-
-
-
 // navigation arrows in bottom-left menu
 
 
-// ARROW-LEFT
-
 document.addEventListener('DOMContentLoaded', function () {
-  // Create the span and icon elements
+  // Create the span element
   const span = document.createElement('span');
   span.title = 'Previous Slide (<-)';  // Set the title attribute
+
+  // Create the SVG element (Iconify Light Arrow Left)
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  svg.setAttribute('width', '26');
+  svg.setAttribute('height', '26');
+  svg.setAttribute('viewBox', '0 0 26 26');
+  svg.innerHTML = `<path fill="currentColor" d="M11.03 8.53a.75.75 0 1 0-1.06-1.06l-4 4a.75.75 0 0 0 0 1.06l4 4a.75.75 0 1 0 1.06-1.06l-2.72-2.72H18a.75.75 0 0 0 0-1.5H8.31z" transform="scale(1.4) translate(-3, -3)"/>`;
+
+  // Apply styling to the SVG
+  svg.style.cursor = 'pointer';
+  svg.style.verticalAlign = 'top';
   
-  const icon = document.createElement('i');
-  icon.classList.add("fa-solid", "fa-arrow-left", "menu-icon");  // Add classes for Font Awesome icon
-  
-  //icon.style.fontSize = '26px';  // Set the font size to 20px (adjust as needed)
-  icon.style.paddingBottom = "0px";
-  icon.style.verticalAlign = 'top';
-  
-  
-  icon.addEventListener('click', function() {
-    // Simulate the <- behavior
+  svg.classList.add( "menu-icon");
+
+  // Add click event to simulate the ArrowLeft key behavior
+  svg.addEventListener('click', function () {
     const event = new KeyboardEvent('keydown', {
       key: 'ArrowLeft',
       code: 'ArrowLeft',
       keyCode: 37,
       which: 37
     });
-    
+
     // Dispatch the event on the document to simulate the shortcut
     document.dispatchEvent(event);
     
     console.log('ArrowLeft triggered');
   });
-  
-  // Append the icon to the span
-  span.appendChild(icon);
-  
+
+  // Append the SVG to the span
+  span.appendChild(svg);
+
   // Find the element with the class 'slide-menu-offset'
   const slideMenu = document.querySelector('.slide-menu-offset');
-  
+
   // Check if the element exists to avoid errors
   if (slideMenu) {
-    // Append the span (with the icon) to the element
+    // Append the span (with the SVG) to the element
     slideMenu.appendChild(span);
   }
-}); 
+});
+ 
 
 
 // ARROW-RIGHT
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Create the span and icon elements
+  // Create the span element
   const span = document.createElement('span');
   span.title = 'Next Slide (->)';  // Set the title attribute
-  
-  const icon = document.createElement('i');
-  icon.classList.add("fa-solid", "fa-arrow-right", "menu-icon");  // Add classes for Font Awesome icon
-  
-  //icon.style.fontSize = '26px';  // Set the font size to 20px (adjust as needed)
-  icon.style.paddingBottom = "0px";
-  icon.style.verticalAlign = 'top';
-  
-  
-  icon.addEventListener('click', function() {
-    // Simulate the <- behavior
+
+  // Create the SVG element (Iconify Light Arrow Right)
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  svg.setAttribute('width', '46');
+  svg.setAttribute('height', '26');
+  svg.setAttribute('viewBox', '0 0 26 26');
+  svg.innerHTML = `<path fill="currentColor" d="M14.97 8.53a.75.75 0 0 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06-1.06l2.72-2.72H8a.75.75 0 0 1 0-1.5h9.69z" transform="scale(1.4) translate(-10, -3)"/>`;
+
+  svg.classList.add( "menu-icon");
+
+  // Apply styling to the SVG
+  svg.style.cursor = 'pointer';
+  svg.style.verticalAlign = 'top';
+
+  // Add click event to simulate the ArrowRight key behavior
+  svg.addEventListener('click', function () {
     const event = new KeyboardEvent('keydown', {
       key: 'ArrowRight',
       code: 'ArrowRight',
       keyCode: 39,
       which: 39
     });
-    
+
     // Dispatch the event on the document to simulate the shortcut
     document.dispatchEvent(event);
     
-    console.log('ArrowLeft triggered');
+    console.log('ArrowRight triggered');
   });
-  
-  // Append the icon to the span
-  span.appendChild(icon);
-  
+
+  // Append the SVG to the span
+  span.appendChild(svg);
+
   // Find the element with the class 'slide-menu-offset'
   const slideMenu = document.querySelector('.slide-menu-offset');
-  
+
   // Check if the element exists to avoid errors
   if (slideMenu) {
-    // Append the span (with the icon) to the element
+    // Append the span (with the SVG) to the element
     slideMenu.appendChild(span);
   }
-}); 
+});
 
 
 // set zoom on load
-window.addEventListener('load', function() {
-    // Check if the browser is not Firefox
-    if (!navigator.userAgent.includes('Firefox')) {
-        document.body.style.zoom = '130%';
-    }
-});
+// window.addEventListener('load', function() {
+//     // Check if the browser is not Firefox
+//     if (!navigator.userAgent.includes('Firefox')) {
+//         document.body.style.zoom = '100%';
+//     }
+// });
 
 
 

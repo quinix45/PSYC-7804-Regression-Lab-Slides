@@ -78,6 +78,37 @@ $selection-bg: lighten($theme-color, 15%);
   border: 2.5px solid $theme-color;
 }
 
+@media screen and (max-width: 930px){
+  .reveal .footer {
+    //display: none;
+    font-size: .7rem !important;
+    left: 40%;
+//position: relative;
+  }
+}
+
+@media screen and (max-height: 530px) {
+  .reveal .footer {
+    display: none !important;
+    //font-size: .7rem !important;
+    //left: 40%;
+//position: relative;
+  }
+  
+}
+
+@media screen and (max-height: 530px) {
+  .reveal .slide-number {
+  font-family: $font-family-sans-serif;
+  font-size: .6em !important;
+  color: $theme-color !important;
+  font-weight: 550 !important;
+}
+
+}
+
+
+
 .reveal .footer > * {
   transform: skew(25deg) !important;
 }
@@ -190,6 +221,19 @@ ol li::marker {
   stroke: lighten($theme-color, 15%);
   background-color: lighten($theme-color, 15%);
 }
+
+
+@media screen and (max-width: 530px) {
+  .decoration {
+    display: none !important;
+    //font-size: .7rem !important;
+    //left: 40%;
+//position: relative;
+  }
+  
+}
+  
+
 
 .menu-icon{
   fill: $theme-color;
