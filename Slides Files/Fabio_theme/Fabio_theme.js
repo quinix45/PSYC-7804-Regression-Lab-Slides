@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
   } 
 });
 
-// first line controls size (left plygon in title)
+// first line controls size (left polygon in title)
 const decorationMarkup1 = `<svg id="mySVG" style="transform: scaleX(3.5) scaleY(3.5); transform-origin: 0 0;">
 <polygon points="129.9038105676658, 74.99999999999999 39.184850993605149,150 -129.90381056766577,1005.00000000000006 -129.90381056766583,-74.99999999999996 -2.7554552980815446e-14,-150 129.90381056766583,-74.99999999999994"  class="decoration" style="stroke-width:2;"/>
 </svg>`;
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-// first line controls size (right plygon in title)
+// first line controls size (right polygon in title)
 const decorationMarkup2 = `<svg id="mySVG" style="transform: scaleX(-3.5) scaleY(3.5); transform-origin: 0 0;">
 <polygon points="129.9038105676658, 74.99999999999999 39.184850993605149,150 -129.90381056766577,1005.00000000000006 -129.90381056766583,-74.99999999999996 -2.7554552980815446e-14,-150 129.90381056766583,-74.99999999999994"  class="decoration" style="stroke-width:2;"/>
 </svg>`;
@@ -463,6 +463,38 @@ document.addEventListener('DOMContentLoaded', function () {
     slideMenu.appendChild(span);
   }
 });
+
+
+// Searchbox button
+
+// When the user clicks 'U', add content to the search box
+document.addEventListener('keydown', function(event) {
+
+	if (event.key != 'u')
+		return;
+
+	const searchBoxElement = document.querySelector('.searchbox');
+
+	const buttonElement = document.createElement('button');
+	buttonElement.innerHTML = 'TEST';
+	buttonElement.setAttribute('onclick', 'TriggerSearchBox()');
+
+	searchBoxElement.appendChild(buttonElement);
+});
+
+function TriggerSearchBox() {
+
+	const searchInputElement = document.querySelector('.searchinput');
+
+	searchInputElement.focus();
+
+	searchInputElement.dispatchEvent(new KeyboardEvent('keyup', {
+      key: 'Enter',
+      code: 'Enter',
+	  which: 13,
+      keyCode: 13
+    }));
+}
 
 
 // navigation arrows in bottom-left menu
