@@ -567,6 +567,54 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+// fullscreen 
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Create the span element
+  const span = document.createElement('span');
+  span.title = 'Toggle Fullscreen (F11)';  // Updated title
+
+  // Create the SVG element
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  svg.setAttribute('width', '20');
+  svg.setAttribute('height', '24');
+  svg.setAttribute('viewBox', '0 0 512 512');
+  svg.innerHTML = `<path fill="currentColor" d="M21 512h107q21 0 21-21q0-22-21-22H73l134-134q13-15 0-30q-15-13-30 0L43 439v-55q0-21-22-21q-21 0-21 21v107q0 9 6 15t15 6m470-149q-22 0-22 21v55L335 305q-15-13-30 0q-13 15 0 30l134 134h-55q-21 0-21 22q0 21 21 21h107q9 0 15-6t6-15V384q0-21-21-21m0-363H384q-21 0-21 21q0 22 21 22h55L305 177q-13 15 0 30q6 6 15 6t15-6L469 73v55q0 21 22 21q21 0 21-21V21q0-9-6-15t-15-6M21 149q22 0 22-21V73l134 134q6 6 15 6t15-6q13-15 0-30L73 43h55q21 0 21-22q0-21-21-21H21Q12 0 6 6T0 21v107q0 21 21 21" "translate(-100, -3)"/>`;
+  
+  svg.classList.add("menu-icon");
+
+  // Apply styling to the SVG
+  svg.style.cursor = 'pointer';
+  svg.style.verticalAlign = 'top';
+
+  // Toggle fullscreen on click
+  svg.addEventListener('click', function () {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  });
+
+  // Append the SVG to the span
+  span.appendChild(svg);
+
+  // Find the element with the class 'slide-menu-offset'
+  const slideMenu = document.querySelector('.slide-menu-offset');
+
+  // Check if the element exists to avoid errors
+  if (slideMenu) {
+    // Append the span (with the SVG) to the element
+    slideMenu.appendChild(span);
+  }
+});
+
+
+
+
+
 // set zoom on load
 // window.addEventListener('load', function() {
 //     // Check if the browser is not Firefox
