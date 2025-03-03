@@ -409,8 +409,7 @@ function disableAllFragments(fragments, showPopupMessage = true) {
 
 
 
-
-
+// crearte hiden search box on document load
 
 
 // pull up search menu when clicking on search icon
@@ -465,36 +464,69 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+
+
+
 // Searchbox button
 
-// When the user clicks 'U', add content to the search box
 document.addEventListener('keydown', function(event) {
+  
+  setTimeout(function() {
 
-	if (event.key != 'u')
-		return;
+    const searchBoxElement = document.querySelector('.searchbox');
+    if (!searchBoxElement) return;
 
-	const searchBoxElement = document.querySelector('.searchbox');
+    // Check if the button already exists
+    if (!searchBoxElement.querySelector('.search-button')) {
+        const buttonElement = document.createElement('button');
+        
+        // Optional: remove default button border
+        buttonElement.style.padding = '6px 6px'; // Optional: better styling
+        buttonElement.style.cursor = 'pointer'; // Optional: make it look clickabl
+        buttonElement.style.verticalAlign = 'right';
+        
+        buttonElement.innerHTML = 'Search';
+        buttonElement.classList.add('search-button');
+        buttonElement.onclick = TriggerSearchBox;
 
-	const buttonElement = document.createElement('button');
-	buttonElement.innerHTML = 'TEST';
-	buttonElement.setAttribute('onclick', 'TriggerSearchBox()');
-
-	searchBoxElement.appendChild(buttonElement);
+        // Find the search input and insert the button properly
+        const searchInputElement = searchBoxElement.querySelector('.searchinput');
+        if (searchInputElement) {
+            wrapper = document.createElement('div'); // Creates a new block container
+            wrapper.classList.add('button-wrapper')
+            
+            wrapper.style.position = 'absolute';
+            wrapper.style.right = '.1%';
+            
+            wrapper.appendChild(buttonElement);
+            searchInputElement.insertAdjacentElement('afterend', wrapper);
+            
+        } else {
+            searchBoxElement.appendChild(buttonElement);
+        }
+    }
+    
+}, 5) 
 });
 
+
+
+
+
 function TriggerSearchBox() {
-
-	const searchInputElement = document.querySelector('.searchinput');
-
-	searchInputElement.focus();
-
-	searchInputElement.dispatchEvent(new KeyboardEvent('keyup', {
-      key: 'Enter',
-      code: 'Enter',
-	  which: 13,
-      keyCode: 13
-    }));
+    const searchInputElement = document.querySelector('.searchinput');
+    if (searchInputElement) {
+        searchInputElement.focus();
+        searchInputElement.dispatchEvent(new KeyboardEvent('keyup', {
+            key: 'Enter',
+            code: 'Enter',
+            which: 13,
+            keyCode: 13
+        }));
+    }
 }
+
+
 
 
 // navigation arrows in bottom-left menu

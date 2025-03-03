@@ -117,11 +117,23 @@ $selection-bg: lighten($theme-color, 15%);
   display: none !important;
 }
 
-// search bar
+// search bar elements
 
 //.searchinput{
 //   width: 540px !important;
 //}
+
+.search-button{
+   background-color: $body-bg;
+   color: $theme-color;
+   font-family: $font-family-sans-serif;
+     border: solid 1.5px;
+  border-color: lighten($theme-color, 15%);
+  border-radius: 10%;
+  font-size: .8rem;
+  font-weight: 800;
+}
+
 
 
 // slide number
