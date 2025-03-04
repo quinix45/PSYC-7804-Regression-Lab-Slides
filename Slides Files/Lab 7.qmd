@@ -868,11 +868,14 @@ pwr::pwr.f2.test(u = 1,  f2 = f2,
 
 
 ::: {.fragment fragment-index=3}
-So, if we want to have $80\%$ power for $\Delta R^2 = .05$, we now need at least $128$ participants. We know this because 
+So, if we want to have $80\%$ power for $\Delta R^2 = .05$, we now need at least $131$ participants. We know this because 
 
 $$
-n = 125.5 + 1 + 1 = 127.5
+n = 125.5 + 4 + 1 = 130.5
 $$ 
+
+<div style="font-size: 22px"> where $4$ is the number of predictors in the full regression after adding $X_4$. </div>
+
 
 
 I already linked this in the first slide, but [this page](https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html){target="_blank"} has very detailed explanations on how to use all the functions from the `pwr` package.
@@ -990,7 +993,7 @@ Low power *is not* bad because it will be hard to get $p < .05$. Low power is ba
 
 ## $f^2$ and non-central $F$-distribution
 
-When know that $R^2$ is itself a measure of effect size; so why do we calculate $f^2$ to compute power? Chapter 9 of good old @Cohen_1988 goes in more detail, but $f^2$ is more general and convenient than $R^2$. 
+We know that $R^2$ is itself a measure of effect size; so why do we calculate $f^2$ to compute power? Chapter 9 of good old @Cohen_1988 goes in more detail, but $f^2$ is more general and convenient than $R^2$. 
 
 ::: {.fragment fragment-index=1}
 Power for $F$-tests is calculated by comparing two things:

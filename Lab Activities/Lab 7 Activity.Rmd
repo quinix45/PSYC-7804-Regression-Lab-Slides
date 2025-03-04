@@ -1,0 +1,110 @@
+---
+title: "Lab 7 Activity"
+output: pdf_document
+header-includes:
+    - \usepackage{setspace}
+urlcolor: blue
+---
+
+\onehalfspacing
+
+
+We will be looking at the `Chirot` data from the `car` package again. As a reminder, this is data on the [the 1907 Romanian peasant revolt](https://en.wikipedia.org/wiki/1907_Romanian_peasants%27_revolt){target="_blank"}. Find a descriptions of the variables in the table below:
+
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(car)
+library(tidyverse)
+
+info <- tibble(Variable = names(Chirot),
+               Description = c("Intensity of the rebellion",
+                               "Commercialization of agriculture",
+                               "Traditionalism",
+                               "Strength of middle peasantry",
+                               "Inequality of land tenure"))
+
+library(kableExtra)
+
+kable(info) %>% 
+  column_spec(column = 2, width = "300px") %>% 
+  row_spec(0, bold = T) %>% 
+  column_spec(1, bold = T)
+```
+
+
+run the following code to name the data you will be using as `dat`:
+
+```{r message=FALSE, warning=FALSE}
+library(car)
+dat <- Chirot
+```
+
+**1.** Treat `intensity` as the outcome and all the other variables in the dataset as predictors and run a multiple regression. What is the $R^2$ of this model?
+
+```{r include=FALSE}
+reg <- lm(intensity ~ commerce + tradition + midpeasant + inequality, data = Chirot)
+
+summary(reg)$r.squared
+```
+
+**2.** We want to rank the predictors in order of importance based on their unique contribution on the total $R^2$. Run a dominance analysis. How much does each predictor contribute to the total $R^2$? (HINT: use the `$` operator on the `dominanceanalysis` object to extract each predictor's contribution without using the `sumamry()` function)
+
+```{r include=FALSE}
+library(dominanceanalysis)
+
+DA <- dominanceAnalysis(reg)
+
+DA$contribution.average
+
+
+```
+-  Does `inequality` conditionally dominate `midpeasant`? Motivate your answer based on the appropriate dominance matrix.
+
+
+```{r include=FALSE}
+dominanceMatrix(DA, type = "conditional")
+# Yes (1 in the row)
+```
+
+-  Does `inequality` completely dominate `midpeasant`? Motivate your answer based on the appropriate dominance matrix.
+
+```{r include=FALSE}
+dominanceMatrix(DA, type = "complete")
+
+# inconclusive (.5 in the row)
+```
+**3.** Although `tradition`, on average, was the second predictor that contributed the most to $R^2$, it was not significant in the full regression. Conduct a retrospective power analysis to evaluate how much power there was to detect a significant effect of `tradition`. Follow the steps below:
+
+- Calculate the $\Delta R^2$ between the full regression and the regression without `tradition`.
+
+```{r include=FALSE}
+
+reg_simp <- lm(intensity ~ commerce + midpeasant + inequality, data = Chirot)
+
+DR2 <- summary(reg)$r.squared - summary(reg_simp)$r.squared
+
+summary(reg_simp)
+
+
+anova(reg_simp, reg)
+```
+
+- calculate $f^2$.
+
+```{r include=FALSE}
+f2 <- DR2/(1 - summary(reg)$r.squared)
+```
+
+- calculate power (you need to specify the correct $\mathrm{df}_2$ through the `v =` argument and leave the `power =` argument empty).
+
+```{r include=FALSE}
+pwr::pwr.f2.test(u = 1,  
+                 v = 27,
+                 f2 = f2, 
+                 sig.level = 0.05)
+# power = 0.4854163
+```
+
