@@ -1,0 +1,134 @@
+---
+title: "Lab 8 Activity"
+output: pdf_document
+header-includes:
+    - \usepackage{setspace}
+---
+
+\onehalfspacing
+
+For this lab activity we will be using the `Anscombe` data ([Anscombe, 1981](https://link.springer.com/book/10.1007/978-1-4613-9450-1){target="_blank"}) from the `carData` package. This Data contains`51 rows` and `4 columns` and it details Per-capita expenditures in education for each US state in 1970. Each row is named according to a state. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(car)
+library(tidyverse)
+
+info <- tibble(Variable = names(Anscombe),
+               Description = c("Per-capita education expenditures, dollars",
+                               "Per-capita income, dollars",
+                               "Proportion under 18, per 1000",
+                               "Proportion urban, per 1000"))
+
+library(kableExtra)
+
+kable(info) %>% 
+  column_spec(column = 2, width = "300px") %>% 
+  row_spec(0, bold = T) %>% 
+  column_spec(1, bold = T)
+```
+
+
+
+run the following code to name the data you will be using as `dat`:
+
+```{r message=FALSE, warning=FALSE}
+library(car)
+dat <- Anscombe
+```
+
+
+**1.** Center the `young` variable and create a column to represent a quadratic term for the centered `young` variable. 
+
+```{r include=FALSE}
+dat$young_cent <- scale(dat$young, center = TRUE)[,1]
+
+dat$young_cent_2 <- dat$young_cent^2
+```
+
+**2.** Run a quadratic regression prediction `education` with the centered `young` variable and its quadratic version. Is the quadratic term, $b_2$ significantly different from 0? Given the sign of the quadratic term, should the regression line be concave or convex?
+
+```{r include=FALSE}
+quad_reg <- lm(education ~ young_cent + young_cent_2, dat)
+
+summary(quad_reg)
+
+# significant and positive quadratic term, so the line is convex (U up)
+```
+
+**3.** Find the the turning point of the quadratic line. Then compute a $95\%$ bootstrapped confidence interval for it.
+
+```{r include=FALSE}
+
+-1*(coef(quad_reg)[2]/(2*coef(quad_reg)[3]))
+
+boot_quad <- car::Boot(quad_reg, R = 1000)
+
+top_boot <- -boot_quad$t[,2]/(2*boot_quad$t[,3])
+
+quantile(top_boot, c(.025, .975))
+```
+- Plot the density of all the bootstrapped turning points. Do you notice anything strange? 
+
+```{r include=FALSE}
+plot(density(top_boot))
+
+# some turning points are very extreme. The bootstrapping procedure does not seem to work to well in this case.
+```
+
+
+**4.** You should notice that something a bit strange is happening when we bootstrap our quadratic regression. Plot you quadratic regression. Does anything stand out to you? After looking at the plot, do you see any potential problems with our quadratic regression?
+
+
+```{r include=FALSE}
+ggplot(dat,
+       aes(x = young_cent, y = education)) +
+        geom_point(alpha = .5, shape = 1) +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 2), 
+           se = FALSE) + 
+  theme_classic()
+
+
+# there seems to be an extreme point really high in education expenditures per-capita and in proportion under 18. This point is likely extremely influential and the only reason with the quadratic term in the regression is significant. Bootstrapping fails because the results are likely very dependent on how many times the extreme point is sampled.
+```
+**5.** Find what state is causing the issue, remove it from the data, and run the quadratic regression again. what happens to the results? (**HINT:** the `which.max()` function will be helpful for this task.)
+
+```{r include=FALSE}
+# the problematic state is Alaska, row 50
+
+dat_new <- dat[-which.max(dat[,3]),]
+
+quad_reg_2 <- lm(education ~ young_cent + young_cent_2, dat_new)
+
+summary(quad_reg_2)
+
+# the quadratic term is no longer significant
+```
+
+- visualize the quadratic regression after removing the problematic state. What do you observe?
+
+
+```{r include=FALSE}
+ggplot(dat_new,
+       aes(x = young_cent, y = education)) +
+        geom_point(alpha = .5, shape = 1) +
+geom_smooth(method = "lm", 
+           formula = y ~ poly(x, 2), 
+           se = FALSE) + 
+  theme_classic()
+
+
+# the line is now essentially flat
+```
+
+```{r include=FALSE}
+# We can also look at the difference in the added variable plots for the two regressions.
+
+avPlots(quad_reg)
+avPlots(quad_reg_2)
+```
+
+
+
+

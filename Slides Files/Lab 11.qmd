@@ -1,5 +1,5 @@
 ---
-title: "Lab 11: Categorical Variables Interactions and ANOVA Equivalence"
+title: "Lab 11: Interactions With Categorical Predictors"
 author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
@@ -9,7 +9,7 @@ title-slide-attributes:
   data-visibility: "uncounted"
 format:
    revealjs:
-      footer: "Lab 11: Categorical Variables Interactions and ANOVA Equivalence"
+      footer: "Lab 11: Interactions With Categorical Predictors"
       width: 1280
       height: 720
       chalkboard: true
@@ -24,8 +24,149 @@ format:
 editor: source
 ---
 
-## Font-awesome slide{visibility="hidden"}
 
-uncounted and not visible slide to trigger the fontawesome extension
+## Today's Packages and Data 🤗
 
-{{< fa thumbs-up >}} 
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| code-fold: true
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| code-summary: "Install Packages Code"
+#| classes: code-150
+
+# install.packages("tidyverse")
+```
+
+```{r}
+#| eval: true
+#| echo: true
+#| code-line-numbers: false
+#| warning: false
+#| classes: code-150
+
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+library(fastDummies)
+```
+
+
+</br>
+
+<div style="font-size: 26px">
+
+::: {.panel-tabset}
+### `fastDummies`
+
+<div style="font-size: 22px"> The `fastDummies` package [@Kaplan_Schlegel_2025] provides some functions to help with dummy coding. Later, I show a better way of achieving dummy coding in `R`, but this package offers the "more standard" procedure. </div>
+
+:::
+
+</div>
+
+  
+
+:::
+
+
+::: {.column width="50%"}
+
+<center style="padding-bottom: 41px;"> [Data]{.data-title} </center>
+
+<div style="font-size: 22px"> We'll continue with the `hsb2` dataset from [Lab 10](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%2010.html#/todays-packages-and-data){target="_blank"}. 
+ </div>
+ 
+ 
+```{r}
+#| warning: false
+#| classes: code-125
+#| echo: true
+#| code-line-numbers: false
+#| output: true
+
+hsb2 <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/hsb2.csv")
+```
+
+<center style="padding-bottom: 11px;"> </center>
+
+```{r}
+reactable::reactable(hsb2,
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "1.105rem"),
+                     pagination = FALSE, highlight = TRUE, height = 300)
+```
+
+:::
+::::
+
+
+
+## What are we looking at Today?
+
+In Lab 10 we looked at categorical predictors and a bunch of coding schemes for categorical variable, but we will stick to [dummy coding](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%2010.html#/creating-dummy-coded-columns){target="_blank"} for this lab.
+
+We eventually want to look at whether `gender` ($Z$) moderates how `socst` ($X$) score predicts `write` ($Y$) score. As a reminder:
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<ul style="font-size: 24px">  
+
+<li> `gender`: student gender (either *male* or *female*).  </li>
+<li> `socst`: score on a standardized social studies assessment. </li>
+<li> `write`: score on a standardized writing assessment. </li>
+
+</ul>
+
+:::
+
+
+::: {.column width="50%"}
+`gender` is a categorical variable, so let's turn it into a `factor`
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+hsb2$gender <- factor(hsb2$gender)
+
+contrasts(hsb2$gender)
+```
+
+
+:::
+::::
+
+So for the dummy coded `gender` variable, $0 =$ *female* and $1 = $ *male* 
+  
+
+
+
+
+```{r}
+
+# reg_int <- lm(write ~ scale(socst, center = TRUE)*gender ,data = hsb2)
+# reg_int <- lm(write ~ scale(socst, center = TRUE)*schtyp ,data = hsb2)
+# 
+# summary(reg_int)
+```
+
+
+
+
+## References 
+
+<div id="refs"> </div>
+
+
+
+
+
+
+
