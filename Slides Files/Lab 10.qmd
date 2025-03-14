@@ -1134,7 +1134,7 @@ However, we can assign some numerical scale to categorical variables such that t
 :::
 
 ::: {.fragment fragment-index=4}
-Do you *need* contrast matrices when testing hypotheses? Nah 🤷 In practice, you can just compare group means one by one. However, contrast matrices are an elegant way of testing multiple hypotheses at once. 
+Do you *need* contrast matrices when testing hypotheses? Nah 🤷 In practice, you can just compare group means one by one (assuming you apply some Type I error rate correction if you are using *p*-values). However, contrast matrices are an elegant way of testing multiple hypotheses at once. 
 :::
 
 ::: {.fragment fragment-index=5}

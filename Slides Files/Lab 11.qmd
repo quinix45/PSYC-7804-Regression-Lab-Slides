@@ -39,6 +39,7 @@ editor: source
 #| classes: code-150
 
 # install.packages("tidyverse")
+install.packages("emmeans")
 ```
 
 ```{r}
@@ -51,7 +52,7 @@ editor: source
 library(tidyverse)
 theme_set(theme_classic(base_size = 14, 
                         base_family = 'serif'))
-library(fastDummies)
+library(emmeans)
 ```
 
 
@@ -60,9 +61,9 @@ library(fastDummies)
 <div style="font-size: 26px">
 
 ::: {.panel-tabset}
-### `fastDummies`
+### `emmeans`
 
-<div style="font-size: 22px"> The `fastDummies` package [@Kaplan_Schlegel_2025] provides some functions to help with dummy coding. Later, I show a better way of achieving dummy coding in `R`, but this package offers the "more standard" procedure. </div>
+<div style="font-size: 22px"> The `emmeans` package [@Lenth_etal_2025] is a great package for exploring the results of many linear, generalized linear, and mixed models. it also helps compute mean contrasts, trends, and comparisons of slopes. I discover some new functionality every time I look at this package!  </div>
 
 :::
 
@@ -114,7 +115,7 @@ We eventually want to look at whether `gender` ($Z$) moderates how `socst` ($X$)
 :::: {.columns}
 ::: {.column width="50%"}
 
-<ul style="font-size: 24px">  
+<ul style="font-size: 26px">  
 
 <li> `gender`: student gender (either *male* or *female*).  </li>
 <li> `socst`: score on a standardized social studies assessment. </li>
@@ -122,10 +123,23 @@ We eventually want to look at whether `gender` ($Z$) moderates how `socst` ($X$)
 
 </ul>
 
+<div style="font-size: 24px"> let's center `socst` for ease of interpretation later: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+hsb2$socst_cent <- scale(hsb2$socst, scale = FALSE)[,1]
+```
+
+
 :::
 
 
 ::: {.column width="50%"}
+
 `gender` is a categorical variable, so let's turn it into a `factor`
 
 ```{r}
@@ -143,20 +157,578 @@ contrasts(hsb2$gender)
 :::
 ::::
 
-So for the dummy coded `gender` variable, $0 =$ *female* and $1 = $ *male* 
+<div style="text-align:center; padding-top: 20px; font-size: 30px;">
+So for the dummy coded `gender` variable, $0 =$ *female* and $1 =$ *male* 
+</div> 
   
 
+```{r}
+# reg_int <- lm(write ~ scale(socst, center = TRUE)*gender ,data = hsb2)
+# reg_int <- lm(write ~ scale(socst, center = TRUE)*schtyp ,data = hsb2)
+ 
+# summary(reg_int)
+```
+
+
+## Starting from The Top
+
+First let's start with a regression with the `gender` only predicting `write` score. We saw this in Lab 10 already.
+  
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_gender <- lm(write ~ gender, data = hsb2)
+
+summary(reg_gender)
+```
+
+:::
+::: {.column width="50%"}
+
+$$\widehat{\mathrm{write}} = 54.99 - 4.97 \times \mathrm{gender} $$
+
+We looked at the interpretation for this kind of regression in the last lab:
+
+<ul style="font-size: 26px">  
+
+<li> $54.99$ is the expected mean `write` score of *females* (which is coded as $0$). </li>
+
+<li> $-4.97$ is the expected mean difference in `write` score for *males* compared to *females*. </li>
+
+</ul>
+
+
+Thus, there is a significant difference in `write` score between the two groups, with *males* being $-4.97$ lower on average.  
+
+:::
+::::
+
+## Visualizing `write ~ gender`
+
+:::: {.columns}
+::: {.column width="30%"}
+
+Once again, we can visualize the mean differences between the two groups.
+
+
+This is nothing new, but it is interesting to see what happens to this plot once we add a continuous predictor to our regression.
+
+
+:::
+::: {.column width="70%"}
 
 
 
 ```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
 
-# reg_int <- lm(write ~ scale(socst, center = TRUE)*gender ,data = hsb2)
-# reg_int <- lm(write ~ scale(socst, center = TRUE)*schtyp ,data = hsb2)
-# 
-# summary(reg_int)
+
+mean_female <- mean(hsb2$write[hsb2$gender == "female"])
+mean_male <- mean(hsb2$write[hsb2$gender == "male"])
+
+ggplot(hsb2, aes(x = gender, y = write)) +
+  geom_point() +
+  geom_hline(aes(yintercept = mean(mean_female), color = "Female"), 
+             linetype = "dashed") +
+  geom_hline(aes(yintercept = mean(mean_male), color = "Male"), 
+             linetype = "dashed") +
+  scale_color_manual(values = c("Female" = "blue", "Male" = "red")) +
+  labs(color = "Means")
 ```
 
+
+:::
+::::
+
+## Adding a continous Predictor
+
+We further hypothesize that `socst` should be positively related to `write` score.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_both <- lm(write ~ gender + socst_cent, data = hsb2)
+
+summary(reg_both)
+```
+:::
+
+::: {.column width="50%"}
+
+$$\widehat{\mathrm{write}} = 54.72 - 4.28 \times \mathrm{gender} +  5.62 \times \mathrm{socst}$$
+
+We looked at the interpretation for this kind of regression in the last lab:
+
+<ul style="font-size: 26px">  
+
+<li> $54.72$ is now the expected mean `write` score of *females*, when `socst` is at its mean value. </li>
+
+<li> $-4.28$ is the expected mean difference in `write` score for *males* compared to *females*. when `socst` is controlled. </li>
+
+<li> $5.62$ is the expected mean increase in `write` for each unit increase in `socst`. </li>
+
+</ul>
+
+:::
+::::
+
+
+## Visualizing `write ~ gender + socst`
+
+
+:::: {.columns}
+::: {.column width="30%"}
+
+<div style="font-size: 24px"> What this model represents is effectively two separate regression lines for the two groups, which differ only based on the intercept. </div>
+
+</br>
+
+<div style="font-size: 24px"> If you have heard of the term [ANCOVA](https://en.wikipedia.org/wiki/Analysis_of_covariance){target="_blank"} before, this is what we just ran.  </div>
+
+</br>
+
+<div style="font-size: 24px"> Note that the slopes are the same, meaning that we are assuming that the relation between `socst` and `write`  should be the same for both groups. </div>
+
+
+:::
+::: {.column width="70%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+
+ggplot(hsb2, aes(x = socst_cent, y = write, colour = gender)) +
+  geom_point(aes(shape = gender), alpha= .6) +
+  geom_abline(intercept = coef(reg_both)[1], slope = coef(reg_both)[3], col = "purple") + 
+  geom_abline(intercept = coef(reg_both)[1] + coef(reg_both)[2], slope = coef(reg_both)[3], col = "red") + 
+  scale_color_manual(values=c( "purple", "red")) 
+```
+:::
+::::
+
+## Adding the Interaction
+
+If we think that the relationship between `socst` and `write` should change depending on `gender`, we can test this hypothesis by including an interaction effect.
+
+:::: {.columns}
+::: {.column width="55%"}
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_int <- lm(write ~ gender*socst_cent, data = hsb2)
+
+summary(reg_int)
+```
+:::
+
+::: {.column width="45%"}
+
+we add the $2.2 \times \mathrm{gender} \times \mathrm{socst}$ term to the equation from two slides ago. 
+
+<ul style="font-size: 24px">  
+
+<li> $54.78$ is now the expected mean `write` score of *females*, when `socst` is at its mean value. </li>
+
+<li> $-4.28$ is the expected mean difference in `write` score for *males* compared to *females*. when `socst` is controlled. </li>
+
+<li> $4.51$ is the expected mean increase in `write` for each unit increase in `socst`. </li>
+
+<li> $2.2$ is the expected *difference in slope* between `write` and `socst` for the *males*. </li>
+
+</ul>
+
+:::
+::::
+
+
+## Interpreting the Interaction Term
+
+When we have a categorical moderator, interpreting the interaction terms boils down at looking how the slopes of the groups change.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+<center> **Equation for Males** 
+
+
+<div style="font-size:18px;"> 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times \mathrm{gender} \times \mathrm{socst}$$ 
+</div>
+
+&#8595;
+
+
+
+<div style="font-size:18px;"> 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times 1 \times \mathrm{socst}$$ 
+</div>
+
+&#8595;
+
+<div style="font-size:18px;"> 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times \mathrm{socst}$$ 
+</div>
+
+&#8595;
+
+<div style="font-size:18px;"> 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  6.71 \times \mathrm{socst}$$ 
+</div>
+
+</center>
+
+:::
+::: {.column width="50%"}
+
+<center> **Equation for Females**
+
+<div style="font-size:18px;"> 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times \mathrm{gender} \times \mathrm{socst}$$ 
+
+
+</div>
+
+&#8595;
+
+<div style="font-size:18px;"> 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times 0 \times \mathrm{socst}$$ 
+</div>
+
+&#8595;
+
+<div style="font-size:18px;"> 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst}$$ 
+</div>
+
+</center>
+
+:::
+::::
+
+
+So, we expect the relation between `write` and `socst` to be $2.2$ larger for `males`. 
+
+
+
+## Visualizing `write ~ gender * socst`
+
+:::: {.columns}
+::: {.column width="30%"}
+
+</br>
+
+<div style="font-size: 26px"> So, the slope for `males` is steeper. Although at lower levels of `socst`, `females` do considerably better, the gap closes more and more as `socst` increases.  </div>
+
+
+<div style="font-size: 26px"> A significant interaction term implies that the difference between teh slopes between the two groups is non-zero. </div>
+
+
+:::
+::: {.column width="70%"}
+
+::: {.panel-tabset}
+
+### `write ~ gender * socst`
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+
+ggplot(hsb2, aes(x = socst_cent, y = write, colour = gender)) +
+  geom_point(aes(shape = gender), alpha= .6) +
+  geom_abline(intercept = coef(reg_int)[1], slope = coef(reg_int)[3], col = "purple") + 
+  geom_abline(intercept = coef(reg_int)[1] + coef(reg_int)[2], slope = coef(reg_int)[3] + coef(reg_int)[4], col = "red") + 
+  scale_color_manual(values=c( "purple", "red")) 
+```
+
+### `write ~ gender + socst`
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+
+ggplot(hsb2, aes(x = socst_cent, y = write, colour = gender)) +
+  geom_point(aes(shape = gender), alpha= .6) +
+  geom_abline(intercept = coef(reg_both)[1], slope = coef(reg_both)[3], col = "purple") + 
+  geom_abline(intercept = coef(reg_both)[1] + coef(reg_both)[2], slope = coef(reg_both)[3], col = "red") + 
+  scale_color_manual(values=c( "purple", "red")) 
+```
+
+
+### `write ~ gender`
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+
+mean_female <- mean(hsb2$write[hsb2$gender == "female"])
+mean_male <- mean(hsb2$write[hsb2$gender == "male"])
+
+ggplot(hsb2, aes(x = gender, y = write)) +
+  geom_point() +
+  geom_hline(aes(yintercept = mean(mean_female), color = "Female"), 
+             linetype = "dashed") +
+  geom_hline(aes(yintercept = mean(mean_male), color = "Male"), 
+             linetype = "dashed") +
+  scale_color_manual(values = c("Female" = "blue", "Male" = "red")) +
+  labs(color = "Means")
+```
+
+
+:::
+
+:::
+::::
+
+
+##  Simple Slopes With `emmeans`
+
+Whenever categorical variables are involved, the `emmeans` package likely has some functions to summarize results. For interaction between continuous and categorical variables, the `emtrends()` function is very helpful!
+
+
+
+
+:::: {.columns}
+::: {.column width="40%"}
+
+</br>
+
+<div style="font-size: 26px"> Although we calculated the simple slopes by hand two slides ago, you don't really want to do that (especially when your categorical predictors have more levels!) </div>
+
+
+<div style="font-size: 26px; padding-top: 20px;"> The `emtrends()` function also provides confidence intervals for the slopes. </div>
+
+
+:::
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+emtrends(reg_int, ~gender, var = "socst_cent")
+
+```
+
+<ul style="font-size: 22px">  
+
+<li>  `reg_int` is the  regression model. </li>
+
+<li>  `~` followed by `gender` implies that we want the slopes for each level of the `gender` variable. </li>
+
+<li>  `var = ` followed by `"socst_cent"` is the continuous predictor we want to get slopes for. </li>
+
+
+</ul>
+
+
+
+:::
+::::
+<div style="font-size: 24px"> Here we have a simple mode, but you can request slopes for multiple predictors and categorical moderators at once. [This page](https://stats.oarc.ucla.edu/r/seminars/interactions-r/){target="_blank"} has a really comprehensive tutorial on how to use the `emmeans` package with interactions. 
+ </div>
+
+
+##  Testing Mean Differences
+
+<div style="font-size: 24px"> So far we have been focusing on the slope of `socst_cent`, but we can also shift our focus to mean differences . In our case, the `emmeans()` can be used for testing mean differences between the groups *at different values* of the continuous variable. </div>
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<div style="font-size: 24px; padding-top: 12px;"> We need to define the values of `socst_cent` at which we want to test mean differences. We do this by creating a `list` object containing the name of the variable and the values at which we want to test the mean differences. </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+sd_below <- -sd(hsb2$socst_cent)
+sd_above <- sd(hsb2$socst_cent)
+
+# the mean is 0 because the variable is centered
+mylist <- list(socst_cent=c(sd_below,
+                            0,
+                            sd_above))
+```
+
+
+Then, we create an `emmeans` object in the following way:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+mean_diffs <- emmeans(reg_int, ~socst_cent*gender, at = mylist)
+```
+
+:::
+
+
+::: {.column width="50%"}
+
+And finally use the `contrast` function:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+contrast(mean_diffs, "pairwise", by= "socst_cent")
+```
+
+<div style="font-size: 24px; padding-top: 12px;"> As we observed previously, the mean difference in `write` is significant at lower values of `socst`, but is no longer significant at high values of `socst`. </div>
+
+:::
+::::
+
+## Mean differences Graphically
+
+:::: {.columns}
+::: {.column width="35%"}
+
+<div style="font-size: 24px;"> Testing mean differences at different values of `socst` simply mean testing whether the dashed black lines are significantly different from 0 in length. The dashed lines, representing the distance between the two regression lines becomes smaller and smaller as `socst` increases.  </div>
+
+
+::: {.callout-note}
+
+## It's a matter of perspective
+
+You may have noticed that first we looked at *(1)* whether the slope of `socst` changed depending on `gender`, and then we *(2)* looked at whether there were mean differences in mean `write` score for `gender` depending on different values of `socst`. In other words, we swapped the variable that we were treating as the moderator. This highlights how from a statistical perspective there is no difference between a moderator and a focal predictor. You decide how two present the results and frame the two variables.
+
+::: 
+
+:::
+::: {.column width="65%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+# save summary for mean differences
+sum <- summary(mean_diffs)
+
+ggplot(hsb2, aes(x = socst_cent, y = write, colour = gender)) +
+  geom_point(aes(shape = gender), alpha= .2) +
+  geom_abline(intercept = coef(reg_int)[1], slope = coef(reg_int)[3], col = "purple") + 
+  geom_abline(intercept = coef(reg_int)[1] + coef(reg_int)[2], slope = coef(reg_int)[3] + coef(reg_int)[4], col = "red") + 
+  scale_color_manual(values=c( "purple", "red")) +
+  geom_segment(y = sum[1,3], yend = sum[4,3], x = sum[4,1], xend = sum[4,1], col = "black", lty = 2) +
+  geom_segment(y = sum[2,3], yend = sum[5,3], x = sum[5,1], xend = sum[5,1], col = "black", lty = 2) +
+  geom_segment(y = sum[6,3], yend = sum[3,3], x = sum[3,1], xend = sum[3,1], col = "black", lty = 2) 
+  
+```
+
+
+:::
+::::
+
+
+
+## Plotting with `emmip()`
+
+We can use the `emmip()` to plot the slopes for both groups. 
+
+:::: {.columns}
+::: {.column width="40%"}
+
+<div style="font-size: 23px"> First, we need to create a list that tells `emmip()` the range of the continuous variable for which want to plot slopes. here I choose the minimum and maximum of `socst_cent`. </div>
+
+```{r}
+#| eval: true
+#| echo: true
+#| code-line-numbers: false
+#| classes: code-125
+
+min <- min(hsb2$socst_cent)
+max <- max(hsb2$socst_cent)
+
+mylist <- list(socst_cent = c(min, 
+                              max))
+```
+
+<div style="font-size:23px; padding-top: 12px;"> Then we pass pass the regression object, the categorical variable by which we want the slopes, and the list containing the range of the x-axis. </div>
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| classes: code-125
+
+emmip(reg_int, gender~socst_cent, at = mylist)
+```
+
+
+:::
+::: {.column width="60%"}
+
+```{r}
+emmip(reg_int, gender~socst_cent, at = mylist)
+```
+
+:::
+::::
+
+
+<div style="font-size: 23px; padding-top: 14px;"> This may seem a bit complicated for no reason 🤨 but it affords lots of flexibility when your model is more complex than what we have here. </div>
+
+<div style="font-size: 12px"> I personally prefer plotting things "manually" with GGplot 🫣, although I understand that may not be everyone's cup of tea </div>
 
 
 
