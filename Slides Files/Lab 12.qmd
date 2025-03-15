@@ -24,3 +24,187 @@ format:
 editor: source
 ---
 
+
+<!-- https://stats.oarc.ucla.edu/other/mult-pkg/seminars/spss-process/ -->
+
+## Today's Packages and Data 🤗
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| code-fold: true
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| code-summary: "Install Packages Code"
+#| classes: code-150
+
+# install.packages("tidyverse")
+install.packages("lavaan")
+```
+
+```{r}
+#| eval: true
+#| echo: true
+#| code-line-numbers: false
+#| warning: false
+#| classes: code-150
+
+library(tidyverse)
+theme_set(theme_classic(base_size = 14, 
+                        base_family = 'serif'))
+library(lavaan)
+```
+
+
+</br>
+
+<div style="font-size: 26px">
+
+::: {.panel-tabset}
+### `lavaan`
+
+<div style="font-size: 22px"> The `lavaan` package [@Rosseel_etal_2024a] is the most popular package to run SEM  models in R. We will use it to run mediation analysis, which the SEM framework accommodates. </div>
+
+:::
+
+</div>
+
+  
+
+:::
+
+
+::: {.column width="50%"}
+
+<center style="padding-bottom: 41px;"> [Data]{.data-title} </center>
+
+ 
+```{r}
+#| warning: false
+#| classes: code-125
+#| echo: true
+#| code-line-numbers: false
+#| output: true
+
+dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/mediation_dat.csv")
+
+
+
+```
+
+<center style="padding-bottom: 11px;"> </center>
+
+```{r}
+reactable::reactable(dat,
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "1.105rem"),
+                     pagination = FALSE, highlight = TRUE, height = 300)
+```
+
+:::
+::::
+
+## Why `lavaan` for Mediation?
+
+Before we begin, I would be remiss not to mention other packages for running mediation:
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<ul style="font-size: 22px">  
+
+<li> The `PROCESS` macro:  [PROCESS](https://www.processmacro.org/index.html){target="_blank"} is a macro for SPSS, SAS, and R that runs mediation and moderation analysis. There is no package for it, so you need to run all the functions before using it. Aside from that, I find it to be less flexible than `lavaan` for specifying different models, as well as the online help and documentation being almost non-existent. </li>
+
+</ul>
+
+
+
+
+:::
+::: {.column width="50%"}
+
+<ul style="font-size: 22px">  
+
+<li> The `mediation` package [@Tingley_etal_2019]: This package implements the *causal mediation framework* described in @Imai_etal_2010a. It is a very flexible package, and it accommodated both multilevel mediation and non-linear mediation. @Tingley_etal_2014 describe many of the `mediation` package functionalities in detail. The one "problem" is that it is not very easy to specify multiple mediators and moderators. </li>
+
+</ul>
+
+:::
+::::
+
+</br>
+
+`lavaan` is a package for [structural equation modeling](https://en.wikipedia.org/wiki/Structural_equation_modeling){target="_blank"} (SEM). SEM is a general framework that aims to explain how the observe correlation matrix among a set of variable arises by essentially running many regressions. 
+
+As we will see, mediation is nothing but two or more regression models. You certainly *do not need* SEM turn run mediation; however, `lavaan` makes it quite straightforward.
+
+
+## Running a regression in `lavaan`
+
+
+```{r}
+mod <- "feeling ~ detail
+        feeling ~ 1 "
+
+res <- sem(mod, data = dat, fixed)
+
+
+parameterEstimates(res) 
+```
+```{r}
+summary(lm(feeling ~ detail, dat))
+```
+
+
+
+
+## Running Mediation
+
+```{r include=FALSE}
+library(mediation)
+
+data("framing", package = "mediation")
+
+med.fit <- lm(emo ~ treat + age + educ + gender + income, data = framing)
+
+out.fit <- glm(cong_mesg ~ emo + treat + age + educ + gender + income, data = framing, family = binomial("probit"))
+
+
+med.out <- mediate(med.fit, out.fit, treat = "treat", mediator = "emo", robustSE = TRUE, sims = 100)
+
+summary(med.out)
+```
+```{r include=FALSE}
+data(CEDdata)
+
+res <- mediate.ced("Y2", "M1", "M2", "T1", "Z", CEDdata, sims = 100)
+summary(res)
+```
+
+## Prova 
+
+```{tikz}
+#| fig-ext: svg
+#| fig-width: 5
+
+\usetikzlibrary{arrows,intersections}
+  \begin{tikzpicture}
+    \node (X) at (0,0) [draw, rectangle] {X};
+    \node (M) at (2,.8) [draw, rectangle] {M};
+    \node (Y) at (4,0) [draw, rectangle] {Y};
+    
+    % Arrows
+    \draw[-stealth] (X) -- (M) node[midway, above] {a};
+    \draw[-stealth] (M) -- (Y) node[midway, above] {b};
+    \draw[-stealth] (X) -- (Y) node[midway, above] {c'};
+  
+  \end{tikzpicture}
+```
+
+## References 
+
+
+
+<div id="refs"> </div>
+

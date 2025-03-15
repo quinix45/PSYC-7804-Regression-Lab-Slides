@@ -24,8 +24,64 @@ format:
 editor: source
 ---
 
-## Font-awesome slide{visibility="hidden"}
+## Today's Packages and Data 🤗
 
-uncounted and not visible slide to trigger the fontawesome extension
 
-{{< fa thumbs-up >}} 
+```{r}
+hsb2 <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/hsb2.csv")
+```
+
+
+
+```{r}
+reg <- lm(write ~ science + math, hsb2)
+summary(reg)
+```
+
+
+```{r}
+
+set.seed(313234)
+random <- sample(1:200, 120, replace = FALSE)
+
+hsb2$science_mis <- hsb2$science
+hsb2$science_mis[random] <- NA
+
+
+reg_miss <- lm(write ~ science_mis + math, hsb2)
+summary(reg_miss)
+```
+
+```{r}
+
+hsb2$socst_mis_N <- ifelse(hsb2$science > 55 , NA, hsb2$science)
+
+reg_miss_N <- lm(write ~ socst_mis_N + math , hsb2)
+summary(reg_miss_N)
+
+```
+
+
+
+```{r}
+plot(hsb2$math, hsb2$write)
+```
+```{r}
+library(lavaan)
+nomiss2 <- sem('write ~ socst_mis + math', data = hsb2,missing = "fiml", fixed.x = F)
+summary(nomiss2)
+
+```
+
+
+```{r}
+xnodes <- seq(-4,4,len=11)        # nodes for X
+ynodes <- seq(-10,10,len=13)
+
+# define model for dependent variable Y
+dep <- list("model"="linreg", "formula"=Y ~  X*Z)
+
+mod1 <- mdmb::frm_em(dat=dat, dep=dep, ind=ind )
+summary(mod1)
+```
+
