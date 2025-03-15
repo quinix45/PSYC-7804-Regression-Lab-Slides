@@ -282,14 +282,14 @@ The <code>lavaan</code> package <span class="citation" data-cites="Rosseel_etal_
 <span class="data-title">Data</span>
 </center>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/mediation_dat.sav"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/mediation_dat.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <center style="padding-bottom: 11px;">
 </center>
 <div class="cell">
 <div class="cell-output-display">
-<div id="htmlwidget-845324c5cc990f46da88" class="reactable html-widget" style="width:auto;height:300px;"></div>
-<script type="application/json" data-for="htmlwidget-845324c5cc990f46da88">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"bcovar":[1,0,0,0,0,1,0,0,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,1,1,0,1,0,1,1,1,0,0,1,0,0,0,1,0,0,0,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,0,1,1,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,1,0,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,1,1,1,1,1,0,0,1,0,1,1,1,1,0,0,1,0,0,1,1,1,0,1,1,1,1,0,1,0,0,0,1,1,1,0,0,0,1,1,0,0,1,1,0,0,1,0],"detail":[34,34,39,37,39,42,31,50,39,34,34,39,47,36,35,44,28,42,34,34,42,37,41,44,47,44,44,44,47,44,47,47,47,47,44,42,50,41,42,47,42,50,45,50,39,42,47,39,47,44,50,55,44,45,44,42,47,36,47,44,42,50,47,43,48,47,42,52,50,39,42,47,52,57,42,47,46,50,44,50,36,39,47,52,50,50,47,55,50,55,50,43,63,57,50,55,47,50,60,57,44,57,52,42,63,61,60,52,52,57,47,57,55,52,47,47,55,63,57,60,57,52,47,47,47,52,50,52,55,55,63,55,63,65,52,47,60,54,63,60,60,52,57,63,53,55,57,52,63,63,55,63,57,68,50,57,65,60,63,47,52,65,63,60,68,68,60,55,63,68,55,73,57,50,68,68,65,65,57,76,63,65,65,68,73,66,68,65,65,68,71,68,68,73,76,63,63,73,71,73],"feeling":[35,33,39,37,31,36,36,31,41,37,44,33,31,44,35,44,46,46,46,49,39,44,47,44,37,38,49,44,41,50,44,39,40,46,41,39,33,59,41,47,31,42,55,40,44,54,46,54,42,49,41,41,44,57,52,49,41,57,62,33,54,40,52,57,49,46,57,49,52,53,54,57,41,52,57,54,52,52,44,46,49,54,52,44,49,46,54,39,59,45,52,54,44,50,62,59,52,52,46,41,52,52,55,41,49,59,54,54,59,55,62,54,54,54,59,57,61,52,59,62,60,59,65,61,59,59,59,59,65,57,59,49,49,59,62,59,54,63,43,54,52,57,57,57,61,62,62,65,57,59,59,62,65,62,62,62,54,62,65,62,67,65,60,59,59,59,65,62,65,59,59,61,65,67,65,65,67,65,62,52,63,59,65,59,67,67,60,67,62,54,65,62,59,60,63,65,63,67,65,62],"impact":[29,36,26,33,39,31,39,34,42,39,39,47,36,42,51,34,44,36,39,42,42,39,39,40,42,39,35,39,40,39,42,42,45,33,50,56,44,34,50,42,47,36,34,49,44,42,47,47,39,39,44,44,47,31,44,50,42,50,34,58,47,55,48,50,44,48,50,44,39,50,50,44,53,47,47,50,44,50,50,58,61,53,50,55,47,53,53,53,53,58,58,55,53,51,55,42,53,55,53,55,63,61,54,72,66,44,50,53,55,50,53,47,42,55,58,58,49,50,50,50,53,53,50,63,53,61,61,61,50,58,55,61,66,46,47,66,55,55,65,58,61,58,58,58,57,58,58,56,58,55,58,55,63,50,63,55,58,50,63,69,63,63,54,61,55,63,61,63,53,63,69,55,54,66,55,59,55,58,61,64,61,63,61,74,58,61,69,66,66,66,58,69,66,61,67,69,72,63,66,69],"opinion":[26,36,42,32,51,39,46,31,41,31,41,41,36,41,33,46,51,46,36,56,41,46,51,31,46,46,51,51,41,51,36,26,31,41,26,46,36,51,41,51,51,61,41,47,48,41,61,36,51,51,56,41,51,56,51,56,56,41,46,31,46,56,61,51,51,46,43,61,56,41,52,41,56,57,61,56,56,56,46,61,36,41,56,41,46,66,61,46,61,51,36,46,56,58,31,56,61,56,61,52,61,56,61,31,41,66,51,51,61,51,61,51,56,51,46,46,61,51,56,51,37,66,56,31,46,61,61,51,61,61,71,56,46,66,46,61,66,46,44,61,61,56,56,51,56,61,66,51,41,56,51,61,61,51,51,41,56,56,56,66,61,66,66,51,71,61,66,66,61,66,46,66,56,56,61,56,71,71,61,61,61,51,66,66,66,66,66,71,66,66,71,61,56,71,66,71,66,66,56,66]},"columns":[{"id":"bcovar","name":"bcovar","type":"numeric"},{"id":"detail","name":"detail","type":"numeric"},{"id":"feeling","name":"feeling","type":"numeric"},{"id":"impact","name":"impact","type":"numeric"},{"id":"opinion","name":"opinion","type":"numeric"}],"pagination":false,"highlight":true,"style":{"fontFamily":"Work Sans, sans-serif","fontSize":"1.105rem"},"height":"300px","dataKey":"a0fd1c644bc2a0e17f9ac90bd0c7512d"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-13d3666eb27a26abb008" class="reactable html-widget" style="width:auto;height:300px;"></div>
+<script type="application/json" data-for="htmlwidget-13d3666eb27a26abb008">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"gender":[1,0,0,0,0,1,0,0,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,1,1,0,1,0,1,1,1,0,0,1,0,0,0,1,0,0,0,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,0,1,1,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,1,0,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,1,1,1,1,1,0,0,1,0,1,1,1,1,0,0,1,0,0,1,1,1,0,1,1,1,1,0,1,0,0,0,1,1,1,0,0,0,1,1,0,0,1,1,0,0,1,0],"detail":[34,34,39,37,39,42,31,50,39,34,34,39,47,36,35,44,28,42,34,34,42,37,41,44,47,44,44,44,47,44,47,47,47,47,44,42,50,41,42,47,42,50,45,50,39,42,47,39,47,44,50,55,44,45,44,42,47,36,47,44,42,50,47,43,48,47,42,52,50,39,42,47,52,57,42,47,46,50,44,50,36,39,47,52,50,50,47,55,50,55,50,43,63,57,50,55,47,50,60,57,44,57,52,42,63,61,60,52,52,57,47,57,55,52,47,47,55,63,57,60,57,52,47,47,47,52,50,52,55,55,63,55,63,65,52,47,60,54,63,60,60,52,57,63,53,55,57,52,63,63,55,63,57,68,50,57,65,60,63,47,52,65,63,60,68,68,60,55,63,68,55,73,57,50,68,68,65,65,57,76,63,65,65,68,73,66,68,65,65,68,71,68,68,73,76,63,63,73,71,73],"feeling":[35,33,39,37,31,36,36,31,41,37,44,33,31,44,35,44,46,46,46,49,39,44,47,44,37,38,49,44,41,50,44,39,40,46,41,39,33,59,41,47,31,42,55,40,44,54,46,54,42,49,41,41,44,57,52,49,41,57,62,33,54,40,52,57,49,46,57,49,52,53,54,57,41,52,57,54,52,52,44,46,49,54,52,44,49,46,54,39,59,45,52,54,44,50,62,59,52,52,46,41,52,52,55,41,49,59,54,54,59,55,62,54,54,54,59,57,61,52,59,62,60,59,65,61,59,59,59,59,65,57,59,49,49,59,62,59,54,63,43,54,52,57,57,57,61,62,62,65,57,59,59,62,65,62,62,62,54,62,65,62,67,65,60,59,59,59,65,62,65,59,59,61,65,67,65,65,67,65,62,52,63,59,65,59,67,67,60,67,62,54,65,62,59,60,63,65,63,67,65,62],"impact":[29,36,26,33,39,31,39,34,42,39,39,47,36,42,51,34,44,36,39,42,42,39,39,40,42,39,35,39,40,39,42,42,45,33,50,56,44,34,50,42,47,36,34,49,44,42,47,47,39,39,44,44,47,31,44,50,42,50,34,58,47,55,48,50,44,48,50,44,39,50,50,44,53,47,47,50,44,50,50,58,61,53,50,55,47,53,53,53,53,58,58,55,53,51,55,42,53,55,53,55,63,61,54,72,66,44,50,53,55,50,53,47,42,55,58,58,49,50,50,50,53,53,50,63,53,61,61,61,50,58,55,61,66,46,47,66,55,55,65,58,61,58,58,58,57,58,58,56,58,55,58,55,63,50,63,55,58,50,63,69,63,63,54,61,55,63,61,63,53,63,69,55,54,66,55,59,55,58,61,64,61,63,61,74,58,61,69,66,66,66,58,69,66,61,67,69,72,63,66,69],"opinion":[26,36,42,32,51,39,46,31,41,31,41,41,36,41,33,46,51,46,36,56,41,46,51,31,46,46,51,51,41,51,36,26,31,41,26,46,36,51,41,51,51,61,41,47,48,41,61,36,51,51,56,41,51,56,51,56,56,41,46,31,46,56,61,51,51,46,43,61,56,41,52,41,56,57,61,56,56,56,46,61,36,41,56,41,46,66,61,46,61,51,36,46,56,58,31,56,61,56,61,52,61,56,61,31,41,66,51,51,61,51,61,51,56,51,46,46,61,51,56,51,37,66,56,31,46,61,61,51,61,61,71,56,46,66,46,61,66,46,44,61,61,56,56,51,56,61,66,51,41,56,51,61,61,51,51,41,56,56,56,66,61,66,66,51,71,61,66,66,61,66,46,66,56,56,61,56,71,71,61,61,61,51,66,66,66,66,66,71,66,66,71,61,56,71,66,71,66,66,56,66]},"columns":[{"id":"gender","name":"gender","type":"numeric"},{"id":"detail","name":"detail","type":"numeric"},{"id":"feeling","name":"feeling","type":"numeric"},{"id":"impact","name":"impact","type":"numeric"},{"id":"opinion","name":"opinion","type":"numeric"}],"pagination":false,"highlight":true,"style":{"fontFamily":"Work Sans, sans-serif","fontSize":"1.105rem"},"height":"300px","dataKey":"8f0a9f0bfff27e575a233d0432f23b6b"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div></div>
@@ -315,6 +315,67 @@ The <code>mediation</code> package <span class="citation" data-cites="Tingley_et
 <p><code>lavaan</code> is a package for <a href="https://en.wikipedia.org/wiki/Structural_equation_modeling" target="_blank">structural equation modeling</a> (SEM). SEM is a general framework that aims to explain how the observe correlation matrix among a set of variable arises by essentially running many regressions.</p>
 <p>As we will see, mediation is nothing but two or more regression models. You certainly <em>do not need</em> SEM turn run mediation; however, <code>lavaan</code> makes it quite straightforward.</p>
 </section>
+<section id="more-on-todays-data" class="slide level2">
+<h2>More on today’s data</h2>
+<p>Today’s data is adapted from the examples shown <a href="https://stats.oarc.ucla.edu/other/mult-pkg/seminars/spss-process/" target="_blank">here</a>. The data comes from a fiction study were participants</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul style="font-size: 22px">
+<li>
+<code>gender</code>: Binary variable indicating participant’s gender (0 = male, 1 = female).
+</li>
+<li>
+<code>detail</code>: How much information participants were given regarding the event. (<span class="math inline">\(X\)</span>)
+</li>
+<li>
+<code>feeling</code>: beliefs about the topic after hearing details. (<span class="math inline">\(M_1\)</span>)
+</li>
+<li>
+<code>impact</code>: How impactful participants believed the details were.(<span class="math inline">\(M_2\)</span>)
+</li>
+<li>
+<code>opinion</code>: How strongly participants opposed a law cutting. (<span class="math inline">\(Y\)</span>)
+</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div id="htmlwidget-9a458245e1495c7a59b4" class="reactable html-widget" style="width:auto;height:300px;"></div>
+<script type="application/json" data-for="htmlwidget-9a458245e1495c7a59b4">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"gender":[1,0,0,0,0,1,0,0,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,1,1,0,1,0,1,1,1,0,0,1,0,0,0,1,0,0,0,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,0,1,1,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,1,0,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,1,1,1,1,1,0,0,1,0,1,1,1,1,0,0,1,0,0,1,1,1,0,1,1,1,1,0,1,0,0,0,1,1,1,0,0,0,1,1,0,0,1,1,0,0,1,0],"detail":[34,34,39,37,39,42,31,50,39,34,34,39,47,36,35,44,28,42,34,34,42,37,41,44,47,44,44,44,47,44,47,47,47,47,44,42,50,41,42,47,42,50,45,50,39,42,47,39,47,44,50,55,44,45,44,42,47,36,47,44,42,50,47,43,48,47,42,52,50,39,42,47,52,57,42,47,46,50,44,50,36,39,47,52,50,50,47,55,50,55,50,43,63,57,50,55,47,50,60,57,44,57,52,42,63,61,60,52,52,57,47,57,55,52,47,47,55,63,57,60,57,52,47,47,47,52,50,52,55,55,63,55,63,65,52,47,60,54,63,60,60,52,57,63,53,55,57,52,63,63,55,63,57,68,50,57,65,60,63,47,52,65,63,60,68,68,60,55,63,68,55,73,57,50,68,68,65,65,57,76,63,65,65,68,73,66,68,65,65,68,71,68,68,73,76,63,63,73,71,73],"feeling":[35,33,39,37,31,36,36,31,41,37,44,33,31,44,35,44,46,46,46,49,39,44,47,44,37,38,49,44,41,50,44,39,40,46,41,39,33,59,41,47,31,42,55,40,44,54,46,54,42,49,41,41,44,57,52,49,41,57,62,33,54,40,52,57,49,46,57,49,52,53,54,57,41,52,57,54,52,52,44,46,49,54,52,44,49,46,54,39,59,45,52,54,44,50,62,59,52,52,46,41,52,52,55,41,49,59,54,54,59,55,62,54,54,54,59,57,61,52,59,62,60,59,65,61,59,59,59,59,65,57,59,49,49,59,62,59,54,63,43,54,52,57,57,57,61,62,62,65,57,59,59,62,65,62,62,62,54,62,65,62,67,65,60,59,59,59,65,62,65,59,59,61,65,67,65,65,67,65,62,52,63,59,65,59,67,67,60,67,62,54,65,62,59,60,63,65,63,67,65,62],"impact":[29,36,26,33,39,31,39,34,42,39,39,47,36,42,51,34,44,36,39,42,42,39,39,40,42,39,35,39,40,39,42,42,45,33,50,56,44,34,50,42,47,36,34,49,44,42,47,47,39,39,44,44,47,31,44,50,42,50,34,58,47,55,48,50,44,48,50,44,39,50,50,44,53,47,47,50,44,50,50,58,61,53,50,55,47,53,53,53,53,58,58,55,53,51,55,42,53,55,53,55,63,61,54,72,66,44,50,53,55,50,53,47,42,55,58,58,49,50,50,50,53,53,50,63,53,61,61,61,50,58,55,61,66,46,47,66,55,55,65,58,61,58,58,58,57,58,58,56,58,55,58,55,63,50,63,55,58,50,63,69,63,63,54,61,55,63,61,63,53,63,69,55,54,66,55,59,55,58,61,64,61,63,61,74,58,61,69,66,66,66,58,69,66,61,67,69,72,63,66,69],"opinion":[26,36,42,32,51,39,46,31,41,31,41,41,36,41,33,46,51,46,36,56,41,46,51,31,46,46,51,51,41,51,36,26,31,41,26,46,36,51,41,51,51,61,41,47,48,41,61,36,51,51,56,41,51,56,51,56,56,41,46,31,46,56,61,51,51,46,43,61,56,41,52,41,56,57,61,56,56,56,46,61,36,41,56,41,46,66,61,46,61,51,36,46,56,58,31,56,61,56,61,52,61,56,61,31,41,66,51,51,61,51,61,51,56,51,46,46,61,51,56,51,37,66,56,31,46,61,61,51,61,61,71,56,46,66,46,61,66,46,44,61,61,56,56,51,56,61,66,51,41,56,51,61,61,51,51,41,56,56,56,66,61,66,66,51,71,61,66,66,61,66,46,66,56,56,61,56,71,71,61,61,61,51,66,66,66,66,66,71,66,66,71,61,56,71,66,71,66,66,56,66]},"columns":[{"id":"gender","name":"gender","type":"numeric"},{"id":"detail","name":"detail","type":"numeric"},{"id":"feeling","name":"feeling","type":"numeric"},{"id":"impact","name":"impact","type":"numeric"},{"id":"opinion","name":"opinion","type":"numeric"}],"pagination":false,"highlight":true,"style":{"fontFamily":"Work Sans, sans-serif","fontSize":"1.105rem"},"height":"300px","dataKey":"8f0a9f0bfff27e575a233d0432f23b6b"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div></div>
+</section>
+<section id="running-a-regresison-in-lavaan" class="slide level2">
+<h2>Running a regresison in <code>lavaan</code></h2>
+<p>Because of its flexibility, <code>lavaan</code>’s model require a specific syntax.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(opinion <span class="sc">~</span> detail, dat)</span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">S</span>(reg_lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: lm(formula = opinion ~ detail, data = dat)
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  18.4162     3.1027   5.936 1.29e-08 ***
+detail        0.6508     0.0583  11.163  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard deviation: 8.432 on 198 degrees of freedom
+Multiple R-squared: 0.3862
+F-statistic: 124.6 on 1 and 198 DF,  p-value: &lt; 2.2e-16 
+    AIC     BIC 
+1424.38 1434.27 </code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+
+</div></div>
+</section>
 <section id="running-mediation" class="slide level2">
 <h2>Running Mediation</h2>
 </section>
@@ -324,7 +385,7 @@ The <code>mediation</code> package <span class="citation" data-cites="Tingley_et
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-7-1.svg" width="480"></p>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-11-1.svg" width="480"></p>
 </figure>
 </div>
 </div>

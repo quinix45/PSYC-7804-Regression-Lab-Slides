@@ -90,9 +90,8 @@ library(lavaan)
 
 dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/mediation_dat.csv")
 
-
-
 ```
+
 
 <center style="padding-bottom: 11px;"> </center>
 
@@ -140,47 +139,111 @@ Before we begin, I would be remiss not to mention other packages for running med
 As we will see, mediation is nothing but two or more regression models. You certainly *do not need* SEM turn run mediation; however, `lavaan` makes it quite straightforward.
 
 
-## Running a regression in `lavaan`
+## More on today's data
 
+
+Today's data is adapted from the examples shown [here](https://stats.oarc.ucla.edu/other/mult-pkg/seminars/spss-process/){target="_blank"}. The data comes from a fiction study were participants 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<ul style="font-size: 22px">  
+
+<li>  `gender`: Binary variable indicating participant's gender (0 = male, 1 = female). </li>
+
+<li>  `detail`: How much information participants were given regarding the event. ($X$) </li>
+
+<li>  `feeling`: beliefs about the topic after hearing details. ($M_1$)  </li>
+
+<li>  `impact`: How impactful participants believed the details were.($M_2$) </li>
+
+<li>  `opinion`: How strongly participants opposed a law cutting. ($Y$) </li>
+
+</ul>
+
+
+:::
+::: {.column width="50%"}
 
 ```{r}
-mod <- "feeling ~ detail
-        feeling ~ 1 "
-
-res <- sem(mod, data = dat, fixed)
-
-
-parameterEstimates(res) 
+reactable::reactable(dat,
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "1.105rem"),
+                     pagination = FALSE, highlight = TRUE, height = 300)
 ```
+
+
+:::
+::::
+
+
+## Running a regresison in `lavaan`
+
+Because of its flexibility, `lavaan`'s model require a specific syntax. 
+
+:::: {.columns}
+::: {.column width="50%"}
+
 ```{r}
-summary(lm(feeling ~ detail, dat))
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_lm <- lm(opinion ~ detail, dat)
+
+car::S(reg_lm)
 ```
 
 
+:::
+::: {.column width="50%"}
+
+
+
+
+:::
+::::
+
+
+
+
+```{r include=FALSE}
+# mod <- "feeling ~ detail
+#         feeling ~ 1 "
+# 
+# res <- sem(mod, data = dat, fixed)
+# 
+# 
+# parameterEstimates(res) 
+```
+
+```{r include=FALSE}
+summary(lm(opinion ~ detail, dat))
+```
+
+
+
+```{r include=FALSE}
+#causal chain to be emphasized
+
+summary(lm(opinion ~ detail + feeling , dat))
+
+## the effect of X is weaker once feeling (M_1) is included in the model. This 
+
+```
+```{r include=FALSE}
+reg <- lm(opinion ~ impact + detail + feeling , dat)
+
+
+
+```
 
 
 ## Running Mediation
 
-```{r include=FALSE}
-library(mediation)
-
-data("framing", package = "mediation")
-
-med.fit <- lm(emo ~ treat + age + educ + gender + income, data = framing)
-
-out.fit <- glm(cong_mesg ~ emo + treat + age + educ + gender + income, data = framing, family = binomial("probit"))
 
 
-med.out <- mediate(med.fit, out.fit, treat = "treat", mediator = "emo", robustSE = TRUE, sims = 100)
 
-summary(med.out)
-```
-```{r include=FALSE}
-data(CEDdata)
-
-res <- mediate.ced("Y2", "M1", "M2", "T1", "Z", CEDdata, sims = 100)
-summary(res)
-```
 
 ## Prova 
 
