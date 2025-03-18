@@ -151,6 +151,15 @@ $selection-bg: lighten($theme-color, 15%);
 }
 
 
+// figure captions for tikz figures mostly
+
+figcaption {
+  margin: auto;
+  text-align: center;
+  margin-top: -18px;
+  font-size: .5em !important;
+}
+
 
 // hide title-slide number 
 

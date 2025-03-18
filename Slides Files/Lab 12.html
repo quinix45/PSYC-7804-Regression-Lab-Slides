@@ -114,7 +114,7 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="Lab 12_files/libs/revealjs/dist/theme/quarto-02c83eab1497f87ec676bc2efb3d66c9.css">
+  <link rel="stylesheet" href="Lab 12_files/libs/revealjs/dist/theme/quarto-af26e66dd6db93e8abe18002fa63acf7.css">
   <link href="Lab 12_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="Lab 12_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="Lab 12_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -243,10 +243,6 @@ Fabio Setti
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- https://stats.oarc.ucla.edu/other/mult-pkg/seminars/spss-process/ -->
-</section>
 <section id="todays-packages-and-data" class="slide level2">
 <h2>Today’s Packages and Data 🤗</h2>
 <div class="columns">
@@ -260,7 +256,7 @@ Fabio Setti
 </div>
 <div class="cell code-150">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">14</span>, </span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">16</span>, </span>
 <span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">base_family =</span> <span class="st">'serif'</span>))</span>
 <span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -271,7 +267,7 @@ Fabio Setti
 <div class="tab-content">
 <div id="tabset-1-1">
 <div style="font-size: 22px">
-The <code>lavaan</code> package <span class="citation" data-cites="Rosseel_etal_2024a">(<a href="#/references" role="doc-biblioref" onclick="">Rosseel et al., 2024</a>)</span> is the most popular package to run SEM models in R. We will use it to run mediation analysis, which the SEM framework accommodates.
+The <code>lavaan</code> package <span class="citation" data-cites="Rosseel_etal_2024a">(<a href="#/references" role="doc-biblioref" onclick="">Rosseel et al., 2024</a>)</span> is the most popular package to run SEM models in R. We will use it to run mediation analysis, which the SEM framework accommodates nicely.
 </div>
 </div>
 </div>
@@ -284,14 +280,11 @@ The <code>lavaan</code> package <span class="citation" data-cites="Rosseel_etal_
 <div class="cell code-125">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/mediation_dat.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<center style="padding-bottom: 11px;">
-</center>
-<div class="cell">
-<div class="cell-output-display">
-<div id="htmlwidget-13d3666eb27a26abb008" class="reactable html-widget" style="width:auto;height:300px;"></div>
-<script type="application/json" data-for="htmlwidget-13d3666eb27a26abb008">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"gender":[1,0,0,0,0,1,0,0,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,1,1,0,1,0,1,1,1,0,0,1,0,0,0,1,0,0,0,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,0,1,1,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,1,0,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,1,1,1,1,1,0,0,1,0,1,1,1,1,0,0,1,0,0,1,1,1,0,1,1,1,1,0,1,0,0,0,1,1,1,0,0,0,1,1,0,0,1,1,0,0,1,0],"detail":[34,34,39,37,39,42,31,50,39,34,34,39,47,36,35,44,28,42,34,34,42,37,41,44,47,44,44,44,47,44,47,47,47,47,44,42,50,41,42,47,42,50,45,50,39,42,47,39,47,44,50,55,44,45,44,42,47,36,47,44,42,50,47,43,48,47,42,52,50,39,42,47,52,57,42,47,46,50,44,50,36,39,47,52,50,50,47,55,50,55,50,43,63,57,50,55,47,50,60,57,44,57,52,42,63,61,60,52,52,57,47,57,55,52,47,47,55,63,57,60,57,52,47,47,47,52,50,52,55,55,63,55,63,65,52,47,60,54,63,60,60,52,57,63,53,55,57,52,63,63,55,63,57,68,50,57,65,60,63,47,52,65,63,60,68,68,60,55,63,68,55,73,57,50,68,68,65,65,57,76,63,65,65,68,73,66,68,65,65,68,71,68,68,73,76,63,63,73,71,73],"feeling":[35,33,39,37,31,36,36,31,41,37,44,33,31,44,35,44,46,46,46,49,39,44,47,44,37,38,49,44,41,50,44,39,40,46,41,39,33,59,41,47,31,42,55,40,44,54,46,54,42,49,41,41,44,57,52,49,41,57,62,33,54,40,52,57,49,46,57,49,52,53,54,57,41,52,57,54,52,52,44,46,49,54,52,44,49,46,54,39,59,45,52,54,44,50,62,59,52,52,46,41,52,52,55,41,49,59,54,54,59,55,62,54,54,54,59,57,61,52,59,62,60,59,65,61,59,59,59,59,65,57,59,49,49,59,62,59,54,63,43,54,52,57,57,57,61,62,62,65,57,59,59,62,65,62,62,62,54,62,65,62,67,65,60,59,59,59,65,62,65,59,59,61,65,67,65,65,67,65,62,52,63,59,65,59,67,67,60,67,62,54,65,62,59,60,63,65,63,67,65,62],"impact":[29,36,26,33,39,31,39,34,42,39,39,47,36,42,51,34,44,36,39,42,42,39,39,40,42,39,35,39,40,39,42,42,45,33,50,56,44,34,50,42,47,36,34,49,44,42,47,47,39,39,44,44,47,31,44,50,42,50,34,58,47,55,48,50,44,48,50,44,39,50,50,44,53,47,47,50,44,50,50,58,61,53,50,55,47,53,53,53,53,58,58,55,53,51,55,42,53,55,53,55,63,61,54,72,66,44,50,53,55,50,53,47,42,55,58,58,49,50,50,50,53,53,50,63,53,61,61,61,50,58,55,61,66,46,47,66,55,55,65,58,61,58,58,58,57,58,58,56,58,55,58,55,63,50,63,55,58,50,63,69,63,63,54,61,55,63,61,63,53,63,69,55,54,66,55,59,55,58,61,64,61,63,61,74,58,61,69,66,66,66,58,69,66,61,67,69,72,63,66,69],"opinion":[26,36,42,32,51,39,46,31,41,31,41,41,36,41,33,46,51,46,36,56,41,46,51,31,46,46,51,51,41,51,36,26,31,41,26,46,36,51,41,51,51,61,41,47,48,41,61,36,51,51,56,41,51,56,51,56,56,41,46,31,46,56,61,51,51,46,43,61,56,41,52,41,56,57,61,56,56,56,46,61,36,41,56,41,46,66,61,46,61,51,36,46,56,58,31,56,61,56,61,52,61,56,61,31,41,66,51,51,61,51,61,51,56,51,46,46,61,51,56,51,37,66,56,31,46,61,61,51,61,61,71,56,46,66,46,61,66,46,44,61,61,56,56,51,56,61,66,51,41,56,51,61,61,51,51,41,56,56,56,66,61,66,66,51,71,61,66,66,61,66,46,66,56,56,61,56,71,71,61,61,61,51,66,66,66,66,66,71,66,66,71,61,56,71,66,71,66,66,56,66]},"columns":[{"id":"gender","name":"gender","type":"numeric"},{"id":"detail","name":"detail","type":"numeric"},{"id":"feeling","name":"feeling","type":"numeric"},{"id":"impact","name":"impact","type":"numeric"},{"id":"opinion","name":"opinion","type":"numeric"}],"pagination":false,"highlight":true,"style":{"fontFamily":"Work Sans, sans-serif","fontSize":"1.105rem"},"height":"300px","dataKey":"8f0a9f0bfff27e575a233d0432f23b6b"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p>We will look at the data in detail later, but for now run the line of code below. You should see a function called <code>lav_summary()</code> appear in your environment</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Additional%20files/lavaan_summary_lab12.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
+<p><code>lavaan</code> gives a bit too much information when we run <code>summary()</code> (try ans see!), so I made a <a href="https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/blob/main/Slides%20Files/Additional%20files/lavaan_summary_lab12.R" target="_blank">function</a> that selects the information that we need if we are just running mediation.</p>
 </div></div>
 </section>
 <section id="why-lavaan-for-mediation" class="slide level2">
@@ -299,62 +292,76 @@ The <code>lavaan</code> package <span class="citation" data-cites="Rosseel_etal_
 <p>Before we begin, I would be remiss not to mention other packages for running mediation:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <ul style="font-size: 22px">
 <li>
-The <code>PROCESS</code> macro: <a href="https://www.processmacro.org/index.html" target="_blank">PROCESS</a> is a macro for SPSS, SAS, and R that runs mediation and moderation analysis. There is no package for it, so you need to run all the functions before using it. Aside from that, I find it to be less flexible than <code>lavaan</code> for specifying different models, as well as the online help and documentation being almost non-existent.
+The <code>PROCESS</code> macro: <a href="https://www.processmacro.org/index.html" target="_blank">PROCESS</a> is a macro for SPSS, SAS, and R that runs mediation and moderation analysis. There is no package for it, so you need to run all the functions before using it. Aside from that, I find it to be less flexible than <code>lavaan</code> for specifying different models, as well as the online help and documentation for the R version being very limited.
 </li>
 </ul>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <ul style="font-size: 22px">
 <li>
-The <code>mediation</code> package <span class="citation" data-cites="Tingley_etal_2019">(<a href="#/references" role="doc-biblioref" onclick="">Tingley et al., 2019</a>)</span>: This package implements the <em>causal mediation framework</em> described in <span class="citation" data-cites="Imai_etal_2010a">Imai et al. (<a href="#/references" role="doc-biblioref" onclick="">2010</a>)</span>. It is a very flexible package, and it accommodated both multilevel mediation and non-linear mediation. <span class="citation" data-cites="Tingley_etal_2014">Tingley et al. (<a href="#/references" role="doc-biblioref" onclick="">2014</a>)</span> describe many of the <code>mediation</code> package functionalities in detail. The one “problem” is that it is not very easy to specify multiple mediators and moderators.
+The <code>mediation</code> package <span class="citation" data-cites="Tingley_etal_2019">(<a href="#/references" role="doc-biblioref" onclick="">Tingley et al., 2019</a>)</span>: This package implements the <em>causal mediation framework</em> described in <span class="citation" data-cites="Imai_etal_2010a">Imai et al. (<a href="#/references" role="doc-biblioref" onclick="">2010</a>)</span>. It is a very flexible package, and it accommodates both multilevel mediation and non-linear mediation. <span class="citation" data-cites="Tingley_etal_2014">Tingley et al. (<a href="#/references" role="doc-biblioref" onclick="">2014</a>)</span> describe many of the <code>mediation</code> package functionalities in detail. The one “problem” is that it is not very easy to specify multiple mediators and moderators. It is also more geared towards experimental designs.
 </li>
 </ul>
+</div>
 </div></div>
 <p><br></p>
-<p><code>lavaan</code> is a package for <a href="https://en.wikipedia.org/wiki/Structural_equation_modeling" target="_blank">structural equation modeling</a> (SEM). SEM is a general framework that aims to explain how the observe correlation matrix among a set of variable arises by essentially running many regressions.</p>
+<div class="fragment" data-fragment-index="3">
+<p><code>lavaan</code> is a package for <a href="https://en.wikipedia.org/wiki/Structural_equation_modeling" target="_blank">structural equation modeling</a> (SEM). SEM is a general framework that aims to explain how the observed correlation matrix among a set of variable arises by essentially running many regressions.</p>
+</div>
+<div class="fragment" data-fragment-index="4">
 <p>As we will see, mediation is nothing but two or more regression models. You certainly <em>do not need</em> SEM turn run mediation; however, <code>lavaan</code> makes it quite straightforward.</p>
+</div>
 </section>
 <section id="more-on-todays-data" class="slide level2">
 <h2>More on today’s data</h2>
-<p>Today’s data is adapted from the examples shown <a href="https://stats.oarc.ucla.edu/other/mult-pkg/seminars/spss-process/" target="_blank">here</a>. The data comes from a fiction study were participants</p>
+<p>Today’s data is adapted from the examples shown <a href="https://stats.oarc.ucla.edu/other/mult-pkg/seminars/spss-process/" target="_blank">here</a>. Let’s say that in our fictional study, participants were told about a crime committed by someone, and were given varying degrees of detail (<code>detail</code>) regarding the crime. The outcome, <code>opinion</code>, is how many months the participants believe the criminal should spend in prison.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <ul style="font-size: 22px">
 <li>
 <code>gender</code>: Binary variable indicating participant’s gender (0 = male, 1 = female).
 </li>
 <li>
-<code>detail</code>: How much information participants were given regarding the event. (<span class="math inline">\(X\)</span>)
+<code>detail</code>: How much information participants were given regarding the crime. (<span class="math inline">\(X\)</span>)
 </li>
 <li>
-<code>feeling</code>: beliefs about the topic after hearing details. (<span class="math inline">\(M_1\)</span>)
+<code>feeling</code>: how severe participants felt the crime was <em>after</em> hearing the details. (<span class="math inline">\(M_1\)</span>)
 </li>
 <li>
-<code>impact</code>: How impactful participants believed the details were.(<span class="math inline">\(M_2\)</span>)
+<code>impact</code>: How negative the participants believed the details were.(<span class="math inline">\(M_2\)</span>)
 </li>
 <li>
-<code>opinion</code>: How strongly participants opposed a law cutting. (<span class="math inline">\(Y\)</span>)
+<code>opinion</code>: How many months in prison the participants would give the criminal (measured last). (<span class="math inline">\(Y\)</span>)
 </li>
 </ul>
+</div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<div id="htmlwidget-9a458245e1495c7a59b4" class="reactable html-widget" style="width:auto;height:300px;"></div>
-<script type="application/json" data-for="htmlwidget-9a458245e1495c7a59b4">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"gender":[1,0,0,0,0,1,0,0,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,1,1,0,1,0,1,1,1,0,0,1,0,0,0,1,0,0,0,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,0,1,1,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,1,0,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,1,1,1,1,1,0,0,1,0,1,1,1,1,0,0,1,0,0,1,1,1,0,1,1,1,1,0,1,0,0,0,1,1,1,0,0,0,1,1,0,0,1,1,0,0,1,0],"detail":[34,34,39,37,39,42,31,50,39,34,34,39,47,36,35,44,28,42,34,34,42,37,41,44,47,44,44,44,47,44,47,47,47,47,44,42,50,41,42,47,42,50,45,50,39,42,47,39,47,44,50,55,44,45,44,42,47,36,47,44,42,50,47,43,48,47,42,52,50,39,42,47,52,57,42,47,46,50,44,50,36,39,47,52,50,50,47,55,50,55,50,43,63,57,50,55,47,50,60,57,44,57,52,42,63,61,60,52,52,57,47,57,55,52,47,47,55,63,57,60,57,52,47,47,47,52,50,52,55,55,63,55,63,65,52,47,60,54,63,60,60,52,57,63,53,55,57,52,63,63,55,63,57,68,50,57,65,60,63,47,52,65,63,60,68,68,60,55,63,68,55,73,57,50,68,68,65,65,57,76,63,65,65,68,73,66,68,65,65,68,71,68,68,73,76,63,63,73,71,73],"feeling":[35,33,39,37,31,36,36,31,41,37,44,33,31,44,35,44,46,46,46,49,39,44,47,44,37,38,49,44,41,50,44,39,40,46,41,39,33,59,41,47,31,42,55,40,44,54,46,54,42,49,41,41,44,57,52,49,41,57,62,33,54,40,52,57,49,46,57,49,52,53,54,57,41,52,57,54,52,52,44,46,49,54,52,44,49,46,54,39,59,45,52,54,44,50,62,59,52,52,46,41,52,52,55,41,49,59,54,54,59,55,62,54,54,54,59,57,61,52,59,62,60,59,65,61,59,59,59,59,65,57,59,49,49,59,62,59,54,63,43,54,52,57,57,57,61,62,62,65,57,59,59,62,65,62,62,62,54,62,65,62,67,65,60,59,59,59,65,62,65,59,59,61,65,67,65,65,67,65,62,52,63,59,65,59,67,67,60,67,62,54,65,62,59,60,63,65,63,67,65,62],"impact":[29,36,26,33,39,31,39,34,42,39,39,47,36,42,51,34,44,36,39,42,42,39,39,40,42,39,35,39,40,39,42,42,45,33,50,56,44,34,50,42,47,36,34,49,44,42,47,47,39,39,44,44,47,31,44,50,42,50,34,58,47,55,48,50,44,48,50,44,39,50,50,44,53,47,47,50,44,50,50,58,61,53,50,55,47,53,53,53,53,58,58,55,53,51,55,42,53,55,53,55,63,61,54,72,66,44,50,53,55,50,53,47,42,55,58,58,49,50,50,50,53,53,50,63,53,61,61,61,50,58,55,61,66,46,47,66,55,55,65,58,61,58,58,58,57,58,58,56,58,55,58,55,63,50,63,55,58,50,63,69,63,63,54,61,55,63,61,63,53,63,69,55,54,66,55,59,55,58,61,64,61,63,61,74,58,61,69,66,66,66,58,69,66,61,67,69,72,63,66,69],"opinion":[26,36,42,32,51,39,46,31,41,31,41,41,36,41,33,46,51,46,36,56,41,46,51,31,46,46,51,51,41,51,36,26,31,41,26,46,36,51,41,51,51,61,41,47,48,41,61,36,51,51,56,41,51,56,51,56,56,41,46,31,46,56,61,51,51,46,43,61,56,41,52,41,56,57,61,56,56,56,46,61,36,41,56,41,46,66,61,46,61,51,36,46,56,58,31,56,61,56,61,52,61,56,61,31,41,66,51,51,61,51,61,51,56,51,46,46,61,51,56,51,37,66,56,31,46,61,61,51,61,61,71,56,46,66,46,61,66,46,44,61,61,56,56,51,56,61,66,51,41,56,51,61,61,51,51,41,56,56,56,66,61,66,66,51,71,61,66,66,61,66,46,66,56,56,61,56,71,71,61,61,61,51,66,66,66,66,66,71,66,66,71,61,56,71,66,71,66,66,56,66]},"columns":[{"id":"gender","name":"gender","type":"numeric"},{"id":"detail","name":"detail","type":"numeric"},{"id":"feeling","name":"feeling","type":"numeric"},{"id":"impact","name":"impact","type":"numeric"},{"id":"opinion","name":"opinion","type":"numeric"}],"pagination":false,"highlight":true,"style":{"fontFamily":"Work Sans, sans-serif","fontSize":"1.105rem"},"height":"300px","dataKey":"8f0a9f0bfff27e575a233d0432f23b6b"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bf7d92de17164bb54009" class="reactable html-widget" style="width:auto;height:300px;"></div>
+<script type="application/json" data-for="htmlwidget-bf7d92de17164bb54009">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"gender":[1,0,0,0,0,1,0,0,1,0,1,0,0,1,1,0,1,1,0,0,1,0,1,1,1,0,1,0,1,1,1,0,0,1,0,0,0,1,0,0,0,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,0,1,1,1,0,1,0,1,0,1,1,0,0,1,1,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,0,1,0,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,1,1,1,1,1,0,0,1,0,1,1,1,1,0,0,1,0,0,1,1,1,0,1,1,1,1,0,1,0,0,0,1,1,1,0,0,0,1,1,0,0,1,1,0,0,1,0],"detail":[34,34,39,37,39,42,31,50,39,34,34,39,47,36,35,44,28,42,34,34,42,37,41,44,47,44,44,44,47,44,47,47,47,47,44,42,50,41,42,47,42,50,45,50,39,42,47,39,47,44,50,55,44,45,44,42,47,36,47,44,42,50,47,43,48,47,42,52,50,39,42,47,52,57,42,47,46,50,44,50,36,39,47,52,50,50,47,55,50,55,50,43,63,57,50,55,47,50,60,57,44,57,52,42,63,61,60,52,52,57,47,57,55,52,47,47,55,63,57,60,57,52,47,47,47,52,50,52,55,55,63,55,63,65,52,47,60,54,63,60,60,52,57,63,53,55,57,52,63,63,55,63,57,68,50,57,65,60,63,47,52,65,63,60,68,68,60,55,63,68,55,73,57,50,68,68,65,65,57,76,63,65,65,68,73,66,68,65,65,68,71,68,68,73,76,63,63,73,71,73],"feeling":[35,33,39,37,31,36,36,31,41,37,44,33,31,44,35,44,46,46,46,49,39,44,47,44,37,38,49,44,41,50,44,39,40,46,41,39,33,59,41,47,31,42,55,40,44,54,46,54,42,49,41,41,44,57,52,49,41,57,62,33,54,40,52,57,49,46,57,49,52,53,54,57,41,52,57,54,52,52,44,46,49,54,52,44,49,46,54,39,59,45,52,54,44,50,62,59,52,52,46,41,52,52,55,41,49,59,54,54,59,55,62,54,54,54,59,57,61,52,59,62,60,59,65,61,59,59,59,59,65,57,59,49,49,59,62,59,54,63,43,54,52,57,57,57,61,62,62,65,57,59,59,62,65,62,62,62,54,62,65,62,67,65,60,59,59,59,65,62,65,59,59,61,65,67,65,65,67,65,62,52,63,59,65,59,67,67,60,67,62,54,65,62,59,60,63,65,63,67,65,62],"impact":[29,36,26,33,39,31,39,34,42,39,39,47,36,42,51,34,44,36,39,42,42,39,39,40,42,39,35,39,40,39,42,42,45,33,50,56,44,34,50,42,47,36,34,49,44,42,47,47,39,39,44,44,47,31,44,50,42,50,34,58,47,55,48,50,44,48,50,44,39,50,50,44,53,47,47,50,44,50,50,58,61,53,50,55,47,53,53,53,53,58,58,55,53,51,55,42,53,55,53,55,63,61,54,72,66,44,50,53,55,50,53,47,42,55,58,58,49,50,50,50,53,53,50,63,53,61,61,61,50,58,55,61,66,46,47,66,55,55,65,58,61,58,58,58,57,58,58,56,58,55,58,55,63,50,63,55,58,50,63,69,63,63,54,61,55,63,61,63,53,63,69,55,54,66,55,59,55,58,61,64,61,63,61,74,58,61,69,66,66,66,58,69,66,61,67,69,72,63,66,69],"opinion":[26,36,42,32,51,39,46,31,41,31,41,41,36,41,33,46,51,46,36,56,41,46,51,31,46,46,51,51,41,51,36,26,31,41,26,46,36,51,41,51,51,61,41,47,48,41,61,36,51,51,56,41,51,56,51,56,56,41,46,31,46,56,61,51,51,46,43,61,56,41,52,41,56,57,61,56,56,56,46,61,36,41,56,41,46,66,61,46,61,51,36,46,56,58,31,56,61,56,61,52,61,56,61,31,41,66,51,51,61,51,61,51,56,51,46,46,61,51,56,51,37,66,56,31,46,61,61,51,61,61,71,56,46,66,46,61,66,46,44,61,61,56,56,51,56,61,66,51,41,56,51,61,61,51,51,41,56,56,56,66,61,66,66,51,71,61,66,66,61,66,46,66,56,56,61,56,71,71,61,61,61,51,66,66,66,66,66,71,66,66,71,61,56,71,66,71,66,66,56,66]},"columns":[{"id":"gender","name":"gender","type":"numeric"},{"id":"detail","name":"detail","type":"numeric"},{"id":"feeling","name":"feeling","type":"numeric"},{"id":"impact","name":"impact","type":"numeric"},{"id":"opinion","name":"opinion","type":"numeric"}],"pagination":false,"highlight":true,"style":{"fontFamily":"Work Sans, sans-serif","fontSize":"1.105rem"},"height":"300px","dataKey":"8f0a9f0bfff27e575a233d0432f23b6b"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div></div>
 </section>
 <section id="running-a-regresison-in-lavaan" class="slide level2">
 <h2>Running a regresison in <code>lavaan</code></h2>
-<p>Because of its flexibility, <code>lavaan</code>’s model require a specific syntax.</p>
+<p>Because of its flexibility, <code>lavaan</code>’s models require a specific syntax.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<center>
+<code>lm()</code>
+</center>
+<div class="fragment" data-fragment-index="1">
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(opinion <span class="sc">~</span> detail, dat)</span>
-<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">S</span>(reg_lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(opinion <span class="sc">~</span> detail, dat)</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">S</span>(reg_lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call: lm(formula = opinion ~ detail, data = dat)
 
@@ -372,30 +379,749 @@ F-statistic: 124.6 on 1 and 198 DF,  p-value: &lt; 2.2e-16
 1424.38 1434.27 </code></pre>
 </div>
 </div>
+</div>
 </div><div class="column" style="width:50%;">
-
+<center>
+<code>lavaan</code>
+</center>
+<div class="fragment" data-fragment-index="2">
+<p>First, we need to specify the model as a <code>character</code>. The syntax is similar to <code>lm()</code>:</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>mod_lv <span class="ot">&lt;-</span><span class="st">"opinion ~ detail"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="3">
+<p>Then, we run the model with the <code>sem()</code> function. the second argument is going to be our data:</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_lv <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod_lv, dat)</span>
+<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">lav_summary</span>(reg_lv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      lhs op    rhs   est ci.lower ci.upper
+1 opinion  ~ detail 0.651    0.537    0.764</code></pre>
+</div>
+</div>
+<div style="font-size: 24px">
+The slope, <span class="math inline">\(0.65\)</span> is the exact same in both cases.
+</div>
+</div>
 </div></div>
 </section>
-<section id="running-mediation" class="slide level2">
-<h2>Running Mediation</h2>
+<section id="path-diagrams" class="slide level2">
+<h2>Path Diagrams</h2>
+<div style="font-size: 22px">
+Path diagrams are useful for describing mediation models, as well as hypotheses in general when many variables are involved. Here are some examples:
+</div>
+<div class="columns">
+<div class="column" style="width:35%;">
+<div class="fragment" data-fragment-index="1">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-9-1.svg" width="384"></p>
+<figcaption>1. Y ~ X</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-10-1.svg" width="384"></p>
+<figcaption>2. Y ~ X1 + X2</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="3">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-11-1.svg" width="384"></p>
+<figcaption>3. Y1 ~ X1 + X2 and Y2 ~ X1 + X2 + Z + X2*Z</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:65%;">
+<ol style="font-size: 22px">
+<div class="fragment" data-fragment-index="1">
+<li>
+This path diagram represents a regression of <span class="math inline">\(X\)</span> predicting <span class="math inline">\(Y\)</span>. the arrow-head arriving at the <span class="math inline">\(Y\)</span> box means that <span class="math inline">\(Y\)</span> is the dependent variable. The arrow represents the <em>slope</em> between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, hence representing their relationship.
+</li>
+</div>
+<p><br></p>
+<div class="fragment" data-fragment-index="2">
+<li>
+This path diagram represents a multiple regression of <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> predicting <span class="math inline">\(Y\)</span>. Two arrowheads arrive at <span class="math inline">\(Y\)</span>, so that implies that there are two predictors.
+</li>
+</div>
+<p><br> <br> <br></p>
+<div class="fragment" data-fragment-index="3">
+<li>
+Now we have added another dependent variable. Our path diagram now implies tow separate regression models. <span class="math inline">\(Z\)</span> is a moderator, and it moderates the relation between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(Y_2\)</span>. Thus the equation predicting <span class="math inline">\(Y_2\)</span> will be <span class="math inline">\(Y_2 \sim  X_1 + X_2 + Z + X_2 \times Z\)</span>.
+</li>
+</div>
+</ol>
+<div class="fragment" data-fragment-index="4">
+<p><strong><em>Remember that every arrow in the diagram corresponds to a slope</em></strong></p>
+</div>
+</div></div>
 </section>
-<section id="prova" class="slide level2">
-<h2>Prova</h2>
+<section id="mediation" class="slide level2">
+<h2>Mediation</h2>
+<div style="font-size: 26px; padding-bottom: 12px;">
+If we hypothesize that a <em>casual sequence</em> exists among our variables, we test this hypothesis with <strong>mediation</strong> analysis.
+</div>
+<div class="columns">
+<div class="column" style="width:65%;">
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 22px">
+The first diagram to the right describes a regression of <span class="math inline">\(Y\)</span> predicting <span class="math inline">\(X\)</span>. It is helpful to name the paths when talking about mediation, so <span class="math inline">\(c\)</span> represents the slope between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.
+</div>
+</div>
+<p><br></p>
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 22px">
+If we further hypothesize that an intermediate variable, <span class="math inline">\(M\)</span>, exists such that <span class="math inline">\(X\)</span> causes <span class="math inline">\(M\)</span>, and <span class="math inline">\(M\)</span> causes <span class="math inline">\(Y\)</span>, we get the second diagram on the right.
+</div>
+</div>
+</div><div class="column" style="width:35%;">
+<div class="fragment" data-fragment-index="1">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-12-1.svg" width="384"></p>
+<figcaption>Hypothesizing that X predicts Y</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-13-1.svg" width="480"></p>
+<figcaption>Hypothesizing that M mediates the relation between X and Y</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="3">
+<p>Importantly, you should see that arrowheads reach two boxes in the mediation diagram. This means that the mediation diagram implies 2 separate regression models:</p>
+</div>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="fragment" data-fragment-index="4">
+<ul>
+<li><p><code>M ~ X</code></p></li>
+<li><p><code>Y ~ X + M</code></p></li>
+</ul>
+</div>
+</div><div class="column" style="width:70%;">
+<div class="fragment" data-fragment-index="4">
+<p>This means that <span class="math inline">\(X\)</span> can influence <span class="math inline">\(Y\)</span> <strong><em>directly</em></strong> through the <span class="math inline">\(c'\)</span> path, but also <strong><em>indirectly</em></strong> by influencing <span class="math inline">\(M\)</span> through the <span class="math inline">\(a\)</span> path, and subsequently getting to <span class="math inline">\(X\)</span> through the <span class="math inline">\(b\)</span> path.</p>
+</div>
+</div></div>
+</section>
+<section id="direct-and-indirect-effects" class="slide level2">
+<h2>Direct and Indirect Effects</h2>
+<p>In mediation we can decompose the slope between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> into direct and indirect effect:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><br></p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-11-1.svg" width="480"></p>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-14-1.svg" width="384"></p>
 </figure>
 </div>
 </div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-15-1.svg" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+<center>
+<span class="math inline">\(c = c'+ a\times b\)</span>
+</center>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="1">
+<p><strong>Total effect:</strong> <span class="math inline">\(c\)</span></p>
+<p>the <span class="math inline">\(c\)</span> path is the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> when <span class="math inline">\(M\)</span> <em>is not</em> accounted for.</p>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="2">
+<p><strong>Direct effect:</strong> <span class="math inline">\(c'\)</span></p>
+<p>the <span class="math inline">\(c'\)</span> (reads “c prime”) path is the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> when <span class="math inline">\(M\)</span> is accounted for.</p>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="3">
+<p><strong>Indirect effect:</strong> <span class="math inline">\(a \times b\)</span></p>
+<p><span class="math inline">\(a \times b\)</span> represents the <em>change</em> in the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> when <span class="math inline">\(M\)</span> is accounted for. That is, how much <span class="math inline">\(Y\)</span> is influenced by <span class="math inline">\(X\)</span> indirectly through <span class="math inline">\(M\)</span>. (<span class="math inline">\(a \times b = c - c'\)</span>)</p>
+</div>
+</div></div>
+</section>
+<section id="why-c-c-atimes-b" class="slide level2">
+<h2>Why <span class="math inline">\(c = c'+ a\times b\)</span>?</h2>
+<p>As always, this stuff does not come out of nowhere, and it’s actually quite quick to show why we say that <span class="math inline">\(c = c'+ a\times b\)</span>. We start with the 3 equations implied by the path diagrams:</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><span class="math inline">\(Y = c \times X\)</span></p>
+</div><div class="column" style="width:33%;">
+<p><span class="math inline">\(M = a \times X\)</span></p>
+</div><div class="column" style="width:33%;">
+<p><span class="math inline">\(Y = c'\times X + b \times M\)</span></p>
+</div></div>
+<div class="fragment" data-fragment-index="1">
+<center style="padding-top: 20px;">
+From the 3<sup>rd</sup> equation, substitute <span class="math inline">\(Y\)</span> on the left side and <span class="math inline">\(M\)</span> on the right side:
+</center>
+<center style="padding-top: 12px;">
+<span class="math inline">\(c \times X = c'\times X + b \times (a \times X)\)</span> → <span class="math inline">\(c \times X = c'\times X + b \times a \times X\)</span>
+</center>
+</div>
+<div class="fragment" data-fragment-index="2">
+<center style="padding-top: 20px;">
+Since <span class="math inline">\(X\)</span> now multiplies every term, we can divide everything by <span class="math inline">\(X\)</span>:
+</center>
+<center style="padding-top: 12px;">
+<span class="math inline">\(c = c' + b \times a\)</span> ✅
+</center>
+</div>
+<p><br></p>
+<div class="fragment" data-fragment-index="3">
+<div style="font-size: 22px;">
+I will also point out that direct and indirect effects are mathematical concepts based on full and partial derivatives 🧐 You can find an example in <a href="https://math.stackexchange.com/questions/1996096/do-partial-derivatives-consider-also-indirect-effects-function-of-a-function" target="_blank">Figure 8.4</a> of <span class="citation" data-cites="Chiang_1984">Chiang (<a href="#/references" role="doc-biblioref" onclick="">1984</a>)</span>, a popular math for economics introductory book. Although discussed in <span class="citation" data-cites="Hayes_Preacher_2010">Hayes &amp; Preacher (<a href="#/references" role="doc-biblioref" onclick="">2010</a>)</span>, it is my sense that this is actually not very well-known in Psychology, and that we focus so much on the “practical” interpretation of mediation that at some point we start misrepresenting and overemphasizing what mediation actually does 🤷
+</div>
+</div>
+</section>
+<section id="mediation-by-hand" class="slide level2">
+<h2>Mediation “By hand”</h2>
+<div style="font-size: 24px; padding-bottom: 12px;">
+We can check that the math works out by running separate regressions. Let’s say that we think that <code>feeling</code> (<span class="math inline">\(M_1\)</span>) mediates the relation between <code>detail</code> (<span class="math inline">\(X\)</span>) and <code>opinion</code> (<span class="math inline">\(Y\)</span>).
+</div>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="1">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Y ~ X (c path)</span></span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>reg_1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(opinion <span class="sc">~</span> detail, dat)</span>
+<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(reg_1)[<span class="sc">-</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   detail 
+0.6507527 </code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="2">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># M ~ X (a path)</span></span>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>reg_2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling <span class="sc">~</span> detail, dat)</span>
+<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(reg_2)[<span class="sc">-</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   detail 
+0.5517051 </code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="3">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Y ~ X + M (c' and b path)</span></span>
+<span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a>reg_3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(opinion <span class="sc">~</span> detail <span class="sc">+</span> feeling, dat)</span>
+<span id="cb14-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(reg_3)[<span class="sc">-</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   detail   feeling 
+0.4237407 0.4114736 </code></pre>
+</div>
+</div>
+</div>
+</div></div>
+<p><br></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="5">
+<p>We can confirm that <span class="math inline">\(c = c' + b \times a\)</span>:</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a>.<span class="dv">4237</span> <span class="sc">+</span> .<span class="dv">41147</span><span class="sc">*</span>.<span class="dv">5517</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.650708</code></pre>
+</div>
+</div>
+<p>Which is the regression coefficient for <code>Y ~ X</code>.</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="4">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-20-1.svg" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="mediation-in-lavaan" class="slide level2">
+<h2>Mediation in <code>lavaan</code></h2>
+<div style="font-size: 24px; padding-bottom: 12px;">
+Using <code>lavaan</code> is more practical because it allows to specify more complex models in one go and also lets us generate confidence intervals through bootstrapping.
+</div>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a>mod_med <span class="ot">&lt;-</span> <span class="st">"opinion ~ c*detail + b*feeling</span></span>
+<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">            feeling ~ a*detail</span></span>
+<span id="cb18-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">            indirect := a*b </span></span>
+<span id="cb18-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">            total := c + a*b"</span></span>
+<span id="cb18-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># may take 5 to 15 seconds to run (ignore warnings about convergence of bootstraps for regression models, the developer said so)</span></span>
+<span id="cb18-7"><a href="" aria-hidden="true" tabindex="-1"></a>lav_med <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod_med, dat, </span>
+<span id="cb18-8"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="st">"boot"</span>, <span class="at">bootstrap =</span> <span class="dv">2000</span>,</span>
+<span id="cb18-9"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">parallel =</span><span class="st">"snow"</span>, <span class="at">ncpus =</span> <span class="dv">4</span>)</span>
+<span id="cb18-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">lav_summary</span>(lav_med)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell code-125">
+<div class="cell-output cell-output-stdout">
+<pre><code>       lhs op     rhs    label   est ci.lower ci.upper
+1  opinion  ~  detail        c 0.424    0.299    0.558
+2  opinion  ~ feeling        b 0.411    0.243    0.567
+3  feeling  ~  detail        a 0.552    0.466    0.638
+4 indirect :=     a*b indirect 0.227    0.130    0.325
+5    total :=   c+a*b    total 0.651    0.548    0.757</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:55%;">
+<div style="font-size: 22px">
+Some notes about the code:
+</div>
+<ul style="font-size: 22px">
+<div class="fragment" data-fragment-index="1">
+<li>
+We need to define the labels of the paths by using <code>*</code>.
+</li>
+</div>
+<div class="fragment" data-fragment-index="2">
+<li>
+After that, we can use the defined paths to calculate anything. We create new objects using estimated parameters by using <code>:=</code>. Here I calculate the indirect and total effect.
+</li>
+</div>
+<div class="fragment" data-fragment-index="3">
+<li>
+<code>se = "boot"</code> tells the function that we want bootstrapped confidence intervals.
+</li>
+</div>
+<div class="fragment" data-fragment-index="4">
+<li>
+<code>bootstrap = 2000</code> requests 2000 bootstrap draws, but you can get away with 1000 usually.
+</li>
+</div>
+<div class="fragment" data-fragment-index="5">
+<li>
+<code>parallel ="snow"</code> and <code>ncpus = 4</code> are for splitting the work among 4 CPU cores, making the bootstrap procedure 4 times faster <em>in theory</em>.
+</li>
+</div>
+<div class="fragment" data-fragment-index="6">
+<li>
+None of the confidence intervals contain 0, so all the paths are significant. The indirect effect is significant, so <code>feeling</code> mediates the relation between <code>detail</code> and <code>opinion</code>.
+</li>
+</div>
+</ul>
+</div></div>
+<div class="fragment" data-fragment-index="7">
+<div style="font-size: 20px">
+<strong>NOTE:</strong> You will not see any intercepts in the results in this lab. For what we are doing, they are not very important as we only care about relations, the <em>slopes</em>. <code>lavaan</code> omits intercepts by default in most models.
+</div>
+</div>
+</section>
+<section id="more-on-interpretation-and-causality" class="slide level2">
+<h2>More on Interpretation and Causality</h2>
+<div style="font-size: 24px; padding-bottom: 16px;">
+The interpretation of the indirect effect, <span class="math inline">\(.23\)</span>, is that when accounting for how severe participants thought the crime was (<code>feeling</code>) after hearing details about the crime (<code>detail</code>), the effect of <code>detail</code> on how many months participants thought the criminal should spend in prison <em>was reduced by</em> <span class="math inline">\(.23\)</span>.
+</div>
+<div class="fragment" data-fragment-index="1">
+<center>
+The indirect effect is the difference between <span class="math inline">\(c\)</span> and <span class="math inline">\(c'\)</span> (<span class="math inline">\(a \times b = c - c'\)</span>) after the mediator is controlled for.
+</center>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 24px; padding-bottom: 16px; padding-top: 16px;">
+Mathematically, that line above is all mediation does. However, mediation tends to be associated with <em>causality</em>, as it was originally developed to describe causal chains of events. Let’s say that in our experiment we <em>(1)</em> give details about the crime, then <em>(2)</em> ask participants how severe they think the crime is, and finally <em>(3)</em> we ask them how many months they think the criminal should spend in jail.
+</div>
+</div>
+<div class="fragment" data-fragment-index="3">
+<div style="font-size: 24px; padding-bottom: 16px;">
+Because we are running an experiment and all the measured variables happen in sequence, we should be able to claim that higher <code>detail</code> <em>causes</em> higher <code>feeling</code> which in turn <em>causes</em> higher <code>opinion</code> (all slopes were positive).
+</div>
+</div>
+<div class="fragment" data-fragment-index="4">
+<div style="font-size: 24px">
+However, mediation is often run on non-experimental data (e.g., survey at time 1 and time 2). In that case, claiming <em>true causality</em> more or less requires that you somehow control for <em>all possible confounders</em> (impossible!). There are more sophisticated statistical methods that get you closer to showing <em>causality</em>, but they all make some strong assumptions. So, if you run mediation on non-experimental data, I would steer clear of any <em>causality</em> claims, unless you really want to get into a nigh unwinnable argument with reviewer 2 on your paper 🙃
+</div>
+<p><span style="font-size: 16px"> (apologies for the wall of text 😶)</span></p>
+</div>
+</section>
+<section id="effect-sizes" class="slide level2">
+<h2>Effect Sizes</h2>
+<div style="font-size: 24px; padding-bottom: 12px;">
+Another advantage of using <code>lavaan</code> is that we can seamlessly calculate effect sizes for mediation and get confidence intervals for them! Some effect sizes are:
+</div>
+<div class="fragment" data-fragment-index="1">
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="font-size: 22px; padding-bottom: 12px;">
+<strong>Proportion of indirect to total effect:</strong> <span class="math inline">\(\frac{a\times b}{a\times b + c'} = \frac{a \times b}{c}\)</span>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="font-size: 22px; padding-bottom: 12px;">
+<strong>Proportion of indirect to direct effect:</strong> <span class="math inline">\(\frac{a\times b}{c'}\)</span>
+</div>
+</div></div>
+</div>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="fragment" data-fragment-index="2">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a>mod_med_eff <span class="ot">&lt;-</span> <span class="st">"opinion ~ c*detail + b*feeling</span></span>
+<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">                feeling ~ a*detail</span></span>
+<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">                indirect := a*b </span></span>
+<span id="cb20-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">                total := c + a*b</span></span>
+<span id="cb20-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">                ind_tot := indirect/total</span></span>
+<span id="cb20-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">                ind_dir := indirect/c"</span></span>
+<span id="cb20-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="" aria-hidden="true" tabindex="-1"></a>lav_med_eff <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod_med_eff, dat, <span class="at">se =</span> <span class="st">"boot"</span>, </span>
+<span id="cb20-9"><a href="" aria-hidden="true" tabindex="-1"></a>                   <span class="at">bootstrap =</span> <span class="dv">2000</span>, <span class="at">parallel =</span><span class="st">"snow"</span>, <span class="at">ncpus =</span> <span class="dv">4</span>)</span>
+<span id="cb20-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">lav_summary</span>(lav_med_eff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div><div class="column" style="width:55%;">
+<div class="fragment" data-fragment-index="3">
+<div class="cell code-125">
+<div class="cell-output cell-output-stdout">
+<pre><code>       lhs op            rhs    label   est ci.lower ci.upper
+1  opinion  ~         detail        c 0.424    0.293    0.549
+2  opinion  ~        feeling        b 0.411    0.258    0.567
+3  feeling  ~         detail        a 0.552    0.460    0.643
+4 indirect :=            a*b indirect 0.227    0.137    0.326
+5    total :=          c+a*b    total 0.651    0.548    0.755
+6  ind_tot := indirect/total  ind_tot 0.349    0.212    0.512
+7  ind_dir :=     indirect/c  ind_dir 0.536    0.269    1.047</code></pre>
+</div>
+</div>
+</div>
+<ul style="font-size: 22px">
+<div class="fragment" data-fragment-index="4">
+<li>
+<span class="math inline">\(\frac{a \times b}{c} = .35\)</span>, implies that <span class="math inline">\(35\%\)</span> of the effect of <code>detail</code> on <code>opinion</code> was mediated by <code>feeling</code>. This measure ranges from <span class="math inline">\(0\)</span> to <span class="math inline">\(1\)</span>.
+</li>
+</div>
+<div class="fragment" data-fragment-index="5">
+<li>
+<span class="math inline">\(\frac{a\times b}{c'} = .53\)</span>, implies that the direct effect is <span class="math inline">\(1 - .53 = 47\%\)</span> larger than the indirect effect. This measure ranges from <span class="math inline">\(0\)</span> to infinity.
+</li>
+</div>
+</ul>
+</div></div>
+<div class="fragment" data-fragment-index="6">
+<p>These measures have limitations in small sample sizes, so see <span class="citation" data-cites="Preacher_Kelley_2011">Preacher &amp; Kelley (<a href="#/references" role="doc-biblioref" onclick="">2011</a>)</span> for a detailed discussion.</p>
+</div>
+</section>
+<section id="multiple-mediators" class="slide level2">
+<h2>Multiple mediators</h2>
+<div style="font-size: 24px">
+Let’s assume that we also want to add <code>impact</code> (<span class="math inline">\(M_2\)</span>) as a mediator. That is, we believe that <code>detail</code> causes both <code>feeling</code> and <code>impact</code>, which in turn jointly cause <code>opinion</code>. The model implies 3 regressions. (I’ll start taking out the <span class="math inline">\(\times\)</span> for shorter equations)
+</div>
+<div class="fragment" data-fragment-index="1">
+<center>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-25-1.svg" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</center>
+</div>
+<div class="fragment" data-fragment-index="1">
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><span class="math display">\[M_1 = a_1X\]</span></p>
+</div><div class="column" style="width:33%;">
+<p><span class="math display">\[Y = c'X + b_1 M_1 + b_2 M_2\]</span></p>
+</div><div class="column" style="width:33%;">
+<p><span class="math display">\[M_2 = a_2X\]</span></p>
+</div></div>
+</div>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="fragment" data-fragment-index="2">
+<p>Thus, we have <em>2 indirect effects</em> of <code>detail</code> on <code>opinion</code>.</p>
+</div>
+</div><div class="column" style="width:30%;">
+<div class="fragment" data-fragment-index="2">
+<ul style="font-size: 22px">
+<li>
+Through <code>feeling</code>: <span class="math inline">\(a_1 \times b_1\)</span>
+</li>
+<li>
+Through <code>impact</code>: <span class="math inline">\(a_2 \times b_2\)</span>
+</li>
+</ul>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="fragment" data-fragment-index="3">
+<p>And the <strong>total indirect effect</strong> of <code>detail</code> on <code>opinion</code> is:</p>
+<p><span class="math display">\[a_1 \times b_1 + a_2 \times b_2\]</span></p>
+</div>
+</div></div>
+</section>
+<section id="multiple-mediators-in-lavaan" class="slide level2">
+<h2>Multiple mediators in <code>lavaan</code></h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div style="font-size: 24px">
+We can update our <code>lavaan</code> model to add <span class="math inline">\(M_2\)</span>:
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a>mod_med2 <span class="ot">&lt;-</span> <span class="st">"opinion ~ c*detail + b1*feeling + b2*impact</span></span>
+<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">            feeling ~ a1*detail</span></span>
+<span id="cb22-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">            impact ~ a2*detail</span></span>
+<span id="cb22-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">            indirect1 := a1*b1 </span></span>
+<span id="cb22-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">            indirect2 := a2*b2 </span></span>
+<span id="cb22-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">            total := c + a1*b1 + a2*b2"</span></span>
+<span id="cb22-7"><a href="" aria-hidden="true" tabindex="-1"></a>lav_med2 <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod_med2, dat, <span class="at">se =</span> <span class="st">"boot"</span>, <span class="at">bootstrap =</span> <span class="dv">2000</span>,</span>
+<span id="cb22-8"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">parallel =</span><span class="st">"snow"</span>, <span class="at">ncpus =</span> <span class="dv">4</span>)</span>
+<span id="cb22-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">lav_summary</span>(lav_med2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment" data-fragment-index="1">
+<div class="cell code-125">
+<div class="cell-output cell-output-stdout">
+<pre><code>        lhs op           rhs     label   est ci.lower ci.upper
+1   opinion  ~        detail         c 0.421    0.269    0.581
+2   opinion  ~       feeling        b1 0.410    0.243    0.571
+3   opinion  ~        impact        b2 0.006   -0.146    0.173
+4   feeling  ~        detail        a1 0.552    0.466    0.638
+5    impact  ~        detail        a2 0.609    0.514    0.706
+6 indirect1 :=         a1*b1 indirect1 0.226    0.128    0.328
+7 indirect2 :=         a2*b2 indirect2 0.003   -0.086    0.106
+8     total := c+a1*b1+a2*b2     total 0.651    0.548    0.757</code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:45%;">
+<div class="fragment" data-fragment-index="1">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-28-1.svg" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 23px; padding-bottom: 12px;">
+The 2<sup>nd</sup> indirect effect, <span class="math inline">\(a_2 \times b_2\)</span>, is not significant, implying that <code>impact</code> does not mediate the relation between <code>detail</code> and <code>opinion</code>.
+</div>
+</div>
+<div class="fragment" data-fragment-index="3">
+<div style="font-size: 23px; padding-bottom: 12px;">
+Notice that now that we have two mediators, <span class="math inline">\(c'\)</span> is the effect of <code>detail</code> on <code>opinion</code> after accounting for both <code>feeling</code> and <code>impact</code>.
+</div>
+</div>
+<div class="fragment" data-fragment-index="4">
+<div style="font-size: 23px">
+The <strong>total indirect effect</strong>, <span class="math inline">\(.23 + .01 = .24\)</span>, describes how much of the effect of <code>detail</code> on <code>opinion</code> is mediated overall. You can also calculate it with <em>total</em> <span class="math inline">\(- c'\)</span>.
+</div>
+</div>
+</div></div>
+</section>
+<section id="moderated-mediation" class="slide level2">
+<h2>Moderated Mediation</h2>
+<div style="font-size: 24px">
+We can add moderators to any of the paths in the model. Here we have our single mediator model, but we we hypothesize that the coefficients for the <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> paths should change depending on <code>gender</code>. This model implies 2 regressions.
+</div>
+<center>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Lab-12_files/figure-revealjs/unnamed-chunk-29-1.svg" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</center>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><span class="math display">\[M =  aX + z_1Z + a_zZX\]</span></p>
+</div><div class="column" style="width:60%;">
+<p><span class="math display">\[Y = c'X +  bM + z_2Z + b_zZM \]</span></p>
+</div></div>
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px">
+Now, because we have a binary moderator where 0 = <em>male</em> and 1 = <em>female</em>:
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 22px">
+<p><strong>Male equations:</strong> <span class="math inline">\(M = aX\)</span> and <span class="math inline">\(Y =  c'X + bM\)</span></p>
+<p>We substitute <span class="math inline">\(0\)</span> to any term with <span class="math inline">\(Z\)</span>, they just cancel out, and the indirect effect for <em>male</em> is simply <span class="math inline">\(a \times b\)</span>.</p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="font-size: 22px">
+<div class="fragment" data-fragment-index="2">
+<p><strong>Female equations:</strong> <span class="math inline">\(M = aX + z_1 +  a_zX\)</span> and <span class="math inline">\(Y = c'X + bM + z_2 + b_zM\)</span></p>
+<p>We substitute <span class="math inline">\(1\)</span> to any term with <span class="math inline">\(Z\)</span>, the interaction terms are added to the the <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> paths. So, the indirect effect for <em>female</em> is <span class="math inline">\((a + a_z) \times (b + b_z)\)</span>.</p>
+</div>
+</div>
+</div></div>
+</section>
+<section id="moderated-mediation-in-lavaan" class="slide level2">
+<h2>Moderated Mediation in <code>lavaan</code></h2>
+<div class="columns">
+<div class="column" style="width:66%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a>mod_medmd <span class="ot">&lt;-</span> <span class="st">"opinion ~ c*detail + b*feeling + z2*gender + bz*feeling:gender</span></span>
+<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">              feeling ~ a*detail + z1*gender + az*detail:gender</span></span>
+<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">              indirect_female := (a + az)*(b + bz)</span></span>
+<span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">              indirect_male := a*b"</span></span>
+<span id="cb24-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="" aria-hidden="true" tabindex="-1"></a>reg_medm <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod_medmd, dat, <span class="at">se =</span> <span class="st">"boot"</span>, <span class="at">bootstrap =</span> <span class="dv">2000</span>,</span>
+<span id="cb24-7"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">parallel =</span><span class="st">"snow"</span>, <span class="at">ncpus =</span> <span class="dv">4</span>)</span>
+<span id="cb24-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">lav_summary</span>(reg_medm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment" data-fragment-index="1">
+<div class="cell code-125">
+<div class="cell-output cell-output-stdout">
+<pre><code>              lhs op            rhs           label    est ci.lower ci.upper
+1         opinion  ~         detail               c  0.421    0.289    0.551
+2         opinion  ~        feeling               b  0.477    0.291    0.669
+3         opinion  ~         gender              z2  6.716   -5.640   20.394
+4         opinion  ~ feeling:gender              bz -0.136   -0.388    0.093
+5         feeling  ~         detail               a  0.636    0.513    0.775
+6         feeling  ~         gender              z1 12.491    3.125   22.215
+7         feeling  ~  detail:gender              az -0.134   -0.305    0.030
+8 indirect_female :=  (a+az)*(b+bz) indirect_female  0.172    0.055    0.294
+9   indirect_male :=            a*b   indirect_male  0.304    0.178    0.441</code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:34%;">
+<ul style="font-size: 24px">
+<li>
+To define interactions in <code>lavaan</code>, we use the <code>:</code> operator. Unlike <code>lm()</code>, you have to specify all the terms manually.
+</li>
+<div class="fragment" data-fragment-index="1">
+<li>
+The interaction terms are not significant according to the bootstrapped confidence intervals.
+</li>
+</div>
+<div class="fragment" data-fragment-index="2">
+<li>
+As shown previously, once we add interaction terms, groups will have different slopes. If any of those slopes are involved in the indirect effect, <strong>the indirect effect will change by group</strong>.
+</li>
+</div>
+</ul>
+</div></div>
+<div class="fragment" data-fragment-index="3">
+<div style="font-size: 23px">
+Although the confidence intervals do not show significance for the interaction terms (<span class="math inline">\(a_z\)</span> and <span class="math inline">\(b_z\)</span>), if you hypothesized this model a priori, there may have been an additional hypothesis you would be interested in testing involving the indirect effects for the two groups 🧐 Can you think what that may be?
+</div>
+</div>
+</section>
+<section id="concluding-remark-be-creative" class="slide level2">
+<h2>Concluding remark: Be Creative</h2>
+<div style="font-size: 24px; padding-bottom: 12px;">
+Path models may seem a bit complicated 😵 It is always important to not lose sight of the <em>why</em> we learn about these more complex statistical techniques. For me, it is so that I can really answer the questions I am interested in.
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px; padding-bottom: 12px;">
+Path models, as well as tools like <code>lavaan</code>, is where things start to get interesting in my opinion.
+</div>
+</div>
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 24px">
+For example, we could also ask about the moderated mediation model from before:
+</div>
+</div>
+<ul style="font-size: 22px">
+<div class="fragment" data-fragment-index="2">
+<li>
+Was there a meaningful difference between the indirect effect for males and females?
+</li>
+</div>
+<div class="fragment" data-fragment-index="3">
+<p>With <code>lavaan</code>, or Bayesian inference frameworks (e.g., <a href="https://mc-stan.org" target="_blank">stan</a>, <a href="https://www.pymc.io/welcome.html" target="_blank">pymc</a>), this question is straightforward to answer. Not so much for basic statistical methods.</p>
+</div>
+</ul>
+</div><div class="column" style="width:50%;">
+<center>
+<div class="fragment" data-fragment-index="1">
+<p><img data-src="Images/Path_model.png"></p>
+<div style="font-size: 16px">
+Example of an interesting path model I found <a href="https://www.researchgate.net/publication/360142777_Envisioning_Change_An_Empirical_Test_of_the_Social_Psychological_Model_of_Utopian_Thinking_and_Collective_Action" target="_blank">here</a>!
+</div>
+</div>
+</center>
+</div></div>
+<div class="fragment" data-fragment-index="4">
+<p>The value in mastering more advanced methods such as path analysis lies in the freedom that you gain as a researcher. You no longer have to fit your hypotheses and variables to some basic analysis such as a <span class="math inline">\(t\)</span>-test of ANOVA; <em>you</em> can create a unique model that tests <em>your</em> unique and creative hypotheses 😄</p>
 </div>
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Chiang_1984" class="csl-entry" role="listitem">
+Chiang, A. C. (1984). <em>Fundamental <span>Methods</span> of <span>Mathematical Economics</span></em> (3rd edition). McGraw-Hill College.
+</div>
+<div id="ref-Hayes_Preacher_2010" class="csl-entry" role="listitem">
+Hayes, A. F., &amp; Preacher, K. J. (2010). Quantifying and <span>Testing Indirect Effects</span> in <span>Simple Mediation Models When</span> the <span>Constituent Paths Are Nonlinear</span>. <em>Multivariate Behavioral Research</em>, <em>45</em>(4), 627–660. <a href="https://doi.org/10.1080/00273171.2010.498290">https://doi.org/10.1080/00273171.2010.498290</a>
+</div>
 <div id="ref-Imai_etal_2010a" class="csl-entry" role="listitem">
 Imai, K., Keele, L., &amp; Tingley, D. (2010). A general approach to causal mediation analysis. <em>Psychological Methods</em>, <em>15</em>(4), 309–334. <a href="https://doi.org/10.1037/a0020761">https://doi.org/10.1037/a0020761</a>
+</div>
+<div id="ref-Preacher_Kelley_2011" class="csl-entry" role="listitem">
+Preacher, K. J., &amp; Kelley, K. (2011). Effect size measures for mediation models: Quantitative strategies for communicating indirect effects. <em>Psychological Methods</em>, <em>16</em>(2), 93–115. <a href="https://doi.org/10.1037/a0022658">https://doi.org/10.1037/a0022658</a>
 </div>
 <div id="ref-Rosseel_etal_2024a" class="csl-entry" role="listitem">
 Rosseel, Y., Jorgensen, T. D., Wilde, L. D., Oberski, D., Byrnes, J., Vanbrabant, L., Savalei, V., Merkle, E., Hallquist, M., Rhemtulla, M., Katsikatsou, M., Barendse, M., Rockwood, N., Scharf, F., Du, H., Jamil, H., &amp; Classe, F. (2024). <em>Lavaan: <span>Latent Variable Analysis</span></em> (Version 0.6-19) [Computer software]. <a href="https://cran.r-project.org/web/packages/lavaan/index.html">https://cran.r-project.org/web/packages/lavaan/index.html</a>

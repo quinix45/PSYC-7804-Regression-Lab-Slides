@@ -4,3 +4,142 @@ author: "Fabio Setti"
 date: "Spring-2025"
 output: html_document
 ---
+
+
+## Today's Packages and Data 🤗
+
+```{r}
+# install.packages("tidyverse")
+install.packages("lavaan")
+```
+
+```{r}
+library(tidyverse)
+theme_set(theme_classic(base_size = 16, 
+                        base_family = 'serif'))
+library(lavaan)
+```
+
+```{r}
+dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/mediation_dat.csv")
+```
+
+```{r}
+# function for cleaner lavan summary
+
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Additional%20files/lavaan_summary_lab12.R")
+```
+
+## Running a regresison in `lavaan`
+
+```{r}
+reg_lm <- lm(opinion ~ detail, dat)
+
+car::S(reg_lm)
+```
+
+```{r}
+mod_lv <-"opinion ~ detail"
+
+reg_lv <- sem(mod_lv, dat)
+
+lav_summary(reg_lv)
+```
+
+
+## Mediation "By hand"
+
+
+```{r}
+# Y ~ X (c path)
+reg_1 <- lm(opinion ~ detail, dat)
+
+coef(reg_1)[-1]
+```
+
+```{r}
+# M ~ X (a path)
+reg_2 <- lm(feeling ~ detail, dat)
+
+coef(reg_2)[-1]
+```
+
+```{r}
+# Y ~ X + M (c' and b path)
+reg_3 <- lm(opinion ~ detail + feeling, dat)
+
+coef(reg_3)[-1]
+```
+
+```{r}
+.4237 + .41147*.5517
+```
+
+
+
+
+## Mediation in `lavaan`
+
+```{r}
+mod_med <- "opinion ~ c*detail + b*feeling
+            feeling ~ a*detail
+            indirect := a*b 
+            total := c + a*b"
+
+# may take 5 to 15 seconds to run (ignore warnings about convergence of bootstraps for regression models, the developer said so)
+lav_med <- sem(mod_med, dat, 
+              se = "boot", bootstrap = 2000,
+              parallel ="snow", ncpus = 4)
+
+lav_summary(lav_med)
+```
+
+
+## Effect Sizes
+
+```{r}
+mod_med_eff <- "opinion ~ c*detail + b*feeling
+                feeling ~ a*detail
+                indirect := a*b 
+                total := c + a*b
+                ind_tot := indirect/total
+                ind_dir := indirect/c"
+
+lav_med_eff <- sem(mod_med_eff, dat, se = "boot", 
+                   bootstrap = 2000, parallel ="snow", ncpus = 4)
+
+lav_summary(lav_med_eff)
+```
+
+
+## Multiple mediators
+
+```{r}
+mod_med2 <- "opinion ~ c*detail + b1*feeling + b2*impact
+            feeling ~ a1*detail
+            impact ~ a2*detail
+            indirect1 := a1*b1 
+            indirect2 := a2*b2 
+            total := c + a1*b1 + a2*b2"
+
+lav_med2 <- sem(mod_med2, dat, se = "boot", bootstrap = 2000,
+              parallel ="snow", ncpus = 4)
+
+lav_summary(lav_med2)
+```
+
+
+## Moderated Mediation
+
+```{r}
+mod_medmd <- "opinion ~ c*detail + b*feeling + z2*gender + bz*feeling:gender
+              feeling ~ a*detail + z1*gender + az*detail:gender
+              indirect_female := (a + az)*(b + bz)
+              indirect_male := a*b"
+
+reg_medm <- sem(mod_medmd, dat, se = "boot", bootstrap = 2000,
+              parallel ="snow", ncpus = 4)
+
+lav_summary(reg_medm)
+```
+

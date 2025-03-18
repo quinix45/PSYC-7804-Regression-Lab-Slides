@@ -24,9 +24,6 @@ format:
 editor: source
 ---
 
-
-<!-- https://stats.oarc.ucla.edu/other/mult-pkg/seminars/spss-process/ -->
-
 ## Today's Packages and Data 🤗
 
 :::: {.columns}
@@ -52,7 +49,7 @@ install.packages("lavaan")
 #| classes: code-150
 
 library(tidyverse)
-theme_set(theme_classic(base_size = 14, 
+theme_set(theme_classic(base_size = 16, 
                         base_family = 'serif'))
 library(lavaan)
 ```
@@ -65,7 +62,7 @@ library(lavaan)
 ::: {.panel-tabset}
 ### `lavaan`
 
-<div style="font-size: 22px"> The `lavaan` package [@Rosseel_etal_2024a] is the most popular package to run SEM  models in R. We will use it to run mediation analysis, which the SEM framework accommodates. </div>
+<div style="font-size: 22px"> The `lavaan` package [@Rosseel_etal_2024a] is the most popular package to run SEM models in R. We will use it to run mediation analysis, which the SEM framework accommodates nicely. </div>
 
 :::
 
@@ -93,14 +90,18 @@ dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/
 ```
 
 
-<center style="padding-bottom: 11px;"> </center>
+We will look at the data in detail later, but for now run the line of code below. You should see a function called `lav_summary()` appear in your environment
 
 ```{r}
-reactable::reactable(dat,
-                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "1.105rem"),
-                     pagination = FALSE, highlight = TRUE, height = 300)
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Additional%20files/lavaan_summary_lab12.R")
 ```
 
+`lavaan` gives a bit too much information when we run `summary()` (try ans see!), so I made a [function](https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/blob/main/Slides%20Files/Additional%20files/lavaan_summary_lab12.R){target="_blank"} that selects the information that we need if we are just running mediation. 
 :::
 ::::
 
@@ -111,59 +112,68 @@ Before we begin, I would be remiss not to mention other packages for running med
 :::: {.columns}
 ::: {.column width="50%"}
 
+
+::: {.fragment fragment-index=1}
 <ul style="font-size: 22px">  
 
-<li> The `PROCESS` macro:  [PROCESS](https://www.processmacro.org/index.html){target="_blank"} is a macro for SPSS, SAS, and R that runs mediation and moderation analysis. There is no package for it, so you need to run all the functions before using it. Aside from that, I find it to be less flexible than `lavaan` for specifying different models, as well as the online help and documentation being almost non-existent. </li>
+<li> The `PROCESS` macro:  [PROCESS](https://www.processmacro.org/index.html){target="_blank"} is a macro for SPSS, SAS, and R that runs mediation and moderation analysis. There is no package for it, so you need to run all the functions before using it. Aside from that, I find it to be less flexible than `lavaan` for specifying different models, as well as the online help and documentation for the R version being very limited. </li>
 
 </ul>
-
-
-
+:::
 
 :::
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=2}
 <ul style="font-size: 22px">  
 
-<li> The `mediation` package [@Tingley_etal_2019]: This package implements the *causal mediation framework* described in @Imai_etal_2010a. It is a very flexible package, and it accommodated both multilevel mediation and non-linear mediation. @Tingley_etal_2014 describe many of the `mediation` package functionalities in detail. The one "problem" is that it is not very easy to specify multiple mediators and moderators. </li>
+<li> The `mediation` package [@Tingley_etal_2019]: This package implements the *causal mediation framework* described in @Imai_etal_2010a. It is a very flexible package, and it accommodates both multilevel mediation and non-linear mediation. @Tingley_etal_2014 describe many of the `mediation` package functionalities in detail. The one "problem" is that it is not very easy to specify multiple mediators and moderators. It is also more geared towards experimental designs. </li>
 
 </ul>
+:::
 
 :::
 ::::
 
 </br>
 
-`lavaan` is a package for [structural equation modeling](https://en.wikipedia.org/wiki/Structural_equation_modeling){target="_blank"} (SEM). SEM is a general framework that aims to explain how the observe correlation matrix among a set of variable arises by essentially running many regressions. 
+::: {.fragment fragment-index=3}
+`lavaan` is a package for [structural equation modeling](https://en.wikipedia.org/wiki/Structural_equation_modeling){target="_blank"} (SEM). SEM is a general framework that aims to explain how the observed correlation matrix among a set of variable arises by essentially running many regressions. 
+:::
 
+::: {.fragment fragment-index=4}
 As we will see, mediation is nothing but two or more regression models. You certainly *do not need* SEM turn run mediation; however, `lavaan` makes it quite straightforward.
-
+:::
 
 ## More on today's data
 
 
-Today's data is adapted from the examples shown [here](https://stats.oarc.ucla.edu/other/mult-pkg/seminars/spss-process/){target="_blank"}. The data comes from a fiction study were participants 
+Today's data is adapted from the examples shown [here](https://stats.oarc.ucla.edu/other/mult-pkg/seminars/spss-process/){target="_blank"}. Let's say that in our fictional study, participants were told about a crime committed by someone, and were given varying degrees of detail (`detail`) regarding the crime. The outcome, `opinion`, is how many months the participants believe the criminal should spend in prison.  
 
 :::: {.columns}
 ::: {.column width="50%"}
 
+
+
+::: {.fragment fragment-index=1}
 <ul style="font-size: 22px">  
 
 <li>  `gender`: Binary variable indicating participant's gender (0 = male, 1 = female). </li>
 
-<li>  `detail`: How much information participants were given regarding the event. ($X$) </li>
+<li>  `detail`: How much information participants were given regarding the crime. ($X$) </li>
 
-<li>  `feeling`: beliefs about the topic after hearing details. ($M_1$)  </li>
+<li>  `feeling`: how severe participants felt the crime was *after* hearing the details. ($M_1$)  </li>
 
-<li>  `impact`: How impactful participants believed the details were.($M_2$) </li>
+<li>  `impact`: How negative the participants believed the details were.($M_2$) </li>
 
-<li>  `opinion`: How strongly participants opposed a law cutting. ($Y$) </li>
+<li>  `opinion`: How many months in prison the participants would give the criminal (measured last). ($Y$) </li>
 
 </ul>
-
+:::
 
 :::
 ::: {.column width="50%"}
+
 
 ```{r}
 reactable::reactable(dat,
@@ -178,10 +188,16 @@ reactable::reactable(dat,
 
 ## Running a regresison in `lavaan`
 
-Because of its flexibility, `lavaan`'s model require a specific syntax. 
+Because of its flexibility, `lavaan`'s models require a specific syntax. 
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+
+
+<center> `lm()` </center>
+
+::: {.fragment fragment-index=1}
 
 ```{r}
 #| eval: true
@@ -193,13 +209,264 @@ reg_lm <- lm(opinion ~ detail, dat)
 
 car::S(reg_lm)
 ```
-
+:::
 
 :::
 ::: {.column width="50%"}
 
 
+<center> `lavaan` </center>
 
+::: {.fragment fragment-index=2}
+
+First, we need to specify the model as a `character`. The syntax is similar to `lm()`:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+mod_lv <-"opinion ~ detail"
+```
+
+:::
+
+::: {.fragment fragment-index=3}
+
+Then, we run the model with the `sem()` function. the second argument is going to be our data:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_lv <- sem(mod_lv, dat)
+
+lav_summary(reg_lv)
+```
+<div style="font-size: 24px"> The slope, $0.65$ is the exact same in both cases. </div>
+
+:::
+
+:::
+::::
+
+
+## Path Diagrams
+
+<div style="font-size: 22px"> Path diagrams are useful for describing mediation models, as well as hypotheses in general when many variables are involved. Here are some examples:</div>
+
+
+:::: {.columns}
+::: {.column width="35%"}
+
+:::{.fragment fragment-index=1}
+```{tikz}
+#| fig-ext: svg
+#| fig-width: 4
+#| fig-cap: "1. Y ~ X"
+
+
+\usetikzlibrary{arrows,intersections}
+  \begin{tikzpicture}
+  
+    \node (X) at (0,0) [draw, rectangle] {X};
+    \node (Y) at (4,0) [draw, rectangle] {Y};
+    
+    % Arrows
+    \draw[-stealth] (X) -- (Y);
+  
+  \end{tikzpicture}
+```
+:::
+
+
+
+::: {.fragment fragment-index=2}
+```{tikz}
+#| fig-ext: svg
+#| fig-width: 4
+#| fig-cap: "2. Y ~ X1 + X2"
+
+
+\usetikzlibrary{arrows,intersections}
+  \begin{tikzpicture}
+  
+    \node (X1) at (0,.5) [draw, rectangle] {$X_2$};
+    \node (X2) at (0,-.5) [draw, rectangle] {$X_1$};
+    \node (Y) at (4,0) [draw, rectangle] {Y};
+    
+    % Arrows
+    \draw[-stealth] (X1) -- (Y);
+    \draw[-stealth] (X2) -- (Y);
+  
+  \end{tikzpicture}
+```
+:::
+
+:::{.fragment fragment-index=3}
+```{tikz}
+#| fig-ext: svg
+#| fig-width: 4
+#| fig-cap: "3.  Y1 ~ X1 + X2 and Y2 ~ X1 + X2 + Z + X2*Z"
+
+
+\usetikzlibrary{arrows,intersections, calc}
+  \begin{tikzpicture}
+  
+    \node (X1) at (0,.5) [draw, rectangle] {$X_2$};
+    \node (X2) at (0,-.5) [draw, rectangle] {$X_1$};
+    \node (Y1) at (4,.5) [draw, rectangle] {$Y_1$};
+    \node (Y2) at (4,-.5) [draw, rectangle] {$Y_2$};
+    \node (Z) at (2,1) [draw, rectangle] {$Z$};
+    
+    
+    % Arrows
+    \draw[-stealth] (X1) -- (Y1);
+    \draw[-stealth] (X2) -- (Y1);
+    
+    \draw[-stealth] (X1) -- (Y2);
+    \draw[-stealth] (X2) -- (Y2);
+    
+    
+    % Calculate midpoint of arrow from X1 to Y2
+    \coordinate (midXY) at ($(X1)!0.5!(Y2) + (0,-0.5)$);
+    
+    % Draw arrow from Z to midpoint of X1 to Y2
+    \draw[-stealth] (Z) -- (midXY);
+    
+  
+  \end{tikzpicture}
+```
+:::
+
+:::
+::: {.column width="65%"}
+
+<ol style="font-size: 22px">  
+
+::: {.fragment fragment-index=1}
+
+<li> This path diagram represents a regression of $X$ predicting $Y$. the arrow-head arriving at the $Y$ box means that $Y$ is the dependent variable. The arrow represents the *slope* between $X$ and $Y$, hence representing their relationship. </li>
+
+:::
+
+</br>
+
+:::{.fragment fragment-index=2}
+<li> This path diagram represents a multiple regression of $X_1$ and $X_2$ predicting $Y$. Two arrowheads arrive at $Y$, so that implies that there are two predictors. </li>
+
+:::
+
+</br>
+</br>
+</br>
+
+:::{.fragment fragment-index=3}
+<li> Now we have added another dependent variable. Our path diagram now implies tow separate regression models. $Z$ is a moderator, and it moderates the relation between $X_1$ and $Y_2$. Thus the equation predicting $Y_2$ will be $Y_2 \sim  X_1 + X_2 + Z + X_2 \times Z$. </li>
+:::
+
+</ol>
+
+:::{.fragment fragment-index=4}
+***Remember that every arrow in the diagram corresponds to a slope***
+:::
+
+:::
+::::
+
+
+
+## Mediation
+
+
+<div style="font-size: 26px; padding-bottom: 12px;"> If we hypothesize that a *casual sequence* exists among our variables, we test this hypothesis with **mediation** analysis. </div>
+
+
+:::: {.columns}
+::: {.column width="65%"}
+
+
+:::{.fragment fragment-index=1}
+<div style="font-size: 22px"> The first diagram to the right describes a regression of $Y$ predicting $X$. It is helpful to name the paths when talking about mediation, so $c$ represents the slope between $X$ and $Y$. </div>
+:::
+
+</br>
+
+:::{.fragment fragment-index=2}
+<div style="font-size: 22px"> If we further hypothesize that an intermediate variable, $M$, exists such that $X$ causes $M$, and $M$ causes $Y$, we get the second diagram on the right. </div>
+:::
+
+:::
+::: {.column width="35%"}
+
+:::{.fragment fragment-index=1}
+```{tikz}
+#| fig-ext: svg
+#| fig-width: 4
+#| fig-cap: "Hypothesizing that X predicts Y"
+
+
+\usetikzlibrary{arrows,intersections}
+  \begin{tikzpicture}
+  
+    \node (X) at (0,0) [draw, rectangle] {X};
+    \node (Y) at (4,0) [draw, rectangle] {Y};
+    
+    % Arrows
+    \draw[-stealth] (X) -- (Y) node[midway, above] {c};
+  
+  \end{tikzpicture}
+```
+:::
+
+
+:::{.fragment fragment-index=2}
+```{tikz}
+#| fig-ext: svg
+#| fig-width: 5
+#| fig-cap: "Hypothesizing that M mediates the relation between X and Y"
+
+
+\usetikzlibrary{arrows,intersections}
+  \begin{tikzpicture}
+    \node (X) at (0,0) [draw, rectangle] {X};
+    \node (M) at (2,.8) [draw, rectangle] {M};
+    \node (Y) at (4,0) [draw, rectangle] {Y};
+    
+    % Arrows
+    \draw[-stealth] (X) -- (M) node[midway, above] {a};
+    \draw[-stealth] (M) -- (Y) node[midway, above] {b};
+    \draw[-stealth] (X) -- (Y) node[midway, above] {c'};
+  
+  \end{tikzpicture}
+```
+:::
+
+:::
+::::
+
+:::{.fragment fragment-index=3}
+Importantly, you should see that arrowheads reach two boxes in the mediation diagram. This means that the mediation diagram implies 2 separate regression models:
+:::
+
+:::: {.columns}
+::: {.column width="30%"}
+
+:::{.fragment fragment-index=4}
+- `M ~ X`
+
+- `Y ~ X + M`
+:::
+
+:::
+:::{.column width="70%"}
+
+:::{.fragment fragment-index=4}
+This means that $X$ can influence $Y$ ***directly*** through the $c'$ path, but also ***indirectly*** by influencing $M$ through the $a$ path, and subsequently getting to $X$ through the $b$ path. 
+:::
 
 :::
 ::::
@@ -207,49 +474,42 @@ car::S(reg_lm)
 
 
 
-```{r include=FALSE}
-# mod <- "feeling ~ detail
-#         feeling ~ 1 "
-# 
-# res <- sem(mod, data = dat, fixed)
-# 
-# 
-# parameterEstimates(res) 
-```
-
-```{r include=FALSE}
-summary(lm(opinion ~ detail, dat))
-```
+## Direct and Indirect Effects
 
 
+In mediation we can decompose the slope between $X$ and $Y$ into direct and indirect effect: 
 
-```{r include=FALSE}
-#causal chain to be emphasized
+:::: {.columns}
+::: {.column width="50%"}
 
-summary(lm(opinion ~ detail + feeling , dat))
+</br>
 
-## the effect of X is weaker once feeling (M_1) is included in the model. This 
-
-```
-```{r include=FALSE}
-reg <- lm(opinion ~ impact + detail + feeling , dat)
-
+```{tikz}
+#| fig-ext: svg
+#| fig-width: 4
 
 
+\usetikzlibrary{arrows,intersections}
+  \begin{tikzpicture}
+  
+    \node (X) at (0,0) [draw, rectangle] {X};
+    \node (Y) at (4,0) [draw, rectangle] {Y};
+    
+    % Arrows
+    \draw[-stealth] (X) -- (Y) node[midway, above] {c};
+    
+  \end{tikzpicture}
 ```
 
 
-## Running Mediation
+:::
 
-
-
-
-
-## Prova 
+::: {.column width="50%"}
 
 ```{tikz}
 #| fig-ext: svg
 #| fig-width: 5
+
 
 \usetikzlibrary{arrows,intersections}
   \begin{tikzpicture}
@@ -265,9 +525,763 @@ reg <- lm(opinion ~ impact + detail + feeling , dat)
   \end{tikzpicture}
 ```
 
+:::
+::::
+
+<center> $c = c'+ a\times b$ </center>
+
+:::: {.columns}
+
+::: {.column width="33%"}
+
+::: {.fragment fragment-index=1}
+**Total effect:** $c$
+
+the $c$ path is the effect of $X$ on $Y$ when $M$ *is not* accounted for.
+:::
+
+:::
+
+::: {.column width="33%"}
+
+:::{.fragment fragment-index=2}
+**Direct effect:** $c'$
+
+the $c'$ (reads "c prime") path is the effect of $X$ on $Y$ when $M$ is accounted for.
+:::
+
+:::
+
+::: {.column width="33%"}
+
+:::{.fragment fragment-index=3}
+**Indirect effect:** $a \times b$
+
+$a \times b$ represents the *change* in the effect of $X$ on $Y$ when $M$ is accounted for. That is, how much $Y$ is influenced by $X$ indirectly through $M$. ($a \times b = c - c'$)
+:::
+
+:::
+::::
+
+
+
+## Why $c = c'+ a\times b$?
+
+As always, this stuff does not come out of nowhere, and it's actually quite quick to show why we say that $c = c'+ a\times b$. We start with the 3 equations implied by the path diagrams:
+
+:::: {.columns}
+::: {.column width="33%"}
+
+$Y = c \times X$
+
+:::
+
+::: {.column width="33%"}
+
+$M = a \times X$
+
+:::
+
+::: {.column width="33%"}
+
+$Y = c'\times X + b \times M$
+
+:::
+::::
+
+::: {.fragment fragment-index=1}
+<center style="padding-top: 20px;"> From the 3<sup>rd</sup> equation, substitute $Y$ on the left side and $M$ on the right side: </center>
+
+
+<center style="padding-top: 12px;"> $c \times X = c'\times X + b \times (a \times X)$  &#8594;  $c \times X = c'\times X + b \times a \times X$ </center>
+:::
+
+::: {.fragment fragment-index=2}
+<center style="padding-top: 20px;"> Since $X$ now multiplies every term, we can divide everything by $X$: </center>
+
+
+<center style="padding-top: 12px;"> $c = c' + b \times a$ ✅ </center> 
+:::
+
+</br>
+
+::: {.fragment fragment-index=3}
+<div style="font-size: 22px;"> I will also point out that direct and indirect effects are mathematical concepts based on full and partial derivatives 🧐 You can find an example in [Figure 8.4](https://math.stackexchange.com/questions/1996096/do-partial-derivatives-consider-also-indirect-effects-function-of-a-function){target="_blank"} of @Chiang_1984, a popular math for economics introductory book. Although discussed in @Hayes_Preacher_2010, it is my sense that this is actually not very well-known in Psychology, and that we focus so much on the "practical" interpretation of mediation that at some point we start misrepresenting and overemphasizing what mediation actually does 🤷 </div>
+:::
+
+## Mediation "By hand"
+
+<div style="font-size: 24px; padding-bottom: 12px;"> We can check that the math works out by running separate regressions. Let's say that we think that `feeling` ($M_1$) mediates the relation between `detail` ($X$) and `opinion` ($Y$). </div>
+
+:::: {.columns}
+::: {.column width="33%"}
+
+::: {.fragment fragment-index=1}
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# Y ~ X (c path)
+reg_1 <- lm(opinion ~ detail, dat)
+
+coef(reg_1)[-1]
+```
+:::
+
+:::
+
+::: {.column width="33%"}
+
+::: {.fragment fragment-index=2}
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# M ~ X (a path)
+reg_2 <- lm(feeling ~ detail, dat)
+
+coef(reg_2)[-1]
+```
+:::
+
+:::
+
+::: {.column width="33%"}
+
+::: {.fragment fragment-index=3}
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# Y ~ X + M (c' and b path)
+reg_3 <- lm(opinion ~ detail + feeling, dat)
+
+coef(reg_3)[-1]
+```
+:::
+
+:::
+::::
+
+</br>
+
+:::: {.columns}
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=5}
+We can confirm that $c = c' + b \times a$:
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+ 
+.4237 + .41147*.5517
+```
+
+Which is the regression coefficient for `Y ~ X`. 
+:::
+:::
+
+::: {.column width="50%"}
+
+
+::: {.fragment fragment-index=4}
+```{tikz}
+#| fig-ext: svg
+#| fig-width: 6
+
+
+\usetikzlibrary{arrows,intersections}
+  \begin{tikzpicture}
+    \node (X) at (0,0) [draw] {\scriptsize Detail};
+    \node (M) at (2.5,.8) [draw]{\scriptsize Feeling};
+    \node (Y) at (5,0) [draw] {\scriptsize Opinion};
+    
+    % Arrows
+    \draw[-stealth] (X.east) -- (M.west) node[midway, above] {\scriptsize .55};
+    \draw[-stealth] (M.east) -- (Y.west) node[midway, above] {\scriptsize .41};
+    \draw[-stealth] (X.east) -- (Y.west) node[midway, above] {\scriptsize .42};
+  
+  \end{tikzpicture}
+```
+:::
+
+:::
+::::
+
+
+
+
+
+## Mediation in `lavaan`
+
+<div style="font-size: 24px; padding-bottom: 12px;"> Using `lavaan` is more practical because it allows to specify more complex models in one go and also lets us generate confidence intervals through bootstrapping. </div>
+
+:::: {.columns}
+::: {.column width="45%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+mod_med <- "opinion ~ c*detail + b*feeling
+            feeling ~ a*detail
+            indirect := a*b 
+            total := c + a*b"
+
+# may take 5 to 15 seconds to run (ignore warnings about convergence of bootstraps for regression models, the developer said so)
+lav_med <- sem(mod_med, dat, 
+              se = "boot", bootstrap = 2000,
+              parallel ="snow", ncpus = 4)
+
+lav_summary(lav_med)
+```
+
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| classes: code-125
+
+lav_med <- readRDS("Additional files/lav_med.RDS")
+lav_summary(lav_med)
+```
+
+:::
+
+::: {.column width="55%"}
+
+
+<div style="font-size: 22px"> Some notes about the code: </div>
+
+
+<ul style="font-size: 22px">  
+
+::: {.fragment fragment-index=1}
+<li> We need to define the labels of the paths by using `*`. </li>
+:::
+
+::: {.fragment fragment-index=2}
+<li> After that, we can use the defined paths to calculate anything. We create new objects using estimated parameters by using `:=`. Here I calculate the indirect and total effect. </li>
+:::
+
+::: {.fragment fragment-index=3}
+<li> `se = "boot"` tells the function that we want bootstrapped confidence intervals. </li>
+:::
+
+::: {.fragment fragment-index=4}
+<li> `bootstrap = 2000` requests 2000 bootstrap draws, but you can get away with 1000 usually. </li>
+:::
+
+::: {.fragment fragment-index=5}
+<li> `parallel ="snow"` and `ncpus = 4` are for splitting the work among 4 CPU cores, making the bootstrap procedure 4 times faster *in theory*. </li>
+:::
+
+::: {.fragment fragment-index=6}
+<li> None of the confidence intervals contain 0, so all the paths are significant. The indirect effect is significant, so `feeling` mediates the relation between `detail` and `opinion`. </li>
+:::
+
+</ul>
+
+:::
+::::
+
+::: {.fragment fragment-index=7}
+<div style="font-size: 20px"> **NOTE:** You will not see any intercepts in the results in this lab. For what we are doing, they are not very important as we only care about relations, the *slopes*. `lavaan` omits intercepts by default in most models. </div>
+:::
+
+
+
+## More on Interpretation and Causality
+
+<div style="font-size: 24px; padding-bottom: 16px;">  The interpretation of the indirect effect, $.23$, is that when accounting for how severe participants thought the crime was (`feeling`) after hearing details about the crime (`detail`), the effect of `detail` on how many months participants thought the criminal should spend in prison *was reduced by* $.23$.  </div>
+
+::: {.fragment fragment-index=1}
+<center> The indirect effect is the difference between $c$ and $c'$ ($a \times b = c - c'$) after the mediator is controlled for. </center>
+:::
+
+::: {.fragment fragment-index=2}
+<div style="font-size: 24px; padding-bottom: 16px; padding-top: 16px;"> Mathematically, that line above is all mediation does. However, mediation tends to be associated with *causality*, as it was originally developed to describe causal chains of events. Let's say that in our experiment we *(1)* give details about the crime, then *(2)* ask participants how severe they think the crime is, and finally *(3)* we ask them how many months they think the criminal should spend in prison. </div>
+:::
+
+::: {.fragment fragment-index=3}
+<div style="font-size: 24px; padding-bottom: 16px;"> Because we are running an experiment and all the measured variables happen in sequence, we should be able to claim that higher `detail` *causes* higher `feeling` which in turn *causes* higher `opinion` (all slopes were positive). </div>
+:::
+
+::: {.fragment fragment-index=4}
+<div style="font-size: 24px"> However, mediation is often run on non-experimental data (e.g., survey at time 1 and time 2). In that case, claiming *true causality* more or less requires that you somehow control for *all possible confounders* (impossible!). There are more sophisticated statistical methods that get you closer to showing *causality*, but they all make some strong assumptions. So, if you run mediation on non-experimental data, I would steer clear of any *causality* claims, unless you really want to get into a nigh unwinnable argument with reviewer 2 on your paper 🙃 </div> <span style="font-size: 16px"> (apologies for the wall of text 😶)</span>
+:::
+
+
+## Effect Sizes
+
+<div style="font-size: 24px; padding-bottom: 12px;">  Another advantage of using `lavaan` is that we can seamlessly calculate effect sizes for mediation and get confidence intervals for them! Some effect sizes are: </div>
+
+::: {.fragment fragment-index=1}
+:::: {.columns}
+::: {.column width="50%"}
+
+<div style="font-size: 22px; padding-bottom: 12px;"> **Proportion of indirect to total effect:**  $\frac{a\times b}{a\times b + c'} = \frac{a \times b}{c}$ </div>
+
+:::
+::: {.column width="50%"}
+
+<div style="font-size: 22px; padding-bottom: 12px;"> **Proportion of indirect to direct effect:**  $\frac{a\times b}{c'}$ </div>
+
+:::
+::::
+:::
+
+:::: {.columns}
+::: {.column width="45%"}
+
+::: {.fragment fragment-index=2}
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+mod_med_eff <- "opinion ~ c*detail + b*feeling
+                feeling ~ a*detail
+                indirect := a*b 
+                total := c + a*b
+                ind_tot := indirect/total
+                ind_dir := indirect/c"
+
+lav_med_eff <- sem(mod_med_eff, dat, se = "boot", 
+                   bootstrap = 2000, parallel ="snow", ncpus = 4)
+
+lav_summary(lav_med_eff)
+```
+:::
+
+:::
+::: {.column width="55%"}
+
+
+::: {.fragment fragment-index=3}
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| classes: code-125
+
+lav_med_eff <- readRDS("Additional files/lav_med_eff.RDS")
+lav_summary(lav_med_eff)
+```
+:::
+
+<ul style="font-size: 22px">  
+
+::: {.fragment fragment-index=4}
+<li> $\frac{a \times b}{c} = .35$, implies that $35\%$ of the effect of `detail` on `opinion` was mediated by `feeling`. This measure ranges from $0$ to $1$. </li>
+:::
+
+::: {.fragment fragment-index=5}
+<li> $\frac{a\times b}{c'} = .53$, implies that the direct effect is $1 - .53 = 47\%$ larger than the indirect effect. This measure ranges from $0$ to infinity. </li>
+:::
+
+</ul>
+
+:::
+::::
+
+::: {.fragment fragment-index=6}
+These measures have limitations in small sample sizes, so see @Preacher_Kelley_2011 for a detailed discussion.
+:::
+
+
+## Multiple mediators
+
+
+<div style="font-size: 24px"> Let's assume that we also want to add `impact` ($M_2$) as a mediator. That is, we believe that `detail` causes both `feeling` and `impact`, which in turn jointly cause `opinion`. The model implies 3 regressions. (I'll start taking out the $\times$ for shorter equations) </div>
+
+:::{.fragment fragment-index=1}
+<center>
+
+```{tikz}
+#| fig-ext: svg
+#| fig-width: 7
+
+
+\usetikzlibrary{arrows,intersections, fit}
+  \begin{tikzpicture}
+    \node (X) at (0,0) [draw] {\scriptsize Detail ($X$)};
+    \node (M1) at (3,.8) [draw] {\scriptsize Feeling ($M_1$)};
+    \node (Y) at (6,0) [draw] {\scriptsize Opinion ($Y$)};
+    \node (M2) at (3,-.8) [draw] {\scriptsize Impact ($M_2$)};
+    
+    
+    % Arrows
+    \draw[-stealth] (X.east) -- (M1.west) node[midway, above] {\small $a_1$};
+    \draw[-stealth] (M1.east) -- (Y.west) node[midway, above] {\small $b_1$};
+    \draw[-stealth] (X.east) -- (Y.west) node[midway, above]  {\small c'};
+    \draw[-stealth] (X.east) -- (M2.west) node[midway, below] {\small $a_2$};
+    \draw[-stealth] (M2.east) -- (Y.west) node[midway, below] {\small $b_2$};
+    
+  
+  \end{tikzpicture}
+```
+
+</center>
+
+:::
+
+:::{.fragment fragment-index=1}
+
+:::: {.columns}
+::: {.column width="33%"}
+
+$$M_1 = a_1X$$
+
+:::
+
+::: {.column width="33%"}
+
+$$Y = c'X + b_1 M_1 + b_2 M_2$$
+:::
+
+::: {.column width="33%"}
+
+$$M_2 = a_2X$$
+:::
+::::
+:::
+
+
+:::: {.columns}
+::: {.column width="30%"}
+
+:::{.fragment fragment-index=2}
+Thus, we have *2 indirect effects* of `detail` on `opinion`.
+:::
+
+:::
+::: {.column width="30%"}
+
+
+:::{.fragment fragment-index=2}
+<ul style="font-size: 22px">  
+
+<li> Through `feeling`: $a_1 \times b_1$ </li>
+
+<li> Through `impact`: $a_2 \times b_2$ </li>
+
+</ul>
+:::
+
+:::
+
+::: {.column width="40%"}
+
+:::{.fragment fragment-index=3}
+And the **total indirect effect** of `detail` on `opinion` is:
+
+$$a_1 \times b_1 + a_2 \times b_2$$
+:::
+
+:::
+::::
+
+
+## Multiple mediators in `lavaan`
+
+:::: {.columns}
+::: {.column width="55%"}
+
+<div style="font-size: 24px"> We can update our `lavaan` model to add $M_2$: </div> 
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+mod_med2 <- "opinion ~ c*detail + b1*feeling + b2*impact
+            feeling ~ a1*detail
+            impact ~ a2*detail
+            indirect1 := a1*b1 
+            indirect2 := a2*b2 
+            total := c + a1*b1 + a2*b2"
+lav_med2 <- sem(mod_med2, dat, se = "boot", bootstrap = 2000,
+              parallel ="snow", ncpus = 4)
+lav_summary(lav_med2)
+```
+
+
+:::{.fragment fragment-index=1}
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| classes: code-125
+
+lav_med2 <- readRDS("Additional files/lav_med2.RDS")
+lav_summary(lav_med2)
+```
+:::
+
+:::
+::: {.column width="45%"}
+
+
+:::{.fragment fragment-index=1}
+```{tikz}
+#| fig-ext: svg
+#| fig-width: 6
+
+
+\usetikzlibrary{arrows,intersections, fit}
+  \begin{tikzpicture}
+    \node (X) at (0,0) [draw] {\scriptsize Detail};
+    \node (M1) at (2.5,.8) [draw] {\scriptsize Feeling};
+    \node (Y) at (5,0) [draw] {\scriptsize Opinion};
+    \node (M2) at (2.5,-.8) [draw] {\scriptsize Impact};
+    
+    
+    % Arrows
+    \draw[-stealth] (X.east) -- (M1.west) node[midway, above] {\small .55};
+    \draw[-stealth] (M1.east) -- (Y.west) node[midway, above] {\small .41};
+    \draw[-stealth] (X.east) -- (Y.west) node[midway, above]  {\small .42};
+    \draw[-stealth] (X.east) -- (M2.west) node[midway, below] {\small .61};
+    \draw[-stealth] (M2.east) -- (Y.west) node[midway, below] {\small .01};
+    
+  
+  \end{tikzpicture}
+```
+:::
+
+
+
+
+
+:::{.fragment fragment-index=2}
+<div style="font-size: 23px; padding-bottom: 12px;"> The 2<sup>nd</sup> indirect effect, $a_2 \times b_2$, is not significant, implying that `impact` does not mediate the relation between `detail` and `opinion`. </div>
+:::
+
+:::{.fragment fragment-index=3}
+<div style="font-size: 23px; padding-bottom: 12px;"> Notice that now that we have two mediators, $c'$ is the effect of `detail` on `opinion` after accounting for both `feeling` and `impact`. </div> 
+:::
+
+:::{.fragment fragment-index=4}
+<div style="font-size: 23px"> The **total indirect effect**, $.23 + .01 = .24$, describes how much of the effect of `detail` on `opinion` is mediated overall. You can also calculate it with *total* $- c'$. </div> 
+:::
+
+:::
+::::
+
+
+## Moderated Mediation
+
+<div style="font-size: 24px"> We can add moderators to any of the paths in the model. Here we have our single mediator model, but we we hypothesize that the coefficients for the $a$ and $b$ paths should change depending on `gender`. This model implies 2 regressions. </div>
+
+
+<center>
+```{tikz}
+#| fig-ext: svg
+#| fig-width: 6
+
+\usetikzlibrary{arrows,intersections, fit, calc}
+  \begin{tikzpicture}
+    \node (X) at (0,0) [draw] {\scriptsize Detail ($X$)};
+    \node (M1) at (3,.8) [draw] {\scriptsize Feeling ($M$)};
+    \node (Y) at (6,0) [draw] {\scriptsize Opinion ($Y$)};
+    \node (Z) at (3,-.8) [draw] {\scriptsize Gender ($Z$)};
+    
+    
+    % Arrows
+    \draw[-stealth] (X.east) -- (M1.west) node[midway, above] {\small $a$};
+    \draw[-stealth] (M1.east) -- (Y.west) node[midway, above] {\small $b$};
+    \draw[-stealth] (X.east) -- (Y.west) node[midway, above]  {\small c'};
+
+    \coordinate (midXM) at ($(X)!0.5!(M1)$);
+    \coordinate (midMY) at ($(M1)!0.5!(Y)$);
+
+    \draw[-stealth] (Z.north) -- (midXM);
+    \draw[-stealth] (Z.north) -- (midMY);
+    
+  
+  \end{tikzpicture}
+```
+</center>
+
+
+:::: {.columns}
+::: {.column width="40%"}
+
+$$M =  aX + z_1Z + a_zZX$$
+
+:::
+::: {.column width="60%"}
+
+$$Y = c'X +  bM + z_2Z + b_zZM $$
+
+:::
+::::
+
+
+:::{.fragment fragment-index=1}
+<div style="font-size: 24px"> Now, because we have a binary moderator where 0 = *male* and 1 = *female*: </div>
+:::
+
+:::: {.columns}
+::: {.column width="50%"}
+
+:::{.fragment fragment-index=1}
+<div style="font-size: 22px"> 
+
+**Male equations:** $M = aX$ and  $Y =  c'X + bM$ 
+
+We substitute $0$ to any term with $Z$, they just cancel out, and the indirect effect for *male* is simply $a \times b$.
+</div>
+:::
+
+:::
+::: {.column width="50%"}
+
+<div style="font-size: 22px"> 
+
+:::{.fragment fragment-index=2}
+**Female equations:** $M = aX + z_1 +  a_zX$ and  $Y = c'X + bM + z_2 + b_zM$ 
+
+We substitute $1$ to any term with $Z$, the interaction terms are added to the the $a$ and $b$ paths. So, the indirect effect for *female* is $(a + a_z) \times (b + b_z)$.
+:::
+
+</div>
+
+
+:::
+::::
+
+
+## Moderated Mediation in `lavaan`
+
+:::: {.columns}
+::: {.column width="66%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+mod_medmd <- "opinion ~ c*detail + b*feeling + z2*gender + bz*feeling:gender
+              feeling ~ a*detail + z1*gender + az*detail:gender
+              indirect_female := (a + az)*(b + bz)
+              indirect_male := a*b"
+
+reg_medm <- sem(mod_medmd, dat, se = "boot", bootstrap = 2000,
+              parallel ="snow", ncpus = 4)
+
+lav_summary(reg_medm)
+```
+
+:::{.fragment fragment-index=1}
+```{r}
+#| eval: true
+#| echo: false 
+#| code-line-numbers: false
+#| classes: code-125
+
+lav_med3 <- readRDS("Additional files/lav_med3.RDS")
+lav_summary(lav_med3)
+```
+:::
+
+
+
+:::
+::: {.column width="34%"}
+
+<ul style="font-size: 24px">  
+
+<li> To define interactions in `lavaan`, we use the `:` operator. Unlike `lm()`, you have to specify all the terms manually. </li>
+
+
+:::{.fragment fragment-index=1}
+<li> The interaction terms are not significant according to the bootstrapped confidence intervals.</li>
+:::
+
+:::{.fragment fragment-index=2}
+<li> As shown previously, once we add interaction terms, groups will have different slopes. If any of those slopes are involved in the indirect effect, **the indirect effect will change by group**.  </li>
+:::
+
+</ul>
+
+:::
+::::
+
+
+:::{.fragment fragment-index=3}
+<div style="font-size: 23px"> Although the confidence intervals do not show significance for the interaction terms ($a_z$ and $b_z$), if you hypothesized this model a priori, there may have been an additional hypothesis you would be interested in testing involving the indirect effects for the two groups 🧐 Can you think what that may be? 
+ </div>
+:::
+
+
+
+## Concluding remark: Be Creative
+
+<div style="font-size: 24px; padding-bottom: 12px;"> Path models may seem a bit complicated 😵 It is always important to not lose sight of the *why* we learn about these more complex statistical techniques. For me, it is so that I can really answer the questions I am interested in. </div>
+
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+:::{.fragment fragment-index=1}
+<div style="font-size: 24px; padding-bottom: 12px;">  Path models, as well as tools like `lavaan`, is where things start to get interesting in my opinion.  </div>
+:::
+
+:::{.fragment fragment-index=2}
+<div style="font-size: 24px"> For example, we could also ask about the moderated mediation model from before: </div>
+:::
+
+<ul style="font-size: 22px">  
+
+:::{.fragment fragment-index=2}
+<li> Was there a meaningful difference between the indirect effect for males and females?</li>
+:::
+
+:::{.fragment fragment-index=3}
+With `lavaan`, or Bayesian inference frameworks (e.g., [stan](https://mc-stan.org){target="_blank"}, [pymc](https://www.pymc.io/welcome.html){target="_blank"}), this question is straightforward to answer. Not so much for basic statistical methods. 
+:::
+
+</ul>
+
+:::
+::: {.column width="50%"}
+
+<center>
+
+:::{.fragment fragment-index=1}
+![](Images/Path_model.png)
+
+<div style="font-size: 16px"> Example of an interesting path model I found [here](https://www.researchgate.net/publication/360142777_Envisioning_Change_An_Empirical_Test_of_the_Social_Psychological_Model_of_Utopian_Thinking_and_Collective_Action){target="_blank"}!
+ </div>
+:::
+</center>
+
+:::
+::::
+
+:::{.fragment fragment-index=4}
+The value in mastering more advanced methods such as path analysis lies in the freedom that you gain as a researcher. You no longer have to fit your hypotheses and variables to some basic analysis such as a $t$-test of ANOVA; *you* can create a unique model that tests *your* unique and creative hypotheses 😄
+:::
+
 ## References 
-
-
 
 <div id="refs"> </div>
 

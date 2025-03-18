@@ -50,7 +50,7 @@ install.packages("emmeans")
 #| classes: code-150
 
 library(tidyverse)
-theme_set(theme_classic(base_size = 14, 
+theme_set(theme_classic(base_size = 16, 
                         base_family = 'serif'))
 library(emmeans)
 ```
@@ -105,25 +105,35 @@ reactable::reactable(hsb2,
 
 
 
+
+
 ## What are we looking at Today?
 
-In Lab 10 we looked at categorical predictors and a bunch of coding schemes for categorical variable, but we will stick to [dummy coding](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%2010.html#/creating-dummy-coded-columns){target="_blank"} for this lab.
+In Lab 10 we looked at categorical predictors and a bunch of coding schemes for categorical variables, but we will stick to [dummy coding](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%2010.html#/creating-dummy-coded-columns){target="_blank"} for this lab.
 
+
+::: {.fragment fragment-index=1}
 We eventually want to look at whether `gender` ($Z$) moderates how `socst` ($X$) score predicts `write` ($Y$) score. As a reminder:
-
+:::
 
 :::: {.columns}
 ::: {.column width="50%"}
 
-<ul style="font-size: 26px">  
+<ul style="font-size: 28px">  
+
+::: {.fragment fragment-index=2}
 
 <li> `gender`: student gender (either *male* or *female*).  </li>
 <li> `socst`: score on a standardized social studies assessment. </li>
 <li> `write`: score on a standardized writing assessment. </li>
 
+:::
+
 </ul>
 
-<div style="font-size: 24px"> let's center `socst` for ease of interpretation later: </div>
+::: {.fragment fragment-index=3}
+
+<div style="font-size: 26px"> let's center `socst` for ease of interpretation later: </div>
 
 ```{r}
 #| eval: true
@@ -133,13 +143,14 @@ We eventually want to look at whether `gender` ($Z$) moderates how `socst` ($X$)
 
 hsb2$socst_cent <- scale(hsb2$socst, scale = FALSE)[,1]
 ```
-
+:::
 
 :::
 
 
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=4}
 `gender` is a categorical variable, so let's turn it into a `factor`
 
 ```{r}
@@ -152,23 +163,16 @@ hsb2$gender <- factor(hsb2$gender)
 
 contrasts(hsb2$gender)
 ```
-
+:::
 
 :::
 ::::
 
+::: {.fragment fragment-index=5}
 <div style="text-align:center; padding-top: 20px; font-size: 30px;">
 So for the dummy coded `gender` variable, $0 =$ *female* and $1 =$ *male* 
 </div> 
-  
-
-```{r}
-# reg_int <- lm(write ~ scale(socst, center = TRUE)*gender ,data = hsb2)
-# reg_int <- lm(write ~ scale(socst, center = TRUE)*schtyp ,data = hsb2)
- 
-# summary(reg_int)
-```
-
+:::
 
 ## Starting from The Top
 
@@ -194,18 +198,26 @@ summary(reg_gender)
 
 $$\widehat{\mathrm{write}} = 54.99 - 4.97 \times \mathrm{gender} $$
 
+
+::: {.fragment fragment-index=1}
 We looked at the interpretation for this kind of regression in the last lab:
+:::
 
 <ul style="font-size: 26px">  
 
+::: {.fragment fragment-index=1}
 <li> $54.99$ is the expected mean `write` score of *females* (which is coded as $0$). </li>
+:::
 
+::: {.fragment fragment-index=2}
 <li> $-4.97$ is the expected mean difference in `write` score for *males* compared to *females*. </li>
+:::
 
 </ul>
 
-
+::: {.fragment fragment-index=3}
 Thus, there is a significant difference in `write` score between the two groups, with *males* being $-4.97$ lower on average.  
+:::
 
 :::
 ::::
@@ -276,15 +288,23 @@ summary(reg_both)
 
 $$\widehat{\mathrm{write}} = 54.72 - 4.28 \times \mathrm{gender} +  5.62 \times \mathrm{socst}$$
 
-We looked at the interpretation for this kind of regression in the last lab:
+::: {.fragment fragment-index=1}
+Now that we have a continuous predictor, things are slightly different:
+:::
 
 <ul style="font-size: 26px">  
 
+::: {.fragment fragment-index=2}
 <li> $54.72$ is now the expected mean `write` score of *females*, when `socst` is at its mean value. </li>
+:::
 
+::: {.fragment fragment-index=3}
 <li> $-4.28$ is the expected mean difference in `write` score for *males* compared to *females*. when `socst` is controlled. </li>
+:::
 
-<li> $5.62$ is the expected mean increase in `write` for each unit increase in `socst`. </li>
+::: {.fragment fragment-index=4}
+<li> $5.62$ is the expected mean increase in `write` for each unit increase in `socst`. Unsurprisingly, `write` and `socst` are positively related. </li>
+:::
 
 </ul>
 
@@ -298,16 +318,20 @@ We looked at the interpretation for this kind of regression in the last lab:
 :::: {.columns}
 ::: {.column width="30%"}
 
-<div style="font-size: 24px"> What this model represents is effectively two separate regression lines for the two groups, which differ only based on the intercept. </div>
+<div style="font-size: 26px"> What this model represents is effectively two separate regression lines for the two groups, which differ only based on the intercept. </div>
 
 </br>
 
-<div style="font-size: 24px"> If you have heard of the term [ANCOVA](https://en.wikipedia.org/wiki/Analysis_of_covariance){target="_blank"} before, this is what we just ran.  </div>
+::: {.fragment fragment-index=1}
+<div style="font-size: 26px"> If you have heard of the term [ANCOVA](https://en.wikipedia.org/wiki/Analysis_of_covariance){target="_blank"} before, this is what we just ran.  </div>
+:::
+
 
 </br>
 
-<div style="font-size: 24px"> Note that the slopes are the same, meaning that we are assuming that the relation between `socst` and `write`  should be the same for both groups. </div>
-
+::: {.fragment fragment-index=2}
+<div style="font-size: 26px"> Note that the slopes are the same, meaning that we are assuming that the relation between `socst` and `write`  should be the same for both groups. </div>
+:::
 
 :::
 ::: {.column width="70%"}
@@ -352,17 +376,27 @@ summary(reg_int)
 
 ::: {.column width="45%"}
 
+
+::: {.fragment fragment-index=1}
 we add the $2.2 \times \mathrm{gender} \times \mathrm{socst}$ term to the equation from two slides ago. 
+:::
 
 <ul style="font-size: 24px">  
 
-<li> $54.78$ is now the expected mean `write` score of *females*, when `socst` is at its mean value. </li>
+::: {.fragment fragment-index=1}
+<li> $54.78$ is still the expected mean `write` score of *females*, when `socst` is at its mean value. </li>
+:::
+::: {.fragment fragment-index=2}
+<li> $-4.28$ is the expected mean difference in `write` score for *males* compared to *females*, when `socst` is controlled. </li>
+:::
 
-<li> $-4.28$ is the expected mean difference in `write` score for *males* compared to *females*. when `socst` is controlled. </li>
+::: {.fragment fragment-index=3}
+<li> $4.51$ is the expected mean increase in `write` for each unit increase in `socst` *for females*. </li>
+:::
 
-<li> $4.51$ is the expected mean increase in `write` for each unit increase in `socst`. </li>
-
+::: {.fragment fragment-index=4}
 <li> $2.2$ is the expected *difference in slope* between `write` and `socst` for the *males*. </li>
+:::
 
 </ul>
 
@@ -385,6 +419,8 @@ When we have a categorical moderator, interpreting the interaction terms boils d
 $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times \mathrm{gender} \times \mathrm{socst}$$ 
 </div>
 
+
+::: {.fragment fragment-index=1}
 &#8595;
 
 
@@ -392,18 +428,23 @@ $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times 
 <div style="font-size:18px;"> 
 $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times 1 \times \mathrm{socst}$$ 
 </div>
+:::
 
+::: {.fragment fragment-index=2}
 &#8595;
 
 <div style="font-size:18px;"> 
 $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times \mathrm{socst}$$ 
 </div>
+:::
 
+::: {.fragment fragment-index=3}
 &#8595;
 
 <div style="font-size:18px;"> 
 $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  6.71 \times \mathrm{socst}$$ 
 </div>
+:::
 
 </center>
 
@@ -418,26 +459,32 @@ $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times 
 
 </div>
 
+
+::: {.fragment fragment-index=1}
 &#8595;
 
 <div style="font-size:18px;"> 
 $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times 0 \times \mathrm{socst}$$ 
 </div>
+:::
 
+
+::: {.fragment fragment-index=2}
 &#8595;
 
 <div style="font-size:18px;"> 
 $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst}$$ 
 </div>
+:::
 
 </center>
 
 :::
 ::::
 
-
+::: {.fragment fragment-index=3}
 So, we expect the relation between `write` and `socst` to be $2.2$ larger for `males`. 
-
+:::
 
 
 ## Visualizing `write ~ gender * socst`
@@ -447,11 +494,11 @@ So, we expect the relation between `write` and `socst` to be $2.2$ larger for `m
 
 </br>
 
-<div style="font-size: 26px"> So, the slope for `males` is steeper. Although at lower levels of `socst`, `females` do considerably better, the gap closes more and more as `socst` increases.  </div>
+<div style="font-size: 28px; padding-bottom:14px;"> The slope for `males` is steeper. Although at lower levels of `socst`, `females` do considerably better, the gap closes more and more as `socst` increases.  </div>
 
-
-<div style="font-size: 26px"> A significant interaction term implies that the difference between teh slopes between the two groups is non-zero. </div>
-
+::: {.fragment fragment-index=1}
+<div style="font-size: 28px"> A significant interaction term implies that the difference between the slopes between the two groups is non-zero. </div>
+:::
 
 :::
 ::: {.column width="70%"}
@@ -531,21 +578,22 @@ ggplot(hsb2, aes(x = gender, y = write)) +
 Whenever categorical variables are involved, the `emmeans` package likely has some functions to summarize results. For interaction between continuous and categorical variables, the `emtrends()` function is very helpful!
 
 
-
-
 :::: {.columns}
 ::: {.column width="40%"}
 
 </br>
 
+:::{.fragment fragment-index=1}
 <div style="font-size: 26px"> Although we calculated the simple slopes by hand two slides ago, you don't really want to do that (especially when your categorical predictors have more levels!) </div>
 
 
 <div style="font-size: 26px; padding-top: 20px;"> The `emtrends()` function also provides confidence intervals for the slopes. </div>
-
+:::
 
 :::
 ::: {.column width="60%"}
+
+::: {.fragment fragment-index=2}
 
 ```{r}
 #| eval: true
@@ -567,14 +615,16 @@ emtrends(reg_int, ~gender, var = "socst_cent")
 
 
 </ul>
-
+:::
 
 
 :::
 ::::
+
+::: {.fragment fragment-index=3}
 <div style="font-size: 24px"> Here we have a simple mode, but you can request slopes for multiple predictors and categorical moderators at once. [This page](https://stats.oarc.ucla.edu/r/seminars/interactions-r/){target="_blank"} has a really comprehensive tutorial on how to use the `emmeans` package with interactions. 
  </div>
-
+:::
 
 ##  Testing Mean Differences
 
@@ -584,6 +634,7 @@ emtrends(reg_int, ~gender, var = "socst_cent")
 :::: {.columns}
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=1}
 <div style="font-size: 24px; padding-top: 12px;"> We need to define the values of `socst_cent` at which we want to test mean differences. We do this by creating a `list` object containing the name of the variable and the values at which we want to test the mean differences. </div>
 
 ```{r}
@@ -600,8 +651,10 @@ mylist <- list(socst_cent=c(sd_below,
                             0,
                             sd_above))
 ```
+:::
 
 
+::: {.fragment fragment-index=2}
 Then, we create an `emmeans` object in the following way:
 
 ```{r}
@@ -610,14 +663,17 @@ Then, we create an `emmeans` object in the following way:
 #| code-line-numbers: false
 #| classes: code-125
 
-mean_diffs <- emmeans(reg_int, ~socst_cent*gender, at = mylist)
+mean_diffs <- emmeans(reg_int, ~socst_cent*gender, 
+                      at = mylist)
 ```
-
+:::
 :::
 
 
 ::: {.column width="50%"}
 
+
+::: {.fragment fragment-index=3}
 And finally use the `contrast` function:
 
 ```{r}
@@ -630,6 +686,8 @@ contrast(mean_diffs, "pairwise", by= "socst_cent")
 ```
 
 <div style="font-size: 24px; padding-top: 12px;"> As we observed previously, the mean difference in `write` is significant at lower values of `socst`, but is no longer significant at high values of `socst`. </div>
+:::
+
 
 :::
 ::::
@@ -641,7 +699,7 @@ contrast(mean_diffs, "pairwise", by= "socst_cent")
 
 <div style="font-size: 24px;"> Testing mean differences at different values of `socst` simply mean testing whether the dashed black lines are significantly different from 0 in length. The dashed lines, representing the distance between the two regression lines becomes smaller and smaller as `socst` increases.  </div>
 
-
+::: {.fragment fragment-index=1}
 ::: {.callout-note}
 
 ## It's a matter of perspective
@@ -649,6 +707,7 @@ contrast(mean_diffs, "pairwise", by= "socst_cent")
 You may have noticed that first we looked at *(1)* whether the slope of `socst` changed depending on `gender`, and then we *(2)* looked at whether there were mean differences in mean `write` score for `gender` depending on different values of `socst`. In other words, we swapped the variable that we were treating as the moderator. This highlights how from a statistical perspective there is no difference between a moderator and a focal predictor. You decide how two present the results and frame the two variables.
 
 ::: 
+:::
 
 :::
 ::: {.column width="65%"}
@@ -688,6 +747,7 @@ We can use the `emmip()` to plot the slopes for both groups.
 :::: {.columns}
 ::: {.column width="40%"}
 
+::: {.fragment fragment-index=1}
 <div style="font-size: 23px"> First, we need to create a list that tells `emmip()` the range of the continuous variable for which want to plot slopes. here I choose the minimum and maximum of `socst_cent`. </div>
 
 ```{r}
@@ -702,7 +762,9 @@ max <- max(hsb2$socst_cent)
 mylist <- list(socst_cent = c(min, 
                               max))
 ```
+:::
 
+::: {.fragment fragment-index=2}
 <div style="font-size:23px; padding-top: 12px;"> Then we pass pass the regression object, the categorical variable by which we want the slopes, and the list containing the range of the x-axis. </div>
 
 ```{r}
@@ -713,23 +775,24 @@ mylist <- list(socst_cent = c(min,
 
 emmip(reg_int, gender~socst_cent, at = mylist)
 ```
-
+:::
 
 :::
 ::: {.column width="60%"}
 
+::: {.fragment fragment-index=2}
 ```{r}
 emmip(reg_int, gender~socst_cent, at = mylist)
 ```
-
+:::
 :::
 ::::
 
-
+::: {.fragment fragment-index=3}
 <div style="font-size: 23px; padding-top: 14px;"> This may seem a bit complicated for no reason 🤨 but it affords lots of flexibility when your model is more complex than what we have here. </div>
 
-<div style="font-size: 12px"> I personally prefer plotting things "manually" with GGplot 🫣, although I understand that may not be everyone's cup of tea </div>
-
+<div style="font-size: 12px"> I personally prefer plotting things "manually" with `ggplot` 🫣, although I understand that may not be everyone's cup of tea </div>
+:::
 
 
 ## References 
