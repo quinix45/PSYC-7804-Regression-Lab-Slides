@@ -634,7 +634,7 @@ In the centered result, where $0$ represents the mean of $X_1$ and $X_2$, both s
 :::
 
 ::: {.fragment fragment-index=2}
-Nothing changed about our analysis, but in the centered solution, we are looking a the slopes at a **different point of the regression plane**. This point is not out of range, so it makes sense to choose it as a reference point. 
+Nothing changed about our analysis, but in the centered solution, we are looking at the slopes at a **different point of the regression plane**. This point is not out of range, so it makes sense to choose it as a reference point. 
 :::
 
 ::: {.fragment fragment-index=3}

@@ -1,0 +1,109 @@
+---
+title: "Lab 9 Activity"
+output: pdf_document
+header-includes:
+    - \usepackage{setspace}
+---
+
+We will look at some data from the U.S. Department of Commerce Census of 1977.  
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+library(tidyverse)
+
+info <- tibble(Variable = colnames(state.x77),
+               Description = c("population estimate as of July 1, 1975",
+                               "per capita income (1974)",
+                               "illiteracy (1970, percent of population)",
+                               "life expectancy in years (1969–71)",
+                               "murder and non-negligent manslaughter rate per 100,000 population (1976)",
+                               "percent high-school graduates (1970)",
+                               "mean number of days with minimum temperature below freezing (1931–1960) in capital or large city",
+                               "land area in square miles"))
+
+library(kableExtra)
+
+kable(info) %>% 
+  column_spec(column = 2, width = "300px") %>% 
+  row_spec(0, bold = T) %>% 
+  column_spec(1, bold = T)
+```
+
+\onehalfspacing
+
+Run the following code to name the data you will be using as `dat`:
+
+```{r}
+dat <- data.frame(state.x77)
+
+# Rename 2 columns that are named in slightly unusual way
+colnames(dat)[c(4, 6)] <- c("Life_Exp", "HS_Grad")
+```
+
+**1.** Create two new columns that represent the mean-centered versions of the `HS_Grad` variable and the `Income` variable. For the remainder of the activity, use these centered variables as the predictors and treat `HS_Grad` as the moderator. 
+
+```{r include=FALSE}
+dat$HS_Grad_cnt <- scale(dat$HS_Grad, scale = FALSE)[,1]
+dat$Income_cnt <- scale(dat$Income, scale = FALSE)[,1]
+```
+
+
+**2.** Run a regression predicting `Life_Exp` with an interaction between the mean-centered `HS_Grad` variable and the `Income`. Is the interaction term significantly different from 0? Should you interpret the other regression coefficients?
+
+```{r include=FALSE}
+
+mod <- lm(Life_Exp ~ Income_cnt * HS_Grad_cnt , dat)
+
+summary(mod)
+
+# the interaction term is significant, so the regression slopes should not be interpreted on their own, Simple slopes should be calculated.
+```
+**3.** What is the expected value of the slope of `Income` when `HS_grand` is equal to 20?
+
+```{r include=FALSE}
+coef(mod)[4]*20 + coef(mod)[2]
+```
+
+**4.** Calculate the simple slopes of `Income` at some values of `HS_grand` that you believe should be informative. What is the meaning of the simple slopes? Focus on the sign of the slopes, the value will be really small due to the scale of the outcome. 
+
+```{r include=FALSE}
+sim_slopes <- interactions::sim_slopes(mod, 
+                                       modx = "HS_Grad_cnt",
+                                       pred = "Income_cnt")
+
+round(sim_slopes$slopes,3)
+
+# at the mean and -1/+1 SD should be good, it's the default for the sim_slopes function
+
+# when high school graduation rates are 1SD below the mean, the relation between income and life expectancy in the state is positive. On the other hand, when graduation rates are 1 SD above the mean, the relation between income and life expectancy is negative. 
+```
+
+
+
+**5.** Create both a simple slopes plot and a johnson-neyman plot to visualize the interaction between the two predictors. Outside what interval is the slope of `Income` significantly different from 0?
+
+```{r include=FALSE}
+interactions::interact_plot(mod, 
+                            modx = "HS_Grad_cnt",
+                            pred = "Income_cnt")
+```
+
+
+
+```{r include=FALSE}
+interactions::johnson_neyman(mod, 
+               modx = "HS_Grad_cnt",
+               pred = "Income_cnt")
+```
+
+
+
+
+
+
+
+
+
+
+
