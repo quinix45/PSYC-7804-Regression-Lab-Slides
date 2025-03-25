@@ -75,7 +75,7 @@ theme_set(theme_classic(base_size = 14,
 
 ### `interactions`
 
-The `interactions` package [@Long_2024] is a package that provides helpful functions to explore interaction effects. 
+The `interactions` package [@Long_2024] provides helpful functions to explore interaction effects. 
 
 :::
 
@@ -99,9 +99,15 @@ dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/
 
 # select only the variables we are interested in
 grade_fin <- dat[,c("final", "attend", "priGPA")]
-
-str(grade_fin, give.attr = FALSE)
 ```
+
+```{r}
+grade_fin$priGPA <- round(grade_fin$priGPA, 3)
+reactable::reactable(grade_fin,
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "0.875rem"),
+                     pagination = FALSE, highlight = TRUE, height = 300)
+```
+
 
 :::
 ::::
@@ -166,7 +172,7 @@ When hypothesizing interaction effects, it is useful to make a distinction betwe
 
 ## Our hypothesis
 
-<div style="font-size: 24px"> We hypothesize that the grade on a statistics final (`final`, ,$Y$) is predicted by prior GPA before starting the class (`priGPA`, $X_1$). Additionally, we also think that the effect on that `priGPA` has on `final` is *moderated* by class grade_finance (`attend`, $X_2$). </div>
+<div style="font-size: 24px"> We hypothesize that the grade on a statistics final (`final`, $Y$) is predicted by how many classes a student attends (`attend`, $X_1$). Additionally, we also think that the effect that `attend` has on `final` is *moderated* by prior GPA before starting the class (`priGPA`, $X_2$). </div>
 
 
 
@@ -402,7 +408,7 @@ FabioFun::nice_3D_plot(y = grade_fin$final,
 
 ## What about the Regression coefficients?
 
-<div style="font-size: 24px"> With that in mind, our variables were final grade ($Y$), GPA prior to taking the class ($X_1$), and attendance ($X_2$):  </div>
+<div style="font-size: 24px"> With that in mind, our variables were final grade ($Y$), attendance ($X_1$), and GPA prior to taking the class ($X_2$):  </div>
 
 $$
 \hat{Y} = 30. 14 - 0.48X_1 - 2.21X_2 + 0.20 X_1 X_2
@@ -566,7 +572,7 @@ Centering and standardizing are known as *linear transformations*. The "linear" 
 :::
 ::::
 
-## Comparing Uncentered and Centered Results
+## Uncentered and Centered Results
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -630,7 +636,7 @@ $$
 ::::
 
 ::: {.fragment fragment-index=1}
-In the centered result, where $0$ represents the mean of $X_1$ and $X_2$, both slopes are positive, and indicate that as GPA prior to taking the class and attendance increase, the final grade...increases!
+In the centered result, where $0$ represents the mean of $X_1$ and $X_2$, both slopes are positive, and indicate that as GPA prior to taking the class and as attendance increases, the final grade...increases!
 :::
 
 ::: {.fragment fragment-index=2}
@@ -829,6 +835,9 @@ interact_plot(reg_int_cnt,
               pred = "attend_cnt")
 ```
 
+::: {.fragment fragment-index=1}
+You can also think of the slopes in this plot as a snapshot of the direction of the regression plane at a specific value of the moderator!
+:::
 
 :::
 ::: {.column width="70%"}
@@ -936,7 +945,7 @@ johnson_neyman(reg_int_cnt,
 ```
 
 ::: {.fragment fragment-index=2}
-<div style="font-size: 24px"> **Advice:** If you are presenting your research and interactions are involved...I would use simple slopes instead of a Johnson-Neyman plot. Why? It's an absolute truth about the universe that Johnson-Neyman plots are confusing 🤷 keep it simple (slopes 🫣). </div>
+<div style="font-size: 24px"> **Advice:** If you are presenting your research and interactions are involved...I would use simple slopes instead of a Johnson-Neyman plot. Why? It's an absolute truth about the universe that Johnson-Neyman plots are confusing 🤷 keep it simple. </div>
 :::
 
 :::

@@ -160,7 +160,7 @@ grade_fin %>%
   xlim(-30, 40) +
   xlab("Centerd and Uncentered Distribution of `attend`")
 ```
-## Comparing Uncentered and Centered Results
+## Uncentered and Centered Results
 
 ```{r}
 
