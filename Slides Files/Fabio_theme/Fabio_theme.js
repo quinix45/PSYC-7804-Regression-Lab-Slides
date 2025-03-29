@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
       
       
-        if (event.key === 't') {
+        if (event.key.toLowerCase() === 't') {
             // Get "fragment-thingy"s
           
           // disables animations if search box is on scre
