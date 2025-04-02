@@ -1,0 +1,115 @@
+---
+title: "Lab 10 Activity"
+output: pdf_document
+header-includes:
+    - \usepackage{setspace}
+---
+
+
+\onehalfspacing
+
+Today we will look at salaries of university professors in 2008:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(carData)
+library(tidyverse)
+
+dat <- Salaries
+
+
+info <- tibble(Variable = colnames(dat),
+               Description = c("Assistant, Associate, or Full Professor",
+                               "A = theoretical department, B = applied department",
+                               "Years since PhD",
+                               "Years of Service",
+                               "Sex (Male or Female)",
+                               "nine-moth salary in dollars"))
+
+library(kableExtra)
+
+kable(info) %>% 
+  column_spec(column = 2, width = "300px") %>% 
+  row_spec(0, bold = T) %>% 
+  column_spec(1, bold = T)
+```
+
+Run the following code to name the data you will be using as `dat`:
+
+```{r}
+library(carData)
+
+dat <- Salaries
+```
+
+
+**1.** We want to test whether there is a difference in salaries (`salary`) between professor ranks (`rank`). It is good practice to check what type of class the variables you are dealing with are. Use the `class()` function to check what type of variable `rank` is. Does it need to be turned into a `factor` variable?
+
+```{r include=FALSE}
+class(dat$rank)
+## already a factor
+```
+- What will be the reference group (i.e., intercept value) once you run a regression with `rank` predicting `salary`? You should be able to find out before running the regression.
+
+```{r include=FALSE}
+
+contrasts(dat$rank)
+
+# assistant professor because it is coded as 0 and 0
+```
+
+**2.** Run a regression with `rank` predicting `salary`. What are the meaning of the intercept and the two regression coefficients? What hypotheses do the two regression coefficients test?
+
+```{r include=FALSE}
+reg <- lm(salary ~ rank, dat)
+summary(reg)
+
+# the intercept is the mean salary of assistant professors. the two regression coefficients are the differences in mean salary from assistant professor for associate professors and full professors respectively.
+
+# they test whether the mean salary of associate professors and full professors is significantly different from the mean salary of assistant professors. 
+```
+- based on these results, can we test whether the mean salary of associate professors is significantly different from that of full professors?
+
+```{r include=FALSE}
+# no we cannot. 
+```
+
+**3.** Recode the contrast matrix such that you regression coefficients test whether salary of associate professors is significantly different from the salary of full professors and assistant professors. Check that you receded the contrast matrix correctly by printing it again.
+
+```{r include=FALSE}
+# many ways to do it. I just create a new contrast matrix (also many ways to create matrices)
+
+# rbind() stacks ("binds") rows on top of each other
+
+new_mat <- rbind(c(1, 0),
+                 c(0, 0),
+                 c(0,1))
+
+contrasts(dat$rank) <- new_mat
+
+# rename columns so that they show yup in output (not mandatory but looks nicer)
+
+colnames(contrasts(dat$rank)) <- c("Assistant", "FullProf")
+
+```
+
+**4.** Run the same regression as before. Report the regression coefficient that tests whether the mean salary of associate professors is significantly different from the salary of full professors. Is there a significant difference?
+
+```{r include=FALSE}
+reg2 <- lm(salary ~ rank, dat)
+summary(reg2)
+
+# the average salary of full professors was significantly higher than the salary of associate professors, b = 32896, t(394)=10, p < .001. 
+```
+
+
+
+
+
+
+
+
+
+
+
+
