@@ -85,3 +85,7 @@ mod1 <- mdmb::frm_em(dat=dat, dep=dep, ind=ind )
 summary(mod1)
 ```
 
+
+
+
+

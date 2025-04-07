@@ -622,7 +622,7 @@ emtrends(reg_int, ~gender, var = "socst_cent")
 ::::
 
 ::: {.fragment fragment-index=3}
-<div style="font-size: 24px"> Here we have a simple mode, but you can request slopes for multiple predictors and categorical moderators at once. [This page](https://stats.oarc.ucla.edu/r/seminars/interactions-r/){target="_blank"} has a really comprehensive tutorial on how to use the `emmeans` package with interactions. 
+<div style="font-size: 24px"> Here we have a simple example, but you can request slopes for multiple predictors and categorical moderators at once. [This page](https://stats.oarc.ucla.edu/r/seminars/interactions-r/){target="_blank"} has a really comprehensive tutorial on how to use the `emmeans` package with interactions. 
  </div>
 :::
 
