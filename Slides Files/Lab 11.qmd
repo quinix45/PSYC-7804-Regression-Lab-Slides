@@ -196,7 +196,7 @@ summary(reg_gender)
 :::
 ::: {.column width="50%"}
 
-$$\widehat{\mathrm{write}} = 54.99 - 4.97 \times \mathrm{gender} $$
+$$\widehat{\mathrm{write}} = 54.99 - 4.86 \times \mathrm{gender} $$
 
 
 ::: {.fragment fragment-index=1}
@@ -210,13 +210,13 @@ We looked at the interpretation for this kind of regression in the last lab:
 :::
 
 ::: {.fragment fragment-index=2}
-<li> $-4.97$ is the expected mean difference in `write` score for *males* compared to *females*. </li>
+<li> $-4.86$ is the expected mean difference in `write` score for *males* compared to *females*. </li>
 :::
 
 </ul>
 
 ::: {.fragment fragment-index=3}
-Thus, there is a significant difference in `write` score between the two groups, with *males* being $-4.97$ lower on average.  
+Thus, there is a significant difference in `write` score between the two groups, with *males* being $-4.86$ lower on average.  
 :::
 
 :::
@@ -286,7 +286,7 @@ summary(reg_both)
 
 ::: {.column width="50%"}
 
-$$\widehat{\mathrm{write}} = 54.72 - 4.28 \times \mathrm{gender} +  5.62 \times \mathrm{socst}$$
+$$\widehat{\mathrm{write}} = 54.72 - 4.28 \times \mathrm{gender} +  .52 \times \mathrm{socst}$$
 
 ::: {.fragment fragment-index=1}
 Now that we have a continuous predictor, things are slightly different:
@@ -303,7 +303,7 @@ Now that we have a continuous predictor, things are slightly different:
 :::
 
 ::: {.fragment fragment-index=4}
-<li> $5.62$ is the expected mean increase in `write` for each unit increase in `socst`. Unsurprisingly, `write` and `socst` are positively related. </li>
+<li> $.52$ is the expected mean increase in `write` for each unit increase in `socst`. Unsurprisingly, `write` and `socst` are positively related. </li>
 :::
 
 </ul>
@@ -378,7 +378,7 @@ summary(reg_int)
 
 
 ::: {.fragment fragment-index=1}
-we add the $2.2 \times \mathrm{gender} \times \mathrm{socst}$ term to the equation from two slides ago. 
+we add the $.2 \times \mathrm{gender} \times \mathrm{socst}$ term to the equation from two slides ago. 
 :::
 
 <ul style="font-size: 24px">  
@@ -391,11 +391,11 @@ we add the $2.2 \times \mathrm{gender} \times \mathrm{socst}$ term to the equati
 :::
 
 ::: {.fragment fragment-index=3}
-<li> $4.51$ is the expected mean increase in `write` for each unit increase in `socst` *for females*. </li>
+<li> $.42$ is the expected mean increase in `write` for each unit increase in `socst` *for females*. </li>
 :::
 
 ::: {.fragment fragment-index=4}
-<li> $2.2$ is the expected *difference in slope* between `write` and `socst` for the *males*. </li>
+<li> $.2$ is the expected *difference in slope* between `write` and `socst` for the *males*. </li>
 :::
 
 </ul>
@@ -416,7 +416,7 @@ When we have a categorical moderator, interpreting the interaction terms boils d
 
 
 <div style="font-size:18px;"> 
-$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times \mathrm{gender} \times \mathrm{socst}$$ 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  .42 \times \mathrm{socst} + .2 \times \mathrm{gender} \times \mathrm{socst}$$ 
 </div>
 
 
@@ -426,7 +426,7 @@ $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times 
 
 
 <div style="font-size:18px;"> 
-$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times 1 \times \mathrm{socst}$$ 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  .42 \times \mathrm{socst} + .2 \times 1 \times \mathrm{socst}$$ 
 </div>
 :::
 
@@ -434,7 +434,7 @@ $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times 
 &#8595;
 
 <div style="font-size:18px;"> 
-$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times \mathrm{socst}$$ 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  .42 \times \mathrm{socst} + .2 \times \mathrm{socst}$$ 
 </div>
 :::
 
@@ -442,7 +442,7 @@ $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times 
 &#8595;
 
 <div style="font-size:18px;"> 
-$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  6.71 \times \mathrm{socst}$$ 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  .62 \times \mathrm{socst}$$ 
 </div>
 :::
 
@@ -454,7 +454,7 @@ $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  6.71 \times 
 <center> **Equation for Females**
 
 <div style="font-size:18px;"> 
-$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times \mathrm{gender} \times \mathrm{socst}$$ 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  .42 \times \mathrm{socst} + .2 \times \mathrm{gender} \times \mathrm{socst}$$ 
 
 
 </div>
@@ -464,7 +464,7 @@ $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times 
 &#8595;
 
 <div style="font-size:18px;"> 
-$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst} + 2.2 \times 0 \times \mathrm{socst}$$ 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  .42 \times \mathrm{socst} + .2 \times 0 \times \mathrm{socst}$$ 
 </div>
 :::
 
@@ -473,7 +473,7 @@ $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times 
 &#8595;
 
 <div style="font-size:18px;"> 
-$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times \mathrm{socst}$$ 
+$$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  .42 \times \mathrm{socst}$$ 
 </div>
 :::
 
@@ -483,7 +483,7 @@ $$\widehat{\mathrm{write}} = 54.78 - 4.28 \times \mathrm{gender} +  4.51 \times 
 ::::
 
 ::: {.fragment fragment-index=3}
-So, we expect the relation between `write` and `socst` to be $2.2$ larger for `males`. 
+So, we expect the relation between `write` and `socst` (i.e., the *slope* of `socst`) to be $.2$ larger for `males`. 
 :::
 
 
@@ -738,6 +738,68 @@ ggplot(hsb2, aes(x = socst_cent, y = write, colour = gender)) +
 :::
 ::::
 
+## johnson-neyman Plot?
+
+:::: {.columns}
+::: {.column width="35%"}
+
+
+
+<div style="font-size: 24px;"> Instead of testing differences in the slopes for the 2 groups at different values of the continuous variable, we can do that for all possible values of the continuous variable by using a Johnson-Neyman plot </div>
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| classes: code-125
+
+# the predictor must be a vector of 0s and 1s
+hsb2$gender_bin <- ifelse( hsb2$gender == "female", 0, 1)
+
+# rerun the regression with binary gender
+reg_int_2 <- lm(write ~ gender_bin * socst_cent, data = hsb2)
+
+# save summary for mean differences
+interactions::johnson_neyman(reg_int_2, 
+              pred = "gender_bin",
+              modx = "socst_cent")
+```
+
+<div style="font-size: 24px;"> Because we have a categorical variable, the interpretation is conceptually different than what we saw in [Lab 9](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%209.html#/the-johnson-neyman-plot){target="_blank"} </div>
+ 
+
+:::
+::: {.column width="65%"}
+
+::: {.fragment fragment-index=1}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+
+# the predictor must be a vector of 0s and 
+
+hsb2$gender_bin <- ifelse( hsb2$gender == "female", 0, 1)
+
+reg_int_2 <- lm(write ~ gender_bin * socst_cent, data = hsb2)
+
+# save summary for mean differences
+interactions::johnson_neyman(reg_int_2, 
+                             pred = "gender_bin",
+                             modx = "socst_cent")$plot
+```
+
+
+<div style="font-size: 24px;"> The $x$-axis is the difference between the two group means (i.e., the *distance* between the two lines on the previous slide) in `write` score for each value of `socst` score. Consistent with the plot on the previous slide, the difference is no longer significant when `socst` is around 10 or more. </div>
+
+:::
+
+:::
+::::
+
 
 
 ## Plotting with `emmip()`
@@ -791,8 +853,61 @@ emmip(reg_int, gender~socst_cent, at = mylist)
 ::: {.fragment fragment-index=3}
 <div style="font-size: 23px; padding-top: 14px;"> This may seem a bit complicated for no reason 🤨 but it affords lots of flexibility when your model is more complex than what we have here. </div>
 
-<div style="font-size: 12px"> I personally prefer plotting things "manually" with `ggplot` 🫣, although I understand that may not be everyone's cup of tea </div>
+<div style="font-size: 16px"> I personally prefer plotting things "manually" with `ggplot` 🫣, although I understand that may not be everyone's cup of tea </div>
 :::
+
+
+## Plotting with `interact_plot()`
+
+In our case, it is slightly simpler to use the `interact_plot()` function, but, unlike `emmip()`, it requires a binary variable and only works with 2 categories.
+
+:::: {.columns}
+::: {.column width="40%"}
+
+
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| classes: code-125
+
+interactions::interact_plot(reg_int_2, 
+              modx = "gender_bin",
+              pred = "socst_cent",
+              modx.values = c(0, 1))
+```
+
+Notice that I am using the regression model with the binary version of `gender` because the `interactions` package does not play nice factor variables.
+
+::: {.fragment fragment-index=1}
+
+So, you have multiple options for plotting simple slopes. Still, my go to is just using `ggplot` because it gives me the most freedom (as you can tell from earlier slides).   
+
+:::
+
+
+
+:::
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: false
+#| code-line-numbers: false
+#| classes: code-125
+
+interactions::interact_plot(reg_int_2, 
+              modx = "gender_bin",
+              pred = "socst_cent",
+              modx.values = c(0, 1))
+```
+
+:::
+::::
+
+
+
 
 
 ## References 

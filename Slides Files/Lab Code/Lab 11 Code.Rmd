@@ -163,6 +163,24 @@ ggplot(hsb2, aes(x = socst_cent, y = write, colour = gender)) +
 ```
 
 
+## johnson-neyman Plot With Categorical Moderator?
+
+
+```{r}
+# the predictor must be a vector of 0s and 1s
+hsb2$gender_bin <- ifelse( hsb2$gender == "female", 0, 1)
+
+# rerun the regression with binary gender
+reg_int_2 <- lm(write ~ gender_bin * socst_cent, data = hsb2)
+
+# save summary for mean differences
+interactions::johnson_neyman(reg_int_2, 
+                             pred = "gender_bin",
+                             modx = "socst_cent")
+```
+
+
+
 ## Plotting with `emmip()`
 
 ```{r}
@@ -177,6 +195,14 @@ emmip(reg_int, gender~socst_cent, at = mylist)
 ```
 
 
+## Plotting with `interact_plot()`
+
+```{r}
+interactions::interact_plot(reg_int_2, 
+              modx = "gender_bin",
+              pred = "socst_cent",
+              modx.values = c(0, 1))
+```
 
 
 
