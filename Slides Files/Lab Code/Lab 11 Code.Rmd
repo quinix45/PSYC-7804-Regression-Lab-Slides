@@ -8,7 +8,6 @@ output: html_document
 
 ## Today's Packages and Data 🤗
 
-
 ```{r}
 # install.packages("tidyverse")
 install.packages("emmeans")
@@ -118,11 +117,9 @@ ggplot(hsb2, aes(x = socst_cent, y = write, colour = gender)) +
 emtrends(reg_int, ~gender, var = "socst_cent")
 ```
 
-
-##  Testing Mean Differences
+## Predicted Means 
 
 ```{r}
-
 sd_below <- -sd(hsb2$socst_cent)
 sd_above <- sd(hsb2$socst_cent)
 
@@ -133,15 +130,34 @@ mylist <- list(socst_cent=c(sd_below,
 ```
 
 
+```{r}
+means <- emmeans(reg_int, ~socst_cent*gender, 
+                at = mylist)
+
+means
+```
+
+## Predicted Means Graphically
 
 ```{r}
-mean_diffs <- emmeans(reg_int, ~socst_cent*gender, 
-                      at = mylist)
+ggplot(hsb2, aes(x = socst_cent, y = write, colour = gender)) +
+  geom_point(aes(shape = gender), alpha= .6) +
+  geom_abline(intercept = coef(reg_int)[1], slope = coef(reg_int)[3], col = "purple") + 
+  geom_abline(intercept = coef(reg_int)[1] + coef(reg_int)[2], slope = coef(reg_int)[3] + coef(reg_int)[4], col = "red") + 
+  scale_color_manual(values=c( "purple", "red")) +
+  geom_point(aes(x = -10.7, y = 50.3), color = "brown", size = 4) +
+  geom_point(aes(x = -10.7, y =  43.8), color = "brown", size = 4) +
+  geom_point(aes(x = 0, y = 54.8), color = "brown", size = 4) +
+  geom_point(aes(x = 0, y =  50.5), color = "brown", size = 4) +
+  geom_point(aes(x = 10.7, y = 59.3), color = "brown", size = 4) +
+  geom_point(aes(x = 10.7, y = 57.2), color = "brown", size = 4) 
 ```
 
 
+##  Testing Mean Differences
+
 ```{r}
-contrast(mean_diffs, "pairwise", by= "socst_cent")
+contrast(means, "pairwise", by= "socst_cent")
 ```
 
 
@@ -149,7 +165,7 @@ contrast(mean_diffs, "pairwise", by= "socst_cent")
 
 
 ```{r}
-sum <- summary(mean_diffs)
+sum <- summary(means)
 
 ggplot(hsb2, aes(x = socst_cent, y = write, colour = gender)) +
   geom_point(aes(shape = gender), alpha= .2) +

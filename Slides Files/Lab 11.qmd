@@ -105,8 +105,6 @@ reactable::reactable(hsb2,
 
 
 
-
-
 ## What are we looking at Today?
 
 In Lab 10 we looked at categorical predictors and a bunch of coding schemes for categorical variables, but we will stick to [dummy coding](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%2010.html#/creating-dummy-coded-columns){target="_blank"} for this lab.
@@ -602,7 +600,6 @@ Whenever categorical variables are involved, the `emmeans` package likely has so
 #| classes: code-125
 
 emtrends(reg_int, ~gender, var = "socst_cent")
-
 ```
 
 <ul style="font-size: 22px">  
@@ -626,16 +623,16 @@ emtrends(reg_int, ~gender, var = "socst_cent")
  </div>
 :::
 
-##  Testing Mean Differences
 
-<div style="font-size: 24px"> So far we have been focusing on the slope of `socst_cent`, but we can also shift our focus to mean differences . In our case, the `emmeans()` can be used for testing mean differences between the groups *at different values* of the continuous variable. </div>
+## Predicted Means 
 
+<div style="font-size: 24px"> So far we have been focusing on the slope of `socst_cent`, but we can also shift our focus to means and mean differences. In our case, the `emmeans` package can be used to calculate predicted means of groups *at different values* of the continuous variable. </div>
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="40%"}
 
 ::: {.fragment fragment-index=1}
-<div style="font-size: 24px; padding-top: 12px;"> We need to define the values of `socst_cent` at which we want to test mean differences. We do this by creating a `list` object containing the name of the variable and the values at which we want to test the mean differences. </div>
+<div style="font-size: 24px; padding-top: 12px;"> We need to define the values of `socst_cent` at which we want to calculate means. We do this by creating a `list` object containing the name of the continuous variable and the values at which we want to calculate means. </div>
 
 ```{r}
 #| eval: true
@@ -651,11 +648,15 @@ mylist <- list(socst_cent=c(sd_below,
                             0,
                             sd_above))
 ```
+
+:::
 :::
 
+::: {.column width="60%"}
 
 ::: {.fragment fragment-index=2}
-Then, we create an `emmeans` object in the following way:
+
+<div style="font-size: 24px; padding-top: 12px;"> Then we pass the regression object (`reg_int`), and use `~socst_cent*gender` to tell the function that we want the means of each level of `gender` by the specified values of `socst_cent`: </div>
 
 ```{r}
 #| eval: true
@@ -663,18 +664,76 @@ Then, we create an `emmeans` object in the following way:
 #| code-line-numbers: false
 #| classes: code-125
 
-mean_diffs <- emmeans(reg_int, ~socst_cent*gender, 
-                      at = mylist)
+means <- emmeans(reg_int, ~socst_cent*gender, 
+                at = mylist)
 ```
-:::
-:::
+```{r}
+means
+```
 
 
-::: {.column width="50%"}
+:::
+
+:::
+::::
 
 
 ::: {.fragment fragment-index=3}
-And finally use the `contrast` function:
+<div style="font-size: 26px; padding-top: 12px;"> In the **emmean** (stands for *estimated marginal mean*) column we have the mean expected value of `write` score for males and females at -/+ 1 SD and mean of `socst` score. </div>
+:::
+
+## Predicted Means Graphically
+
+:::: {.columns}
+::: {.column width="40%"}
+
+The previous slide may seem intimidating, but the means of `write` score that we just calculated (brown dots in the plot) are simply the values of $y$-axis given some values of $x$ according to the regression line of each groups.
+
+```{r}
+means
+```
+
+:::
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+
+ggplot(hsb2, aes(x = socst_cent, y = write, colour = gender)) +
+  geom_point(aes(shape = gender), alpha= .6) +
+  geom_abline(intercept = coef(reg_int)[1], slope = coef(reg_int)[3], col = "purple") + 
+  geom_abline(intercept = coef(reg_int)[1] + coef(reg_int)[2], slope = coef(reg_int)[3] + coef(reg_int)[4], col = "red") + 
+  scale_color_manual(values=c( "purple", "red")) +
+  geom_point(aes(x = -10.7, y = 50.3), color = "brown", size = 4) +
+  geom_point(aes(x = -10.7, y =  43.8), color = "brown", size = 4) +
+  geom_point(aes(x = 0, y = 54.8), color = "brown", size = 4) +
+  geom_point(aes(x = 0, y =  50.5), color = "brown", size = 4) +
+  geom_point(aes(x = 10.7, y = 59.3), color = "brown", size = 4) +
+  geom_point(aes(x = 10.7, y = 57.2), color = "brown", size = 4) 
+  
+```
+
+:::
+::::
+
+
+##  Testing Mean Differences
+
+<div style="font-size: 24px"> Now that we have the means of `write` score for both groups at different levels of `socst` score, the logical extention is to test whether these means are significantly different from each other. </div>
+
+
+:::: {.columns}
+::: {.column width="60%"}
+
+::: {.fragment fragment-index=1}
+
+We use the `contrast()` function from the `emmeans` package (careful! not the `contrasts()` function 🙈):
 
 ```{r}
 #| eval: true
@@ -682,12 +741,23 @@ And finally use the `contrast` function:
 #| code-line-numbers: false
 #| classes: code-125
 
-contrast(mean_diffs, "pairwise", by= "socst_cent")
+contrast(means, "pairwise", by= "socst_cent")
 ```
 
-<div style="font-size: 24px; padding-top: 12px;"> As we observed previously, the mean difference in `write` is significant at lower values of `socst`, but is no longer significant at high values of `socst`. </div>
+:::
 :::
 
+::: {.column width="40%"}
+
+::: {.fragment fragment-index=2}
+
+<div style="font-size: 26px; padding-top: 12px;"> As we observed previously, the mean difference in `write` is significant at lower values of `socst`, but is no longer significant at high values of `socst`. </div>
+:::
+
+
+::: {.fragment fragment-index=3}
+<div style="font-size: 26px; padding-top: 12px;"> Because we are running multiple comparisons, there is something to be said for adjusting the $p$-values for Type I error rates, although that takes a bit more work and I don't really want to spend time on that (and you know [how I feel about type I errors](https://statmodeling.stat.columbia.edu/2004/12/29/type_1_type_2_t/){target="_blank"} 🤷). </div>
+:::
 
 :::
 ::::
@@ -721,7 +791,7 @@ You may have noticed that first we looked at *(1)* whether the slope of `socst` 
 #| code-summary: "Plot code"
 
 # save summary for mean differences
-sum <- summary(mean_diffs)
+sum <- summary(means)
 
 ggplot(hsb2, aes(x = socst_cent, y = write, colour = gender)) +
   geom_point(aes(shape = gender), alpha= .2) +
@@ -793,7 +863,7 @@ interactions::johnson_neyman(reg_int_2,
 ```
 
 
-<div style="font-size: 24px;"> The $x$-axis is the difference between the two group means (i.e., the *distance* between the two lines on the previous slide) in `write` score for each value of `socst` score. Consistent with the plot on the previous slide, the difference is no longer significant when `socst` is around 10 or more. </div>
+<div style="font-size: 24px;"> The $y$-axis is the difference between the two group means (i.e., the *distance* between the two lines on the previous slide) in `write` score for each value of `socst` score. Consistent with the plot on the previous slide, the difference is no longer significant when `socst` is around 10 or more. </div>
 
 :::
 
