@@ -1,0 +1,112 @@
+---
+title: "Lab 11 Activity"
+output: pdf_document
+header-includes:
+    - \usepackage{setspace}
+---
+
+
+\onehalfspacing
+
+we will continue to look at salaries of university professors in 2008:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+library(carData)
+library(tidyverse)
+
+dat <- Salaries
+
+
+info <- tibble(Variable = colnames(dat),
+               Description = c("Assistant, Associate, or Full Professor",
+                               "A = theoretical department, B = applied department",
+                               "Years since PhD",
+                               "Years of Service",
+                               "Sex (Male or Female)",
+                               "nine-moth salary in dollars"))
+
+library(kableExtra)
+
+kable(info) %>% 
+  column_spec(column = 2, width = "300px") %>% 
+  row_spec(0, bold = T) %>% 
+  column_spec(1, bold = T)
+```
+
+
+Run the following code to name the data you will be using as `dat`:
+
+```{r}
+library(carData)
+
+dat <- Salaries
+```
+
+**1.** We want to test whether there is a difference in salaries (`salary`) between theoretical and applied departments (`discipline`). However, we also believe that this difference in salary should be moderated by how long someone has been at a certain department (`yrs.service`). Run a regression that tests these hypotheses.
+
+```{r include=FALSE}
+reg <- lm(salary ~ discipline*yrs.service, dat)
+summary(reg)
+```
+
+- before interpreting the results, do you believe it meaningful to interpret the regression without centering `yrs.service`? Explain. 
+
+```{r include=FALSE}
+# in this case it should be fine to leave the variable as is because 0 years of service is meaningful (i.e., a professor who has just started)
+```
+
+
+- Is the interaction term significant? What can you conclude about the difference in the relation between years of service and salary depending on the type of department?
+
+```{r include=FALSE}
+# the interaction term is significant, meaning that the salary of professors in applied departments increases at a faster rate as years of service increase compared to professors in a theoretical department.
+```
+
+
+**2.** Calculate the expected value of `Salary` for a professor in a theoretical department (`discipline` = A) with 15 years of service. 
+
+```{r include=FALSE}
+coef(reg)[1] + coef(reg)[3]*15
+```
+- Now do the same for a professor in an applied field (`discipline` = B).
+
+```{r include=FALSE}
+coef(reg)[1] + (coef(reg)[3] + coef(reg)[4])*15 + coef(reg)[2] 
+```
+
+**3.** Test whether predicted salaries of professors in applied and theoretical departments differ significantly at different values of years fo service. Test this at `yrs.service` = 0, 15, 30 and 45.
+
+```{r include=FALSE}
+mylist <- list(yrs.service=c(0, 15, 30, 45))
+
+means <- emmeans::emmeans(reg, 
+                          ~yrs.service*discipline, 
+                          at = mylist)
+
+emmeans::contrast(means, "pairwise", by= "yrs.service")
+```
+
+- What pattern do you observe as `yrs.service` increases? 
+
+```{r include=FALSE}
+# as years of service increases the gap in salary between professors in applied and theoretical departments increases, with professors in applied departments making more and more money
+```
+
+- plot the simple slopes for professors in applied and theoretical departments. Do the simple slopes confirm your observation in the previous question?
+
+```{r include=FALSE}
+# 0 is the minimum and 60 is the maximum
+
+mylist <- list(yrs.service=c(0, 60))
+
+emmeans::emmip(reg, discipline~yrs.service, at = mylist)
+
+```
+```{r include=FALSE}
+# Yes, salary of professors in applied departments increases at a much greater rate than the salary of professors in theoretical departments
+```
+
+
+
+

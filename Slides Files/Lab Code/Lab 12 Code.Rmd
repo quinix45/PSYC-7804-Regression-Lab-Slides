@@ -11,6 +11,7 @@ output: html_document
 ```{r}
 # install.packages("tidyverse")
 install.packages("lavaan")
+install.packages("semTools")
 ```
 
 ```{r}
@@ -92,6 +93,32 @@ lav_med <- sem(mod_med, dat,
               parallel ="snow", ncpus = 4)
 
 lav_summary(lav_med)
+```
+
+## Monte Carlo Confidence Intervals
+
+
+```{r}
+semTools::monteCarloCI(lav_med)
+```
+
+```{r}
+# you can get the standard errors from here
+parameterestimates(lav_med)
+```
+
+
+```{r}
+# to get standard errors look at the output of parameterestimates(lav_med)
+a_path <- rnorm(10000, mean = 0.552, sd = 0.045)
+b_path <- rnorm(10000, mean = 0.411, sd = 0.080)
+```
+
+
+```{r}
+ind_MC <- a_path*b_path
+
+quantile(ind_MC, c(.025, .975))
 ```
 
 

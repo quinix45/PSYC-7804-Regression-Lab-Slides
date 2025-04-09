@@ -39,6 +39,7 @@ editor: source
 
 # install.packages("tidyverse")
 install.packages("lavaan")
+install.packages("semTools")
 ```
 
 ```{r}
@@ -52,6 +53,7 @@ library(tidyverse)
 theme_set(theme_classic(base_size = 16, 
                         base_family = 'serif'))
 library(lavaan)
+library(semTools)
 ```
 
 
@@ -63,6 +65,11 @@ library(lavaan)
 ### `lavaan`
 
 <div style="font-size: 22px"> The `lavaan` package [@Rosseel_etal_2024a] is the most popular package to run SEM models in R. We will use it to run mediation analysis, which the SEM framework accommodates nicely. </div>
+
+
+### `semTools`
+
+<div style="font-size: 22px"> The `semTools` package [@Jorgensen_etal_2025] provides many helpful SEM functions, many of which build upon `lavaan`. </div>
 
 :::
 
@@ -101,7 +108,7 @@ We will look at the data in detail later, but for now run the line of code below
 source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Additional%20files/lavaan_summary_lab12.R")
 ```
 
-`lavaan` gives a bit too much information when we run `summary()` (try ans see!), so I made a [function](https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/blob/main/Slides%20Files/Additional%20files/lavaan_summary_lab12.R){target="_blank"} that selects the information that we need if we are just running mediation. 
+`lavaan` gives a bit too much information when we run `summary()` (try and see!), so I made a [function](https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/blob/main/Slides%20Files/Additional%20files/lavaan_summary_lab12.R){target="_blank"} that selects the information that we need if we are just running mediation. 
 :::
 ::::
 
@@ -825,6 +832,77 @@ lav_summary(lav_med)
 :::
 
 
+## Monte Carlo Confidence Intervals
+
+<div style="font-size: 24px"> There are cases where bootstrapping does not produce reliable confidence intervals (e.g., small sample size) or it is not possible to bootstrap results (i.e., you do not have the original data but just the results). In this cases you can use the **Monte Carlo method** to calculate confidence intervals. </div>
+
+
+:::: {.columns}
+::: {.column width="40%"}
+
+::: {.fragment fragment-index=1}
+
+<div style="font-size: 24px; padding-top: 12px;"> We can use the `monteCarloCI()` function from `semTools` to get Monte Carlo CIs parameters generated with the `:=` operator. </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+semTools::monteCarloCI(lav_med)
+```
+:::
+
+::: {.fragment fragment-index=4}
+<div style="font-size: 24px; padding-top: 12px;"> **NOTE**: in the example on the right I am assuming that $a$ and $b$ are perfectly uncorrelated, which is not true in practice. `semTools` accounts for the correlation when sampling values of $a$ and $b$ (it samples from a [multivariate normal distribution](https://en.wikipedia.org/wiki/Multivariate_normal_distribution){target="_blank"}). Still, the results are very close. </div>
+:::
+
+:::
+
+::: {.column width="60%"}
+
+::: {.fragment fragment-index=2}
+
+<div style="font-size: 24px"> Calculating Monte Carlo CIs is actually very simple. All you need to do is simulate many draws from normal distributions with $\mu =$ regression slopes, and $\sigma =$ slope standard errors. For example, for the indirect effect: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# to get standard errors look at the output of parameterestimates(lav_med)
+a_path <- rnorm(10000, mean = 0.552, sd = 0.045)
+b_path <- rnorm(10000, mean = 0.411, sd = 0.080)
+```
+:::
+
+
+::: {.fragment fragment-index=3}
+<div style="font-size: 24px"> Then just multiply the 2 vectors ($a \times b$) and look at the 2.5% quantile and the 97.5% quantiles (95% CI). </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+ind_MC <- a_path*b_path
+
+quantile(ind_MC, c(.025, .975))
+```
+
+<div style="font-size: 24px"> Should be fairly close to the CIs calculated by `semTools`. </div>
+:::
+
+:::
+::::
+
+
+
+
+
 ## Effect Sizes
 
 <div style="font-size: 24px; padding-bottom: 12px;">  Another advantage of using `lavaan` is that we can seamlessly calculate effect sizes for mediation and get confidence intervals for them! Some effect sizes are: </div>
@@ -905,7 +983,6 @@ These measures have limitations in small sample sizes, so see @Preacher_Kelley_2
 
 
 ## Multiple mediators
-
 
 <div style="font-size: 24px"> Let's assume that we also want to add `impact` ($M_2$) as a mediator. That is, we believe that `detail` causes both `feeling` and `impact`, which in turn jointly cause `opinion`. The model implies 3 regressions. (I'll start taking out the $\times$ for shorter equations) </div>
 
