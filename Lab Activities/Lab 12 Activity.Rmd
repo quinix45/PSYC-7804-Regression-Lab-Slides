@@ -1,0 +1,136 @@
+---
+title: "Lab 12 Activity"
+output: pdf_document
+header-includes:
+    - \usepackage{setspace}
+---
+
+\onehalfspacing
+
+We have already used this data in [Lab 9](https://quinix45.github.io/PSYC-7804-Regression-Lab-Slides/Slides%20Files/Lab%209.html#/todays-packages-and-data){target="_blank"}. I recently found out that the data originates from the textbook *Introductory Econometrics: A Modern Approach* by Jeffrey M. Wooldridge. Find a descriptions of the variables in the table below:
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(wooldridge)
+library(tidyverse)
+
+dat <- attend
+
+
+info <- tibble(Variable = colnames(dat),
+               Description = c("Classes attended out of 32",
+                               "GPA for term",
+                               "Cumulative GPA prior to term",
+                               "ACT score",
+                               "Final exam score",
+                               "Percent classes attended",
+                               "Percent homework turned in",
+                               "1 if freshman",
+                               "1 if sophomore",
+                               "number of classes missed",
+                               "final - mean)/sd"))
+
+library(kableExtra)
+
+kable(info) %>% 
+  column_spec(column = 2, width = "300px") %>% 
+  row_spec(0, bold = T) %>% 
+  column_spec(1, bold = T)
+```
+
+
+\newpage
+
+
+Run the following code to name the data you will be using as `dat`:
+
+```{r}
+# install package first if not in library
+library(wooldridge)
+dat <- attend
+
+```
+
+
+**1.** Run a mediation analysis where `final` is your outcome ($Y$), `hwrte` your predictor variable ($X$), and `priGPA` is the mediator ($M$). Make sure to create bootstrapped confidence intervals by using 2000 bootstrap samples.
+
+
+```{r include=FALSE}
+library(lavaan)
+mod_med <- "final ~ c*hwrte + b*priGPA
+            priGPA ~ a*hwrte
+            indirect := a*b 
+            total := c + a*b"
+
+# warnings about bootsraps can be ignored
+
+lav_med <- sem(mod_med, dat, se = "boot", bootstrap = 2000,
+              parallel ="snow", ncpus = 4)
+
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Additional%20files/lavaan_summary_lab12.R")
+lav_summary(lav_med)
+```
+
+
+**2.**  What is the value and the 95% confidence interval for the indirect effect? How do you interpret the indirect effect?
+
+
+```{r include=FALSE}
+# the indirect effect is 0.027, 95% CI[0.019; 0.037]. The indirect effect is the reduction in the effect of `hwrte` on `final` when the mediator, `priGPA` is controlled for. 
+```
+
+
+**3.** What conclusions do you make about the relation between `hwrte` and `priGPA`? Which variable would you say is the most important in predicting `final`?
+
+```{r include=FALSE}
+# GPA is definitely seems to be the more important variable because the effect of hwrte on final grade is no longer significant once GPA is included in the model. hwrte is not predictive of final grade once prior GPA is controlled for. 
+```
+
+
+**4.** Calculate the Monte Carlo confidence intervals for your direct and indirect effects. How different are the confidence intervals compared to the bootstrapped confidence intervals? Would your conclusion change at all if you used the Monte Carlo confidence intervals? 
+
+
+```{r include=FALSE}
+library(semTools)
+
+monteCarloCI(lav_med)
+
+# They should be essentially be the same and the conclusions will not change.
+```
+
+
+**5.** Run the same model as before, but this time, treat `priGPA` as you $X$ variable and `hwrte` as your mediator ($M$). Is the indirect effect the same? Why would this change happen? (Comparing the values of the $a$, $b$, and $c$ paths from the previous model and this model may provide some insight)
+
+```{r include=FALSE}
+
+mod_med2 <- "final ~ c*priGPA + b*hwrte
+            hwrte ~ a*priGPA
+            indirect := a*b 
+            total := c + a*b"
+
+lav_med2 <- sem(mod_med2, dat)
+lav_summary(lav_med2)
+
+monteCarloCI(lav_med2)
+
+# indirect effect is different and not significant now (which makes sense). This happens because hwrte has no effect on the outcome once priGPA is included in the regression, making the b path close to 0. The a*b will also be close to 0. 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

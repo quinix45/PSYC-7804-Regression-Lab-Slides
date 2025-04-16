@@ -28,64 +28,56 @@ editor: source
 
 
 ```{r}
-hsb2 <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/hsb2.csv")
+dat <- rio::import("Data/employeecomplete.dat")[,-1]
+dat_miss <- rio::import("Data/employee.dat")[,-1]
+
+
+names(dat) <- c( "team", "turnover", "male", "empower", "lmx", "worksat", "climate", "cohesion")
+names(dat_miss) <- c("team", "turnover", "male", "empower", "lmx", "worksat", "climate", "cohesion")
+dat_miss[dat_miss == "999"] <- NA
 ```
 
 
 
-```{r}
-reg <- lm(write ~ science + math, hsb2)
-summary(reg)
-```
+## For all your missing data needs
+
+This Lab is a very quick overview of some methods of dealing with missing data. More often than not, you will require 
+
+
+## Missing data Mechanisms
+
+There may be many reasons why you end up with missing data. In general, there are **3 mechanisms** that can describe the way in which data is missing:
+
+
+:::: {.columns}
+::: {.column width="30%"}
+
+:::
+::: {.column width="50%"}
+
+:::
+::::
 
 
 ```{r}
 
-set.seed(313234)
-random <- sample(1:200, 120, replace = FALSE)
+lav_mod <- "empower ~ lmx + worksat + climate + cohesion"
 
-hsb2$science_mis <- hsb2$science
-hsb2$science_mis[random] <- NA
+fit <- lavaan::sem(lav_mod, dat, meanstructure = TRUE, fixed.x = FALSE, missing = "fiml")
 
-
-reg_miss <- lm(write ~ science_mis + math, hsb2)
-summary(reg_miss)
-```
-
-```{r}
-
-hsb2$socst_mis_N <- ifelse(hsb2$science > 55 , NA, hsb2$science)
-
-reg_miss_N <- lm(write ~ socst_mis_N + math , hsb2)
-summary(reg_miss_N)
-
-```
-
-
-
-```{r}
-plot(hsb2$math, hsb2$write)
-```
-```{r}
-library(lavaan)
-nomiss2 <- sem('write ~ socst_mis + math', data = hsb2,missing = "fiml", fixed.x = F)
-summary(nomiss2)
-
+lavaan::summary(fit)
 ```
 
 
 ```{r}
-xnodes <- seq(-4,4,len=11)        # nodes for X
-ynodes <- seq(-10,10,len=13)
+library(VIM)
+X.miss <- produce_NA(dat[, 5:8], proportion = 0.5)
 
-# define model for dependent variable Y
-dep <- list("model"="linreg", "formula"=Y ~  X*Z)
+dat_miss <- dat
+dat_miss[,5:8] <- X.miss
 
-mod1 <- mdmb::frm_em(dat=dat, dep=dep, ind=ind )
-summary(mod1)
+fit_miss <- lavaan::sem(lav_mod, dat_miss, meanstructure = TRUE, fixed.x = TRUE, missing = "fiml")
+lavaan::summary(fit_miss)
+
 ```
-
-
-
-
 
