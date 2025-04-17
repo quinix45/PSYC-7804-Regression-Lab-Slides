@@ -27,21 +27,36 @@ editor: source
 ## Today's Packages and Data 🤗
 
 
+
+:::: {.columns}
+::: {.column width="50%"}
+
 ```{r}
-dat <- rio::import("Data/employeecomplete.dat")[,-1]
-dat_miss <- rio::import("Data/employee.dat")[,-1]
-
-
-names(dat) <- c( "team", "turnover", "male", "empower", "lmx", "worksat", "climate", "cohesion")
-names(dat_miss) <- c("team", "turnover", "male", "empower", "lmx", "worksat", "climate", "cohesion")
-dat_miss[dat_miss == "999"] <- NA
+library(tidyverse)
+library(naniar)
+library(missForestPredict)
 ```
 
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/employee.csv")
+```
+
+:::
+::::
 
 
 ## For all your missing data needs
 
-This Lab is a very quick overview of some methods of dealing with missing data. More often than not, your missing data woes will be trickier than what I go over here. 
+This lab is a very quick overview of some methods of dealing with missing data. More often than not, your missing data woes will be trickier than what I go over here. 
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -99,7 +114,7 @@ Missing data is said to be MAR if the missing values in your can be predicted by
 
 **Missing not at random (MNAR)**
 
-Missing data is said to be MAR if the missing values are due to some variable that is not observed. This is the trickiest case of missing data because something that you don't know about is causing your data to disappear. 
+Missing data is said to be MAR if the missing values are due to some variable that is not observed. This is the worst case of missing data because something that you don't know about is causing your data to disappear. 
 
 :::
 ::::
@@ -111,19 +126,242 @@ I am using the terminology from @Enders_2022, you may see different names for th
 Regardless, these processes are important because methods that deal with missing data make the assumption that one of these three mechanisms are at play. 
 
 
+## Bias
 
-
-
-
-
-
+What is so bad about missing data? Well, the main problem is that if the missingness is MAR or MNAR, you will get *biased results* if you don't account for the missingness process appropriately. **Bias** has a very specific meaning in statistics. For example:
 
 
 :::: {.columns}
 ::: {.column width="50%"}
 
+One of the tenets of statistics is that if you somehow managed to measure the entire population on something, you would be able to calculate the true value of a statistics (e.g., correlation, regression slope, mean,...). 
+
 :::
 ::: {.column width="50%"}
+
+
+For example, let's say that we managed to measure every person in the world and we observed that the correlation between *income* and *happiness* is $r = .2$. However, in my sample of 200 US citizens I find a correlation of $\hat{r} = .4$.
+
+:::
+::::
+
+
+<center>
+
+In this case, $\mathrm{bias} = \hat{r} - r = .4 - .2 = .2$. 
+
+</center>
+
+</br>
+
+Thus, **bias** is the expected difference between the true value of a statistic and the observed value. All of statics rests on the assumption that our sample is representative of the population, and can therefore produce *unbiased* estimates of the true population statistic.
+
+
+## Example of Bias: The Population
+
+
+:::: {.columns}
+::: {.column width="40%"}
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Simulate data"
+
+set.seed(20345)
+
+# generate some data that would show bias due to restriction of range
+
+X <- rnorm(1000)
+Y <- rnorm(1000, mean = ifelse(X > .7, .2*X, .4*X), sd = .4)
+
+bias_dat <- data.frame("Graduate_GPA" = Y,
+                       "GRE_Score" = X)
+
+```
+
+
+As  practical example, I'll simulate some hypothetical data where students are admitted to grad school regardless of their GRE score. For this made up data, the correlation between `Graduate_GPA` and `GRE_Score` is:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+cor(bias_dat$Graduate_GPA, bias_dat$GRE_Score)
+```
+:::
+::: {.column width="60%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+
+
+ggplot(bias_dat,aes(x = GRE_Score, y = Graduate_GPA))+
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme_classic() +
+         labs(title = "Unbiased Sample of the Population") +
+   theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16))
+```
+
+:::
+::::
+
+In reality, students with low GRE scores are not usually admitted to graduate programs, so their GPA is not observed 🧐 Let's see what happens to our correlation in that case...
+
+## Example of Bias: Biased Sample 
+
+:::: {.columns}
+::: {.column width="40%"}
+
+If only students who have a GRE score at the mean or above are admitted to graduate programs, then the correlation `Graduate_GPA` and `GRE_Score` becomes:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+cor(bias_dat[bias_dat$GRE_Score > 0,])[2]
+```
+Compared to the previous plot, we only observe values with `GRE_Score` $> 0$, which causes us to think that the correlation between `Graduate_GPA` and `GRE_Score` is lower than it actually is in reality 🤔
+
+This a case of bias due to [restriction of range](https://dictionary.apa.org/restriction-of-range){target="_blank"}.
+
+
+
+:::
+
+::: {.column width="60%"}
+
+```{r}
+
+ggplot(bias_dat[bias_dat$GRE_Score > 0,] , aes(x = GRE_Score, y = Graduate_GPA))+
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme_classic() +
+         labs(title = "Biased Sample of the Population",
+            y= "GPA", 
+            x = "Test Score") +
+   theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16))
+```
+
+
+<div style="font-size: 20px"> (this is just an example, I am not trying to be a shill for the GRE, so don't @ me 🫣) </div>
+
+
+:::
+::::
+
+## Missing Data and Bias
+
+In the previous example, we saw that the true correlation between `Graduate_GPA` and `GRE_Score` was $r = .61$, but in our sample we found that $\hat{r} = .25$. This is some pretty serious bias, which will cause us to make some very different conclusions about our hypotheses. 
+
+What does this have to do with missing data? Well, the example from before is actually a missing data problem, where missingness in `Graduate_GPA` is caused by `GRE_Score` (MAR process). Going back to our missing data processes, two of them will result in biased results if cases are deleted like we just did.
+
+<center>
+:::: {.columns}
+::: {.column width="33%"}
+
+**Missing completely at random (MCAR)** 
+
+Will not produce bias if cases are deleted
+
+
+:::
+::: {.column width="33%"}
+
+**Missing at Random (MAR)**
+
+Will produce bias if cases are deleted
+
+:::
+
+::: {.column width="33%"}
+
+**Missing not at random (MNAR)**
+
+Will produce bias if cases are deleted
+:::
+::::
+
+</center>
+
+By default, most software delete cases if any of them are missing on a single variable (e.g., `lm()` will delete rows if they are missing on a single predictor/outcome), which causes bias unless missingness is completely random (MCAR). Of course, this is not a big problem if you only delete few cases.
+
+
+## Can I know How My Data Went Missing?
+
+Depending on how our data went missing, we have to use different methods to prevent bias. However, how do we find out whether our missing data is MCAR, MAR, or MNAR? Unfortunately, The only thing we can find out is whether our missingness is MCAR or not 🤷 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<ul style="font-size: 24px">  
+
+<li> Testing MAR would require you to know for sure that *there is no unobserved variable* that predicts missingness beyond the variables in your data (impossible 🤷) </li>
+
+</ul>
+
+:::
+::: {.column width="50%"}
+
+<ul style="font-size: 24px">  
+
+<li> Testing NMAR would require you to know for sure that *there is an unobserved variable* that predicts missingness (impossible 🤷) </li>
+
+</ul>
+
+:::
+::::
+
+To test MAR and MNAR you would have to know about a variable that you don't know about (a statement worthy of a philosophy PhD dissertation). 
+
+</br>
+
+
+
+
+Ok, but how do we know that methods of handling missing data work/do not work or produce more or less bias? There is no empirical way to test this because either you the full data or you do not (you do not have both to compare). The only way is to have a complete dataset and then *simulate different missingness mechanisms*, which is what we are going to do for the rest of this class.
+
+
+## Little's MCAR test
+
+To test that missingness in your data is MCAR you can use the `mcar_test()` function from the `naniar` package, which runs Little's MCAR test [@Little_1988]. If the data is indeed MCAR, the result will not be significant. F
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r include=FALSE}
+
+# random missingness
+
+# dat_miss[,5:8] <- produce_NA(dat[, c("lmx", "worksat", "climate", "cohesion")], proportion = 0.3)
+# 
+# 
+# mcar_test(dat_miss[,5:8])                             
+
+```
+
+
+:::
+
+::: {.column width="50%"}
+
 
 :::
 ::::
@@ -134,9 +372,39 @@ Regardless, these processes are important because methods that deal with missing
 
 
 
+## MCAR
 
 
-## For later
+```{r include=FALSE}
+
+reg_org <- lm(empower ~ lmx + worksat + climate + cohesion, dat)
+
+
+library(missForestPredict)
+
+dat_miss <- dat
+
+
+bias <- list()
+
+
+for(i in 1:2000){
+  
+dat_miss[,5:8] <- produce_NA(dat[, c("lmx", "worksat", "climate", "cohesion")], proportion = 0.3)
+reg_miss<- lm(empower ~ lmx + worksat + climate + cohesion, dat_miss)
+
+bias[[i]] <-  coef(reg_org) -  coef(reg_miss)
+}
+
+
+
+bias_dat <- dplyr::bind_rows(bias)
+
+colMeans(bias_dat)
+
+```
+
+
 
 
 ```{r}
