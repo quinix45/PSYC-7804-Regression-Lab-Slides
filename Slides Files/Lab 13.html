@@ -6,9 +6,7 @@
 <script src="Lab 13_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="Lab 13_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="Lab 13_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="Lab 13_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<link href="Lab 13_files/libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
-<link href="Lab 13_files/libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
+<link href="Lab 13_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.6.42">
 
   <meta name="author" content="Fabio Setti">
@@ -30,8 +28,28 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-  </style>
-  <link rel="stylesheet" href="Lab 13_files/libs/revealjs/dist/theme/quarto-02c83eab1497f87ec676bc2efb3d66c9.css">
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="Lab 13_files/libs/revealjs/dist/theme/quarto-af26e66dd6db93e8abe18002fa63acf7.css">
   <link href="Lab 13_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="Lab 13_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="Lab 13_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -146,7 +164,62 @@ Fabio Setti
 </div>
 
 </section>
+<section id="todays-packages-and-data" class="slide level2">
+<h2>Today’s Packages and Data 🤗</h2>
+</section>
+<section id="for-all-your-missing-data-needs" class="slide level2">
+<h2>For all your missing data needs</h2>
+<p>This Lab is a very quick overview of some methods of dealing with missing data. More often than not, your missing data woes will be trickier than what I go over here.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>As far as missing data resources go, I would say that <em>Applied Missing Data Analysis</em> <span class="citation" data-cites="Enders_2022">(<a href="#/references" role="doc-biblioref" onclick="">Enders, 2022</a>)</span> is the best resource at the time of making these slides.</p>
+<p><br></p>
+<p>I think the book is very approachable, and explains many of the concepts very clearly!</p>
+<p><br></p>
+<p>Additionally, there is a <a href="https://www.appliedmissingdata.com" target="_blank">website</a> that complements the book very nicely. You can also find <a href="https://www.appliedmissingdata.com/analyses" target="_blank">the code for the examples</a> from each chapter on the website.</p>
+</div><div class="column" style="width:50%;">
+<center>
+<img data-src="Images/AMDA_enders.jpg" style="width:50.0%">
+</center>
+</div></div>
+</section>
+<section id="why-is-my-data-missing" class="slide level2">
+<h2>Why is My Data Missing?</h2>
+<p>There may be many reasons why you end up with missing data. In general, there are <strong>3 missing data mechanisms</strong> that can describe the way in which data is missing:</p>
+<center>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>Missing completely at random (MCAR)</strong></p>
+<p>Missing data is said to be MCAR if the missing values in your data happen completely at random, meaning that there is <em>no discernible pattern in the missingness</em>.</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Missing at Random (MAR)</strong></p>
+<p>Missing data is said to be MAR if the missing values in your can be predicted by your observed variables, meaning that some of your measured variables <em>explain why</em> data may be missing.</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Missing not at random (MNAR)</strong></p>
+<p>Missing data is said to be MAR if the missing values are due to some variable that is not observed. This is the trickiest case of missing data because something that you don’t know about is causing you data to disappear.</p>
+</div></div>
+</center>
+<p>I am using the terminology from <span class="citation" data-cites="Enders_2022">Enders (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span>, you may see different names for these 3 mechanisms.</p>
+<p>Regardless, these processes are important because methods that deal with missing data make the assumption that one of these three mechanisms are at play.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
 
+</div><div class="column" style="width:50%;">
+
+</div></div>
+</section>
+<section id="for-later" class="slide level2">
+<h2>For later</h2>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Enders_2022" class="csl-entry" role="listitem">
+Enders, C. K. (2022). <em>Applied missing data analysis</em> (pp. ix, 546). The Guilford Press.
+</div>
+</div>
+
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
@@ -364,6 +437,82 @@ Fabio Setti
         ]
       });
     </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

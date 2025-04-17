@@ -41,16 +41,86 @@ dat_miss[dat_miss == "999"] <- NA
 
 ## For all your missing data needs
 
-This Lab is a very quick overview of some methods of dealing with missing data. More often than not, you will require 
+This Lab is a very quick overview of some methods of dealing with missing data. More often than not, your missing data woes will be trickier than what I go over here. 
+
+:::: {.columns}
+::: {.column width="50%"}
+
+As far as missing data resources go, I would say that *Applied Missing Data Analysis* [@Enders_2022] is the best resource at the time of making these slides. 
+
+</br>
 
 
-## Missing data Mechanisms
+I think the book is very approachable, and explains many of the concepts very clearly! 
 
-There may be many reasons why you end up with missing data. In general, there are **3 mechanisms** that can describe the way in which data is missing:
+
+</br>
+
+Additionally, there is a [website](https://www.appliedmissingdata.com){target="_blank"} that complements the book very nicely. You can also find [the code for the examples](https://www.appliedmissingdata.com/analyses){target="_blank"} from each chapter on the website. 
+
+
+:::
+::: {.column width="50%"}
+
+
+<center>
+
+![](Images/AMDA_enders.jpg){width=50%}
+</center>
+
+:::
+::::
+
+
+
+## Why is My Data Missing?
+
+There may be many reasons why you end up with missing data. In general, there are **3 missing data mechanisms** that can describe the way in which data is missing:
+
+<center>
+:::: {.columns}
+::: {.column width="33%"}
+
+**Missing completely at random (MCAR)** 
+
+Missing data is said to be MCAR if the missing values in your data happen completely at random, meaning that there is *no discernible pattern in the missingness*. 
+
+
+:::
+::: {.column width="33%"}
+
+**Missing at Random (MAR)**
+
+Missing data is said to be MAR if the missing values in your can be predicted by your observed variables, meaning that some of your measured variables *explain why* data may be missing.
+
+:::
+
+::: {.column width="33%"}
+
+**Missing not at random (MNAR)**
+
+Missing data is said to be MAR if the missing values are due to some variable that is not observed. This is the trickiest case of missing data because something that you don't know about is causing your data to disappear. 
+
+:::
+::::
+
+</center>
+
+I am using the terminology from @Enders_2022, you may see different names for these 3 mechanisms. 
+
+Regardless, these processes are important because methods that deal with missing data make the assumption that one of these three mechanisms are at play. 
+
+
+
+
+
+
+
+
 
 
 :::: {.columns}
-::: {.column width="30%"}
+::: {.column width="50%"}
 
 :::
 ::: {.column width="50%"}
@@ -59,25 +129,39 @@ There may be many reasons why you end up with missing data. In general, there ar
 ::::
 
 
+
+
+
+
+
+
+
+## For later
+
+
 ```{r}
 
-lav_mod <- "empower ~ lmx + worksat + climate + cohesion"
-
-fit <- lavaan::sem(lav_mod, dat, meanstructure = TRUE, fixed.x = FALSE, missing = "fiml")
-
-lavaan::summary(fit)
+# lav_mod <- "empower ~ lmx + worksat + climate + cohesion"
+# 
+# fit <- lavaan::sem(lav_mod, dat, meanstructure = TRUE, fixed.x = FALSE, missing = "fiml")
+# 
+# lavaan::summary(fit)
 ```
 
 
 ```{r}
-library(VIM)
-X.miss <- produce_NA(dat[, 5:8], proportion = 0.5)
-
-dat_miss <- dat
-dat_miss[,5:8] <- X.miss
-
-fit_miss <- lavaan::sem(lav_mod, dat_miss, meanstructure = TRUE, fixed.x = TRUE, missing = "fiml")
-lavaan::summary(fit_miss)
+# library(VIM)
+# X.miss <- produce_NA(dat[, 5:8], proportion = 0.5)
+# 
+# dat_miss <- dat
+# dat_miss[,5:8] <- X.miss
+# 
+# fit_miss <- lavaan::sem(lav_mod, dat_miss, meanstructure = TRUE, fixed.x = TRUE, missing = "fiml")
+# lavaan::summary(fit_miss)
 
 ```
 
+## References
+
+
+<div id="refs"> </div>
