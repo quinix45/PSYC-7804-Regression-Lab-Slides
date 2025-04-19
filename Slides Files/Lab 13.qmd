@@ -31,16 +31,59 @@ editor: source
 :::: {.columns}
 ::: {.column width="50%"}
 
+
 ```{r}
-library(tidyverse)
-library(naniar)
-library(missForestPredict)
+#| code-fold: true
+#| eval: false
+#| echo: true
+#| code-line-numbers: false
+#| code-summary: "Install Packages Code"
+#| classes: code-150
+
+install.packages("naniar")
+install.packages("missMethods")
 ```
+
+```{r}
+#| eval: true
+#| echo: true
+#| code-line-numbers: false
+#| warning: false
+#| classes: code-150
+
+library(naniar)
+library(missMethods)
+library(tidyverse)
+theme_set(theme_classic(base_size = 16, 
+                        base_family = 'serif'))
+```
+
+
+<div style="font-size: 26px">
+
+::: {.panel-tabset}
+### `naniar`
+
+The `naniar` package [@Tierney_etal_2024] provides tools to summarize, visualize, and explore missingness in your data. Check out the [packege's website](https://naniar.njtierney.com){target="_blank"} to find out more.
+
+
+### `missMethods`
+
+The `missMethods` package [@Rockel_2022] includes functions to create, handle, and evaluate missing data. In this lab I just use some functions from this package to simulate missing data. 
+
+:::
+
+</div>
 
 
 :::
 ::: {.column width="50%"}
 
+<center style="padding-bottom: 41px;"> [Data]{.data-title} </center>
+
+<div style="font-size: 24px"> This data is taken from [this website](https://www.appliedmissingdata.com/analyses){target="_blank"}, which I talk about on the next slide. 
+</div>
+ 
 ```{r}
 #| eval: true
 #| echo: true 
@@ -49,6 +92,20 @@ library(missForestPredict)
 
 dat <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/employee.csv")
 ```
+
+This is some fabricated data about 630 employees who filled out a work satisfaction survey at a company. The meaning of the individual variables is not super important.
+
+We will also use `lavaan` to run regressions, so I load this function to have clearer summaries later:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+source("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Additional%20files/lavaan_summary_lab12.R")
+```
+
 
 :::
 ::::
@@ -87,6 +144,63 @@ Additionally, there is a [website](https://www.appliedmissingdata.com){target="_
 ::::
 
 
+## Software Behavior With Missing Data?
+
+We have 630 observations, but let's say that the when we collected our data, the first 300 observations in our data are missing on the `climate` variable, which I am going to define as `climate_miss`. 
+
+:::: {.columns}
+::: {.column width="60%"}
+
+
+::: {.fragment fragment-index=1}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+climate_miss <- c(rep(NA, 300), dat$climate[301:630])
+
+# Quick way of counting missing values in a column
+sum(is.na(climate_miss))
+```
+:::
+
+::: {.fragment fragment-index=2}
+
+Then we run run the regression `empower ~ lmx + worksat + climate_miss` and check how many residuals we have (1 residual per person, so equivalent to sample size):
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg_miss <- lm(empower ~ lmx + worksat + climate_miss, dat)
+length(resid(reg_miss))
+```
+:::
+
+
+:::
+::: {.column width="40%"}
+
+
+::: {.fragment fragment-index=3}
+Even though our sample size is 630, and values are missing only for `climate_miss`, the `lm()` function discarded all of those observations. We lost 300 observations for having missing values on a single predictor 😱
+:::
+
+::: {.fragment fragment-index=4}
+This is called *listwise deletion*, and  most software will do this by default. More practically you will lose a large portion of your sample without realizing it!
+:::
+
+:::
+::::
+
+::: {.fragment fragment-index=5}
+The more important issues is that, in many instances, listwise deletion will also lead to **biased results**. We will return to this in a couple of slides. 
+:::
 
 ## Why is My Data Missing?
 
@@ -96,51 +210,63 @@ There may be many reasons why you end up with missing data. In general, there ar
 :::: {.columns}
 ::: {.column width="33%"}
 
+
+::: {.fragment fragment-index=1}
 **Missing completely at random (MCAR)** 
 
 Missing data is said to be MCAR if the missing values in your data happen completely at random, meaning that there is *no discernible pattern in the missingness*. 
-
+:::
 
 :::
 ::: {.column width="33%"}
 
+::: {.fragment fragment-index=2}
 **Missing at Random (MAR)**
 
 Missing data is said to be MAR if the missing values in your can be predicted by your observed variables, meaning that some of your measured variables *explain why* data may be missing.
+:::
 
 :::
 
 ::: {.column width="33%"}
 
+::: {.fragment fragment-index=3}
 **Missing not at random (MNAR)**
 
 Missing data is said to be MAR if the missing values are due to some variable that is not observed. This is the worst case of missing data because something that you don't know about is causing your data to disappear. 
+:::
 
 :::
 ::::
 
 </center>
 
+::: {.fragment fragment-index=4}
 I am using the terminology from @Enders_2022, you may see different names for these 3 mechanisms. 
 
 Regardless, these processes are important because methods that deal with missing data make the assumption that one of these three mechanisms are at play. 
+:::
 
 
 ## Bias
 
-What is so bad about missing data? Well, the main problem is that if the missingness is MAR or MNAR, you will get *biased results* if you don't account for the missingness process appropriately. **Bias** has a very specific meaning in statistics. For example:
-
+::: {.fragment fragment-index=1}
+What is so bad about missing data? Well, as foreshadowed the main problem is that if the missingness is MAR or MNAR, you will get *biased results* if you don't account for the missingness process appropriately. **Bias** has a very specific meaning in statistics. For example:
+:::
 
 :::: {.columns}
 ::: {.column width="50%"}
 
-One of the tenets of statistics is that if you somehow managed to measure the entire population on something, you would be able to calculate the true value of a statistics (e.g., correlation, regression slope, mean,...). 
+::: {.fragment fragment-index=2}
+One of the tenets of statistics is that if you somehow managed to measure the entire population on something, you would be able to calculate the *true value* of a statistics (e.g., correlation, regression slope, mean,...). 
+:::
 
 :::
 ::: {.column width="50%"}
 
-
-For example, let's say that we managed to measure every person in the world and we observed that the correlation between *income* and *happiness* is $r = .2$. However, in my sample of 200 US citizens I find a correlation of $\hat{r} = .4$.
+::: {.fragment fragment-index=3}
+Let's say that we managed to measure every person in the world and we observed that the correlation between *income* and *happiness* is $r = .2$. However, in my sample of 200 US citizens I find a correlation of $\hat{r} = .4$.
+:::
 
 :::
 ::::
@@ -148,14 +274,17 @@ For example, let's say that we managed to measure every person in the world and 
 
 <center>
 
+::: {.fragment fragment-index=4}
 In this case, $\mathrm{bias} = \hat{r} - r = .4 - .2 = .2$. 
+:::
 
 </center>
 
 </br>
 
-Thus, **bias** is the expected difference between the true value of a statistic and the observed value. All of statics rests on the assumption that our sample is representative of the population, and can therefore produce *unbiased* estimates of the true population statistic.
-
+::: {.fragment fragment-index=5}
+Thus, **bias** is the expected difference between the true value of a statistic and the observed value. All of statistical theory rests on the assumption that our sample is representative of the population, and can therefore produce *unbiased* estimates of the true population statistic we want to know.
+:::
 
 ## Example of Bias: The Population
 
@@ -219,7 +348,10 @@ ggplot(bias_dat,aes(x = GRE_Score, y = Graduate_GPA))+
 :::
 ::::
 
+::: {.fragment fragment-index=1}
 In reality, students with low GRE scores are not usually admitted to graduate programs, so their GPA is not observed 🧐 Let's see what happens to our correlation in that case...
+:::
+
 
 ## Example of Bias: Biased Sample 
 
@@ -236,10 +368,14 @@ If only students who have a GRE score at the mean or above are admitted to gradu
 
 cor(bias_dat[bias_dat$GRE_Score > 0,])[2]
 ```
+
+::: {.fragment fragment-index=1}
 Compared to the previous plot, we only observe values with `GRE_Score` $> 0$, which causes us to think that the correlation between `Graduate_GPA` and `GRE_Score` is lower than it actually is in reality 🤔
+:::
 
+::: {.fragment fragment-index=2}
 This a case of bias due to [restriction of range](https://dictionary.apa.org/restriction-of-range){target="_blank"}.
-
+:::
 
 
 :::
@@ -247,6 +383,14 @@ This a case of bias due to [restriction of range](https://dictionary.apa.org/res
 ::: {.column width="60%"}
 
 ```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Plot code"
+
+
 
 ggplot(bias_dat[bias_dat$GRE_Score > 0,] , aes(x = GRE_Score, y = Graduate_GPA))+
   geom_point() +
@@ -258,9 +402,9 @@ ggplot(bias_dat[bias_dat$GRE_Score > 0,] , aes(x = GRE_Score, y = Graduate_GPA))
    theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16))
 ```
 
-
+::: {.fragment fragment-index=2}
 <div style="font-size: 20px"> (this is just an example, I am not trying to be a shill for the GRE, so don't @ me 🫣) </div>
-
+:::
 
 :::
 ::::
@@ -269,8 +413,11 @@ ggplot(bias_dat[bias_dat$GRE_Score > 0,] , aes(x = GRE_Score, y = Graduate_GPA))
 
 In the previous example, we saw that the true correlation between `Graduate_GPA` and `GRE_Score` was $r = .61$, but in our sample we found that $\hat{r} = .25$. This is some pretty serious bias, which will cause us to make some very different conclusions about our hypotheses. 
 
-What does this have to do with missing data? Well, the example from before is actually a missing data problem, where missingness in `Graduate_GPA` is caused by `GRE_Score` (MAR process). Going back to our missing data processes, two of them will result in biased results if cases are deleted like we just did.
+::: {.fragment fragment-index=1}
+What does this have to do with missing data? The example from before is actually a missing data problem, where missingness in `Graduate_GPA` is caused by `GRE_Score` (MAR process). Going back to our missing data processes, two of them will result in biased results if cases are deleted like we just did.
+:::
 
+::: {.fragment fragment-index=2}
 <center>
 :::: {.columns}
 ::: {.column width="33%"}
@@ -298,9 +445,12 @@ Will produce bias if cases are deleted
 ::::
 
 </center>
+:::
 
+
+::: {.fragment fragment-index=3}
 By default, most software delete cases if any of them are missing on a single variable (e.g., `lm()` will delete rows if they are missing on a single predictor/outcome), which causes bias unless missingness is completely random (MCAR). Of course, this is not a big problem if you only delete few cases.
-
+:::
 
 ## Can I know How My Data Went Missing?
 
@@ -309,59 +459,416 @@ Depending on how our data went missing, we have to use different methods to prev
 :::: {.columns}
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=1}
 <ul style="font-size: 24px">  
 
 <li> Testing MAR would require you to know for sure that *there is no unobserved variable* that predicts missingness beyond the variables in your data (impossible 🤷) </li>
 
 </ul>
+:::
 
 :::
 ::: {.column width="50%"}
 
+
+::: {.fragment fragment-index=2}
 <ul style="font-size: 24px">  
 
 <li> Testing NMAR would require you to know for sure that *there is an unobserved variable* that predicts missingness (impossible 🤷) </li>
 
 </ul>
+:::
 
 :::
 ::::
 
+::: {.fragment fragment-index=3}
 To test MAR and MNAR you would have to know about a variable that you don't know about (a statement worthy of a philosophy PhD dissertation). 
+:::
 
 </br>
 
 
 
-
+::: {.fragment fragment-index=4}
 Ok, but how do we know that methods of handling missing data work/do not work or produce more or less bias? There is no empirical way to test this because either you the full data or you do not (you do not have both to compare). The only way is to have a complete dataset and then *simulate different missingness mechanisms*, which is what we are going to do for the rest of this class.
+:::
 
 
 ## Little's MCAR test
 
-To test that missingness in your data is MCAR you can use the `mcar_test()` function from the `naniar` package, which runs Little's MCAR test [@Little_1988]. If the data is indeed MCAR, the result will not be significant. F
+To test that missingness in your data is MCAR you can use the `mcar_test()` function from the `naniar` package, which runs Little's MCAR test [@Little_1988]. If the data is indeed MCAR, the result will not be significant. 
 
 
 :::: {.columns}
 
 ::: {.column width="50%"}
 
-```{r include=FALSE}
+::: {.fragment fragment-index=1}
+
+<div style="font-size: 24px"> Here I generate MCAR missingness with the `delete_MCAR()` function and then use `mcar_test()`  </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Generate MCAR"
 
 # random missingness
+library(missMethods)
 
-# dat_miss[,5:8] <- produce_NA(dat[, c("lmx", "worksat", "climate", "cohesion")], proportion = 0.3)
-# 
-# 
-# mcar_test(dat_miss[,5:8])                             
-
+set.seed(78984)
+# 30% missing
+dat_miss_MCAR <- delete_MCAR(dat, p = .3)
 ```
 
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# run test (need to run code above first)
+mcar_test(dat_miss_MCAR)
+```
+:::
 
 :::
 
 ::: {.column width="50%"}
 
+::: {.fragment fragment-index=2}
+<div style="font-size: 24px"> Here I generate MAR missingness, where employees with lower work satisfaction (`worksat`) are less likely to report the other variables when asked: </div>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "Generate MAR"
+
+set.seed(467)
+# Probabilities of missingness based on `worksat` 
+mis_prob <- 1 - plogis(dat$worksat, location = mean(dat$worksat), scale = sd(dat$worksat))
+dat_miss_MAR <- dat
+
+# MAR process for other variables
+for(i in 1:4){
+  dat_miss_MAR[,colnames(dat)[-3][i]] <- ifelse(rbinom(nrow(dat), 1, mis_prob) == "1", NA, dat[,colnames(dat)[-3][i]])
+}
+```
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+# run test (need to run code above first)
+# `worksat` taken out because I left it complete on purpose
+mcar_test(dat_miss_MAR[,-3])
+```
+:::
+
+:::
+::::
+
+
+::: {.fragment fragment-index=3}
+<div style="font-size: 26px"> As expected, Little's test is not significant when data is MCAR meaning that there is not pattern to the missingness. On the other hand, the test is significant when the missingness is due to some other variable (observed or not). </div>
+:::
+
+## Non-Significant Little's Test?
+
+When Little's test is *not significant*, you are in the clear! Even if you delete observations with missing data, your results will not be biased. Don't trust me? Let's run a quick simulation!
+
+:::: {.columns}
+::: {.column width="60%"}
+
+::: {.fragment fragment-index=1}
+We want to see how `empower`,  `lmx`,  `climate`, and `cohesion` predict `worksat`. First we run the regression with the complete data to use the result as a comparison.
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg <- lm(worksat ~ empower + lmx + climate + cohesion, dat)
+
+round(coef(reg), 3)
+
+```
+
+Here are the intercept and slopes for our regression when we have the full data.
+:::
+
+
+:::
+::: {.column width="40%"}
+
+</br>
+
+
+::: {.fragment fragment-index=2}
+Now that we know what the results *should look like* we can simulate missingness mechanisms, run the regression again, and check how far we are from the values on the left.
+
+We are treating the values on the left as the **population** values. 
+:::
+
+
+:::
+::::
+
+::: {.fragment fragment-index=3}
+Remember that the `lm()` function will delete any rows that have a missing value on any of the variables. So, we should expect bias when missingness is MAR, but not when missingness is MCAR. 
+:::
+
+## MCAR VS MAR with `lm()`
+
+I am going to simulate both MCAR and MAR many times, run regressions with `lm()` each time, and then look at the average values of the intercepts and slopes:
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+::: {.fragment fragment-index=1}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "MCAR Sim Code"
+
+
+set.seed(78984)
+
+MCAR_list <- c()
+
+for (i in 1:2000) 
+  {
+  dat_miss_MCAR <- delete_MCAR(dat, p = .3, cols_mis = colnames(dat)[-3])  
+  
+  MCAR_list[[i]] <-  coef(lm(worksat ~ empower + lmx + climate + cohesion, dat_miss_MCAR))
+  
+  }
+
+MCAR_res <- bind_rows(MCAR_list)
+```
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+round(colMeans(MCAR_res), 3)
+```
+
+**MCAR:** Almost the same as the previous slide!
+
+:::
+
+:::
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=2}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "MAR Sim Code"
+
+
+set.seed(4627)
+
+
+MAR_list <- list()
+mis_prob <- 1 - plogis(dat$worksat, location = mean(dat$worksat), scale = sd(dat$worksat))  
+  
+for(i in 1:2000){
+
+dat_miss_MAR <- dat
+
+# MAR process for other variables
+for(j in 1:4){
+  dat_miss_MAR[,colnames(dat)[-3][j]] <- ifelse(rbinom(nrow(dat), 1, mis_prob) == "1", NA, dat[,colnames(dat)[-3][j]])
+}
+
+MAR_list[[i]] <-  coef(lm(worksat ~ empower + lmx + climate + cohesion, dat_miss_MAR))
+
+}
+
+MAR_res <- bind_rows(MAR_list)
+```
+
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+round(colMeans(MAR_res), 3)
+```
+**MAR:** Definitely much more biased!!
+
+:::
+
+:::
+::::
+
+::: {.fragment fragment-index=3}
+So, if you have a bunch of observations disappearing due to missing cases, check that the data is MCAR before running regressions on it. You may be getting biased results like the one of the right. Some notes on the code:
+:::
+
+::: {.fragment fragment-index=4}
+::: {.callout-note}
+## Are My Results Truly Unbiased? 
+
+Probably not. Although I showed that when missingness is MCAR, listwise deletion will produce unbiased results, that is only true *on average* (`colMeans()`) over many replications. If you look inside the `MCAR_res` object you will see the results for all the replications, and some of them will indeed be biased. The only assurance that statistics can give you is that *on average* you will be fine, not that you will *always* be fine.
+:::
+:::
+
+## Significant Little's Test?
+
+When Little's test is *significant*, you need to be careful! You know for sure that your missing data is not MCAR. So what next?
+
+::: {.fragment fragment-index=1}
+
+❌ You probably should not just use the `lm()` function, which does listwise deletion when rows have missing cases, and will likely produce biased results as shown on the previous slide. 
+:::
+
+::: {.fragment fragment-index=2}
+
+✅ Instead, we should use full information maximum likelihood (FIML) to estimate our regression. `lavaan` can run FIML for missing data. There are **2 big advantages** that FIML provides:
+:::
+
+::: {.fragment fragment-index=3}
+<ol style="font-size: 26px">  
+
+<li> Your results will be less biased if missing data is MAR. If the data is MCAR, FIML will work just as well as `lm()`. </li>
+
+<li> You will not lose any observations and you will retain your full sample! This helps with power (if you are into that kind of stuff), but also makes results more reliable. </li>
+
+</ol>
+:::
+
+::: {.fragment fragment-index=4}
+Note that FIML "works" only if your missing data is either MCAR or MAR; if data is MNAR, meaning that you have no measured variable that is related to missingness, then FIML will not be of much help and you'll need some more sophisticated stat. 
+:::
+
+## FIML with `lavaan`
+
+Running FIML in `lavaan` just involves adding a few extra arguments to the `sem()` function!
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+library(lavaan)
+reg_mod <- "worksat ~ empower + lmx + climate + cohesion"
+
+fit_miss <- sem(reg_mod, dat_miss_MAR, meanstructure = TRUE, 
+                fixed.x = FALSE, missing = "fiml")
+```
+
+
+
+::: {.fragment fragment-index=4}
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+
+# parameterestimates(fit_miss)[16, 4] gets the intercept for this specific model (do not copy and paste this line and expect it to print the intercept for other models, it will not work; you need to look for it through the lavaan summary yourself usually)
+round(c(parameterestimates(fit_miss)[16, 4], 
+        lav_summary(fit_miss)[,4]), 3)
+```
+
+
+Close to the original values below!
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+round(coef(reg), 3)
+```
+:::
+
+
+:::
+::: {.column width="50%"}
+
+Here, `dat_miss_MAR` is the last dataset generated from the MAR simulation on from two slide ago. Some notes on the code:
+
+
+<ul style="font-size: 24px">  
+
+::: {.fragment fragment-index=1}
+<li>`meanstructure = TRUE`: asks `lavaan`  to also estimate the intercepts, which it does not do by default.</li>
+:::
+
+::: {.fragment fragment-index=2}
+<li>`fixed.x = FALSE`: without going in too much detail, this is necessary for `lavaan` to be able to use FIML.</li>
+:::
+
+::: {.fragment fragment-index=3}
+<li> `missing = "fiml"`: tells `lavaan` to use FIML to estimate the model, which helps reducing bias if missing data is MAR. </li>
+:::
+
+</ul>
+
+::: {.fragment fragment-index=5}
+This is an example with just a single dataset, so check out the next slide to see how much better FIML is on average compared to listwise deletion for MAR data.
+:::
+
+:::
+::::
+
+
+
+## Comparing `lm()` and `lavaan` With MAR data
+
+
+:::: {.columns}
+::: {.column width="20%"}
+
+:::
+::: {.column width="60%"}
+
+<center> The results with no missing values are: </center>
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+round(coef(reg), 3)
+```
+:::
+
+::: {.column width="20%"}
 
 :::
 ::::
@@ -370,66 +877,179 @@ To test that missingness in your data is MCAR you can use the `mcar_test()` func
 
 
 
+:::: {.columns}
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "lm() Sim Code"
+
+set.seed(4627)
 
 
-## MCAR
-
-
-```{r include=FALSE}
-
-reg_org <- lm(empower ~ lmx + worksat + climate + cohesion, dat)
-
-
-library(missForestPredict)
-
-dat_miss <- dat
-
-
-bias <- list()
-
-
-for(i in 1:2000){
+MAR_list_lm <- list()
+mis_prob <- 1 - plogis(dat$worksat, location = mean(dat$worksat), scale = sd(dat$worksat))  
   
-dat_miss[,5:8] <- produce_NA(dat[, c("lmx", "worksat", "climate", "cohesion")], proportion = 0.3)
-reg_miss<- lm(empower ~ lmx + worksat + climate + cohesion, dat_miss)
+for(i in 1:2000){
 
-bias[[i]] <-  coef(reg_org) -  coef(reg_miss)
+dat_miss_MAR <- dat
+
+
+# MAR process for other variables
+for(j in 1:4){
+  dat_miss_MAR[,colnames(dat)[-3][j]] <- ifelse(rbinom(nrow(dat), 1, mis_prob) == "1", NA, dat[,colnames(dat)[-3][j]])
+}
+
+MAR_list_lm[[i]] <-  coef(lm(worksat ~ empower + lmx + climate + cohesion, dat_miss_MAR))
+
+}
+
+MAR_res_lm <- bind_rows(MAR_list_lm)
+
+```
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+round(colMeans(MAR_res_lm),3)
+```
+:::
+:::
+
+
+::: {.column width="50%"}
+::: {.fragment fragment-index=2}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "FIML Sim Code"
+
+# this will take around 10 minutes to run (could be faster if I parallelized loops)
+library(lavaan)
+
+set.seed(4627)
+
+MAR_list_fiml <- list()
+mis_prob <- 1 - plogis(dat$worksat, location = mean(dat$worksat), scale = sd(dat$worksat))  
+lav_mod <- "worksat ~ empower + lmx + climate + cohesion"
+  
+for(i in 1:2000){
+
+dat_miss_MAR <- dat
+
+# MAR process for other variables
+for(j in 1:4){
+  dat_miss_MAR[,colnames(dat)[-3][j]] <- ifelse(rbinom(nrow(dat), 1, mis_prob) == "1", NA, dat[,colnames(dat)[-3][j]])
 }
 
 
+fit_miss <- lavaan::sem(lav_mod, dat_miss_MAR, meanstructure = TRUE, fixed.x = FALSE, missing = "fiml")
 
-bias_dat <- dplyr::bind_rows(bias)
+MAR_list_fiml[[i]] <-  c(parameterestimates(fit_miss)[16, 4], lav_summary(fit_miss)[,4])
 
-colMeans(bias_dat)
+print(paste("iter", i))
+
+}
+
+MAR_res_fiml <- matrix(unlist(MAR_list_fiml), ncol = 5, byrow = TRUE)
 
 ```
-
-
-
 
 ```{r}
-
-# lav_mod <- "empower ~ lmx + worksat + climate + cohesion"
-# 
-# fit <- lavaan::sem(lav_mod, dat, meanstructure = TRUE, fixed.x = FALSE, missing = "fiml")
-# 
-# lavaan::summary(fit)
+MAR_res_fiml <- readRDS("Additional files/FIML_sim.RDS")
 ```
-
 
 ```{r}
-# library(VIM)
-# X.miss <- produce_NA(dat[, 5:8], proportion = 0.5)
-# 
-# dat_miss <- dat
-# dat_miss[,5:8] <- X.miss
-# 
-# fit_miss <- lavaan::sem(lav_mod, dat_miss, meanstructure = TRUE, fixed.x = TRUE, missing = "fiml")
-# lavaan::summary(fit_miss)
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
 
+round(colMeans(MAR_res_fiml), 3)
 ```
+
+:::
+:::
+
+::::
+
+
+::: {.fragment fragment-index=3}
+As you can see, when we simulate MAR missingness, the results produced by `lavaan` are, on average, closer to the original results. You can especially see the benefits for the intercept and the slope of `lmx`. 
+:::
+
+::: {.fragment fragment-index=4}
+So, when Little's test is significant and you need as quick solution, FIML is your best bet. On the next slide, I touch upon some other missing data methods/topics that you may want to look into when FIML estimation alone does not cut it. 
+:::
+
+## Further Topics
+
+In no particular order, there are many more topics that require much more time to be covered. All of them are covered in detail in @Enders_2022. Some notable ones:
+
+
+
+:::: {.columns}
+::: {.column width="33%"}
+
+::: {.fragment fragment-index=1}
+<center> **Auxiliary variables** 
+
+You can think of auxiliary variables as covariates, but they are variables that help you predict missing values and allow FIML (or multiple imputation methods) to get more accurate results. The `semTools` package [@Jorgensen_etal_2025] has a [function](https://www.rdocumentation.org/packages/semTools/versions/0.4-12/topics/auxiliary){target="_blank"} that lets you add auxiliary variables to `lavaan`'s models. 
+
+</center>
+:::
+
+
+:::
+::: {.column width="33%"}
+
+::: {.fragment fragment-index=2}
+<center> **Multiple imputation** 
+
+
+<div style="font-size: 24px"> Multiple imputation is a method where you use some algorithm to impute missing data (like a fill in the blank). The imputation is repeated to create multiple datasets. Then the same analysis is ran on all the datasets, and results are averaged (pooled results). I like this method because it is more general than FIML and can be implemented no matter the type of analysis. The `mice` package [@Buuren_etal_2024] can do multiple imputation.
+ </div>
+
+
+
+</center>
+:::
+
+:::
+
+
+::: {.column width="33%"}
+
+::: {.fragment fragment-index=3}
+<center> **MNAR data** 
+
+
+Although MNAR is untestable, if your data is not MCAR, and you have no measured variables that explain why data may be missing, then you are in the MNAR territory. Two statistical methods that you need to look into in this case are selection models and pattern mixture models. [This document](https://faculty.washington.edu/yenchic/21Sp_stat542/Lec4_missing.pdf){target="_blank"} is a good place to start.
+
+
+
+</center>
+:::
+
+:::
+::::
+
 
 ## References
 
 
 <div id="refs"> </div>
+

@@ -233,10 +233,47 @@ Fabio Setti
 <h2>Today’s Packages and Data 🤗</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-
+<div class="cell code-150">
+<details class="code-fold">
+<summary>Install Packages Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"naniar"</span>)</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"missMethods"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell code-150">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(missMethods)</span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">16</span>, </span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">base_family =</span> <span class="st">'serif'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div style="font-size: 26px">
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>naniar</code></a></li><li><a href="#tabset-1-2"><code>missMethods</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<p>The <code>naniar</code> package <span class="citation" data-cites="Tierney_etal_2024">(<a href="#/references" role="doc-biblioref" onclick="">Tierney et al., 2024</a>)</span> provides tools to summarize, visualize, and explore missingness in your data. Check out the <a href="https://naniar.njtierney.com" target="_blank">packege’s website</a> to find out more.</p>
+</div>
+<div id="tabset-1-2">
+<p>The <code>missMethods</code> package <span class="citation" data-cites="Rockel_2022">(<a href="#/references" role="doc-biblioref" onclick="">Rockel, 2022</a>)</span> includes functions to create, handle, and evaluate missing data. In this lab I just use some functions from this package to simulate missing data.</p>
+</div>
+</div>
+</div>
+</div>
 </div><div class="column" style="width:50%;">
+<center style="padding-bottom: 41px;">
+<span class="data-title">Data</span>
+</center>
+<div style="font-size: 24px">
+<p>This data is taken from <a href="https://www.appliedmissingdata.com/analyses" target="_blank">this website</a>, which I talk about on the next slide.</p>
+</div>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/employee.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/employee.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is some fabricated data about 630 employees who filled out a work satisfaction survey at a company. The meaning of the individual variables is not super important.</p>
+<p>We will also use <code>lavaan</code> to run regressions, so I load this function to have clearer summaries later:</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Additional%20files/lavaan_summary_lab12.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div></div>
 </section>
@@ -256,39 +293,95 @@ Fabio Setti
 </center>
 </div></div>
 </section>
+<section id="software-behavior-with-missing-data" class="slide level2">
+<h2>Software Behavior With Missing Data?</h2>
+<p>We have 630 observations, but let’s say that the when we collected our data, the first 300 observations in our data are missing on the <code>climate</code> variable, which I am going to define as <code>climate_miss</code>.</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="fragment" data-fragment-index="1">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>climate_miss <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">300</span>), dat<span class="sc">$</span>climate[<span class="dv">301</span><span class="sc">:</span><span class="dv">630</span>])</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick way of counting missing values in a column</span></span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(climate_miss))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 300</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p>Then we run run the regression <code>empower ~ lmx + worksat + climate_miss</code> and check how many residuals we have (1 residual per person, so equivalent to sample size):</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg_miss <span class="ot">&lt;-</span> <span class="fu">lm</span>(empower <span class="sc">~</span> lmx <span class="sc">+</span> worksat <span class="sc">+</span> climate_miss, dat)</span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">resid</span>(reg_miss))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 330</code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="fragment" data-fragment-index="3">
+<p>Even though our sample size is 630, and values are missing only for <code>climate_miss</code>, the <code>lm()</code> function discarded all of those observations. We lost 300 observations for having missing values on a single predictor 😱</p>
+</div>
+<div class="fragment" data-fragment-index="4">
+<p>This is called <em>listwise deletion</em>, and most software will do this by default. More practically you will lose a large portion of your sample without realizing it!</p>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="5">
+<p>The more important issues is that, in many instances, listwise deletion will also lead to <strong>biased results</strong>. We will return to this in a couple of slides.</p>
+</div>
+</section>
 <section id="why-is-my-data-missing" class="slide level2">
 <h2>Why is My Data Missing?</h2>
 <p>There may be many reasons why you end up with missing data. In general, there are <strong>3 missing data mechanisms</strong> that can describe the way in which data is missing:</p>
 <center>
 <div class="columns">
 <div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="1">
 <p><strong>Missing completely at random (MCAR)</strong></p>
 <p>Missing data is said to be MCAR if the missing values in your data happen completely at random, meaning that there is <em>no discernible pattern in the missingness</em>.</p>
+</div>
 </div><div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="2">
 <p><strong>Missing at Random (MAR)</strong></p>
 <p>Missing data is said to be MAR if the missing values in your can be predicted by your observed variables, meaning that some of your measured variables <em>explain why</em> data may be missing.</p>
+</div>
 </div><div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="3">
 <p><strong>Missing not at random (MNAR)</strong></p>
 <p>Missing data is said to be MAR if the missing values are due to some variable that is not observed. This is the worst case of missing data because something that you don’t know about is causing your data to disappear.</p>
+</div>
 </div></div>
 </center>
+<div class="fragment" data-fragment-index="4">
 <p>I am using the terminology from <span class="citation" data-cites="Enders_2022">Enders (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span>, you may see different names for these 3 mechanisms.</p>
 <p>Regardless, these processes are important because methods that deal with missing data make the assumption that one of these three mechanisms are at play.</p>
+</div>
 </section>
 <section id="bias" class="slide level2">
 <h2>Bias</h2>
-<p>What is so bad about missing data? Well, the main problem is that if the missingness is MAR or MNAR, you will get <em>biased results</em> if you don’t account for the missingness process appropriately. <strong>Bias</strong> has a very specific meaning in statistics. For example:</p>
+<div class="fragment" data-fragment-index="1">
+<p>What is so bad about missing data? Well, as foreshadowed the main problem is that if the missingness is MAR or MNAR, you will get <em>biased results</em> if you don’t account for the missingness process appropriately. <strong>Bias</strong> has a very specific meaning in statistics. For example:</p>
+</div>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>One of the tenets of statistics is that if you somehow managed to measure the entire population on something, you would be able to calculate the true value of a statistics (e.g., correlation, regression slope, mean,…).</p>
+<div class="fragment" data-fragment-index="2">
+<p>One of the tenets of statistics is that if you somehow managed to measure the entire population on something, you would be able to calculate the <em>true value</em> of a statistics (e.g., correlation, regression slope, mean,…).</p>
+</div>
 </div><div class="column" style="width:50%;">
-<p>For example, let’s say that we managed to measure every person in the world and we observed that the correlation between <em>income</em> and <em>happiness</em> is <span class="math inline">\(r = .2\)</span>. However, in my sample of 200 US citizens I find a correlation of <span class="math inline">\(\hat{r} = .4\)</span>.</p>
+<div class="fragment" data-fragment-index="3">
+<p>Let’s say that we managed to measure every person in the world and we observed that the correlation between <em>income</em> and <em>happiness</em> is <span class="math inline">\(r = .2\)</span>. However, in my sample of 200 US citizens I find a correlation of <span class="math inline">\(\hat{r} = .4\)</span>.</p>
+</div>
 </div></div>
 <center>
+<div class="fragment" data-fragment-index="4">
 <p>In this case, <span class="math inline">\(\mathrm{bias} = \hat{r} - r = .4 - .2 = .2\)</span>.</p>
+</div>
 </center>
 <p><br></p>
-<p>Thus, <strong>bias</strong> is the expected difference between the true value of a statistic and the observed value. All of statics rests on the assumption that our sample is representative of the population, and can therefore produce <em>unbiased</em> estimates of the true population statistic.</p>
+<div class="fragment" data-fragment-index="5">
+<p>Thus, <strong>bias</strong> is the expected difference between the true value of a statistic and the observed value. All of statistical theory rests on the assumption that our sample is representative of the population, and can therefore produce <em>unbiased</em> estimates of the true population statistic we want to know.</p>
+</div>
 </section>
 <section id="example-of-bias-the-population" class="slide level2">
 <h2>Example of Bias: The Population</h2>
@@ -297,20 +390,20 @@ Fabio Setti
 <div class="cell code-125">
 <details class="code-fold">
 <summary>Simulate data</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20345</span>)</span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate some data that would show bias due to restriction of range</span></span>
-<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
-<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="at">mean =</span> <span class="fu">ifelse</span>(X <span class="sc">&gt;</span> .<span class="dv">7</span>, .<span class="dv">2</span><span class="sc">*</span>X, .<span class="dv">4</span><span class="sc">*</span>X), <span class="at">sd =</span> .<span class="dv">4</span>)</span>
-<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a>bias_dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Graduate_GPA"</span> <span class="ot">=</span> Y,</span>
-<span id="cb2-9"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"GRE_Score"</span> <span class="ot">=</span> X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20345</span>)</span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># generate some data that would show bias due to restriction of range</span></span>
+<span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>)</span>
+<span id="cb9-6"><a href="" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="at">mean =</span> <span class="fu">ifelse</span>(X <span class="sc">&gt;</span> .<span class="dv">7</span>, .<span class="dv">2</span><span class="sc">*</span>X, .<span class="dv">4</span><span class="sc">*</span>X), <span class="at">sd =</span> .<span class="dv">4</span>)</span>
+<span id="cb9-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="" aria-hidden="true" tabindex="-1"></a>bias_dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"Graduate_GPA"</span> <span class="ot">=</span> Y,</span>
+<span id="cb9-9"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"GRE_Score"</span> <span class="ot">=</span> X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>As practical example, I’ll simulate some hypothetical data where students are admitted to grad school regardless of their GRE score. For this made up data, the correlation between <code>Graduate_GPA</code> and <code>GRE_Score</code> is:</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(bias_dat<span class="sc">$</span>Graduate_GPA, bias_dat<span class="sc">$</span>GRE_Score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(bias_dat<span class="sc">$</span>Graduate_GPA, bias_dat<span class="sc">$</span>GRE_Score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6077959</code></pre>
 </div>
@@ -319,23 +412,25 @@ Fabio Setti
 <div class="cell code-125">
 <details class="code-fold">
 <summary>Plot code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bias_dat,<span class="fu">aes</span>(<span class="at">x =</span> GRE_Score, <span class="at">y =</span> Graduate_GPA))<span class="sc">+</span></span>
-<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
-<span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unbiased Sample of the Population"</span>) <span class="sc">+</span></span>
-<span id="cb5-6"><a href="" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bias_dat,<span class="fu">aes</span>(<span class="at">x =</span> GRE_Score, <span class="at">y =</span> Graduate_GPA))<span class="sc">+</span></span>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb12-5"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unbiased Sample of the Population"</span>) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-13_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+<p><img data-src="Lab-13_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 </div></div>
+<div class="fragment" data-fragment-index="1">
 <p>In reality, students with low GRE scores are not usually admitted to graduate programs, so their GPA is not observed 🧐 Let’s see what happens to our correlation in that case…</p>
+</div>
 </section>
 <section id="example-of-bias-biased-sample" class="slide level2">
 <h2>Example of Bias: Biased Sample</h2>
@@ -343,32 +438,52 @@ Fabio Setti
 <div class="column" style="width:40%;">
 <p>If only students who have a GRE score at the mean or above are admitted to graduate programs, then the correlation <code>Graduate_GPA</code> and <code>GRE_Score</code> becomes:</p>
 <div class="cell code-125">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(bias_dat[bias_dat<span class="sc">$</span>GRE_Score <span class="sc">&gt;</span> <span class="dv">0</span>,])[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(bias_dat[bias_dat<span class="sc">$</span>GRE_Score <span class="sc">&gt;</span> <span class="dv">0</span>,])[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2487245</code></pre>
 </div>
 </div>
+<div class="fragment" data-fragment-index="1">
 <p>Compared to the previous plot, we only observe values with <code>GRE_Score</code> <span class="math inline">\(&gt; 0\)</span>, which causes us to think that the correlation between <code>Graduate_GPA</code> and <code>GRE_Score</code> is lower than it actually is in reality 🤔</p>
+</div>
+<div class="fragment" data-fragment-index="2">
 <p>This a case of bias due to <a href="https://dictionary.apa.org/restriction-of-range" target="_blank">restriction of range</a>.</p>
+</div>
 </div><div class="column" style="width:60%;">
-<div class="cell">
+<div class="cell code-125">
+<details class="code-fold">
+<summary>Plot code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bias_dat[bias_dat<span class="sc">$</span>GRE_Score <span class="sc">&gt;</span> <span class="dv">0</span>,] , <span class="fu">aes</span>(<span class="at">x =</span> GRE_Score, <span class="at">y =</span> Graduate_GPA))<span class="sc">+</span></span>
+<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb15-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb15-5"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Biased Sample of the Population"</span>,</span>
+<span id="cb15-6"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">y=</span> <span class="st">"GPA"</span>, </span>
+<span id="cb15-7"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">x =</span> <span class="st">"Test Score"</span>) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="Lab-13_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+<p><img data-src="Lab-13_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
+<div class="fragment" data-fragment-index="2">
 <div style="font-size: 20px">
 (this is just an example, I am not trying to be a shill for the GRE, so don’t @ me 🫣)
+</div>
 </div>
 </div></div>
 </section>
 <section id="missing-data-and-bias" class="slide level2">
 <h2>Missing Data and Bias</h2>
 <p>In the previous example, we saw that the true correlation between <code>Graduate_GPA</code> and <code>GRE_Score</code> was <span class="math inline">\(r = .61\)</span>, but in our sample we found that <span class="math inline">\(\hat{r} = .25\)</span>. This is some pretty serious bias, which will cause us to make some very different conclusions about our hypotheses.</p>
-<p>What does this have to do with missing data? Well, the example from before is actually a missing data problem, where missingness in <code>Graduate_GPA</code> is caused by <code>GRE_Score</code> (MAR process). Going back to our missing data processes, two of them will result in biased results if cases are deleted like we just did.</p>
+<div class="fragment" data-fragment-index="1">
+<p>What does this have to do with missing data? The example from before is actually a missing data problem, where missingness in <code>Graduate_GPA</code> is caused by <code>GRE_Score</code> (MAR process). Going back to our missing data processes, two of them will result in biased results if cases are deleted like we just did.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
 <center>
 <div class="columns">
 <div class="column" style="width:33%;">
@@ -382,50 +497,460 @@ Fabio Setti
 <p>Will produce bias if cases are deleted</p>
 </div></div>
 </center>
+</div>
+<div class="fragment" data-fragment-index="3">
 <p>By default, most software delete cases if any of them are missing on a single variable (e.g., <code>lm()</code> will delete rows if they are missing on a single predictor/outcome), which causes bias unless missingness is completely random (MCAR). Of course, this is not a big problem if you only delete few cases.</p>
+</div>
 </section>
 <section id="can-i-know-how-my-data-went-missing" class="slide level2">
 <h2>Can I know How My Data Went Missing?</h2>
 <p>Depending on how our data went missing, we have to use different methods to prevent bias. However, how do we find out whether our missing data is MCAR, MAR, or MNAR? Unfortunately, The only thing we can find out is whether our missingness is MCAR or not 🤷</p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
 <ul style="font-size: 24px">
 <li>
 Testing MAR would require you to know for sure that <em>there is no unobserved variable</em> that predicts missingness beyond the variables in your data (impossible 🤷)
 </li>
 </ul>
+</div>
 </div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
 <ul style="font-size: 24px">
 <li>
 Testing NMAR would require you to know for sure that <em>there is an unobserved variable</em> that predicts missingness (impossible 🤷)
 </li>
 </ul>
+</div>
 </div></div>
+<div class="fragment" data-fragment-index="3">
 <p>To test MAR and MNAR you would have to know about a variable that you don’t know about (a statement worthy of a philosophy PhD dissertation).</p>
+</div>
 <p><br></p>
+<div class="fragment" data-fragment-index="4">
 <p>Ok, but how do we know that methods of handling missing data work/do not work or produce more or less bias? There is no empirical way to test this because either you the full data or you do not (you do not have both to compare). The only way is to have a complete dataset and then <em>simulate different missingness mechanisms</em>, which is what we are going to do for the rest of this class.</p>
+</div>
 </section>
 <section id="littles-mcar-test" class="slide level2">
 <h2>Little’s MCAR test</h2>
-<p>To test that missingness in your data is MCAR you can use the <code>mcar_test()</code> function from the <code>naniar</code> package, which runs Little’s MCAR test <span class="citation" data-cites="Little_1988">(<a href="#/references" role="doc-biblioref" onclick="">Little, 1988</a>)</span>. If the data is indeed MCAR, the result will not be significant. F</p>
+<p>To test that missingness in your data is MCAR you can use the <code>mcar_test()</code> function from the <code>naniar</code> package, which runs Little’s MCAR test <span class="citation" data-cites="Little_1988">(<a href="#/references" role="doc-biblioref" onclick="">Little, 1988</a>)</span>. If the data is indeed MCAR, the result will not be significant.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-
+<div class="fragment" data-fragment-index="1">
+<div style="font-size: 24px">
+Here I generate MCAR missingness with the <code>delete_MCAR()</code> function and then use <code>mcar_test()</code>
+</div>
+<div class="cell code-125">
+<details class="code-fold">
+<summary>Generate MCAR</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># random missingness</span></span>
+<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(missMethods)</span>
+<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">78984</span>)</span>
+<span id="cb16-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 30% missing</span></span>
+<span id="cb16-6"><a href="" aria-hidden="true" tabindex="-1"></a>dat_miss_MCAR <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(dat, <span class="at">p =</span> .<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># run test (need to run code above first)</span></span>
+<span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mcar_test</span>(dat_miss_MCAR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  statistic    df p.value missing.patterns
+      &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;            &lt;int&gt;
+1      65.9    75   0.763               32</code></pre>
+</div>
+</div>
+</div>
 </div><div class="column" style="width:50%;">
-
+<div class="fragment" data-fragment-index="2">
+<div style="font-size: 24px">
+Here I generate MAR missingness, where employees with lower work satisfaction (<code>worksat</code>) are less likely to report the other variables when asked:
+</div>
+<div class="cell code-125">
+<details class="code-fold">
+<summary>Generate MAR</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">467</span>)</span>
+<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Probabilities of missingness based on `worksat` </span></span>
+<span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a>mis_prob <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">plogis</span>(dat<span class="sc">$</span>worksat, <span class="at">location =</span> <span class="fu">mean</span>(dat<span class="sc">$</span>worksat), <span class="at">scale =</span> <span class="fu">sd</span>(dat<span class="sc">$</span>worksat))</span>
+<span id="cb19-4"><a href="" aria-hidden="true" tabindex="-1"></a>dat_miss_MAR <span class="ot">&lt;-</span> dat</span>
+<span id="cb19-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># MAR process for other variables</span></span>
+<span id="cb19-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>){</span>
+<span id="cb19-8"><a href="" aria-hidden="true" tabindex="-1"></a>  dat_miss_MAR[,<span class="fu">colnames</span>(dat)[<span class="sc">-</span><span class="dv">3</span>][i]] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">rbinom</span>(<span class="fu">nrow</span>(dat), <span class="dv">1</span>, mis_prob) <span class="sc">==</span> <span class="st">"1"</span>, <span class="cn">NA</span>, dat[,<span class="fu">colnames</span>(dat)[<span class="sc">-</span><span class="dv">3</span>][i]])</span>
+<span id="cb19-9"><a href="" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># run test (need to run code above first)</span></span>
+<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># `worksat` taken out because I left it complete on purpose</span></span>
+<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mcar_test</span>(dat_miss_MAR[,<span class="sc">-</span><span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  statistic    df  p.value missing.patterns
+      &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;            &lt;int&gt;
+1      57.5    28 0.000842               16</code></pre>
+</div>
+</div>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="3">
+<div style="font-size: 26px">
+As expected, Little’s test is not significant when data is MCAR meaning that there is not pattern to the missingness. On the other hand, the test is significant when the missingness is due to some other variable (observed or not).
+</div>
+</div>
+</section>
+<section id="non-significant-littles-test" class="slide level2">
+<h2>Non-Significant Little’s Test?</h2>
+<p>When Little’s test is <em>not significant</em>, you are in the clear! Even if you delete observations with missing data, your results will not be biased. Don’t trust me? Let’s run a quick simulation!</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="fragment" data-fragment-index="1">
+<p>We want to see how <code>empower</code>, <code>lmx</code>, <code>climate</code>, and <code>cohesion</code> predict <code>worksat</code>. First we run the regression with the complete data to use the result as a comparison.</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(worksat <span class="sc">~</span> empower <span class="sc">+</span> lmx <span class="sc">+</span> climate <span class="sc">+</span> cohesion, dat)</span>
+<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(reg), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     empower         lmx     climate    cohesion 
+      0.532       0.021       0.161       0.073      -0.033 </code></pre>
+</div>
+</div>
+<p>Here are the intercept and slopes for our regression when we have the full data.</p>
+</div>
+</div><div class="column" style="width:40%;">
+<p><br></p>
+<div class="fragment" data-fragment-index="2">
+<p>Now that we know what the results <em>should look like</em> we can simulate missingness mechanisms, run the regression again, and check how far we are from the values on the left.</p>
+<p>We are treating the values on the left as the <strong>population</strong> values.</p>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="3">
+<p>Remember that the <code>lm()</code> function will delete any rows that have a missing value on any of the variables. So, we should expect bias when missingness is MAR, but not when missingness is MCAR.</p>
+</div>
+</section>
+<section id="mcar-vs-mar-with-lm" class="slide level2">
+<h2>MCAR VS MAR with <code>lm()</code></h2>
+<p>I am going to simulate both MCAR and MAR many times, run regressions with <code>lm()</code> each time, and then look at the average values of the intercepts and slopes:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<div class="cell code-125">
+<details class="code-fold">
+<summary>MCAR Sim Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">78984</span>)</span>
+<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a>MCAR_list <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2000</span>) </span>
+<span id="cb24-6"><a href="" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb24-7"><a href="" aria-hidden="true" tabindex="-1"></a>  dat_miss_MCAR <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(dat, <span class="at">p =</span> .<span class="dv">3</span>, <span class="at">cols_mis =</span> <span class="fu">colnames</span>(dat)[<span class="sc">-</span><span class="dv">3</span>])  </span>
+<span id="cb24-8"><a href="" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-9"><a href="" aria-hidden="true" tabindex="-1"></a>  MCAR_list[[i]] <span class="ot">&lt;-</span>  <span class="fu">coef</span>(<span class="fu">lm</span>(worksat <span class="sc">~</span> empower <span class="sc">+</span> lmx <span class="sc">+</span> climate <span class="sc">+</span> cohesion, dat_miss_MCAR))</span>
+<span id="cb24-10"><a href="" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-11"><a href="" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-12"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="" aria-hidden="true" tabindex="-1"></a>MCAR_res <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(MCAR_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">colMeans</span>(MCAR_res), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     empower         lmx     climate    cohesion 
+      0.532       0.021       0.159       0.074      -0.032 </code></pre>
+</div>
+</div>
+<p><strong>MCAR:</strong> Almost the same as the previous slide!</p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
+<div class="cell code-125">
+<details class="code-fold">
+<summary>MAR Sim Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4627</span>)</span>
+<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="" aria-hidden="true" tabindex="-1"></a>MAR_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb27-5"><a href="" aria-hidden="true" tabindex="-1"></a>mis_prob <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">plogis</span>(dat<span class="sc">$</span>worksat, <span class="at">location =</span> <span class="fu">mean</span>(dat<span class="sc">$</span>worksat), <span class="at">scale =</span> <span class="fu">sd</span>(dat<span class="sc">$</span>worksat))  </span>
+<span id="cb27-6"><a href="" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb27-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2000</span>){</span>
+<span id="cb27-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="" aria-hidden="true" tabindex="-1"></a>dat_miss_MAR <span class="ot">&lt;-</span> dat</span>
+<span id="cb27-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># MAR process for other variables</span></span>
+<span id="cb27-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>){</span>
+<span id="cb27-13"><a href="" aria-hidden="true" tabindex="-1"></a>  dat_miss_MAR[,<span class="fu">colnames</span>(dat)[<span class="sc">-</span><span class="dv">3</span>][j]] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">rbinom</span>(<span class="fu">nrow</span>(dat), <span class="dv">1</span>, mis_prob) <span class="sc">==</span> <span class="st">"1"</span>, <span class="cn">NA</span>, dat[,<span class="fu">colnames</span>(dat)[<span class="sc">-</span><span class="dv">3</span>][j]])</span>
+<span id="cb27-14"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-15"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="" aria-hidden="true" tabindex="-1"></a>MAR_list[[i]] <span class="ot">&lt;-</span>  <span class="fu">coef</span>(<span class="fu">lm</span>(worksat <span class="sc">~</span> empower <span class="sc">+</span> lmx <span class="sc">+</span> climate <span class="sc">+</span> cohesion, dat_miss_MAR))</span>
+<span id="cb27-17"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-18"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-19"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-20"><a href="" aria-hidden="true" tabindex="-1"></a>MAR_res <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(MAR_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">colMeans</span>(MAR_res), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     empower         lmx     climate    cohesion 
+      3.158      -0.020       0.119       0.072       0.007 </code></pre>
+</div>
+</div>
+<p><strong>MAR:</strong> Definitely much more biased!!</p>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="3">
+<p>So, if you have a bunch of observations disappearing due to missing cases, check that the data is MCAR before running regressions on it. You may be getting biased results like the one of the right. Some notes on the code:</p>
+</div>
+<div class="fragment" data-fragment-index="4">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Are My Results Truly Unbiased?</strong></p>
+</div>
+<div class="callout-content">
+<p>Probably not. Although I showed that when missingness is MCAR, listwise deletion will produce unbiased results, that is only true <em>on average</em> (<code>colMeans()</code>) over many replications. If you look inside the <code>MCAR_res</code> object you will see the results for all the replications, and some of them will indeed be biased. The only assurance that statistics can give you is that <em>on average</em> you will be fine, not that you will <em>always</em> be fine.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="significant-littles-test" class="slide level2">
+<h2>Significant Little’s Test?</h2>
+<p>When Little’s test is <em>significant</em>, you need to be careful! You know for sure that your missing data is not MCAR. So what next?</p>
+<div class="fragment" data-fragment-index="1">
+<p>❌ You probably should not just use the <code>lm()</code> function, which does listwise deletion when rows have missing cases, and will likely produce biased results as shown on the previous slide.</p>
+</div>
+<div class="fragment" data-fragment-index="2">
+<p>✅ Instead, we should use full information maximum likelihood (FIML) to estimate our regression. <code>lavaan</code> can run FIML for missing data. There are <strong>2 big advantages</strong> that FIML provides:</p>
+</div>
+<div class="fragment" data-fragment-index="3">
+<ol style="font-size: 26px">
+<li>
+Your results will be less biased if missing data is MAR. If the data is MCAR, FIML will work just as well as <code>lm()</code>.
+</li>
+<li>
+You will not lose any observations and you will retain your full sample! This helps with power (if you are into that kind of stuff), but also makes results more reliable.
+</li>
+</ol>
+</div>
+<div class="fragment" data-fragment-index="4">
+<p>Note that FIML “works” only if your missing data is either MCAR or MAR; if data is MNAR, meaning that you have no measured variable that is related to missingness, then FIML will not be of much help and you’ll need some more sophisticated stat.</p>
+</div>
+</section>
+<section id="fiml-with-lavaan" class="slide level2">
+<h2>FIML with <code>lavaan</code></h2>
+<p>Running FIML in <code>lavaan</code> just involves adding a few extra arguments to the <code>sem()</code> function!</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a>reg_mod <span class="ot">&lt;-</span> <span class="st">"worksat ~ empower + lmx + climate + cohesion"</span></span>
+<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="" aria-hidden="true" tabindex="-1"></a>fit_miss <span class="ot">&lt;-</span> <span class="fu">sem</span>(reg_mod, dat_miss_MAR, <span class="at">meanstructure =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb30-5"><a href="" aria-hidden="true" tabindex="-1"></a>                <span class="at">fixed.x =</span> <span class="cn">FALSE</span>, <span class="at">missing =</span> <span class="st">"fiml"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment" data-fragment-index="4">
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># parameterestimates(fit_miss)[16, 4] gets the intercept for this specific model (do not copy and paste this line and expect it to print the intercept for other models, it will not work; you need to look for it through the lavaan summary yourself usually)</span></span>
+<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(<span class="fu">parameterestimates</span>(fit_miss)[<span class="dv">16</span>, <span class="dv">4</span>], </span>
+<span id="cb31-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="fu">lav_summary</span>(fit_miss)[,<span class="dv">4</span>]), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.384 0.011 0.180 0.068 0.043</code></pre>
+</div>
+</div>
+<p>Close to the original values below!</p>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(reg), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     empower         lmx     climate    cohesion 
+      0.532       0.021       0.161       0.073      -0.033 </code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Here, <code>dat_miss_MAR</code> is the last dataset generated from the MAR simulation on from two slide ago. Some notes on the code:</p>
+<ul style="font-size: 24px">
+<div class="fragment" data-fragment-index="1">
+<li>
+<code>meanstructure = TRUE</code>: asks <code>lavaan</code> to also estimate the intercepts, which it does not do by default.
+</li>
+</div>
+<div class="fragment" data-fragment-index="2">
+<li>
+<code>fixed.x = FALSE</code>: without going in too much detail, this is necessary for <code>lavaan</code> to be able to use FIML.
+</li>
+</div>
+<div class="fragment" data-fragment-index="3">
+<li>
+<code>missing = "fiml"</code>: tells <code>lavaan</code> to use FIML to estimate the model, which helps reducing bias if missing data is MAR.
+</li>
+</div>
+</ul>
+<div class="fragment" data-fragment-index="5">
+<p>This is an example with just a single dataset, so check out the next slide to see how much better FIML is on average compared to listwise deletion for MAR data.</p>
+</div>
 </div></div>
 </section>
-<section id="mcar" class="slide level2">
-<h2>MCAR</h2>
+<section id="comparing-lm-and-lavaan-with-mar-data" class="slide level2">
+<h2>Comparing <code>lm()</code> and <code>lavaan</code> With MAR data</h2>
+<div class="columns">
+<div class="column" style="width:20%;">
+
+</div><div class="column" style="width:60%;">
+<center>
+The results with no missing values are:
+</center>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">coef</span>(reg), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     empower         lmx     climate    cohesion 
+      0.532       0.021       0.161       0.073      -0.033 </code></pre>
+</div>
+</div>
+</div><div class="column" style="width:20%;">
+
+</div></div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="1">
+<div class="cell code-125">
+<details class="code-fold">
+<summary>lm() Sim Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4627</span>)</span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="" aria-hidden="true" tabindex="-1"></a>MAR_list_lm <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb37-5"><a href="" aria-hidden="true" tabindex="-1"></a>mis_prob <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">plogis</span>(dat<span class="sc">$</span>worksat, <span class="at">location =</span> <span class="fu">mean</span>(dat<span class="sc">$</span>worksat), <span class="at">scale =</span> <span class="fu">sd</span>(dat<span class="sc">$</span>worksat))  </span>
+<span id="cb37-6"><a href="" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb37-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2000</span>){</span>
+<span id="cb37-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="" aria-hidden="true" tabindex="-1"></a>dat_miss_MAR <span class="ot">&lt;-</span> dat</span>
+<span id="cb37-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-11"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># MAR process for other variables</span></span>
+<span id="cb37-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>){</span>
+<span id="cb37-14"><a href="" aria-hidden="true" tabindex="-1"></a>  dat_miss_MAR[,<span class="fu">colnames</span>(dat)[<span class="sc">-</span><span class="dv">3</span>][j]] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">rbinom</span>(<span class="fu">nrow</span>(dat), <span class="dv">1</span>, mis_prob) <span class="sc">==</span> <span class="st">"1"</span>, <span class="cn">NA</span>, dat[,<span class="fu">colnames</span>(dat)[<span class="sc">-</span><span class="dv">3</span>][j]])</span>
+<span id="cb37-15"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb37-16"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-17"><a href="" aria-hidden="true" tabindex="-1"></a>MAR_list_lm[[i]] <span class="ot">&lt;-</span>  <span class="fu">coef</span>(<span class="fu">lm</span>(worksat <span class="sc">~</span> empower <span class="sc">+</span> lmx <span class="sc">+</span> climate <span class="sc">+</span> cohesion, dat_miss_MAR))</span>
+<span id="cb37-18"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-19"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb37-20"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-21"><a href="" aria-hidden="true" tabindex="-1"></a>MAR_res_lm <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(MAR_list_lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">colMeans</span>(MAR_res_lm),<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     empower         lmx     climate    cohesion 
+      3.158      -0.020       0.119       0.072       0.007 </code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment" data-fragment-index="2">
+<div class="cell code-125">
+<details class="code-fold">
+<summary>FIML Sim Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># this will take around 10 minutes to run (could be faster if I parallelized loops)</span></span>
+<span id="cb40-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb40-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4627</span>)</span>
+<span id="cb40-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="" aria-hidden="true" tabindex="-1"></a>MAR_list_fiml <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb40-7"><a href="" aria-hidden="true" tabindex="-1"></a>mis_prob <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">plogis</span>(dat<span class="sc">$</span>worksat, <span class="at">location =</span> <span class="fu">mean</span>(dat<span class="sc">$</span>worksat), <span class="at">scale =</span> <span class="fu">sd</span>(dat<span class="sc">$</span>worksat))  </span>
+<span id="cb40-8"><a href="" aria-hidden="true" tabindex="-1"></a>lav_mod <span class="ot">&lt;-</span> <span class="st">"worksat ~ empower + lmx + climate + cohesion"</span></span>
+<span id="cb40-9"><a href="" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2000</span>){</span>
+<span id="cb40-11"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-12"><a href="" aria-hidden="true" tabindex="-1"></a>dat_miss_MAR <span class="ot">&lt;-</span> dat</span>
+<span id="cb40-13"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-14"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># MAR process for other variables</span></span>
+<span id="cb40-15"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>){</span>
+<span id="cb40-16"><a href="" aria-hidden="true" tabindex="-1"></a>  dat_miss_MAR[,<span class="fu">colnames</span>(dat)[<span class="sc">-</span><span class="dv">3</span>][j]] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">rbinom</span>(<span class="fu">nrow</span>(dat), <span class="dv">1</span>, mis_prob) <span class="sc">==</span> <span class="st">"1"</span>, <span class="cn">NA</span>, dat[,<span class="fu">colnames</span>(dat)[<span class="sc">-</span><span class="dv">3</span>][j]])</span>
+<span id="cb40-17"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-18"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-19"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-20"><a href="" aria-hidden="true" tabindex="-1"></a>fit_miss <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">sem</span>(lav_mod, dat_miss_MAR, <span class="at">meanstructure =</span> <span class="cn">TRUE</span>, <span class="at">fixed.x =</span> <span class="cn">FALSE</span>, <span class="at">missing =</span> <span class="st">"fiml"</span>)</span>
+<span id="cb40-21"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-22"><a href="" aria-hidden="true" tabindex="-1"></a>MAR_list_fiml[[i]] <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="fu">parameterestimates</span>(fit_miss)[<span class="dv">16</span>, <span class="dv">4</span>], <span class="fu">lav_summary</span>(fit_miss)[,<span class="dv">4</span>])</span>
+<span id="cb40-23"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-24"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"iter"</span>, i))</span>
+<span id="cb40-25"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-26"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-27"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-28"><a href="" aria-hidden="true" tabindex="-1"></a>MAR_res_fiml <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">unlist</span>(MAR_list_fiml), <span class="at">ncol =</span> <span class="dv">5</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell code-125">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">colMeans</span>(MAR_res_fiml), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     empower         lmx     climate    cohesion 
+      0.819      -0.005       0.178       0.083      -0.009 </code></pre>
+</div>
+</div>
+</div>
+</div></div>
+<div class="fragment" data-fragment-index="3">
+<p>As you can see, when we simulate MAR missingness, the results produced by <code>lavaan</code> are, on average, closer to the original results. You can especially see the benefits for the intercept and the slope of <code>lmx</code>.</p>
+</div>
+<div class="fragment" data-fragment-index="4">
+<p>So, when Little’s test is significant and you need as quick solution, FIML is your best bet. On the next slide, I touch upon some other missing data methods/topics that you may want to look into when FIML estimation alone does not cut it.</p>
+</div>
+</section>
+<section id="further-topics" class="slide level2">
+<h2>Further Topics</h2>
+<p>In no particular order, there are many more topics that require much more time to be covered. All of them are covered in detail in <span class="citation" data-cites="Enders_2022">Enders (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span>. Some notable ones:</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="1">
+<center>
+<p><strong>Auxiliary variables</strong></p>
+<p>You can think of auxiliary variables as covariates, but they are variables that help you predict missing values and allow FIML (or multiple imputation methods) to get more accurate results. The <code>semTools</code> package <span class="citation" data-cites="Jorgensen_etal_2025">(<a href="#/references" role="doc-biblioref" onclick="">Jorgensen et al., 2025</a>)</span> has a <a href="https://www.rdocumentation.org/packages/semTools/versions/0.4-12/topics/auxiliary" target="_blank">function</a> that lets you add auxiliary variables to <code>lavaan</code>’s models.</p>
+</center>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="2">
+<center>
+<p><strong>Multiple imputation</strong></p>
+<div style="font-size: 24px">
+Multiple imputation is a method where you use some algorithm to impute missing data (like a fill in the blank). The imputation is repeated to create multiple datasets. Then the same analysis is ran on all the datasets, and results are averaged (pooled results). I like this method because it is more general than FIML and can be implemented no matter the type of analysis. The <code>mice</code> package <span class="citation" data-cites="Buuren_etal_2024">(<a href="#/references" role="doc-biblioref" onclick="">Buuren et al., 2024</a>)</span> can do multiple imputation.
+</div>
+</center>
+</div>
+</div><div class="column" style="width:33%;">
+<div class="fragment" data-fragment-index="3">
+<center>
+<p><strong>MNAR data</strong></p>
+<p>Although MNAR is untestable, if your data is not MCAR, and you have no measured variables that explain why data may be missing, then you are in the MNAR territory. Two statistical methods that you need to look into in this case are selection models and pattern mixture models. <a href="https://faculty.washington.edu/yenchic/21Sp_stat542/Lec4_missing.pdf" target="_blank">This document</a> is a good place to start.</p>
+</center>
+</div>
+</div></div>
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Buuren_etal_2024" class="csl-entry" role="listitem">
+Buuren, S. van, Groothuis-Oudshoorn, K., Vink, G., Schouten, R., Robitzsch, A., Rockenschaub, P., Doove, L., Jolani, S., Moreno-Betancur, M., White, I., Gaffert, P., Meinfelder, F., Gray, B., Arel-Bundock, V., Cai, M., Volker, T., Costantini, E., Lissa, C. van, Oberman, H., &amp; Wade, S. (2024). <em>Mice: <span>Multivariate Imputation</span> by <span>Chained Equations</span></em> (Version 3.17.0) [Computer software]. <a href="https://cran.r-project.org/web/packages/mice/index.html">https://cran.r-project.org/web/packages/mice/index.html</a>
+</div>
 <div id="ref-Enders_2022" class="csl-entry" role="listitem">
 Enders, C. K. (2022). <em>Applied missing data analysis</em> (pp. ix, 546). The Guilford Press.
 </div>
+<div id="ref-Jorgensen_etal_2025" class="csl-entry" role="listitem">
+Jorgensen, T. D., Pornprasertmanit, S., Schoemann, A. M., Rosseel, Y., Miller, P., Quick, C., Garnier-Villarreal, M., Selig, J., Boulton, A., Preacher, K., Coffman, D., Rhemtulla, M., Robitzsch, A., Enders, C., Arslan, R., Clinton, B., Panko, P., Merkle, E., Chesnut, S., … Vanbrabant, L. (2025). <em><span class="nocase">semTools</span>: <span>Useful Tools</span> for <span>Structural Equation Modeling</span></em> (Version 0.5-7) [Computer software]. <a href="https://cran.r-project.org/web/packages/semTools/index.html">https://cran.r-project.org/web/packages/semTools/index.html</a>
+</div>
 <div id="ref-Little_1988" class="csl-entry" role="listitem">
 Little, R. J. A. (1988). A <span>Test</span> of <span>Missing Completely</span> at <span>Random</span> for <span>Multivariate Data</span> with <span>Missing Values</span>. <em>Journal of the American Statistical Association</em>, <em>83</em>(404), 1198–1202. <a href="https://doi.org/10.2307/2290157">https://doi.org/10.2307/2290157</a>
+</div>
+<div id="ref-Rockel_2022" class="csl-entry" role="listitem">
+Rockel, T. (2022). <em><span class="nocase">missMethods</span>: <span>Methods</span> for <span>Missing Data</span></em> (Version 0.4.0) [Computer software]. <a href="https://cran.r-project.org/web/packages/missMethods/index.html">https://cran.r-project.org/web/packages/missMethods/index.html</a>
+</div>
+<div id="ref-Tierney_etal_2024" class="csl-entry" role="listitem">
+Tierney, N., Cook, D., McBain, M., Fay, C., O’Hara-Wild, M., Hester, J., Smith, L., &amp; Heiss, A. (2024). <em>Naniar: <span>Data Structures</span>, <span>Summaries</span>, and <span>Visualisations</span> for <span>Missing Data</span></em> (Version 1.1.0) [Computer software]. <a href="https://cran.r-project.org/web/packages/naniar/index.html">https://cran.r-project.org/web/packages/naniar/index.html</a>
 </div>
 </div>
 
