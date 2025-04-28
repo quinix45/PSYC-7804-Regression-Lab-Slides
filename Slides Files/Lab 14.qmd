@@ -1,15 +1,18 @@
 ---
-title: "Lab 14: Regression Diagnostics and GLMs"
+title: "Lab 14: Regression Diagnostics"
 author: "Fabio Setti"
 institute: "PSYC 7804 - Regression with Lab"
 bibliography: Additional files/R packages.bib
 csl: Additional files/apa.csl
+notice: |
+  @Fox_etal_2024
+  @Wickham_RStudio_2023
 title-slide-attributes:
   data-transition: "zoom"
   data-visibility: "uncounted"
 format:
    revealjs:
-      footer: "Lab 14: Regression Diagnostics and GLMs"
+      footer: "Lab 14: Regression Diagnostics"
       width: 1280
       height: 720
       chalkboard: true
@@ -23,8 +26,944 @@ format:
 
 editor: source
 ---
-## Font-awesome slide{visibility="hidden"}
 
-uncounted and not visible slide to trigger the fontawesome extension
 
-{{< fa thumbs-up >}} 
+## Today's Packages and Data 🤗
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+
+No new packages for today!
+
+```{r}
+#| eval: true
+#| echo: true
+#| code-line-numbers: false
+#| warning: false
+#| classes: code-150
+
+library(tidyverse)
+library(car)
+theme_set(theme_classic(base_size = 16, 
+                        base_family = 'serif'))
+```
+
+:::
+
+
+
+::: {.column width="50%"}
+
+<center style="padding-bottom: 41px;"> [Data]{.data-title} </center>
+
+We will use the [2024 world happiness report](https://worldhappiness.report/ed/2024/){target="_blank"} data, which we have already used in Lab 4:
+
+<div style="font-size: 24px"> 
+</div>
+ 
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+WH_2024 <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/World_happiness_2024.csv")
+```
+
+
+Let's also name the rows with the country names. This helps later when we need to identify problematic data points:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+rownames(WH_2024) <- WH_2024$Country_name
+```
+
+:::
+::::
+
+## Regression Diagnostics
+
+Regressions diagnostics are an umbrella term for methods that help you identify *individual data points* that may have an undue influence on the regression results. More often than not, these data points would be considered **outliers** (although, see info box below).
+
+::: {.fragment fragment-index=1}
+
+Before going over the many regression diagnostics that exist, I want to show how *sample size* is an important consideration when evaluating how concerned you should be about these regression diagnostics. 
+
+:::
+
+::: {.fragment fragment-index=2}
+
+**When should you be careful?** In general, outliers influence results more than other data points. Thus, when you have a **small sample size** (I would say $N < 100$?), you want to be extra careful about interpreting your results if some regression diagnostics are off.
+
+:::
+
+
+::: {.fragment fragment-index=3}
+
+::: {.callout-note}
+
+## What is an outlier?
+
+Determining whether a data point is an outlier is very subjective. Statistical methods may help you identify potential outliers, but *you* 🫵 have to ultimately decide what to do with those data points. Given what *you* know about your variables, would *you* considered those data points outliers? Do *you* want to remove them? If yes, why remove them? If not, why keep them? Statistics can point you in a direction, but *you* have to decide what to do and justify it.
+
+:::
+:::
+
+
+## Simulating some Data
+
+Let's say that I simulate some $Y$ and $X$ variables that have a correlation of $r = .2$. I do this for both a sample size of $N = 50$ and $N = 500$ and plot the regression lines:
+
+<center>
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+#| code-fold: true
+#| code-summary: "simulate data"
+
+set.seed(28567)
+
+cor_mat <- rbind(c(1, .2),
+                 c(.2, 1))
+
+sim_dat_50 <- data.frame(MASS::mvrnorm(n = 50, c(0, 0), Sigma = cor_mat, empirical = TRUE))
+colnames(sim_dat_50) <- c("Y", "X")
+
+sim_dat_500 <- data.frame(MASS::mvrnorm(n = 500, c(0, 0), Sigma = cor_mat, empirical = TRUE))
+colnames(sim_dat_500) <- c("Y", "X")
+
+```
+
+</center>
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r}
+
+ggplot(sim_dat_50, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  xlim(-4, 4)+
+  ylim(-4, 4)
+
+```
+
+
+:::
+::: {.column width="50%"}
+
+```{r}
+
+ggplot(sim_dat_500, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  xlim(-4, 4)+
+  ylim(-4, 4)
+
+```
+
+
+:::
+::::
+
+::: {.fragment fragment-index=1}
+The regression line is the exact same for both plots, bet let's see what happens once we add a pesky outlier...
+:::
+
+## Adding a Single Outlier
+
+<div style="font-size: 24px"> Now, let's introduce a single outlier point that has extreme values on both variable, $Y = 4$ and $X = -4$. Check out what happens to the two regression lines: </div>
+
+
+::: {.fragment fragment-index=1}
+
+:::: {.columns}
+::: {.column width="50%"}
+
+::: {.panel-tabset}
+
+
+```{r}
+reg_p <- lm(Y ~ X, sim_dat_50)
+
+
+```
+
+
+### Outlier ($N = 50$)
+
+```{r}
+sim_dat_50[51,] <-  c(4,-4, 0)
+
+
+ggplot(sim_dat_50, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  geom_point(aes(X[51], Y[51]), col="red", shape=1, size=7) +
+  xlim(-4, 4) +
+  ylim(-4, 4)
+
+```
+
+### No Outlier ($N = 50$)
+
+```{r}
+
+ggplot(sim_dat_50[1:50,], aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  xlim(-4, 4)+
+  ylim(-4, 4)
+
+```
+
+:::
+
+:::
+
+
+::: {.column width="50%"}
+
+
+::: {.panel-tabset}
+
+### Outlier ($N = 500$)
+
+```{r}
+sim_dat_500[501,] <-  c(4,-4, 0)
+
+
+ggplot(sim_dat_500, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  geom_point(aes(X[501], Y[501]), col="red", shape=1, size=7) +
+  xlim(-4, 4) +
+  ylim(-4, 4)
+
+```
+
+### No Outlier ($N = 500$)
+
+```{r}
+
+ggplot(sim_dat_500[1:500,], aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  xlim(-4, 4)+
+  ylim(-4, 4)
+
+
+```
+
+:::
+
+:::
+::::
+
+:::
+
+::: {.fragment fragment-index=2}
+
+A single outlier flips the relation between $X$ and $Y$ when $N = 50$ 😱 but it doesn't do much when $N = 500$ 😇 
+:::
+
+
+## Moral of the story?
+
+:::: {.columns}
+::: {.column width="50%"}
+
+So, what's the moral of the story? 
+
+
+
+::: {.fragment fragment-index=1}
+**Small sample sizes:** In small sample sizes, you should *always* check regression diagnostics, and carefully evaluate how extreme points may be influencing your results. If leaving or removing a single extreme point changes your results significantly, I would not have much faith in the robustness of the results.
+:::
+
+::: {.fragment fragment-index=2}
+**Large sample sizes:** The larger the sample size, the less influential extreme points will be. you still want to check residual plots, but you (usually) don't need to be as concerned about the impact that extreme points may have on your results (assuming you don't have that many extreme points). 
+:::
+
+:::
+::: {.column width="50%"}
+
+```{r out.width="90%"}
+ggplot(sim_dat_50[1:50,], aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  xlim(-4, 4)+
+  ylim(-4, 4)
+
+```
+
+
+
+```{r out.width="90%"}
+ggplot(sim_dat_50, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  geom_point(aes(X[51], Y[51]), col="red", shape=1, size=7) +
+  xlim(-4, 4) +
+  ylim(-4, 4)
+```
+
+
+
+:::
+::::
+
+
+
+## But wait! Not All Outliers Ruin your fun
+
+Let's try a different outlier, that has values of $Y = 4$ and $X = 0$. Check out what happens to the two regression lines now: 
+
+::: {.fragment fragment-index=1}
+:::: {.columns}
+::: {.column width="50%"}
+
+::: {.panel-tabset}
+
+### Outlier ($N = 50$)
+
+```{r}
+sim_dat_50[51,] <-  c(4,0, 0)
+
+
+ggplot(sim_dat_50, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  geom_point(aes(X[51], Y[51]), col="red", shape=1, size=7) +
+  xlim(-4, 4) +
+  ylim(-4, 4)
+
+```
+
+### No Outlier ($N = 50$)
+
+```{r}
+
+ggplot(sim_dat_50[1:50,], aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  xlim(-4, 4)+
+  ylim(-4, 4)
+
+```
+
+:::
+
+:::
+
+
+
+::: {.column width="50%"}
+
+
+::: {.panel-tabset}
+
+### Outlier ($N = 500$)
+
+```{r}
+sim_dat_500[501,] <-  c(4,0, 0)
+
+
+ggplot(sim_dat_500, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  geom_point(aes(X[501], Y[501]), col="red", shape=1, size=7) +
+  xlim(-4, 4) +
+  ylim(-4, 4)
+
+```
+
+### No Outlier ($N = 500$)
+
+```{r}
+
+ggplot(sim_dat_500[1:500,], aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  xlim(-4, 4)+
+  ylim(-4, 4)
+
+
+```
+
+:::
+
+:::
+::::
+
+:::
+
+
+::: {.fragment fragment-index=2}
+Ah, this outlier doesn't do much to either regression 🤔 Actually, the only thing it does is slightly change the intercept, which is not a big deal usually. 
+:::
+
+
+## Back to Regression Diagnostics
+
+As we saw from the previous examples, there are outliers that are more or less "dangerous". **Regression diagnostics** give us different information (some more useful than other) about our data points. There are 3 general categories of regression diagnostics:
+
+:::: {.columns}
+::: {.column width="33%"}
+
+
+::: {.fragment fragment-index=1}
+<center> **Leverage** 
+
+<div style="font-size: 24px"> Leverage measures quantifies how unusual a certain observation given the full set of predictors. For example, if our predictors are *age* and whether a person is *pregnant*, it would not be unusual to separately see someone whose age is 55 and some pregnant individuals. However, it would be unusual to see someone who is *both* 55 and pregnant. Such an observation would have high leverage.  </div>
+
+</center>
+:::
+
+
+:::
+::: {.column width="33%"}
+
+
+::: {.fragment fragment-index=2}
+<center> 
+
+**Distance** 
+
+<div style="font-size: 24px"> Distance measures how far away the observed value of $Y$ is from the predicted value $\hat{Y}$. Residuals are a measure of distance. However, raw residuals, $Y - \hat{Y}$, are not the best way of measuring distance, so we will see more general measures later. Regardless, high distance is more concerning than high leverage. </div>
+
+</center>
+:::
+
+
+:::
+::: {.column width="33%"}
+
+
+::: {.fragment fragment-index=3}
+<center> **Influence** 
+
+<div style="font-size: 24px"> In my opinion, the most important category of regression diagnostics. For each observation, influence measures tell you how much the values of your slopes would change *if* you removed that data point. The first outlier I created a few slides back had really large influence in the $N = 50$ case, as it completely changed the slope when introduced. </div>
+
+</center>
+:::
+
+:::
+::::
+
+::: {.fragment fragment-index=4}
+You may see slightly different definitions for these 3 terms. I am drawing my definitions/examples from chapter 16 of @Darlington_Hayes_2016. 
+:::
+
+## Quick Regression Diagnostics Summary
+
+<div style="font-size: 26px"> Here is a quick summary of the regression diagnostics that we will look at today. In general, influence measures are more useful, because, for each data point, they tell you *what would happen to your results if you deleted that  data point*. </div>
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+<ul style="font-size: 26px">  
+
+
+::: {.fragment fragment-index=1}
+<li> **Hat values:** measure how unusual an observation is compared to the average observation. (leverage) </li>
+:::
+
+
+::: {.fragment fragment-index=2}
+<li> **Studentized Residuals:** For each data point, it measures how large the residual is on a standardized scale (distance). </li>
+:::
+
+::: {.fragment fragment-index=3}
+<li> **DFFITS:** For each data point, it measures how large the change in the predictions, $\hat{Y}$, would be *if* that data point was removed (influence). </li>
+:::
+
+</ul>
+
+
+:::
+::: {.column width="50%"}
+
+<ul style="font-size: 24px">  
+
+::: {.fragment fragment-index=4}
+<li> **Cook’s *D*:** For each data point, it measures how large the average change in all the regression coefficients would be *if* that data point was removed (influence). </li>
+:::
+
+::: {.fragment fragment-index=5}
+<li> **COVRATIO:** For each data point, it measures how large the average change in all the standard errors of the regression coefficients would be *if* that data point was removed (influence). </li>
+:::
+
+::: {.fragment fragment-index=6}
+<li> **DFBETAS:** For each data point, it measures how much *each individuals regression coefficient* will change if that data point would be *if* that data point was removed (influence). </li>
+:::
+
+</ul>
+
+:::
+::::
+
+
+::: {.fragment fragment-index=7}
+<div style="font-size: 26px"> **DFBETAS** is my favorite measure because for each data point, it tells you how much each regression coefficient will change if that data point is removed. Other measures give some average, which, for most purposes, is not as informative in my opinion. 
+ </div>
+:::
+
+
+## Our model 
+
+Let's say that we want to look at how `log_GDP` and `Social_support` predict `Happiness_score` for each country. Let's look at the added variables plots directly:
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+reg <- lm(Happiness_score ~ Log_GDP + Social_support, WH_2024)
+avPlots(reg)
+```
+
+
+```{r}
+reg <- lm(Happiness_score ~ Log_GDP + Social_support, WH_2024)
+```
+
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+
+<div style="font-size: 24px"> Graphical inspection is always a good start, and often is all you need to see that something may be off. Both variables positively predict Happiness, but there are some extreme points. </div>
+
+::: {.fragment fragment-index=1}
+<div style="font-size: 24px"> As mentioned all the way back in Lab 5, the `avPlots()` function also identifies the 2 points with the largest residuals and the largest leverage (for the single plot).</div>
+:::
+
+:::
+
+::: {.column width="70%"}
+
+```{r}
+avPlots(reg)
+```
+
+
+:::
+::::
+
+
+## Hat values
+
+ **Hat values** measure how unusual an observation is compared to the average observation. They measure leverage, and the higher the values, the more unusual the observation given the set of predictors.
+
+
+:::: {.columns}
+::: {.column width="50%"}
+
+::: {.fragment fragment-index=1}
+To compute hat values for all your observations you use the `hatvalues()` function. Here I only print the 5 largest values
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+hatvals <- hatvalues(reg)
+sort(hatvals, decreasing = TRUE)[1:5]
+```
+:::
+
+:::
+
+::: {.column width="50%"}
+
+
+::: {.fragment fragment-index=1}
+<center>
+
+Here are all the hat values:
+
+```{r}
+reactable::reactable(data.frame("Country" = names(hatvalues(reg)),
+                                "Hat_Values" = round(as.numeric(hatvalues(reg)), 3)),
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "0.975rem"),
+                     pagination = FALSE, highlight = TRUE, height = 250, width = 300)
+```
+
+</center>
+:::
+
+:::
+::::
+
+::: {.fragment fragment-index=2}
+Leverage is just a way of determining whether an observation is unusual, but it does not necessarily mean that the observation is problematic. I generally don't like guidelines of "how big is too big" for regression diagnostics because they don't generalize well to real world cases. Here, *Venezuela*'s hat value is more than twice as large as the second largest one, so somewhat big relative to all other data points.
+:::
+
+
+## Studentized Residuals
+
+**Studentized Residuals** measure how large each residual is on a standardized scale (a *t* scale really, but makes no difference in practice). This is a measure of distance. 
+
+:::: {.columns}
+::: {.column width="70%"}
+
+::: {.fragment fragment-index=1}
+To compute hat values for all your observations you use the `rstudent()` function. Here I only print the 5 largest and smallest values
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+rstud <- rstudent(reg)
+c(sort(rstud,)[1:5],
+  sort(rstud, decreasing = TRUE)[1:5])
+```
+:::
+:::
+
+::: {.column width="30%"}
+
+::: {.fragment fragment-index=1}
+<center>
+
+Here are all the residuals:
+
+```{r}
+reactable::reactable(data.frame("Country" = names(rstudent(reg)),
+                                "Residuals" = round(as.numeric(rstudent(reg)), 3)),
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "0.975rem"),
+                     pagination = FALSE, highlight = TRUE, height = 250, width = 300)
+```
+
+</center>
+:::
+
+:::
+::::
+
+::: {.fragment fragment-index=2}
+We are talking about residuals, so they can be both positive (above the regression line) and negative (below the regression line). Because the residuals are on a standardize scale, around 0 is an average residual, where anything above 2 (2 standard deviations above the mean) is somewhat high.
+:::
+
+## Studentized Residuals? QQplot them
+
+Studentized residuals are just the values of the standardized residuals. Some large residuals are expected and are usually not that big of a deal. The `car` package has a quick function to create a QQplot of studentized residuals
+
+:::: {.columns}
+::: {.column width="70%"}
+
+
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+car::qqPlot(reg)
+```
+
+```{r}
+plot <- car::qqPlot(reg)
+```
+
+
+:::
+::: {.column width="30%"}
+
+*Botswana* and *Lebanon* have somewhat low residuals, but there aren't many residuals outside the confidence band.
+
+::: {.fragment fragment-index=1}
+The lower end of the residuals is a bit suspicious, but I wouldn't be super concerned just by looking at this. 
+:::
+
+:::
+::::
+
+
+## DFFITS 
+
+**DFFITS** measure how large the change in the predictions, $\hat{Y}$, would be on average *if* that data point was removed (influence).
+
+:::: {.columns}
+::: {.column width="70%"}
+
+
+::: {.fragment fragment-index=1}
+To compute hat values for all your observations you use the `dffits()` function. Here I only print the 5 largest and smallest values
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+dffits <- dffits(reg)
+c(sort(dffits)[1:5],
+  sort(dffits, decreasing = TRUE)[1:5])
+```
+:::
+:::
+
+::: {.column width="30%"}
+
+<center>
+::: {.fragment fragment-index=1}
+
+Here are all the residuals:
+
+```{r}
+reactable::reactable(data.frame("Country" = names(dffits(reg)),
+                                "DFFITS" = round(as.numeric(dffits(reg)), 3)),
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "0.975rem"),
+                     pagination = FALSE, highlight = TRUE, height = 250, width = 300)
+```
+:::
+</center>
+
+:::
+::::
+::: {.fragment fragment-index=2}
+Predictions can change either positively or negatively, so we shuold look at extreme values both ways. You can think of DFFITS as a measure that summarizes how much the whole regression model changes when a data point is removed.
+:::
+
+## Cook’s *D*
+
+**Cook’s *D* ** measures how large the average change in all the regression coefficients would be *if* that data point was removed (influence).
+
+:::: {.columns}
+::: {.column width="70%"}
+
+::: {.fragment fragment-index=1}
+
+To compute Cook's distance for all your observations you use the `cooks.distance()` function. Here I only print the 5 largest values:
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+cookD <- cooks.distance(reg)
+sort(cookD, decreasing = TRUE)[1:5]
+```
+:::
+:::
+
+::: {.column width="30%"}
+
+::: {.fragment fragment-index=1}
+<center>
+
+Here are all the values:
+
+```{r}
+reactable::reactable(data.frame("Country" = names(cooks.distance(reg)),
+                                "cookD" = round(as.numeric(cooks.distance(reg)), 3)),
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "0.975rem"),
+                     pagination = FALSE, highlight = TRUE, height = 250, width = 300)
+```
+
+</center>
+:::
+
+:::
+::::
+
+::: {.fragment fragment-index=2}
+Data points with large DFFITS (in magnitude) will have large Cook's *D*, so the interpretation is similar. The one notable difference is that Cook's distance is always positive, so may be easier to interpret from some. You can confirm that teh the contries on this slide are the same countries with the largest DFFITS in magnitude on the previous slide.
+:::
+
+## COVRATIO
+
+**COVRATIO** measures how large the average change in all the standard errors of the regression coefficients would be *if* that data point was removed. It's a measure of influence. 
+
+:::: {.columns}
+::: {.column width="70%"}
+
+::: {.fragment fragment-index=1}
+
+To compute hat values for all your observations you use the `dffits()` function. Here I only print the 5 largest and smallest values
+
+```{r}
+#| eval: true
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+covrat <- covratio(reg)
+c(sort(covrat)[1:5],
+  sort(covrat, decreasing = TRUE)[1:5])
+```
+:::
+:::
+
+::: {.column width="30%"}
+
+<center>
+
+::: {.fragment fragment-index=1}
+Here are all the values:
+
+```{r}
+reactable::reactable(data.frame("Country" = names(covratio(reg)),
+                                "COVRATIO" = round(as.numeric(covratio(reg)), 3)),
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "0.975rem"),
+                     pagination = FALSE, highlight = TRUE, height = 250, width = 300)
+```
+
+:::
+
+</center>
+
+:::
+::::
+
+
+::: {.fragment fragment-index=2}
+You may notice that COVRATIO values hover around 1. In fact, $\mathrm{COVRATIO} = 1$ means that removing the point has no impact whatsoever on the standard errors. On the other hand, $\mathrm{COVRATIO} < 1$ means that removing the point will make standard errors smaller, while $\mathrm{COVRATIO} > 1$ means that removing the point will make standard errors larger. 
+:::
+
+
+## DFBETAS 
+
+**DFBETAS** represent the change in the intercept and slopes if *if* that data point was removed (influence).    
+
+:::: {.columns}
+::: {.column width="50%"}
+
+To compute DFBETAS we use the `dfbetas()` function:
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+dfbetas(reg)
+```
+
+
+```{r}
+reactable::reactable(data.frame(round(dfbetas(reg), 3)),
+                     style = list(fontFamily = "Work Sans, sans-serif", fontSize = "0.975rem"),
+                     pagination = FALSE, highlight = TRUE, height = 350, width = 600)
+```
+
+:::
+
+::: {.column width="50%"}
+
+DFBETAS provide more information than the other measures. Removing a data point may have stronger influence on one of the slopes, but not as much influence on another slope or the intercept. 
+
+::: {.fragment fragment-index=1}
+You can click on the column names in the table on the left to order the table by each column and see the more extreme values for each column.
+:::
+
+::: {.fragment fragment-index=2}
+The change is in standard deviation units, so, for example, removing *Venezuela* changes the slope of `Log_GDP` by -1.083 standard deviations and that of `Social_support` by .865 standard deviations. This is a pretty large change. 
+:::
+
+:::
+::::
+
+## Influence plot with `car`
+
+The `influencePlot` function from the `car` package also offers a nice visualization for studentized residuals, hat values, and Cook's D at the same time
+
+:::: {.columns}
+::: {.column width="70%"}
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+car::influencePlot(reg)
+```
+
+```{r}
+no_print <- car::influencePlot(reg)
+```
+
+
+:::
+::: {.column width="30%"}
+
+
+::: {.fragment fragment-index=1}
+So, compared to the other countries, *Venezuela* is really high in all of these measures. If you look at the `log_GDP` and `Happiness_score` values for *Venezuela* you may find something a bit strange (maybe proof that money is not needed for happiness)
+:::
+
+::: {.fragment fragment-index=2}
+I also feel like the function is not very aptly named because only Cook's D is a measure of influence 🫣
+:::
+
+:::
+::::
+
+## Another Neat `car` Plot
+
+The `influenceIndexPlot` function offers a visualization of a bunch of regression diagnostics. This helps visualizing what observations are extreme relative to other observations
+
+:::: {.columns}
+::: {.column width="70%"}
+
+
+```{r}
+#| eval: false
+#| echo: true 
+#| code-line-numbers: false
+#| classes: code-125
+
+influenceIndexPlot(reg)
+
+```
+
+
+```{r}
+no_print <- influenceIndexPlot(reg)
+```
+
+:::
+::: {.column width="30%"}
+
+::: {.fragment fragment-index=1}
+With a good deal of these measures, I would not look at "suggested cutoffs". Following cutoffs blindly *(1)* leads you to not think about what you are doing, and *(2)* leads you to make bad decisions and mistakes in many scenarios. 
+:::
+
+::: {.fragment fragment-index=2}
+Especially for some of these measures, you want to look at how large they are *relative to all other observations*.
+:::
+
+
+:::
+::::
+
+
+## References
+
+<div id="refs"> </div>
+
+
+
+
+

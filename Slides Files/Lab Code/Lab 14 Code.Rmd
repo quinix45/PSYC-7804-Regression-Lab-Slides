@@ -4,3 +4,212 @@ author: "Fabio Setti"
 date: "Spring-2025"
 output: html_document
 ---
+
+
+## Today's Packages and Data 🤗
+
+
+```{r}
+library(tidyverse)
+library(car)
+theme_set(theme_classic(base_size = 16, 
+                        base_family = 'serif'))
+```
+
+```{r}
+WH_2024 <- rio::import("https://github.com/quinix45/PSYC-7804-Regression-Lab-Slides/raw/refs/heads/main/Slides%20Files/Data/World_happiness_2024.csv")
+
+rownames(WH_2024) <- WH_2024$Country_name
+```
+
+## Simulating some Data
+
+
+```{r}
+set.seed(28567)
+
+cor_mat <- rbind(c(1, .2),
+                 c(.2, 1))
+
+sim_dat_50 <- data.frame(MASS::mvrnorm(n = 50, c(0, 0), Sigma = cor_mat, empirical = TRUE))
+colnames(sim_dat_50) <- c("Y", "X")
+
+sim_dat_500 <- data.frame(MASS::mvrnorm(n = 500, c(0, 0), Sigma = cor_mat, empirical = TRUE))
+colnames(sim_dat_500) <- c("Y", "X")
+
+```
+
+
+
+```{r}
+ggplot(sim_dat_50, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  xlim(-4, 4)+
+  ylim(-4, 4)
+
+```
+
+
+
+```{r}
+ggplot(sim_dat_500, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  xlim(-4, 4)+
+  ylim(-4, 4)
+
+```
+
+
+
+
+```{r}
+reg_p <- lm(Y ~ X, sim_dat_50)
+```
+
+```{r}
+sim_dat_50[51,] <-  c(4,-4, 0)
+
+
+ggplot(sim_dat_50, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  geom_point(aes(X[51], Y[51]), col="red", shape=1, size=7) +
+  xlim(-4, 4) +
+  ylim(-4, 4)
+```
+
+
+```{r}
+sim_dat_500[501,] <-  c(4,-4, 0)
+
+
+ggplot(sim_dat_500, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  geom_point(aes(X[501], Y[501]), col="red", shape=1, size=7) +
+  xlim(-4, 4) +
+  ylim(-4, 4)
+
+```
+
+
+
+## But wait! Not All Outliers Ruin your fun
+
+
+```{r}
+sim_dat_50[51,] <-  c(4,0, 0)
+
+
+ggplot(sim_dat_50, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  geom_point(aes(X[51], Y[51]), col="red", shape=1, size=7) +
+  xlim(-4, 4) +
+  ylim(-4, 4)
+```
+
+
+
+```{r}
+sim_dat_500[501,] <-  c(4,0, 0)
+
+
+ggplot(sim_dat_500, aes(y = Y, x = X)) +
+  geom_point() +
+  geom_smooth(method = "lm",se = FALSE) +
+  geom_point(aes(X[501], Y[501]), col="red", shape=1, size=7) +
+  xlim(-4, 4) +
+  ylim(-4, 4)
+```
+
+
+
+## Our model 
+
+
+```{r}
+reg <- lm(Happiness_score ~ Log_GDP + Social_support, WH_2024)
+avPlots(reg)
+```
+
+## Hat values
+
+```{r}
+hatvals <- hatvalues(reg)
+sort(hatvals, decreasing = TRUE)[1:5]
+```
+
+
+## Studentized Residuals
+
+
+```{r}
+rstud <- rstudent(reg)
+c(sort(rstud,)[1:5],
+  sort(rstud, decreasing = TRUE)[1:5])
+```
+
+
+
+## Studentized Residuals? QQplot them
+
+
+```{r}
+car::qqPlot(reg)
+```
+
+## DFFITS 
+
+
+```{r}
+dffits <- dffits(reg)
+c(sort(dffits)[1:5],
+  sort(dffits, decreasing = TRUE)[1:5])
+```
+
+
+## Cook’s *D*
+
+
+```{r}
+cookD <- cooks.distance(reg)
+sort(cookD, decreasing = TRUE)[1:5]
+```
+
+
+## COVRATIO
+
+
+```{r}
+covrat <- covratio(reg)
+c(sort(covrat)[1:5],
+  sort(covrat, decreasing = TRUE)[1:5])
+```
+
+
+## DFBETAS 
+
+
+```{r}
+dfbetas(reg)
+```
+
+
+## Influence plot with `car`
+
+```{r}
+car::influencePlot(reg)
+```
+
+
+## Another Neat `car` Plot
+
+```{r}
+influenceIndexPlot(reg)
+```
+
+
+

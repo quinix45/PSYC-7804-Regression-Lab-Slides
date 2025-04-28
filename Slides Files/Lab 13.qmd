@@ -474,7 +474,7 @@ Depending on how our data went missing, we have to use different methods to prev
 ::: {.fragment fragment-index=2}
 <ul style="font-size: 24px">  
 
-<li> Testing NMAR would require you to know for sure that *there is an unobserved variable* that predicts missingness (impossible 🤷) </li>
+<li> Testing MNAR would require you to know for sure that *there is an unobserved variable* that predicts missingness (impossible 🤷) </li>
 
 </ul>
 :::
@@ -765,7 +765,7 @@ When Little's test is *significant*, you need to be careful! You know for sure t
 :::
 
 ::: {.fragment fragment-index=4}
-Note that FIML "works" only if your missing data is either MCAR or MAR; if data is MNAR, meaning that you have no measured variable that is related to missingness, then FIML will not be of much help and you'll need some more sophisticated stat. 
+Note that FIML "works" only if your missing data is either MCAR or MAR; if data is MNAR, meaning that you have no measured variable that is related to missingness, then FIML will not be of much help and you'll need some more sophisticated stats. 
 :::
 
 ## FIML with `lavaan`

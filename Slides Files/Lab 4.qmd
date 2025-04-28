@@ -24,12 +24,6 @@ format:
 editor: source
 ---
 
-## Font-awesome slide{visibility="hidden"}
-
-uncounted and not visible slide to trigger the fontawesome extension
-
-{{< fa thumbs-up >}} 
-
 
 ## Today's Packages and Data 🤗
 
@@ -77,7 +71,7 @@ theme_set(theme_classic(base_size = 16,
 
 ### `GGally`
 
-The `GGally` package [@Schloerke_etal_2024] builds upon `ggplot2` and includes many fucntions for creating complex plots. 
+The `GGally` package [@Schloerke_etal_2024] builds upon `ggplot2` and includes many functions for creating complex plots. 
 
 ### `plotly`
 
