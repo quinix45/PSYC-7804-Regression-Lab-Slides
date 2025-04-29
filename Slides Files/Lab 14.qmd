@@ -516,7 +516,7 @@ You may see slightly different definitions for these 3 terms. I am drawing my de
 
 
 ::: {.fragment fragment-index=7}
-<div style="font-size: 26px"> **DFBETAS** is my favorite measure because for each data point, it tells you how much each regression coefficient will change if that data point is removed. Other measures give some average, which, for most purposes, is not as informative in my opinion. 
+<div style="font-size: 26px"> **DFBETAS** (<img src="Images/pacha_meme.png" style="width:2%; vertical-align: -14px;">)  is my favorite measure because for each data point, it tells you how much each regression coefficient will change if that data point is removed. Other measures give some average, which, for most purposes, is not as informative in my opinion. 
  </div>
 :::
 
